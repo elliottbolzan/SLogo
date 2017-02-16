@@ -28,6 +28,6 @@ As a command is finishing its execution, it will signal a front-end method to up
 
 Here are our CRC cards:
 
-![images/console.jpg]()
+![](images/console.jpg)
 
 
