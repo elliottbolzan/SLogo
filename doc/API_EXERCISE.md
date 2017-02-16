@@ -30,9 +30,9 @@ Here are our CRC cards:
 
 ![](images/console.jpg)
 
-![](images/IMG_0319.jpg)
+![](images/IMG_0319.JPG)
 
-![](images/)
+![](images/IMG_lalala)
 
 
 
