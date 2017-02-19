@@ -13,6 +13,12 @@ Written by Elliott Bolzan (eab91), Jay Doherty (jld60), Dennis Ling (dl186), and
 
 ### API Example Code
 
+#### Front-end External:
+#### Front-end Internal:
+#### Back-end External:
+#### Back-end Internal:
+
+
 ### Design Considerations
 
 ### Team Responsibilities
