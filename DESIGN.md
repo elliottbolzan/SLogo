@@ -219,8 +219,18 @@ The back-end should follow this sequence of steps:
 - In the event an exception is raised, the **Console** will catch it, and the front-end will display a Dialog informing the user of the error.
 
 #### Front-end Internal:
-1\. **UNFINISHED**
-2\. **UNFINISHED**
+1\. *The user wants to re-run an old command. How would the back-end use this API to achieve this task?*
+
+- When the user presses the up arrow key to prompt the display, `showHistory()` should be called and a pop-up scrollable list of commands should appear. The user should be able to navigate this list with the arrow keys.
+- When the user finds the command they wish to execute and click on it or highlight it and press enter, the `runCommand(String command)` method should be invoked.
+- At this point, the program will invoke `parse(String string)` on the command, and execution of the command will be handled as described in the other APIs. The job of the internal front-end API is just to provide the command selection list.
+
+2\. *The user tries to set a new image for the turtle, but the file is corrupted and does not load properly. The UI should display an error and abort changing the turtle image. How would the back-end use this API to achieve this task?*
+
+- To change the turtle image, `setTurtleImage(String path)` is invoked by passing it the the file path as a String.
+- When the front-end tries to open the image and gets an IOException, it will invoke `showMessage(String message)` to display an alert and inform the user that their is an issue with their file.
+- Depending on the implementation, it may be necessary to re-invoke `setTurtleImage(String path)` on the previous path to properly reset the image, but in all likelihood this will not be necessary and will just be handled by the interrupt caused by the Exception.
+
 #### Back-end External:
 #### Back-end Internal:
 
