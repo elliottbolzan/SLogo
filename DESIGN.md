@@ -7,6 +7,20 @@ Written by Elliott Bolzan (eab91), Jay Doherty (jld60), Dennis Ling (dl186), and
 
 ### Design Overview
 
+The front-end and back-end of our design is divided in the following way:
+
+![](images/overview.png)
+
+The basic idea of our organization is that the front-end will detect user input, and the back-end will handle it. When the front-end detects a new input, it will pass it to the the back-end as a String to be parsed. Once the back-end has finished parsing, it will pass back a Command object. This Command object has a single public method that can be called to execute it. Under this structure, the API used by the Console and the back-end parser can be incredibly simple because it involves this simple handing back and forth of objects. The front-end provides Strings and the back-end provides ready-made Commands, and the front-end doesn't need to know or care about how these commands get made, it just knows that all commands can be executed.
+
+The rest of the front-end external API is provided to make Commands powerful. They should be able to do interesting stuff like printing math results or moving the Turtle around screen, so methods that support this behavior must be provided by the front-end. 
+
+The rest of the back-end external API is provided to make the UI powerful. While `parse(String input)` provides the main functionality in terms of executing commands, other kinds of input might need to be handled differently. The UI should be able to see the history of commands and the current state of variables, so methods that support this behavior must be provided by the back-end.
+
+The front-end internal API is focused on providing features that do not require any processing by the back-end. This should include changing the color or formating of the display, changing the input language, and viewing lists of old commands or variables. 
+
+The back-end internal API is once again focused on providing features and ways of changing the back-end processing that the front-end does not care about. Part of this extensibility is built into the Command interface, which allows an obvious way for new commands to added to the Slogo language. 
+
 ### User Interface
 
 Our user interface for this project will look as follows:
@@ -102,9 +116,74 @@ In discussing this front-end external API, we mentionned several classes: the **
 - **TurtleDisplay**: likewise, a program that wants to visualize the movements of a turtle across a screen will need a class to control that space. This API contains `moveTo(Point point)` and `turn(double degrees)` methods, so it makes sense to create a standalone class in which these events can take place. 
 - **Turtle**: finally, it is normal for a program that wishes to control a turtle to have au **Turtle** class. Why is the turtle not simply an image controlled from the **TurtleDisplay**? This API has methods like `setPenDown(boolean down)`; those methods control instance variables that conceptually belong to the turtle. As a consequence, it makes sense to have a **Turtle** class to contain those variables.
 
+
 #### Front-end Internal:
+
+The purpose of this API is to provide methods that the front-end will use to implement features that are exclusively handled within the front-end. These methods should provide areas for extension, and they should be able to be overrode without impacting the back-end.
+
+```
+public void showMessage(String message);
+public void setBackgroundColor(Color color);
+public void setTurtleImage(String path);
+public void setPenColor(Color color);
+public void setLanguage(String language);
+public void showHelp();
+public void showHistory();
+public void updateVariables();
+public void updateCommands();
+public void runCommand(String command);
+```
+
+**How does this API support features from the assignment specification?**
+
+The following features are listed with the commands that implement them:
+
+* *See errors that may result from entered commands in a user friendly way* --implemented by: `showMessage(String message)` which will display a JavaFX Alert with the message.
+
+* *Set a background color for the turtle's display area* -- implemented by: `setBackgroundColor(Color color)`
+
+* *Set an image to use for the turtle* -- implemented by: `setTurtleImage(String path)` where `path` specifies a new image file.
+
+* *Set a color to use for the pen* -- implemented by: `setPenColor(Color color)`
+
+* *See commands previously run in the environment (even better, make them directly clickable to execute)* -- implemented by: `showHistory()` (which will be called by the user pressing the up arrow-key to look through a scrollable list of old commands) and `runCommand(String command)` (which will be called on clicking one of those old commands).
+
+* *See variables currently available in the environment* -- implemented by: `updateVariables()` which will be called to refresh the permanent sidebar that shows variables and their values.
+
+* *See user-defined commands currently available in the environment* -- implemented by: `updateCommands()` which similarly refreshes the sidebar that shows user-defined commands.
+
+* *Choose the language in which SLogo commands are understood* -- implemented by: `setLanguage(String language)` which simply changes the properties file used to interpret commands.
+
+* *Access an HTML formatted help page* -- implemented by: `showHelp()`
+
+**What resources does this API use?**
+
+Since this API is contained internally within the front-end, it should only use front-end resources. Methods that modify the Turtle Display should for example not need to know the turtle's coordinates since that is data held by the back-end. `showMessage(String message)` might need a reference to the Console if it is printing a message there, or it may be implemented purely with JavaFX Alerts. `showHistory()`, `updateVariables()`, and `updateCommands()` will need references to their particular GUI elements, and they will make use of the back-end API to refresh the displays with the most up-to-date variables and commands. `runCommand(String command)` will probably invoke `parse(String string)`, which is another back-end method made available by the back-end API.
+
+**How is this API intended to be used?**
+
+This API is intended to specify the methods that are internal to the front-end, so it should be used to implement front-end specific features and provide an extendible interface. 
+
+We would expect this API to be used in the following scenarios:
+* The front-end catches an exception and needs to display an error to the user
+* The user wants to change the visuals of the Turtle Display (change colors or images)
+* The user wants to see old commands
+* The user wants to add a variable and see its value on screen
+* The user wants to add a custom command
+* The user wants to change languages
+* The user wants to see help from a web page
+
+**How can this API be extended?**
+
+This API can be extended to include more UI-specific features, like more sidebars to display different kinds of information about the state of the environment. To make this very easy to extend, it may be that certain methods like `updateVariables()` and `updateCommands()` could be combined in a superclass `update()` method, with VariableDisplay and CommandDisplay objects each overriding this method to check the appropriate data structures in the back-end. This is an example of a feature that maybe isn't the best to reason about as a Java interface but rather as an inheritance hierarchy.
+
+**Why are we introducing these classes?**
+
+In this section we have focused on discussing the interface for the API in terms of an actual Java interface which cannot be instantiated like a class. However, we will likely not keep this as an interface in the final implementation since these methods are unlikely to all be implemented by a single object. As mentioned above, one idea would be to have a superclass Display that is extended by VariableDisplay, CommandDisplay, HistoryDisplay (even ConsoleDisplay?). This way the process of updating all of the displays could be streamlined, and the path to add new sidebars or other display elements to the UI would be very obvious.
+
 #### Back-end External:
 #### Back-end Internal:
+
 
 ### API Example Code
 
@@ -140,6 +219,8 @@ The back-end should follow this sequence of steps:
 - In the event an exception is raised, the **Console** will catch it, and the front-end will display a Dialog informing the user of the error.
 
 #### Front-end Internal:
+1\. **UNFINISHED**
+2\. **UNFINISHED**
 #### Back-end External:
 #### Back-end Internal:
 
