@@ -200,6 +200,9 @@ throw BadInput();
 throw InvalidOperation();
 throw TurtleOutofBounds();
 public void execute();
+public List<Variable> getVariables();
+public void setVariable(Variable variable);
+public List<Command> getUserDefinedCommands();
 ```
 
 **How does this API support features from the assignment specification?**
