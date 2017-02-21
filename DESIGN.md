@@ -236,6 +236,60 @@ The primary purpose of these methods is to allow the front-end to function smoot
 
 #### Back-end Internal:
 
+The purpose of this API is to provide methods for the back-end that will be used to implement the functionality of our program. These methods will supply the necessary resources for our back-end logic to function smoothly; here is a list of methods that we believe we will need:
+
+```
+public Command getCommand();
+public Command parse(String input);
+public Variable getVariable();
+public void setVariable(String key);
+public void addHistory();
+public Point getPosition();
+public boolean hasPen();
+public boolean isHidden();
+public double getHeading();
+public void setPosition();
+public void setPen();
+public void setHidden();
+public void setHeading();
+```
+
+**How does this API support features from the assignment specification?**
+
+* *Recognize these basic commands*  -- implemented by all of our necessary `getX()` and `setX()` methods that will update the required variables and maintain the data/objects as needed.
+
+* *Throw errors that result from incorrectly entered commands* -- implemented by the parse command by recognizing when an incorrectly entered command is given as the input string.
+
+**What resources does this API use?**
+
+This API will make use of several classes as resources (super and sub-classes) such as the following:
+
+- The **Command** object, which is a superclass to any potential command. Subclasses will include the LogicCommand, MathCommand, TurtleActionCommand, and TurtleLogicCommand.
+- The **Turtle** object will maintain all of the necessary information about the turtle, including the position, heading, pen, and hiding data.
+- The **Parser** class, which will host the history and catching of errors.
+- The **Variable** class, which will hold the creation of all variables throughout the running of the program.
+
+**How is this API intended to be used?**
+
+This API is intended to be used as a way to supply information throughout the back-end. With these methods, we can:
+
+- Add to our history, 
+- Update our Turtle information 
+- Maintain variables
+
+Additionally, the parser will be used as a way to catch exceptions and throw them to the front-end to display.
+
+**How can this API be extended?**
+
+This API can be extended by:
+
+- Extending our current hierarchy of super and sub-classes. For example, if we need to add another math command, we can extend the MathCommand class (which extends the Command class).
+
+- Add public methods that supply information that the back-end will need. In the case where more data about the Turtle may be needed, we can simply add more methods to access this information to make it available throughout the back-end classes. 
+
+**Why are we introducing these classes?**
+
+The primary goal of adding all of these classes is to grant a cohesive way to manipulate data throughout the back-end. The Parser class is necessary to return the correct command and to check for errors, as listed in the design write-up. The Turtle class will be used as an efficient way to store all of the information we need that relates to each Turtle object. The Command superclass will be easily extensible with the use of layers of subclasses in order to maintain a clear heirarchy of commands. These classes will maintain the logic and functionality of much of the program.
 
 ### API Example Code
 
