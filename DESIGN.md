@@ -356,8 +356,12 @@ The back-end should follow this sequence of steps:
 1\. *The user moves the Turtle forward 5, and then forward another 6, but the grid is only 10 lengths long.*
 
 - The first forward command is sent to the parser `parse(String input)` method, which parses the command and sends it to the front-end.
-- The front-end calls `execute()` on *forward 5** in the back-end.
-- 
+- The front-end calls `execute()` on *forward 5* in the back-end.
+- The command will call `setPosition()` to update the Turtle position to be 5 more of its initial position.
+- Control is returned to the front end to update the position on the GUI.
+- The second forward command is parsed and execute is called again.
+- Upon execution, the logic will check if `setPosition()` will make the position of the Turtle be larger than the Grid. 
+- In this case, it will, so an exception will be thrown to the front end to display.
 
 2\. 
 
@@ -378,14 +382,14 @@ Our team is split-up into two groups: the **front-end** group (Elliott Bolzan an
 
 All members of the group are responsible for documenting and refactoring their subgroup's code, in addition to their own.
 
-Within the front-end group:
+#### Within the front-end group:
 
 - Elliott will take primary responsibility for the **Console** and its components, as well as the **State** display (variables and user-defined commands). He will take secondary responsibility for the **TurtleDisplay** and its components.
 - Jay will take primary responsibility for the **TurtleDisplay**, the **Turtle**, and their components. He will take secondary responsibility for the **Console**.
 
 Both Elliott and Jay will tie in the different front-end elements as part of their primary responsibility.
 
-Within the back-end group:
+#### Within the back-end group:
 - Dennis will primarily be responsible for the **Command** superclass and it's subclasses such as **MathCommand** and **TurtleActionCommand.** Additionally, Dennis will be in charge of maintaining the information with regards to the **Turtle** class such as the heading, 
 - Alex will primarily be responsible for the **Parser** class and the error throwing and recognition withiin parser. Additionally, Alex will also help with the **Turtle** class in maintaining its functionality.
 - Both Alex and Dennis will work together to fill-in any holes throughout the back-end logic and classes that may need to be added throughout the project and its extensions. 
