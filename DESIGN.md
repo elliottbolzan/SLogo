@@ -300,7 +300,7 @@ We seek to go through the following use-case:
 
 Here are the steps necessary to complete that task:
 
-- When the user presses `Enter`, the **Console** calls `parse(String string)` (in CLASSNAME) using the user's input.
+- When the user presses `Enter`, the **Console** calls `parse(String string)` (in `public class parser`) using the user's input.
 - The `parse(String string)` method returns a **Command** object to the **Console**. 
 - Simultaneously, the command is added to the environment's history. This is done by the `public void addHistory();` command, which appends the command to the end of the history list of commands.
 - The `execute()` method (in **Command**) is called on the **Command** object from the **Console**.
