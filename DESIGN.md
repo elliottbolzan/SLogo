@@ -199,6 +199,7 @@ public Point getTurtlePosition();
 throw BadInput();
 throw InvalidOperation();
 throw TurtleOutofBounds();
+public void execute();
 ```
 
 **How does this API support features from the assignment specification?**
@@ -301,9 +302,9 @@ Here are the steps necessary to complete that task:
 
 - When the user presses `Enter`, the **Console** calls `parse(String string)` (in CLASSNAME) using the user's input.
 - The `parse(String string)` method returns a **Command** object to the **Console**. 
-- Simultaneously, the command is added to the environment's history. HOW
+- Simultaneously, the command is added to the environment's history. This is done by the `public void addHistory();` command, which appends the command to the end of the history list of commands.
 - The `execute()` method (in **Command**) is called on the **Command** object from the **Console**.
-- From the `execute()` method, the destination point for the turtle is computed from the current point (obtained using `Point getTurtleLocation()` (in CLASSNAME) and the 50 pixel advance. The `moveTo(Point point)` method (in **TurtleDisplay**) is called with the new destination. 
+- From the `execute()` method, the destination point for the turtle is computed from the current point (obtained using `Point getTurtleLocation()` (in `public class Turtle`) and the 50 pixel advance. The `moveTo(Point point)` method (in **TurtleDisplay**) is called with the new destination. The position of the Turtle is updated in the `public class Turtle` by setting the position `public void setPosition()` of the turtle to the current position plus 50. 
 - The user sees the turtle move to its new point, leaving behind a trail.
 
 More use cases follow, two for each API. 
@@ -338,7 +339,27 @@ The back-end should follow this sequence of steps:
 - Depending on the implementation, it may be necessary to re-invoke `setTurtleImage(String path)` on the previous path to properly reset the image, but in all likelihood this will not be necessary and will just be handled by the interrupt caused by the Exception.
 
 #### Back-end External:
+1\. *The user wants to obtain the previous command, but incorrectly enters a badly formatted command instead.*
+
+- The command will be sent to the `public Command parse(String input)` method, which will attempt to parse the String.
+- Upon realizing the String is incorrectly formatted, the `parse` method will throw a `badInput();` error to the front-end.
+- The front-end will receive the exception and will display the correct exception on the GUI.
+
+2\. *The user wants to obtain the previous command, and correctly inputs the String command!*
+
+- The command to obtain the history will be sent to the parser `parse(String input)`, which will correctly return the previous history Command. 
+- The front-end will receive this command, and will run `execute()` on this particular command.
+- In the `execute()` method, the back-end will supply the front-end with the correct previous command with `getPreviousCommand(int k)` depending on the integer that the user specified. 
+- The `print()` method in the front-end is called in order to notify the user what the previous command was.
+
 #### Back-end Internal:
+1\. *The user moves the Turtle forward 5, and then forward another 6, but the grid is only 10 lengths long.*
+
+- The first forward command is sent to the parser `parse(String input)` method, which parses the command and sends it to the front-end.
+- The front-end calls `execute()` on *forward 5** in the back-end.
+- 
+
+2\. 
 
 ### Design Considerations
 
@@ -357,13 +378,14 @@ Our team is split-up into two groups: the **front-end** group (Elliott Bolzan an
 
 All members of the group are responsible for documenting and refactoring their subgroup's code, in addition to their own.
 
-Within the back-end group:
+Within the front-end group:
 
-- Elliott will take primary responsbility for the **Console** and its components, as well as the **State** display (variables and user-defined commands). He will take secondary responsibility for the **TurtleDisplay** and its components.
+- Elliott will take primary responsibility for the **Console** and its components, as well as the **State** display (variables and user-defined commands). He will take secondary responsibility for the **TurtleDisplay** and its components.
 - Jay will take primary responsibility for the **TurtleDisplay**, the **Turtle**, and their components. He will take secondary responsibility for the **Console**.
 
 Both Elliott and Jay will tie in the different front-end elements as part of their primary responsibility.
 
 Within the back-end group:
-
-FILL IN BACK-END GUYS
+- Dennis will primarily be responsible for the **Command** superclass and it's subclasses such as **MathCommand** and **TurtleActionCommand.** Additionally, Dennis will be in charge of maintaining the information with regards to the **Turtle** class such as the heading, 
+- Alex will primarily be responsible for the **Parser** class and the error throwing and recognition withiin parser. Additionally, Alex will also help with the **Turtle** class in maintaining its functionality.
+- Both Alex and Dennis will work together to fill-in any holes throughout the back-end logic and classes that may need to be added throughout the project and its extensions. 
