@@ -5,6 +5,12 @@ Written by Elliott Bolzan (eab91), Jay Doherty (jld60), Dennis Ling (dl186), and
 
 ### Introduction
 
+Our "Simple Logo" program is intended to provide an integrated development environment that allows users to write Slogo programs. We are attempting to solve the problem of developing a flexible, extensible set of API's that work together with the GUI to create a positive IDE experience for the user. The primary design goals of our program are to separate unnecessary dependencies between the front-end and back-end and to create a minimal, yet useful and extensible API. 
+
+In particular, we have drawn clear lines among our four necessary APIs for the internal/external back-end and front-end that allow us to control the flow of dependencies and necessary objects and data. We will utilize the use of java Interfaces, superclasses, and subclasses in order to minimize duplicated code and to allow our code to be the most flexible; our program will be extremely flexible in the cases where we may need to implement an Interface or extend a superclass. 
+
+The primary architecture of our program will maintain mostly private classes unless the need for the exchange of data are necessary among our classes; this will allow for the open extension of commands, displayed objects on the GUI's, turtle properties, and more while closing off access to most (private) inner methods and classes that the user and other parts of the program do not need to see.
+
 ### Design Overview
 
 The front-end and back-end of our design is divided in the following way:
@@ -182,6 +188,52 @@ This API can be extended to include more UI-specific features, like more sidebar
 In this section we have focused on discussing the interface for the API in terms of an actual Java interface which cannot be instantiated like a class. However, we will likely not keep this as an interface in the final implementation since these methods are unlikely to all be implemented by a single object. As mentioned above, one idea would be to have a superclass Display that is extended by VariableDisplay, CommandDisplay, HistoryDisplay (even ConsoleDisplay?). This way the process of updating all of the displays could be streamlined, and the path to add new sidebars or other display elements to the UI would be very obvious.
 
 #### Back-end External:
+
+The purpose of this API is to supply the front-end with necessary methods that pertain to the parsing, commands, turtle, or exceptions. Here is an initial list of methods made available by the back-end external API:
+
+```
+public Command parse(String input);
+public List<String> getHistory();
+public String getPreviousCommand(int k);
+public Point getTurtlePosition();
+throw BadInput();
+throw InvalidOperation();
+throw TurtleOutofBounds();
+```
+
+**How does this API support features from the assignment specification?**
+
+* *Recognize these basic commands*  -- implemented by `parse(String input);` which parses the string input and returns the correct command to the front-end.
+
+* *Throw errors that result from incorrectly entered commands* -- implemented by `BadInput();` which throws an exception when the input string is incorrectly entered. 
+
+**What resources does this API use?**
+
+This API will make use of the following back-end resources:
+
+- The **Turtle** object, which maintains the position of the turtle. This allows the back-end to determine if there is a TurtleOutofBounds() exception, and to allow the position to be returned to the front end.
+- The **History** data structure, which will maintain a comprehensive history of the commands that have been processed.
+
+**How is this API intended to be used?**
+
+This API is intended to be used by the front-end. We expect the front-end to be able to:
+
+- Obtain the history and display commands as needed
+- Know what type of exception to throw and display when an error occurs
+- Update its turtle position as commands continue to be executed
+
+**How can this API be extended?**
+
+This API can be extended by:
+
+- Editing current methods to be more flexible and comprehensive. For example, if the front-end needs more data on the turtle besides just the position, we can return a more comprehensive list of the Turtle data besides just the position (including a boolean for pen, a double for heading, etc.).
+
+- Adding public methods that the front-end will be granted access to. In the case where more objects/data are necessary for front-end processing, more getters can be made available.
+
+**Why are we introducing these classes?**
+
+The primary purpose of these methods is to allow the front-end to function smoothly by providing the required resources. The parser is necessary and intuitive as it provides the resource to parse through the input and to return a command. The History data structure maintains the list of commands as a resource available to both the front end and back-end. The Turtle class object will have public methods that allow the front-end to access whatever data it needs for Turtle related inquiries that are kept updated in the back-end.
+
 #### Back-end Internal:
 
 
