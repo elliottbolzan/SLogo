@@ -1,6 +1,12 @@
 package view;
 
+import java.awt.Dimension;
+import java.awt.Point;
+
 import javafx.event.EventHandler;
+import javafx.scene.Group;
+import javafx.scene.Scene;
+import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import model.Model;
@@ -15,6 +21,8 @@ public class View implements ViewAPI {
 	
 	private Stage stage;
 	private Model model;
+	private Console console;
+	private TurtleDisplay turtleDisplay;
 
 	/**
 	 * Creates a View object.
@@ -25,7 +33,16 @@ public class View implements ViewAPI {
 	public View(Stage stage) {
 		this.stage = stage;
 		model = new Model(this);
-		setupStage();
+		console = new Console();
+		turtleDisplay = new TurtleDisplay();
+		setup();
+	}
+	
+	private void setup() {
+		BorderPane pane = new BorderPane();
+		pane.setCenter(console);
+		pane.setRight(turtleDisplay); //TODO: figure out where this should be in the scene
+		setupStage(pane);
 	}
 	
 
@@ -33,7 +50,7 @@ public class View implements ViewAPI {
 	 * Initializes the stage, by setting its title and properties.
 	 * The application will quit when the main window is closed.
 	 */
-	private void setupStage() {
+	private void setupStage(BorderPane pane) {
 		stage.setTitle("SLogo Interpreter");
 		stage.setResizable(false);
 		stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
@@ -41,7 +58,66 @@ public class View implements ViewAPI {
 				System.exit(0);
 			}
 		});
+		Scene scene = new Scene(pane, 800, 400);
+		scene.getStylesheets().add("view/style.css");
+		stage.setScene(scene);
 		stage.show();
+	}
+
+
+	@Override
+	public void print(String string) {
+		console.print(string);
+	}
+
+
+	@Override
+	public void clearConsole() {
+		console.clear();
+	}
+
+
+	@Override
+	public void moveTo(Point point) {
+		turtleDisplay.moveTurtle(point);
+	}
+
+
+	@Override
+	public void turn(double degrees) {
+		turtleDisplay.turnTurtle(degrees);
+	}
+
+
+	@Override
+	public void setPenDown(boolean down) {
+		turtleDisplay.setPenDown(down);
+	}
+
+
+	@Override
+	public void setTurtleVisible(boolean visible) {
+		turtleDisplay.setTurtleVisible(visible);
+	}
+
+
+	@Override
+	public void clearDisplay() {
+		turtleDisplay.clear();
+	}
+
+
+	@Override
+	public Dimension getDisplaySize() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+	@Override
+	public boolean isPointInBounds(Point point) {
+		// TODO Auto-generated method stub
+		return false;
 	}
 
 }
