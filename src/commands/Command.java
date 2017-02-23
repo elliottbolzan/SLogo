@@ -1,5 +1,8 @@
 package commands;
 
-public interface Command {
+public class Command implements CommandInterface {
 
+	public Command(){
+		
+	}
 }
