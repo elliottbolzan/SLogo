@@ -3,17 +3,21 @@ package model;
 import controller.Controller;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import model.commands.Command;
+import model.parse.parseUserInput;
 
 public class Model implements ModelAPI {
 
 	private Controller controller;
+	private parseUserInput parser;
 	
 	public Model(Controller controller) {
 		this.controller = controller;
+		parser = new parseUserInput();
 	}
 	
-	public Command parse(String string) {
-		return new Command();
+	public void parse(String string) {
+		parser.parse(string);
 	}
 	
 	public ObservableList<String> getHistory() {
@@ -29,5 +33,7 @@ public class Model implements ModelAPI {
 	public ObservableList<String> getUserDefinedCommands() {
 		return FXCollections.observableArrayList("test1", "test2", "test3");
 	}
+	
+	
 
 }

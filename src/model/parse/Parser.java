@@ -1,8 +1,8 @@
-package parse;
+package model.parse;
 
 import java.util.List;
 
-import commands.Command;
+import model.commands.Command;
 
 public interface Parser {
 	public List<Command> parse(String input);
