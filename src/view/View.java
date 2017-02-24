@@ -80,8 +80,7 @@ public class View implements ViewAPI {
 		
 		turtleDisplay.moveTurtle(new utils.Point(600, 100));
 	}
-
-
+	
 	@Override
 	public void print(String string) {
 		console.print(string);
