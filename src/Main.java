@@ -1,3 +1,4 @@
+import controller.Controller;
 import javafx.application.Application;
 import javafx.stage.Stage;
 import view.View;
@@ -18,12 +19,12 @@ public class Main extends Application {
 	}
 
 	/**
-	 * Creates an instance of the front end.
+	 * Creates an instance of the controller.
 	 * @param primaryStage the application's primary stage / window.
 	 */
 	@Override
 	public void start(Stage primaryStage) throws Exception {
-		new View(primaryStage);
+		new Controller(primaryStage);
 	}
 
 }

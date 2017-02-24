@@ -1,13 +1,17 @@
 package model;
 
-import view.View;
+import controller.Controller;
 
 public class Model implements ModelAPI {
 
-	private View view;
+	private Controller controller;
 	
-	public Model(View view) {
-		this.view = view;
+	public Model(Controller controller) {
+		this.controller = controller;
+	}
+	
+	public Command parse(String string) {
+		return new Command();
 	}
 
 }

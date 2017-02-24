@@ -1,0 +1,80 @@
+package controller;
+
+import java.awt.Dimension;
+import java.awt.Point;
+
+import javafx.stage.Stage;
+import model.Command;
+import model.Model;
+import model.ModelAPI;
+import view.View;
+import view.ViewAPI;
+
+/**
+ * @author Elliott Bolzan
+ *
+ */
+public class Controller implements ViewAPI, ModelAPI {
+	
+	private View view;
+	private Model model;
+
+	/**
+	 * 
+	 */
+	public Controller(Stage stage) {
+		view = new View(this, stage);
+		model = new Model(this);
+	}
+
+	@Override
+	public void print(String string) {
+		view.print(string);
+	}
+
+	@Override
+	public void clearConsole() {
+		view.clearConsole();
+	}
+
+	@Override
+	public void moveTo(Point point) {
+		view.moveTo(point);
+	}
+
+	@Override
+	public void turn(double degrees) {
+		view.turn(degrees);
+	}
+
+	@Override
+	public void setPenDown(boolean down) {
+		view.setPenDown(down);
+	}
+
+	@Override
+	public void setTurtleVisible(boolean visible) {
+		view.setTurtleVisible(visible);	
+	}
+
+	@Override
+	public void clearDisplay() {
+		view.clearDisplay();
+	}
+
+	@Override
+	public Dimension getDisplaySize() {
+		return view.getDisplaySize();
+	}
+
+	@Override
+	public boolean isPointInBounds(Point point) {
+		return view.isPointInBounds(point);
+	}
+	
+	@Override
+	public Command parse(String string) {
+		return model.parse(string);
+	}
+
+}
