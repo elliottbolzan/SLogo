@@ -1,6 +1,7 @@
 package model;
 
 import controller.Controller;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 public class Model implements ModelAPI {
@@ -16,17 +17,17 @@ public class Model implements ModelAPI {
 	}
 	
 	public ObservableList<String> getHistory() {
-		return null;
+		return FXCollections.observableArrayList("test1", "test2", "test3");
 	}
 
 	@Override
 	public ObservableList<Variable> getVariables() {
-		return null;
+		return FXCollections.observableArrayList(new Variable("test1", 1), new Variable("test2", 4), new Variable("test3", 5));
 	}
 
 	@Override
 	public ObservableList<String> getUserDefinedCommands() {
-		return null;
+		return FXCollections.observableArrayList("test1", "test2", "test3");
 	}
 
 }
