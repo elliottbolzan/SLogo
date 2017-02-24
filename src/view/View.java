@@ -3,13 +3,14 @@ package view;
 import java.awt.Dimension;
 import java.awt.Point;
 
+import controller.Controller;
 import javafx.event.EventHandler;
-import javafx.scene.Group;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
-import model.Model;
 
 /**
  * @author Elliott Bolzan
@@ -19,32 +20,45 @@ import model.Model;
  */
 public class View implements ViewAPI {
 	
+	private Controller controller;
 	private Stage stage;
-	private Model model;
 	private Console console;
+	private Panel panel;
 	private TurtleDisplay turtleDisplay;
 
 	/**
 	 * Creates a View object.
-	 * Initializes an instance of the Model.
 	 * @param stage the program's primary window.
 	 * @return a View object.
 	 */
-	public View(Stage stage) {
+	public View(Controller controller, Stage stage) {
+		this.controller = controller;
 		this.stage = stage;
-		model = new Model(this);
-		console = new Console();
+		console = new Console(this);
+		panel  = new Panel(this);
 		turtleDisplay = new TurtleDisplay();
 		setup();
 	}
 	
 	private void setup() {
 		BorderPane pane = new BorderPane();
+		pane.setLeft(panel);
 		pane.setCenter(console);
 		pane.setRight(turtleDisplay); //TODO: figure out where this should be in the scene
 		setupStage(pane);
 	}
 	
+	protected Stage getStage() {
+		return stage;
+	}
+	
+	protected Console getConsole() {
+		return console;
+	}
+	
+	protected Controller getController() {
+		return controller;
+	}
 
 	/**
 	 * Initializes the stage, by setting its title and properties.
@@ -58,8 +72,9 @@ public class View implements ViewAPI {
 				System.exit(0);
 			}
 		});
-		Scene scene = new Scene(pane, 800, 400);
+		Scene scene = new Scene(pane, 1100, 400);
 		scene.getStylesheets().add("view/style.css");
+		console.focus();
 		stage.setScene(scene);
 		stage.show();
 	}
@@ -118,6 +133,19 @@ public class View implements ViewAPI {
 	public boolean isPointInBounds(Point point) {
 		// TODO Auto-generated method stub
 		return false;
+	}
+	
+	protected void showMessage(String message) {
+		Alert alert = new Alert(AlertType.ERROR);
+		alert.setTitle("Error");
+		alert.setHeaderText("SLogo encountered an error.");
+		alert.setContentText(message);
+		alert.showAndWait();
+	}
+	
+	protected void showHelp() {
+		HelpView helpView = new HelpView();
+		helpView.show();
 	}
 
 }
