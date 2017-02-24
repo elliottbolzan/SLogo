@@ -78,8 +78,7 @@ public class View implements ViewAPI {
 		stage.setScene(scene);
 		stage.show();
 	}
-
-
+	
 	@Override
 	public void print(String string) {
 		console.print(string);

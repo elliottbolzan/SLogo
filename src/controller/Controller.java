@@ -3,10 +3,12 @@ package controller;
 import java.awt.Dimension;
 import java.awt.Point;
 
+import javafx.collections.ObservableList;
 import javafx.stage.Stage;
 import model.Command;
 import model.Model;
 import model.ModelAPI;
+import model.Variable;
 import view.View;
 import view.ViewAPI;
 
@@ -75,6 +77,21 @@ public class Controller implements ViewAPI, ModelAPI {
 	@Override
 	public Command parse(String string) {
 		return model.parse(string);
+	}
+
+	@Override
+	public ObservableList<String> getHistory() {
+		return null;
+	}
+
+	@Override
+	public ObservableList<Variable> getVariables() {
+		return null;
+	}
+
+	@Override
+	public ObservableList<String> getUserDefinedCommands() {
+		return null;
 	}
 
 }
