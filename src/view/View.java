@@ -72,7 +72,7 @@ public class View implements ViewAPI {
 				System.exit(0);
 			}
 		});
-		Scene scene = new Scene(pane, 700, 400);
+		Scene scene = new Scene(pane, 1100, 400);
 		scene.getStylesheets().add("view/style.css");
 		console.focus();
 		stage.setScene(scene);
