@@ -19,12 +19,13 @@ import javafx.scene.layout.Pane;
 public class TurtleDisplay extends Group {
 	private Pane myDisplayArea;
 	private Turtle myTurtle;
-	private int width = 400;
-	private int height = 400;
-	
-	public TurtleDisplay() {
-		this.createDisplayArea();
+	private double myTurtleSpeed;
+
+	public TurtleDisplay(int width, int height) {
+		this.createDisplayArea(width, height);
 		this.createTurtle();
+		myTurtleSpeed = 1.0;
+		myTurtle.setLocation(new Point(width/2, height/2));
 		this.setBackgroundColor(Color.ALICEBLUE); //TODO: remove this later, just helps to see placement
 	}
 	
@@ -33,42 +34,25 @@ public class TurtleDisplay extends Group {
 		this.createTurtle();
 	}
 	
+	protected double getWidth() {
+		return myDisplayArea.getWidth();
+	}
+	
+	protected double getHeight() {
+		return myDisplayArea.getHeight();
+	}
+	
 	/**
-	 * Right now this method works by breaking up the turtle path into steps (10),
-	 * executing them sequentially and wrapping around the screen if it goes off. 
-	 * There is still a lot of error in this method and perhaps this code could be
-	 * moved to the turtle's class?
+	 * This method works by braking the path into steps and moving the turtle one
+	 * step at a time.
 	 * @param point
 	 */
 	protected void moveTurtle(Point point) {
-		double distX = point.getX() - myTurtle.getLocation().getX();
-		double distY = point.getY() - myTurtle.getLocation().getY();
-		double stepX;
-		double stepY;
-		int steps;
-		if(distY >= distX) {
-			steps = (int)distY;
-			stepY = 1;
-			stepX = distX/distY;
-		} else {
-			steps = (int)distX;
-			stepX = 1;
-			stepY = distY/distX;
-		}
+		myTurtle.setDestination(point, myTurtleSpeed);
 		
-		for(int i = 0; i < steps; i++) {
-			Point step = new Point((myTurtle.getLocation().getX() + stepX), 
-								   (myTurtle.getLocation().getY() + stepY));
-			if(myTurtle.isPenDown()) {
-				Line line = new Line(myTurtle.getLocation().getX(), myTurtle.getLocation().getY(), step.getX(), step.getY());
-				myDisplayArea.getChildren().add(line);
-			}
-						
-			myTurtle.setLocation(step);
-			
-			if(!isInBounds(myTurtle.getLocation())) {
-				myTurtle.setLocation(this.wrap(myTurtle.getLocation()));
-			}
+		for(int i = 0; i < 10000; i++) {
+			//TODO: this is a temporary measure that doesnt really work... need animation mechanism to call updateMovement!
+			myTurtle.updateMovement();
 		}
 	}
 	
@@ -90,7 +74,7 @@ public class TurtleDisplay extends Group {
 		myDisplayArea.setBackground(background);
 	}
 	
-	private void createDisplayArea() {
+	private void createDisplayArea(int width, int height) {
 		myDisplayArea = new Pane();
 		myDisplayArea.setPrefSize(width, height);
 		
@@ -103,28 +87,7 @@ public class TurtleDisplay extends Group {
 	}
 	
 	private void createTurtle() {
-		myTurtle = new Turtle();
+		myTurtle = new Turtle(this);
 		myDisplayArea.getChildren().add(myTurtle);
-	}
-	
-	private boolean isInBounds(Point point) {
-		return (point.getX() >= 0 && point.getX() < myDisplayArea.getWidth() && 
-				point.getY() >= 0 && point.getY() < myDisplayArea.getHeight());
-	}
-	
-	private Point wrap(Point point) {
-		Point result = new Point(point);
-		if(point.getX() < 0) {
-			result.setX(myDisplayArea.getWidth());
-		} else if (point.getX() >= myDisplayArea.getWidth()) {
-			result.setX(0);
-		}
-		
-		if(point.getY() < 0) {
-			result.setY(myDisplayArea.getHeight());
-		} else if(point.getY() >= myDisplayArea.getHeight()) {
-			result.setY(0);
-		}
-		return result;
 	}
 }

@@ -1,7 +1,7 @@
 package view;
 
 import java.awt.Dimension;
-import java.awt.Point;
+import utils.Point;
 
 /**
  * @author Elliott Bolzan
@@ -24,7 +24,4 @@ public interface ViewAPI {
 	public void clearDisplay();
 	
 	public Dimension getDisplaySize();
-	
-	public boolean isPointInBounds(Point point);
-
 }

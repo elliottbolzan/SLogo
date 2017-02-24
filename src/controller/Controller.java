@@ -1,7 +1,7 @@
 package controller;
 
 import java.awt.Dimension;
-import java.awt.Point;
+import utils.Point;
 
 import javafx.collections.ObservableList;
 import javafx.stage.Stage;
@@ -67,11 +67,6 @@ public class Controller implements ViewAPI, ModelAPI {
 	@Override
 	public Dimension getDisplaySize() {
 		return view.getDisplaySize();
-	}
-
-	@Override
-	public boolean isPointInBounds(Point point) {
-		return view.isPointInBounds(point);
 	}
 	
 	@Override
