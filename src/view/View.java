@@ -24,6 +24,7 @@ public class View implements ViewAPI {
 	private Stage stage;
 	private Console console;
 	private Panel panel;
+	private TurtleDisplay turtleDisplay;
 
 	/**
 	 * Creates a View object.
@@ -35,6 +36,7 @@ public class View implements ViewAPI {
 		this.stage = stage;
 		console = new Console(this);
 		panel  = new Panel(this);
+		turtleDisplay = new TurtleDisplay();
 		setup();
 	}
 	
@@ -42,6 +44,7 @@ public class View implements ViewAPI {
 		BorderPane pane = new BorderPane();
 		pane.setLeft(panel);
 		pane.setCenter(console);
+		pane.setRight(turtleDisplay); //TODO: figure out where this should be in the scene
 		setupStage(pane);
 	}
 	
@@ -91,36 +94,31 @@ public class View implements ViewAPI {
 
 	@Override
 	public void moveTo(Point point) {
-		// TODO Auto-generated method stub
-		
+		turtleDisplay.moveTurtle(point);
 	}
 
 
 	@Override
 	public void turn(double degrees) {
-		// TODO Auto-generated method stub
-		
+		turtleDisplay.turnTurtle(degrees);
 	}
 
 
 	@Override
 	public void setPenDown(boolean down) {
-		// TODO Auto-generated method stub
-		
+		turtleDisplay.setPenDown(down);
 	}
 
 
 	@Override
 	public void setTurtleVisible(boolean visible) {
-		// TODO Auto-generated method stub
-		
+		turtleDisplay.setTurtleVisible(visible);
 	}
 
 
 	@Override
 	public void clearDisplay() {
-		// TODO Auto-generated method stub
-		
+		turtleDisplay.clear();
 	}
 
 

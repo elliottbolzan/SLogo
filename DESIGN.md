@@ -200,6 +200,9 @@ throw BadInput();
 throw InvalidOperation();
 throw TurtleOutofBounds();
 public void execute();
+public List<Variable> getVariables();
+public void setVariable(Variable variable);
+public List<Command> getUserDefinedCommands();
 ```
 
 **How does this API support features from the assignment specification?**
@@ -300,7 +303,7 @@ We seek to go through the following use-case:
 
 Here are the steps necessary to complete that task:
 
-- When the user presses `Enter`, the **Console** calls `parse(String string)` (in CLASSNAME) using the user's input.
+- When the user presses `Enter`, the **Console** calls `parse(String string)` (in `public class Parser`) using the user's input.
 - The `parse(String string)` method returns a **Command** object to the **Console**. 
 - Simultaneously, the command is added to the environment's history. This is done by the `public void addHistory();` command, which appends the command to the end of the history list of commands.
 - The `execute()` method (in **Command**) is called on the **Command** object from the **Console**.
@@ -335,7 +338,7 @@ The back-end should follow this sequence of steps:
 2\. *The user tries to set a new image for the turtle, but the file is corrupted and does not load properly. The UI should display an error and abort changing the turtle image. How would the front-end use this API to achieve this task?*
 
 - To change the turtle image, `setTurtleImage(String path)` is invoked by passing it the the file path as a String.
-- When the front-end tries to open the image and gets an IOException, it will invoke `showMessage(String message)` to display an alert and inform the user that their is an issue with their file.
+- When the front-end tries to open the image and gets an IOException, it will invoke `showMessage(String message)` to display an alert and inform the user that there is an issue with their file.
 - Depending on the implementation, it may be necessary to re-invoke `setTurtleImage(String path)` on the previous path to properly reset the image, but in all likelihood this will not be necessary and will just be handled by the interrupt caused by the Exception.
 
 #### Back-end External:
@@ -363,7 +366,18 @@ The back-end should follow this sequence of steps:
 - Upon execution, the logic will check if `setPosition()` will make the position of the Turtle be larger than the Grid. 
 - In this case, it will, so an exception will be thrown to the front end to display.
 
-2\. 
+2\. *The user wants to use the TOWARD command, but chooses an inappropriate point that exceeds the bounds of the screen.*
+
+- The first command that is called is `parse(String input)` as called on the user-input. This parses the string and sends the subsequent command to the front-end.
+- The front-end calls `execute()` on the command *TOWARD x y* in the back end.
+- `TOWARD x y` begins to execute with the position (x, y).
+- Through an exception-handling test, the TOWARD method determines that the point (x, y) is out of bounds and throws an out of bounds exception to the front-end to display the error.
+
+3\. *The user inputs a lower-case string into the console.*
+
+- The string gets passed to the parser, who uses `parse(String input)` on the string.
+- In the process of parsing, the parser will use a `toLowerCase()` method on some component of the input and proceeds to define the command from the string.
+- The program proceeds sending the command back and error-handling.
 
 ### Design Considerations
 
@@ -391,5 +405,5 @@ Both Elliott and Jay will tie in the different front-end elements as part of the
 
 #### Within the back-end group:
 - Dennis will primarily be responsible for the **Command** superclass and it's subclasses such as **MathCommand** and **TurtleActionCommand.** Additionally, Dennis will be in charge of maintaining the information with regards to the **Turtle** class such as the heading, 
-- Alex will primarily be responsible for the **Parser** class and the error throwing and recognition withiin parser. Additionally, Alex will also help with the **Turtle** class in maintaining its functionality.
+- Alex will primarily be responsible for the **Parser** class and the error throwing and recognition within parser. Additionally, Alex will also help with the **Turtle** class in maintaining its functionality.
 - Both Alex and Dennis will work together to fill-in any holes throughout the back-end logic and classes that may need to be added throughout the project and its extensions. 
