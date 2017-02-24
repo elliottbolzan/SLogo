@@ -78,7 +78,7 @@ public class View implements ViewAPI {
 		stage.setScene(scene);
 		stage.show();
 		
-		turtleDisplay.moveTurtle(new Point(600, 100));
+		turtleDisplay.moveTurtle(new utils.Point(600, 100));
 	}
 
 
@@ -96,7 +96,7 @@ public class View implements ViewAPI {
 
 	@Override
 	public void moveTo(Point point) {
-		turtleDisplay.moveTurtle(point);
+		turtleDisplay.moveTurtle(new utils.Point(point.getX(), point.getY()));
 	}
 
 

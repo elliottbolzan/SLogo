@@ -1,6 +1,6 @@
 package view;
 
-import java.awt.Point;
+import utils.Point;
 import javafx.geometry.Insets;
 import javafx.scene.Group;
 import javafx.scene.paint.Paint;
@@ -41,13 +41,24 @@ public class TurtleDisplay extends Group {
 	 * @param point
 	 */
 	protected void moveTurtle(Point point) {
-		int steps = 10;
-		double stepX = (point.getX() - myTurtle.getLocation().getX())/steps;
-		double stepY = (point.getY() - myTurtle.getLocation().getY())/steps;
+		double distX = point.getX() - myTurtle.getLocation().getX();
+		double distY = point.getY() - myTurtle.getLocation().getY();
+		double stepX;
+		double stepY;
+		int steps;
+		if(distY >= distX) {
+			steps = (int)distY;
+			stepY = 1;
+			stepX = distX/distY;
+		} else {
+			steps = (int)distX;
+			stepX = 1;
+			stepY = distY/distX;
+		}
 		
 		for(int i = 0; i < steps; i++) {
-			Point step = new Point((int)(myTurtle.getLocation().getX() + stepX), 
-								   (int)(myTurtle.getLocation().getY() + stepY));
+			Point step = new Point((myTurtle.getLocation().getX() + stepX), 
+								   (myTurtle.getLocation().getY() + stepY));
 			if(myTurtle.isPenDown()) {
 				Line line = new Line(myTurtle.getLocation().getX(), myTurtle.getLocation().getY(), step.getX(), step.getY());
 				myDisplayArea.getChildren().add(line);
@@ -104,15 +115,15 @@ public class TurtleDisplay extends Group {
 	private Point wrap(Point point) {
 		Point result = new Point(point);
 		if(point.getX() < 0) {
-			result.setLocation(myDisplayArea.getWidth(), result.getY());
+			result.setX(myDisplayArea.getWidth());
 		} else if (point.getX() >= myDisplayArea.getWidth()) {
-			result.setLocation(0, result.getY());
+			result.setX(0);
 		}
 		
 		if(point.getY() < 0) {
-			result.setLocation(result.getX(), myDisplayArea.getHeight());
+			result.setY(myDisplayArea.getHeight());
 		} else if(point.getY() >= myDisplayArea.getHeight()) {
-			result.setLocation(result.getX(), 0);
+			result.setY(0);
 		}
 		return result;
 	}

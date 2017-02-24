@@ -1,6 +1,6 @@
 package view;
 
-import java.awt.Point;
+import utils.Point;
 import javafx.scene.Group;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
