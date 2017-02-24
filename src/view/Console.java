@@ -25,18 +25,13 @@ public class Console extends Group {
 	private int width = 400;
 	private int height = 400;
 	private int commandIndex = 0;
-	
-	private ArrayList<String> commands = new ArrayList<String>();
-	
+		
 	/**
 	 * 
 	 */
 	public Console(View view) {
 		this.view = view;
 		createTextArea();
-		commands.add("test");
-		commands.add("print");
-		commands.add("something");
 	}
 
 	protected void print(String message) {
@@ -129,28 +124,26 @@ public class Console extends Group {
 	}
 	
 	private void upPressed() {
-		appendCommand();
-		if (commandIndex == commands.size() - 1) {
-			return;
+		if (commandIndex <= view.getController().getHistory().size() - 1) {
+			appendCommand();
 		}
-		commandIndex++;
+		if (commandIndex < view.getController().getHistory().size() - 1) {
+			commandIndex++;
+		}
 	}
 	
 	private void downPressed() {
 		if (commandIndex == 0) {
-			return;
-		}
-		commandIndex--;
-		if (commandIndex == 0) {
 			clearCurrentCommand();
 			return;
 		}
+		commandIndex--;
 		appendCommand();
 	}
 	
 	private void appendCommand() {
 		clearCurrentCommand();
-		append(commands.get(commandIndex));
+		append(view.getController().getHistory().get(commandIndex));
 	}
 	
 }

@@ -25,8 +25,8 @@ public class Controller implements ViewAPI, ModelAPI {
 	 * 
 	 */
 	public Controller(Stage stage) {
-		view = new View(this, stage);
 		model = new Model(this);
+		view = new View(this, stage);
 	}
 
 	@Override
@@ -81,17 +81,17 @@ public class Controller implements ViewAPI, ModelAPI {
 
 	@Override
 	public ObservableList<String> getHistory() {
-		return null;
+		return model.getHistory();
 	}
 
 	@Override
 	public ObservableList<Variable> getVariables() {
-		return null;
+		return model.getVariables();
 	}
 
 	@Override
 	public ObservableList<String> getUserDefinedCommands() {
-		return null;
+		return model.getUserDefinedCommands();
 	}
 
 }
