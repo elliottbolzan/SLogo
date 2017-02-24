@@ -5,7 +5,6 @@ import java.awt.Point;
 
 import javafx.collections.ObservableList;
 import javafx.stage.Stage;
-import model.Command;
 import model.Model;
 import model.ModelAPI;
 import model.Variable;
@@ -75,8 +74,8 @@ public class Controller implements ViewAPI, ModelAPI {
 	}
 	
 	@Override
-	public Command parse(String string) {
-		return model.parse(string);
+	public void parse(String string) {
+		model.parse(string);
 	}
 
 	@Override

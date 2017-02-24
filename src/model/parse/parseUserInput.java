@@ -1,12 +1,10 @@
-package parse;
+package model.parse;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.Queue;
 
-import commands.Command;
+import model.commands.Command;
 
 /**
  * @author Zapata

@@ -9,7 +9,6 @@ import javafx.scene.Group;
 import javafx.scene.control.TextArea;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import model.Command;
 
 /**
  * @author Elliott Bolzan
@@ -115,8 +114,7 @@ public class Console extends Group {
 		append(preamble);
 		try {
 			String input = removeNewline(getCurrentCommand());
-			Command command = view.getController().parse(input);
-			command.execute();
+			view.getController().parse(input);
 		}
 		catch (Exception e) {
 			view.showMessage(e.getMessage());
