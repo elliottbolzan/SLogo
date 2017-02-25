@@ -4,7 +4,6 @@ import utils.Point;
 import javafx.scene.Group;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.shape.Line;
 
 public class Turtle extends Group {
 	private static final String TURTLE_IMAGE = "view/turtle.png";
@@ -12,14 +11,12 @@ public class Turtle extends Group {
 	
 	private TurtleDisplay myDisplay;
 	
-	private Point myDestination;
-	private int myStepsRemaining;
-	private double myStepX;
-	private double myStepY;
-	
 	private Point myLocation;
 	private double myRotation;
 	private boolean myPenDown;
+	
+	private int myStepsRemaining;
+	private Point myStepSize;
 	
 	public Turtle(TurtleDisplay home) {
 		myImage = new ImageView(new Image(getClass().getClassLoader().getResourceAsStream(TURTLE_IMAGE)));
@@ -32,11 +29,11 @@ public class Turtle extends Group {
 		this.setLocation(new Point(0,0));
 	}
 	
-	protected Point getLocation() {
+	public Point getLocation() {
 		return myLocation;
 	}
 	
-	protected double getRotation() {
+	public double getRotation() {
 		return myRotation;
 	}
 	
@@ -59,11 +56,9 @@ public class Turtle extends Group {
 		myPenDown = down;
 	}
 	
-	protected void setDestination(Point point, double speed) {
-		myDestination = point;
-		
-		double distX = myDestination.getX() - myLocation.getX();
-		double distY = myDestination.getY() - myLocation.getY();
+	protected void setDestination(Point destination, double speed) {		
+		double distX = destination.getX() - myLocation.getX();
+		double distY = destination.getY() - myLocation.getY();
 		double stepsToDestination; 
 		
 		if(Math.abs(distY) >= Math.abs(distX)) {
@@ -71,10 +66,11 @@ public class Turtle extends Group {
 		} else {
 			stepsToDestination = Math.abs(distX/speed);
 		}
-		
+				
 		myStepsRemaining = (int)(stepsToDestination);
-		myStepY = distY / stepsToDestination;
-		myStepX = distX / stepsToDestination;
+		double myStepSizeX = distX / stepsToDestination;
+		double myStepSizeY = distY / stepsToDestination;
+		myStepSize = new Point(myStepSizeX, myStepSizeY);
 	}
 	
 	protected void updateMovement() {
@@ -89,12 +85,11 @@ public class Turtle extends Group {
 	}
 	
 	private void stepTowardsDestination() {
-		Point step = new Point(myLocation.getX() + myStepX, 
-							   myLocation.getY() + myStepY);
+		Point step = new Point(myLocation.getX() + myStepSize.getX(), 
+							   myLocation.getY() + myStepSize.getY());
 		
 		if(myPenDown) {
-			Line line = new Line(myLocation.getX(), myLocation.getY(), step.getX(), step.getY());
-			myDisplay.getChildren().add(line);
+			myDisplay.drawLine(myLocation, step);
 		}
 				
 		this.setLocation(step);

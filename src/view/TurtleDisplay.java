@@ -1,11 +1,14 @@
 package view;
 
 import utils.Point;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.geometry.Insets;
 import javafx.scene.Group;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
+import javafx.util.Duration;
 import javafx.scene.paint.Color;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
@@ -18,15 +21,23 @@ import javafx.scene.layout.Pane;
  */
 public class TurtleDisplay extends Group {
 	private Pane myDisplayArea;
+	
 	private Turtle myTurtle;
 	private double myTurtleSpeed;
+	
+	private Timeline myAnimation;
+	private boolean isAnimated;
+	private double myAnimationTickInterval;
 
 	public TurtleDisplay(int width, int height) {
 		this.createDisplayArea(width, height);
+		this.setBackgroundColor(Color.ALICEBLUE);
 		this.createTurtle();
 		myTurtleSpeed = 1.0;
 		myTurtle.setLocation(new Point(width/2, height/2));
-		this.setBackgroundColor(Color.ALICEBLUE); //TODO: remove this later, just helps to see placement
+		
+		myAnimationTickInterval = 3.0;
+		this.resetAnimation(myAnimationTickInterval);
 	}
 	
 	protected Turtle getTurtle() {
@@ -46,16 +57,19 @@ public class TurtleDisplay extends Group {
 		return myDisplayArea.getHeight();
 	}
 	
+	protected void startAnimation() {
+		myAnimation.play();
+	}
+	
 	/**
-	 * This method works by braking the path into steps and moving the turtle one
-	 * step at a time.
+	 * This method sets the destination of the turtle
 	 * @param point
 	 */
-	protected void moveTurtle(Point point) {
-		myTurtle.setDestination(point, myTurtleSpeed);
+	protected void moveTurtle(Point destination) {
+		myTurtle.setDestination(destination, myTurtleSpeed);
 		
-		while(myTurtle.isMoving()) {
-			myTurtle.updateMovement();
+		if(!isAnimated) {
+			this.rushTurtleToDestination();
 		}
 	}
 	
@@ -69,6 +83,11 @@ public class TurtleDisplay extends Group {
 	
 	protected void setTurtleVisible(boolean visible) {
 		myTurtle.setVisible(visible);
+	}
+	
+	protected void drawLine(Point start, Point finish) {
+		Line line = new Line(start.getX(), start.getY(), finish.getX(), finish.getY());
+		myDisplayArea.getChildren().add(line);
 	}
 	
 	protected void setBackgroundColor(Paint paint) {
@@ -92,5 +111,25 @@ public class TurtleDisplay extends Group {
 	private void createTurtle() {
 		myTurtle = new Turtle(this);
 		myDisplayArea.getChildren().add(myTurtle);
+	}
+	
+	private void resetAnimation(double millisInterval) {
+		myAnimation = new Timeline();
+		myAnimation.getKeyFrames().clear();
+		myAnimation.setCycleCount(Timeline.INDEFINITE);
+		KeyFrame frame = new KeyFrame(Duration.millis(millisInterval), e->this.stepAnimation());
+		myAnimation.getKeyFrames().add(frame);
+	}
+	
+	private void stepAnimation() {
+		if(myTurtle.isMoving()) {
+			myTurtle.updateMovement();
+		}
+	}
+	
+	private void rushTurtleToDestination() {
+		while(myTurtle.isMoving()) {
+			myTurtle.updateMovement();
+		}
 	}
 }

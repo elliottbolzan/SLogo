@@ -77,6 +77,9 @@ public class View implements ViewAPI {
 		console.focus();
 		stage.setScene(scene);
 		stage.show();
+		
+		turtleDisplay.startAnimation();
+		this.moveTo(new Point(300, 1000));
 	}
 	
 	@Override
