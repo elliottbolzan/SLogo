@@ -5,6 +5,7 @@ import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.geometry.Insets;
 import javafx.scene.Group;
+import javafx.scene.Node;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
@@ -23,7 +24,7 @@ public class TurtleDisplay extends Group {
 	private Pane myDisplayArea;
 	
 	private Turtle myTurtle;
-	private double myTurtleSpeed;
+	private double myLineLength;
 	
 	private Timeline myAnimation;
 	private boolean isAnimated;
@@ -33,10 +34,10 @@ public class TurtleDisplay extends Group {
 		this.createDisplayArea(width, height);
 		this.setBackgroundColor(Color.ALICEBLUE);
 		this.createTurtle();
-		myTurtleSpeed = 1.0;
-		myTurtle.setLocation(new Point(width/2, height/2));
+		myLineLength = 1.0;
 		
-		myAnimationTickInterval = 3.0;
+		isAnimated = false;
+		myAnimationTickInterval = 25.0;
 		this.resetAnimation(myAnimationTickInterval);
 	}
 	
@@ -58,15 +59,16 @@ public class TurtleDisplay extends Group {
 	}
 	
 	protected void startAnimation() {
+		isAnimated = true;
 		myAnimation.play();
 	}
 	
 	/**
-	 * This method sets the destination of the turtle
+	 * This method sets the destination of the turtle.
 	 * @param point
 	 */
 	protected void moveTurtle(Point destination) {
-		myTurtle.setDestination(destination, myTurtleSpeed);
+		myTurtle.setDestination(destination, myLineLength);
 		
 		if(!isAnimated) {
 			this.rushTurtleToDestination();
@@ -87,7 +89,7 @@ public class TurtleDisplay extends Group {
 	
 	protected void drawLine(Point start, Point finish) {
 		Line line = new Line(start.getX(), start.getY(), finish.getX(), finish.getY());
-		myDisplayArea.getChildren().add(line);
+		this.addToDisplayArea(line);
 	}
 	
 	protected void setBackgroundColor(Paint paint) {
@@ -99,6 +101,7 @@ public class TurtleDisplay extends Group {
 	private void createDisplayArea(int width, int height) {
 		myDisplayArea = new Pane();
 		myDisplayArea.setPrefSize(width, height);
+		myDisplayArea.setScaleY(-1.0);
 		
 		Rectangle clipBoundaries = new Rectangle();
 		clipBoundaries.widthProperty().bind(myDisplayArea.widthProperty());
@@ -108,9 +111,17 @@ public class TurtleDisplay extends Group {
 		this.getChildren().addAll(myDisplayArea);		
 	}
 	
+	private void addToDisplayArea(Node element) {
+		element.setLayoutX(myDisplayArea.getWidth()/2.0);
+		element.setLayoutY(myDisplayArea.getHeight()/2.0);
+		myDisplayArea.widthProperty().addListener(e -> {element.setLayoutX(myDisplayArea.getWidth()/2.0);});
+		myDisplayArea.heightProperty().addListener(e -> {element.setLayoutY(myDisplayArea.getHeight()/2.0);});
+		myDisplayArea.getChildren().add(element);
+	}
+	
 	private void createTurtle() {
 		myTurtle = new Turtle(this);
-		myDisplayArea.getChildren().add(myTurtle);
+		this.addToDisplayArea(myTurtle);
 	}
 	
 	private void resetAnimation(double millisInterval) {

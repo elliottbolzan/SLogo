@@ -24,9 +24,9 @@ public class Turtle extends Group {
 		
 		myDisplay = home;
 		
-		myRotation = 0.0;
 		myPenDown = true;
 		this.setLocation(new Point(0,0));
+		this.setRotation(90.0);
 	}
 	
 	public Point getLocation() {
@@ -49,7 +49,7 @@ public class Turtle extends Group {
 	
 	protected void setRotation(double degrees) {
 		myRotation = degrees;
-		myImage.setRotate(degrees);
+		myImage.setRotate(degrees + 90);
 	}
 	
 	protected void setPenDown(boolean down) {
@@ -96,22 +96,27 @@ public class Turtle extends Group {
 	}
 	
 	private boolean isInBounds(Point point) {
-		return (point.getX() >= 0 && point.getX() < myDisplay.getWidth() && 
-				point.getY() >= 0 && point.getY() < myDisplay.getHeight());
+		return (point.getX() >= -myDisplay.getWidth()/2.0 && point.getX() < myDisplay.getWidth()/2.0 && 
+				point.getY() >= -myDisplay.getHeight()/2.0 && point.getY() < myDisplay.getHeight()/2.0);
 	}
 	
 	private Point wrap(Point point) {
 		Point result = new Point(point);
-		if(point.getX() < 0) {
-			result.setX(myDisplay.getWidth());
-		} else if (point.getX() >= myDisplay.getWidth()) {
-			result.setX(0);
+		double leftBoundary = -myDisplay.getWidth()/2.0;
+		double rightBoundary = myDisplay.getWidth()/2.0;
+		double upperBoundary = -myDisplay.getHeight()/2.0;
+		double lowerBoundary = myDisplay.getHeight()/2.0;
+		
+		if(point.getX() < leftBoundary) {
+			result.setX(rightBoundary - 1);
+		} else if (point.getX() >= rightBoundary) {
+			result.setX(leftBoundary);
 		}
 		
-		if(point.getY() < 0) {
-			result.setY(myDisplay.getHeight());
-		} else if(point.getY() >= myDisplay.getHeight()) {
-			result.setY(0);
+		if(point.getY() < upperBoundary) {
+			result.setY(lowerBoundary - 1);
+		} else if(point.getY() >= lowerBoundary) {
+			result.setY(upperBoundary);
 		}
 		return result;
 	}
