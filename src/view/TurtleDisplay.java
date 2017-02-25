@@ -29,6 +29,10 @@ public class TurtleDisplay extends Group {
 		this.setBackgroundColor(Color.ALICEBLUE); //TODO: remove this later, just helps to see placement
 	}
 	
+	protected Turtle getTurtle() {
+		return myTurtle;
+	}
+	
 	protected void clear() {
 		myDisplayArea.getChildren().clear();
 		this.createTurtle();
@@ -50,8 +54,7 @@ public class TurtleDisplay extends Group {
 	protected void moveTurtle(Point point) {
 		myTurtle.setDestination(point, myTurtleSpeed);
 		
-		for(int i = 0; i < 10000; i++) {
-			//TODO: this is a temporary measure that doesnt really work... need animation mechanism to call updateMovement!
+		while(myTurtle.isMoving()) {
 			myTurtle.updateMovement();
 		}
 	}

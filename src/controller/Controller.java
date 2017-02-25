@@ -9,6 +9,7 @@ import model.Command;
 import model.Model;
 import model.ModelAPI;
 import model.Variable;
+import view.Turtle;
 import view.View;
 import view.ViewAPI;
 
@@ -67,6 +68,11 @@ public class Controller implements ViewAPI, ModelAPI {
 	@Override
 	public Dimension getDisplaySize() {
 		return view.getDisplaySize();
+	}
+	
+	@Override
+	public Turtle getTurtle() {
+		return view.getTurtle();
 	}
 	
 	@Override

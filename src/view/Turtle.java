@@ -40,6 +40,10 @@ public class Turtle extends Group {
 		return myRotation;
 	}
 	
+	protected boolean isMoving() {
+		return (myStepsRemaining > 0);
+	}
+	
 	protected void setLocation(Point point) {
 		myLocation = point;
 		myImage.setX(point.getX() - myImage.getBoundsInLocal().getWidth()/2.0);

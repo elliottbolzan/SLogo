@@ -21,6 +21,8 @@ public interface ViewAPI {
 	
 	public void setTurtleVisible(boolean visible);
 	
+	public Turtle getTurtle();
+	
 	public void clearDisplay();
 	
 	public Dimension getDisplaySize();

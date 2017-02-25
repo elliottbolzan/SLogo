@@ -77,8 +77,6 @@ public class View implements ViewAPI {
 		console.focus();
 		stage.setScene(scene);
 		stage.show();
-		
-		turtleDisplay.moveTurtle(new Point(50,50));
 	}
 	
 	@Override
@@ -129,6 +127,11 @@ public class View implements ViewAPI {
 		return null;
 	}
 
+	
+	@Override
+	public Turtle getTurtle() {
+		return turtleDisplay.getTurtle();
+	}
 	
 	protected void showMessage(String message) {
 		Alert alert = new Alert(AlertType.ERROR);
