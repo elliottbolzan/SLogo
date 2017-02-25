@@ -1,7 +1,7 @@
 package view;
 
 import java.awt.Dimension;
-import java.awt.Point;
+import utils.Point;
 
 import controller.Controller;
 import javafx.event.EventHandler;
@@ -36,7 +36,7 @@ public class View implements ViewAPI {
 		this.stage = stage;
 		console = new Console(this);
 		panel  = new Panel(this);
-		turtleDisplay = new TurtleDisplay();
+		turtleDisplay = new TurtleDisplay(400, 400);
 		setup();
 	}
 	
@@ -127,11 +127,10 @@ public class View implements ViewAPI {
 		return null;
 	}
 
-
+	
 	@Override
-	public boolean isPointInBounds(Point point) {
-		// TODO Auto-generated method stub
-		return false;
+	public Turtle getTurtle() {
+		return turtleDisplay.getTurtle();
 	}
 	
 	protected void showMessage(String message) {
@@ -146,5 +145,4 @@ public class View implements ViewAPI {
 		HelpView helpView = new HelpView();
 		helpView.show();
 	}
-
 }
