@@ -96,16 +96,16 @@ public class Turtle extends Group {
 	}
 	
 	private boolean isInBounds(Point point) {
-		return (point.getX() >= -myDisplay.getWidth()/2.0 && point.getX() < myDisplay.getWidth()/2.0 && 
-				point.getY() >= -myDisplay.getHeight()/2.0 && point.getY() < myDisplay.getHeight()/2.0);
+		return (point.getX() >= (-myDisplay.getWidth()/2.0) && point.getX() < (myDisplay.getWidth()/2.0) && 
+				point.getY() >= (-myDisplay.getHeight()/2.0) && point.getY() < (myDisplay.getHeight()/2.0));
 	}
 	
 	private Point wrap(Point point) {
 		Point result = new Point(point);
 		double leftBoundary = -myDisplay.getWidth()/2.0;
 		double rightBoundary = myDisplay.getWidth()/2.0;
-		double upperBoundary = -myDisplay.getHeight()/2.0;
-		double lowerBoundary = myDisplay.getHeight()/2.0;
+		double lowerBoundary = -myDisplay.getHeight()/2.0;
+		double upperBoundary = myDisplay.getHeight()/2.0;
 		
 		if(point.getX() < leftBoundary) {
 			result.setX(rightBoundary - 1);
@@ -113,10 +113,10 @@ public class Turtle extends Group {
 			result.setX(leftBoundary);
 		}
 		
-		if(point.getY() < upperBoundary) {
-			result.setY(lowerBoundary - 1);
-		} else if(point.getY() >= lowerBoundary) {
-			result.setY(upperBoundary);
+		if(point.getY() < lowerBoundary) {
+			result.setY(upperBoundary - 1);
+		} else if(point.getY() >= upperBoundary) {
+			result.setY(lowerBoundary);
 		}
 		return result;
 	}
