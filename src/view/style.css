@@ -1,0 +1,37 @@
+.text-area {
+	-fx-font-family: Courier;
+	-fx-font-size: 18;
+    -fx-background-insets: 0;
+    -fx-background-color: transparent, white, transparent, white;
+}
+
+.text-area .content {
+    -fx-background-color: transparent, white, transparent, white;
+}
+
+.text-area:focused .content {
+    -fx-background-color: transparent, white, transparent, white;
+}
+
+.text-area:focused {
+    -fx-highlight-fill: #7ecfff;
+}
+
+.text-area .content {
+    -fx-padding: 10px;
+    -fx-text-fill: gray;
+    -fx-highlight-fill: #7ecfff;
+}
+
+.panel-scroll-pane {
+    -fx-background-insets: 0;
+	-fx-background-color:transparent;
+	-fx-border-color: transparent lightgray transparent transparent;
+	-fx-border-width: 1;
+}
+
+.panel-list, .panel-table {
+	-fx-background-insets: 0;
+	-fx-border-color: lightgray;
+	-fx-border-width: 1;
+}

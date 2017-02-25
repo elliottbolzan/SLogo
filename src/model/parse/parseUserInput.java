@@ -1,12 +1,10 @@
-package parse;
+package model.parse;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.Queue;
 
-import commands.Command;
+import model.commands.Command;
 
 /**
  * @author Zapata
@@ -18,13 +16,13 @@ import commands.Command;
 public class parseUserInput implements Parser {
 
 	private HashMap<String, ArrayList<Command>> parseMap;
-	private Queue<Command> commandQueue;
+	//private Queue<Command> commandQueue;
 	private Command currentCommand;
 
 	public parseUserInput() {
 		parseMap = new HashMap<String, ArrayList<Command>>();
 		parseMap.put("history", new ArrayList<Command>());
-		commandQueue = new LinkedList<Command>();
+		//commandQueue = new LinkedList<Command>();
 	}
 
 	public Command getCurrentCommand() {
@@ -36,7 +34,10 @@ public class parseUserInput implements Parser {
 	}
 
 	@Override
-	public Command parse(String input) {
+	public ArrayList<Command> parse(String input) {
+		String[] tokens = input.split(" ");
+		ArrayList<Command> parsedCommandList = new ArrayList<>();
+		recursivePreOrderEvaluation(tokens, parsedCommandList);
 		//Ask team-mates about how to get responses from properties folder.
 		//Or actually, maybe I should make an Enums file that goes from String to Command somehow.
 		return null;
@@ -64,6 +65,10 @@ public class parseUserInput implements Parser {
 		}
 		//Now parse through the commands that they use in order to add those methods to the ArrayList
 		//in the HashMap.
+	}
+	
+	private void recursivePreOrderEvaluation(String[] s, ArrayList<Command> emptyCommandList){
+		
 	}
 
 }
