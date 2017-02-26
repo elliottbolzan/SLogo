@@ -35,7 +35,7 @@ public class View implements ViewAPI {
 		this.controller = controller;
 		this.stage = stage;
 		console = new Console(this);
-		panel  = new Panel(this);
+		panel = new Panel(this);
 		turtleDisplay = new TurtleDisplay(400, 400);
 		setup();
 	}
@@ -77,6 +77,10 @@ public class View implements ViewAPI {
 		console.focus();
 		stage.setScene(scene);
 		stage.show();
+		
+		this.moveTo(new Point(100, 300));
+		this.setPenDown(false);
+		this.moveTo(new Point(0, -50));
 	}
 	
 	@Override
@@ -144,5 +148,10 @@ public class View implements ViewAPI {
 	protected void showHelp() {
 		HelpView helpView = new HelpView();
 		helpView.show();
+	}
+	
+	protected void showSettings() {
+		SettingsView settings = new SettingsView(turtleDisplay, stage);
+		settings.show();
 	}
 }

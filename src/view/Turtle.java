@@ -4,6 +4,8 @@ import utils.Point;
 import javafx.scene.Group;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
 
 public class Turtle extends Group {
 	private static final String TURTLE_IMAGE = "view/turtle.png";
@@ -13,7 +15,10 @@ public class Turtle extends Group {
 	
 	private Point myLocation;
 	private double myRotation;
+	
 	private boolean myPenDown;
+	private Color myPenColor;
+	private double myPenWidth;
 	
 	private int myStepsRemaining;
 	private Point myStepSize;
@@ -25,6 +30,9 @@ public class Turtle extends Group {
 		myDisplay = home;
 		
 		myPenDown = true;
+		myPenColor = Color.BLACK;
+		myPenWidth = 1.0;
+		
 		this.setLocation(new Point(0,0));
 		this.setRotation(90.0);
 	}
@@ -35,6 +43,10 @@ public class Turtle extends Group {
 	
 	public double getRotation() {
 		return myRotation;
+	}
+	
+	protected Color getPenColor() {
+		return myPenColor;
 	}
 	
 	protected boolean isMoving() {
@@ -56,17 +68,19 @@ public class Turtle extends Group {
 		myPenDown = down;
 	}
 	
+	protected void setPenColor(Color color) {
+		myPenColor = color;
+	}
+	
+	protected void setPenWidth(double width) {
+		myPenWidth = width;
+	}
+	
 	protected void setDestination(Point destination, double speed) {		
 		double distX = destination.getX() - myLocation.getX();
 		double distY = destination.getY() - myLocation.getY();
-		double stepsToDestination; 
+		double stepsToDestination = getNumStepsAlongPath(distX, distY, speed);
 		
-		if(Math.abs(distY) >= Math.abs(distX)) {
-			stepsToDestination = Math.abs(distY/speed);
-		} else {
-			stepsToDestination = Math.abs(distX/speed);
-		}
-				
 		myStepsRemaining = (int)(stepsToDestination);
 		double myStepSizeX = distX / stepsToDestination;
 		double myStepSizeY = distY / stepsToDestination;
@@ -89,7 +103,7 @@ public class Turtle extends Group {
 							   myLocation.getY() + myStepSize.getY());
 		
 		if(myPenDown) {
-			myDisplay.drawLine(myLocation, step);
+			myDisplay.drawLine(myLocation, step, myPenColor, myPenWidth);
 		}
 				
 		this.setLocation(step);
@@ -119,5 +133,17 @@ public class Turtle extends Group {
 			result.setY(lowerBoundary);
 		}
 		return result;
+	}
+	
+	private double getNumStepsAlongPath(double distanceX, double distanceY, double stepLength) {
+		if(Math.abs(distanceY) >= Math.abs(distanceX)) {
+			return Math.abs(distanceY/stepLength);
+		} else {
+			return Math.abs(distanceX/stepLength);
+		}
+	}
+	
+	public final class ImmutableTurtle {
+		//TODO: implement this so getTurtle() is less exposing
 	}
 }

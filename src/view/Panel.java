@@ -55,8 +55,9 @@ public class Panel extends Group {
 		Node commandView = addLabelTo(new CommandList(view, view.getController().getUserDefinedCommands()),
 				"User-Defined Commands");
 		Button commandReference = makeButton("Command Reference", e -> view.showHelp());
+		Button settings = makeButton("Settings", e -> view.showSettings());
 		box.getChildren().addAll(historyView, makeSeparator(), variableView, makeSeparator(), commandView,
-				commandReference);
+				commandReference, settings);
 		box.setAlignment(Pos.CENTER);
 
 		scrollPane.setContent(box);

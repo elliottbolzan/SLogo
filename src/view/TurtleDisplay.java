@@ -58,6 +58,14 @@ public class TurtleDisplay extends Group {
 		return myDisplayArea.getHeight();
 	}
 	
+	protected Color getBackgroundColor() {
+		return (Color) myDisplayArea.getBackground().getFills().get(0).getFill();
+	}
+	
+	protected Color getPenColor() {
+		return myTurtle.getPenColor();
+	}
+	
 	protected void startAnimation() {
 		isAnimated = true;
 		myAnimation.play();
@@ -83,17 +91,23 @@ public class TurtleDisplay extends Group {
 		myTurtle.setPenDown(down);
 	}
 	
+	protected void setPenColor(Color color) {
+		myTurtle.setPenColor(color);
+	}
+	
 	protected void setTurtleVisible(boolean visible) {
 		myTurtle.setVisible(visible);
 	}
 	
-	protected void drawLine(Point start, Point finish) {
+	protected void drawLine(Point start, Point finish, Color color, double width) {
 		Line line = new Line(start.getX(), start.getY(), finish.getX(), finish.getY());
+		line.setStroke(color);
+		line.setStrokeWidth(width);
 		this.addToDisplayArea(line);
 	}
 	
-	protected void setBackgroundColor(Paint paint) {
-		BackgroundFill primaryLayer = new BackgroundFill(paint, CornerRadii.EMPTY, Insets.EMPTY);
+	protected void setBackgroundColor(Color color) {
+		BackgroundFill primaryLayer = new BackgroundFill(color, CornerRadii.EMPTY, Insets.EMPTY);
 		Background background = new Background(primaryLayer);
 		myDisplayArea.setBackground(background);
 	}
