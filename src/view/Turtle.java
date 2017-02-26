@@ -5,7 +5,6 @@ import javafx.scene.Group;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
-import javafx.scene.paint.Paint;
 
 public class Turtle extends Group {
 	private static final String TURTLE_IMAGE = "view/turtle.png";

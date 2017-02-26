@@ -27,7 +27,7 @@ public class SettingsView extends Stage {
 	private void setupStage(Stage primaryStage) {
 		VBox box = new VBox(16);
 		box.setPadding(new Insets(20, 20, 20, 20));
-		
+				
 		myBackgroundPicker = new ColorPicker(myTurtleDisplay.getBackgroundColor(), (e -> this.setTurtleBackground()));
 		VBox backgroundPickerBox = addLabelTo(myBackgroundPicker, "Background Color:");
 		
@@ -41,6 +41,10 @@ public class SettingsView extends Stage {
 		this.initModality(Modality.WINDOW_MODAL);
 		this.initOwner(primaryStage);
 		this.setScene(scene);
+	}
+	
+	private void setLanguage() {
+		//TODO:
 	}
 	
 	private void setPenColor() {

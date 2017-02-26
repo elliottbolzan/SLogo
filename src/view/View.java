@@ -77,10 +77,6 @@ public class View implements ViewAPI {
 		console.focus();
 		stage.setScene(scene);
 		stage.show();
-		
-		this.moveTo(new Point(100, 300));
-		this.setPenDown(false);
-		this.moveTo(new Point(0, -50));
 	}
 	
 	@Override
