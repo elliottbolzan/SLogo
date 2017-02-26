@@ -1,16 +1,19 @@
 package model.commands;
 
+import java.util.Random;
 import controller.Controller;
 import view.Turtle;
 
-public class SumCommand extends MathCommand {
+public class RandomCommand extends MathCommand {
+	Random value;
 	
-	public SumCommand(int numParameters, String name) {
+	public RandomCommand(int numParameters, String name) {
 		super(numParameters, name);
+		value = new Random();
 	}
 
 	@Override
 	protected double calcValue(int[] parameters, Turtle myTurtle, Controller view) {
-		return parameters[0] + parameters[1];
+		return value.nextInt(parameters[0]);
 	}
 }

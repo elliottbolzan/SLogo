@@ -10,7 +10,7 @@ public class XCorCommand extends TurtleCommand {
 	}
 	
 	@Override
-	protected int calcValue(int[] parameters, Turtle myTurtle, Controller view){
-		return (int) myTurtle.getLocation().getX();
+	protected double calcValue(int[] parameters, Turtle myTurtle, Controller view){
+		return myTurtle.getLocation().getX();
 	}
 }
