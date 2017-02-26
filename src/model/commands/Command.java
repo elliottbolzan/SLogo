@@ -1,5 +1,8 @@
 package model.commands;
 
+import controller.Controller;
+import view.Turtle;
+
 public abstract class Command implements CommandInterface {
 	private int myParameters;
 	private String cmdName;
@@ -13,9 +16,10 @@ public abstract class Command implements CommandInterface {
 		return myParameters;
 	}
 
-	public void execute(int[] parameters, Turtle myTurtle){
-		calcValue(parameters, myTurtle);
+	public void execute(int[] parameters, Turtle myTurtle, Controller view){
+		calcValue(parameters, myTurtle, view);
 	}
-	
-	protected abstract int calcValue(int[] parameters, Turtle myTurtle);
+
+	protected abstract int calcValue(int[] parameters, Turtle myTurtle, Controller view);
+
 }

@@ -1,12 +1,16 @@
 package model.commands;
 
-public abstract class LessCommand extends LogicCommand {
+import controller.Controller;
+import view.Turtle;
+
+public class LessCommand extends LogicCommand {
 
 	public LessCommand(int numParameters, String name) {
 		super(numParameters, name);
 	}
-	
-	public int calcValue(int[] parameters){
+
+	@Override
+	protected int calcValue(int[] parameters, Turtle myTurtle, Controller view) {
 		return super.checker(parameters[0] == parameters[1]);
 	}
 }
