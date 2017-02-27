@@ -19,4 +19,10 @@ public abstract class TurtleCommand extends Command {
 
         return new Point(t.getLocation().getX() + x, t.getLocation().getY() + y);
     }
+    
+    protected double distance(int[] parameters, Turtle t){
+    	double x = parameters[0]-t.getLocation().getX();
+		double y = parameters[1]-t.getLocation().getY();
+		return Math.sqrt(x*x+y*y);
+    }
 }

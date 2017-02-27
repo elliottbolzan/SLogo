@@ -33,6 +33,10 @@ public class Turtle extends Group {
 		return myLocation;
 	}
 	
+	public boolean getPen(){
+		return myPenDown;
+	}
+	
 	public double getRotation() {
 		return myRotation;
 	}
