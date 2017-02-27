@@ -3,7 +3,6 @@ package model;
 import controller.Controller;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import model.commands.Command;
 import model.parse.parseUserInput;
 
 public class Model implements ModelAPI {
@@ -34,6 +33,8 @@ public class Model implements ModelAPI {
 		return FXCollections.observableArrayList("test1", "test2", "test3");
 	}
 	
-	
+	public void setLanguage(String language) {
+		parser.setLanguage(language);
+	}
 
 }
