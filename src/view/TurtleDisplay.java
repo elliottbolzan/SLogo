@@ -1,12 +1,14 @@
 package view;
 
 import utils.Point;
+
+import java.awt.Dimension;
+
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.geometry.Insets;
 import javafx.scene.Group;
 import javafx.scene.Node;
-import javafx.scene.paint.Paint;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
@@ -21,7 +23,9 @@ import javafx.scene.layout.Pane;
  *
  */
 public class TurtleDisplay extends Group {
+	
 	private Pane myDisplayArea;
+	private Dimension myDimensions;
 	
 	private Turtle myTurtle;
 	private double myLineLength;
@@ -32,7 +36,7 @@ public class TurtleDisplay extends Group {
 
 	public TurtleDisplay(int width, int height) {
 		this.createDisplayArea(width, height);
-		this.setBackgroundColor(Color.ALICEBLUE);
+		this.setBackgroundColor(Color.WHITE);
 		this.createTurtle();
 		myLineLength = 1.0;
 		
@@ -56,6 +60,18 @@ public class TurtleDisplay extends Group {
 	
 	protected double getHeight() {
 		return myDisplayArea.getHeight();
+	}
+	
+	protected Color getBackgroundColor() {
+		return (Color) myDisplayArea.getBackground().getFills().get(0).getFill();
+	}
+	
+	protected Color getPenColor() {
+		return myTurtle.getPenColor();
+	}
+	
+	protected Dimension getDimensions() {
+		return myDimensions;
 	}
 	
 	protected void startAnimation() {
@@ -83,17 +99,23 @@ public class TurtleDisplay extends Group {
 		myTurtle.setPenDown(down);
 	}
 	
+	protected void setPenColor(Color color) {
+		myTurtle.setPenColor(color);
+	}
+	
 	protected void setTurtleVisible(boolean visible) {
 		myTurtle.setVisible(visible);
 	}
 	
-	protected void drawLine(Point start, Point finish) {
+	protected void drawLine(Point start, Point finish, Color color, double width) {
 		Line line = new Line(start.getX(), start.getY(), finish.getX(), finish.getY());
+		line.setStroke(color);
+		line.setStrokeWidth(width);
 		this.addToDisplayArea(line);
 	}
 	
-	protected void setBackgroundColor(Paint paint) {
-		BackgroundFill primaryLayer = new BackgroundFill(paint, CornerRadii.EMPTY, Insets.EMPTY);
+	protected void setBackgroundColor(Color color) {
+		BackgroundFill primaryLayer = new BackgroundFill(color, CornerRadii.EMPTY, Insets.EMPTY);
 		Background background = new Background(primaryLayer);
 		myDisplayArea.setBackground(background);
 	}
@@ -102,6 +124,7 @@ public class TurtleDisplay extends Group {
 		myDisplayArea = new Pane();
 		myDisplayArea.setPrefSize(width, height);
 		myDisplayArea.setScaleY(-1.0);
+		myDimensions = new Dimension(width, height);
 		
 		Rectangle clipBoundaries = new Rectangle();
 		clipBoundaries.widthProperty().bind(myDisplayArea.widthProperty());
