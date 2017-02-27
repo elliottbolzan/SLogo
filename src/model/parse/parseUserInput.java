@@ -1,9 +1,13 @@
 package model.parse;
 
+import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Stack;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import model.commands.Command;
 
 /**
@@ -16,8 +20,10 @@ import model.commands.Command;
 public class parseUserInput implements Parser {
 
 	private HashMap<String, ArrayList<Command>> parseMap;
+	private HashMap<String, String[]> stringToCommandMap;
 	// private Queue<Command> commandQueue;
-	private Command currentCommand;
+	private Stack<String> commandStrings;
+	private Stack<Integer> arguments;
 
 	public parseUserInput() {
 		parseMap = new HashMap<String, ArrayList<Command>>();
@@ -40,18 +46,16 @@ public class parseUserInput implements Parser {
 	@Override
 	public ArrayList<Command> parse(String input) {
 		String[] tokens = input.split(" ");
-		ArrayList<Command> parsedCommandList = new ArrayList<>();
-		recursivePreOrderEvaluation(tokens, parsedCommandList);
-		// Ask team-mates about how to get responses from properties folder.
-		// Or actually, maybe I should make an Enums file that goes from String
-		// to Command somehow.
-		return null;
+		ArrayList<Command> list = new ArrayList<>();
+		preOrderEvaluation(tokens);
+
+		return list;
 	}
 
 	@Override
-	public List<String> getHistory() {
+	public ObservableList<String> getHistory() {
 		ArrayList<Command> history = parseMap.get("history");
-		ArrayList<String> stringHistory = new ArrayList<>();
+		ObservableList<String> stringHistory = FXCollections.observableArrayList();
 		for (int i = 0; i < history.size(); i++) {
 			stringHistory.add(history.get(i).toString());
 		}
@@ -73,8 +77,34 @@ public class parseUserInput implements Parser {
 		// in the HashMap.
 	}
 
-	private void recursivePreOrderEvaluation(String[] s, ArrayList<Command> emptyCommandList) {
+	private void preOrderEvaluation(String[] s) {
+		if (s != null) {
+			int arrayLength = s.length;
+			for (int i = 0; i < arrayLength; i++) {
+				if (Character.isLetter(s[i].charAt(0))) {
+					commandStrings.push(s[i]);
+				} else if (Character.isDigit(s[i].charAt(0))) {
+					arguments.push(Integer.parseInt(s[i]));
+				}
+			}
+		}
+	}
 
+	private ArrayList<Command> inputToCommands(Stack<String> commandStack, Stack<Integer> argumentStack){
+		Stack<String> stringsOfCommands = new Stack<>();
+		Stack<Integer> argumentIntegers = new Stack<>();
+		stringsOfCommands = (Stack<String>) commandStack.clone();
+		argumentIntegers = (Stack<Integer>) argumentStack.clone();
+		ArrayList<Command> actualCommands = new ArrayList<>();
+		for (int i = 0; i < commandStack.size(); i++) {
+			String s = new String();
+			int numOfParameters = 0;
+			s = commandStack.pop();
+			Command here = new Command();
+			here = new stringToCommandMap.get(s)(argumentIntegers.pop());
+			
+		}
+		return actualCommands;
 	}
 
 }
