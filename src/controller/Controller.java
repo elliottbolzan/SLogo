@@ -1,13 +1,14 @@
 package controller;
 
 import java.awt.Dimension;
-import java.awt.Point;
+import utils.Point;
 
 import javafx.collections.ObservableList;
 import javafx.stage.Stage;
 import model.Model;
 import model.ModelAPI;
 import model.Variable;
+import view.Turtle;
 import view.View;
 import view.ViewAPI;
 
@@ -67,10 +68,10 @@ public class Controller implements ViewAPI, ModelAPI {
 	public Dimension getDisplaySize() {
 		return view.getDisplaySize();
 	}
-
+	
 	@Override
-	public boolean isPointInBounds(Point point) {
-		return view.isPointInBounds(point);
+	public Turtle getTurtle() {
+		return view.getTurtle();
 	}
 	
 	@Override
@@ -91,6 +92,11 @@ public class Controller implements ViewAPI, ModelAPI {
 	@Override
 	public ObservableList<String> getUserDefinedCommands() {
 		return model.getUserDefinedCommands();
+	}
+	
+	@Override
+	public void setLanguage(String language) {
+		model.setLanguage(language);
 	}
 
 }

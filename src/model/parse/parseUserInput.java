@@ -24,13 +24,25 @@ public class parseUserInput implements Parser {
 	// private Queue<Command> commandQueue;
 	private Stack<String> commandStrings;
 	private Stack<Integer> arguments;
+	// private Queue<Command> commandQueue;
+	private Command currentCommand;
 
 	public parseUserInput() {
 		parseMap = new HashMap<String, ArrayList<Command>>();
 		parseMap.put("history", new ArrayList<Command>());
-		commandStrings = new Stack<String>();
-		arguments = new Stack<Integer>();
 		// commandQueue = new LinkedList<Command>();
+	}
+	
+	public void setLanguage(String langauge) {
+		// DO SOMETHING
+	}
+
+	public Command getCurrentCommand() {
+		return currentCommand;
+	}
+
+	public void setCurrentCommand(Command currentCommand) {
+		this.currentCommand = currentCommand;
 	}
 
 	@Override
