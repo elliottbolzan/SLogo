@@ -9,6 +9,8 @@ import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonBar;
+import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.ScrollPane.ScrollBarPolicy;
@@ -23,7 +25,6 @@ import model.Variable;
 public class Panel extends Group {
 
 	private View view;
-	private ObservableList<Variable> data;
 
 	/**
 	 * 
@@ -35,9 +36,6 @@ public class Panel extends Group {
 	
 	private void setup() {
 
-		data = FXCollections.observableArrayList(new Variable("Jacob", 5.25),
-				new Variable("Roger", 12));
-
 		ScrollPane scrollPane = new ScrollPane();
 		scrollPane.setHbarPolicy(ScrollBarPolicy.NEVER);
 		scrollPane.setVbarPolicy(ScrollBarPolicy.ALWAYS);
@@ -47,14 +45,16 @@ public class Panel extends Group {
 
 		VBox box = new VBox(16);
 		box.setPadding(new Insets(20, 20, 20, 20));
+		
+		Label title = new Label("Dashboard");
+		title.setStyle("-fx-font-size: 28; -fx-font-weight: bold;");
+		
 		Node historyView = addLabelTo(new CommandList(view, view.getController().getHistory()), "Past Commands");
 		Node variableView = addLabelTo(new VariableTable(view, view.getController().getVariables()), "Variables");
 		Node commandView = addLabelTo(new CommandList(view, view.getController().getUserDefinedCommands()),
 				"User-Defined Commands");
-		Button commandReference = makeButton("Command Reference", e -> view.showHelp());
-		Button settings = makeButton("Settings", e -> view.showSettings());
-		box.getChildren().addAll(historyView, makeSeparator(), variableView, makeSeparator(), commandView,
-				commandReference, settings);
+		
+		box.getChildren().addAll(title, makeSeparator(), historyView, makeSeparator(), variableView, makeSeparator(), commandView, makeSeparator(), makeButtonBar());
 		box.setAlignment(Pos.CENTER);
 
 		scrollPane.setContent(box);
@@ -75,6 +75,16 @@ public class Panel extends Group {
 		Button button = new Button(string);
 		button.setOnAction(handler);
 		return button;
+	}
+	
+	private Node makeButtonBar() {
+		ButtonBar bar = new ButtonBar();
+		Button commandReferenceButton = makeButton("Help", e -> view.showHelp());
+		Button settingsButton = makeButton("Settings", e -> view.showSettings());
+		ButtonBar.setButtonData(commandReferenceButton, ButtonData.RIGHT);
+		ButtonBar.setButtonData(settingsButton, ButtonData.LEFT);
+		bar.getButtons().addAll(commandReferenceButton, settingsButton);
+		return bar;
 	}
 
 	private Node makeSeparator() {

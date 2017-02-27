@@ -18,6 +18,7 @@ public class TurtleWindow extends Stage {
 	 */
 	public TurtleWindow() {
 		turtleDisplay = new TurtleDisplay(500, 500);
+		setTitle("Turtle Display");
 		setResizable(false);
 		setScene(new Scene(turtleDisplay));
 		setOnCloseRequest(new EventHandler<WindowEvent>() {
