@@ -4,7 +4,7 @@ import controller.Controller;
 import view.Turtle;
 
 public class AndCommand extends LogicCommand {	
-
+	
 	public AndCommand(int numParameters, String name) {
 		super(numParameters, name);
 	}
