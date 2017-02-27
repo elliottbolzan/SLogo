@@ -39,7 +39,7 @@ public class Turtle extends Group {
 	public Point getLocation() {
 		return myLocation;
 	}
-
+	
 	public double getRotation() {
 		return myRotation;
 	}
