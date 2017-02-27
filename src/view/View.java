@@ -24,7 +24,7 @@ public class View implements ViewAPI {
 	private Stage stage;
 	private Console console;
 	private Panel panel;
-	private TurtleDisplay turtleDisplay;
+	private TurtleWindow turtleWindow;
 
 	/**
 	 * Creates a View object.
@@ -36,7 +36,7 @@ public class View implements ViewAPI {
 		this.stage = stage;
 		console = new Console(this);
 		panel = new Panel(this);
-		turtleDisplay = new TurtleDisplay(400, 400);
+		turtleWindow = new TurtleWindow();
 		setup();
 	}
 	
@@ -44,8 +44,8 @@ public class View implements ViewAPI {
 		BorderPane pane = new BorderPane();
 		pane.setLeft(panel);
 		pane.setCenter(console);
-		pane.setRight(turtleDisplay); //TODO: figure out where this should be in the scene
 		setupStage(pane);
+		turtleWindow.show();
 	}
 	
 	protected Stage getStage() {
@@ -72,7 +72,7 @@ public class View implements ViewAPI {
 				System.exit(0);
 			}
 		});
-		Scene scene = new Scene(pane, 1100, 400);
+		Scene scene = new Scene(pane, 700, 400);
 		scene.getStylesheets().add("view/style.css");
 		console.focus();
 		stage.setScene(scene);
@@ -93,44 +93,43 @@ public class View implements ViewAPI {
 
 	@Override
 	public void moveTo(Point point) {
-		turtleDisplay.moveTurtle(point);
+		turtleWindow.getDisplay().moveTurtle(point);
 	}
 
 
 	@Override
 	public void turn(double degrees) {
-		turtleDisplay.turnTurtle(degrees);
+		turtleWindow.getDisplay().turnTurtle(degrees);
 	}
 
 
 	@Override
 	public void setPenDown(boolean down) {
-		turtleDisplay.setPenDown(down);
+		turtleWindow.getDisplay().setPenDown(down);
 	}
 
 
 	@Override
 	public void setTurtleVisible(boolean visible) {
-		turtleDisplay.setTurtleVisible(visible);
+		turtleWindow.getDisplay().setTurtleVisible(visible);
 	}
 
 
 	@Override
 	public void clearDisplay() {
-		turtleDisplay.clear();
+		turtleWindow.getDisplay().clear();
 	}
 
 
 	@Override
 	public Dimension getDisplaySize() {
-		// TODO Auto-generated method stub
-		return null;
+		return turtleWindow.getDisplay().getDimensions();
 	}
 
 	
 	@Override
 	public Turtle getTurtle() {
-		return turtleDisplay.getTurtle();
+		return turtleWindow.getDisplay().getTurtle();
 	}
 	
 	protected void showMessage(String message) {
@@ -147,7 +146,7 @@ public class View implements ViewAPI {
 	}
 	
 	protected void showSettings() {
-		SettingsView settings = new SettingsView(turtleDisplay, stage);
+		SettingsView settings = new SettingsView(turtleWindow.getDisplay(), stage);
 		settings.show();
 	}
 }

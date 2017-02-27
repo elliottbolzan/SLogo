@@ -1,12 +1,14 @@
 package view;
 
 import utils.Point;
+
+import java.awt.Dimension;
+
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.geometry.Insets;
 import javafx.scene.Group;
 import javafx.scene.Node;
-import javafx.scene.paint.Paint;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
@@ -21,7 +23,9 @@ import javafx.scene.layout.Pane;
  *
  */
 public class TurtleDisplay extends Group {
+	
 	private Pane myDisplayArea;
+	private Dimension myDimensions;
 	
 	private Turtle myTurtle;
 	private double myLineLength;
@@ -32,7 +36,7 @@ public class TurtleDisplay extends Group {
 
 	public TurtleDisplay(int width, int height) {
 		this.createDisplayArea(width, height);
-		this.setBackgroundColor(Color.ALICEBLUE);
+		this.setBackgroundColor(Color.WHITE);
 		this.createTurtle();
 		myLineLength = 1.0;
 		
@@ -64,6 +68,10 @@ public class TurtleDisplay extends Group {
 	
 	protected Color getPenColor() {
 		return myTurtle.getPenColor();
+	}
+	
+	protected Dimension getDimensions() {
+		return myDimensions;
 	}
 	
 	protected void startAnimation() {
@@ -116,6 +124,7 @@ public class TurtleDisplay extends Group {
 		myDisplayArea = new Pane();
 		myDisplayArea.setPrefSize(width, height);
 		myDisplayArea.setScaleY(-1.0);
+		myDimensions = new Dimension(width, height);
 		
 		Rectangle clipBoundaries = new Rectangle();
 		clipBoundaries.widthProperty().bind(myDisplayArea.widthProperty());
