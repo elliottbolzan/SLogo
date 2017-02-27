@@ -9,7 +9,7 @@ public abstract class LogicCommand extends Command {
 		super(numParameters, name);
 	}
 	
-	protected abstract double calcValue(int[] parameters, Turtle myTurtle, Controller view);
+	protected abstract double calcValue(double[] parameters, Turtle myTurtle, Controller view);
 	
 	protected int checker(boolean input){
 		if(input) return 1;

@@ -6,11 +6,11 @@ import view.Turtle;
 public class MakeCommand extends Command {
 	
 	public MakeCommand(int numParameters, String name) {
-		super(numParameters, name);
+		super(2, name);
 	}
 
 	@Override
-	protected double calcValue(int[] parameters, Turtle myTurtle, Controller view) {
+	protected double calcValue(double[] parameters, Turtle myTurtle, Controller view) {
 		return Math.sin(parameters[0]);
 	}
 }

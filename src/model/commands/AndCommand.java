@@ -10,7 +10,8 @@ public class AndCommand extends LogicCommand {
 	}
 
 	@Override
-	protected double calcValue(int[] parameters, Turtle myTurtle, Controller view) {
+	protected double calcValue(double[] parameters, Turtle myTurtle, Controller view) {
 		return super.checker((parameters[0] != 0) && (parameters[1] != 0));
 	}
+
 }

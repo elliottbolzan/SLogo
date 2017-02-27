@@ -6,10 +6,10 @@ import view.Turtle;
 public class PenDownCommand extends TurtleCommand {
 
 	public PenDownCommand(int numParameters, String name) {
-		super(numParameters, name);
+		super(0, name);
 	}
 	
-	protected double calcValue(int[] parameters, Turtle myTurtle, Controller view){
+	protected double calcValue(double[] parameters, Turtle myTurtle, Controller view){
 		view.setPenDown(true);
 		return 1;
 	}

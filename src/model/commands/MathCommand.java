@@ -9,5 +9,5 @@ public abstract class MathCommand extends Command {
 		super(numParameters, name);
 	}
 	
-	protected abstract double calcValue(int[] parameters, Turtle myTurtle, Controller view);
+	protected abstract double calcValue(double[] parameters, Turtle myTurtle, Controller view);
 }

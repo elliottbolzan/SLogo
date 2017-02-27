@@ -16,10 +16,11 @@ public abstract class Command implements CommandInterface {
 		return myParameters;
 	}
 
-	public double execute(int[] parameters, Turtle myTurtle, Controller view){
+	public double execute(double[] parameters, Turtle myTurtle, Controller view){
+		//potentially add functionality in between execution of commands
 		return calcValue(parameters, myTurtle, view);
 	}
 
-	protected abstract double calcValue(int[] parameters, Turtle myTurtle, Controller view);
+	protected abstract double calcValue(double[] parameters, Turtle myTurtle, Controller view);
 
 }

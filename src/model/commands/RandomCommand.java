@@ -8,12 +8,12 @@ public class RandomCommand extends MathCommand {
 	Random value;
 	
 	public RandomCommand(int numParameters, String name) {
-		super(numParameters, name);
+		super(1, name);
 		value = new Random();
 	}
 
 	@Override
-	protected double calcValue(int[] parameters, Turtle myTurtle, Controller view) {
-		return value.nextInt(parameters[0]);
+	protected double calcValue(double[] parameters, Turtle myTurtle, Controller view) {
+		return value.nextInt((int) parameters[0]);
 	}
 }
