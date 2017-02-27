@@ -93,5 +93,10 @@ public class Controller implements ViewAPI, ModelAPI {
 	public ObservableList<String> getUserDefinedCommands() {
 		return model.getUserDefinedCommands();
 	}
+	
+	@Override
+	public void setLanguage(String language) {
+		model.setLanguage(language);
+	}
 
 }
