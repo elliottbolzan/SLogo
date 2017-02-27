@@ -14,6 +14,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.Separator;
+import javafx.scene.image.Image;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -25,6 +26,7 @@ public class SettingsView extends Stage {
 	private ComboBox<String> myLanguagePicker;
 	private ColorPicker myBackgroundPicker;
 	private ColorPicker myPenPicker;
+	private FilePicker myImagePicker;
 
 	public SettingsView(Controller controller, TurtleDisplay display, Stage primaryStage) {
 		myTurtleDisplay = display;
@@ -39,12 +41,14 @@ public class SettingsView extends Stage {
 		box.setAlignment(Pos.TOP_CENTER);
 		box.setPadding(new Insets(20, 20, 20, 20));
 
-		// TODO: button to launch file chooser for a turtle image
-
+		myImagePicker = new FilePicker(primaryStage, 200, "selection", "Browse", "*.png", "*.jpg", "*.gif");
+		myImagePicker.getTextField().textProperty().addListener(e -> this.setTurtleImage());
+		VBox imagePickerBox = addLabelTo(myImagePicker, "Turtle Image:");
+		
 		myLanguagePicker = new ComboBox<String>();
 		myLanguagePicker.getItems().addAll(getLanguages());
 		myLanguagePicker.setOnAction(e -> setLanguage());
-		// languagePicker.setValue(value); // Set to current language
+		//TODO: languagePicker.setValue(value); // Set to current language
 		VBox languagePickerBox = addLabelTo(myLanguagePicker, "Language:");
 
 		myBackgroundPicker = new ColorPicker(myTurtleDisplay.getBackgroundColor(), (e -> this.setTurtleBackground()));
@@ -53,9 +57,9 @@ public class SettingsView extends Stage {
 		myPenPicker = new ColorPicker(myTurtleDisplay.getPenColor(), (e -> this.setPenColor()));
 		VBox penPickerBox = addLabelTo(myPenPicker, "Pen Color:");
 
-		box.getChildren().addAll(languagePickerBox, new Separator(), backgroundPickerBox, new Separator(), penPickerBox);
+		box.getChildren().addAll(languagePickerBox, new Separator(), imagePickerBox, new Separator(), backgroundPickerBox, new Separator(), penPickerBox);
 
-		Scene scene = new Scene(box, 250, 400);
+		Scene scene = new Scene(box, 250, 525);
 		scene.getStylesheets().add("view/style.css");
 		this.initModality(Modality.WINDOW_MODAL);
 		this.initOwner(primaryStage);
@@ -81,7 +85,7 @@ public class SettingsView extends Stage {
 	}
 
 	private void setTurtleImage() {
-		// TODO:
+		myTurtleDisplay.setTurtleImage(myImagePicker.getTextField().getText());
 	}
 
 	private void setTurtleBackground() {

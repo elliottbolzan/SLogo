@@ -7,3 +7,6 @@ We were originally going to use java.awt.Point as a class to encapsulate coordin
 
 ##### Change 2: isPointInBounds
 For now we have decided to handle bounds checking within TurtleDisplay, which means we no longer need to provide this method to the back-end.
+
+##### Change 3: getTurtle
+We decided to add a method to get the turtle object from the front end so that the back end can get the location and rotation of the Turtle. 

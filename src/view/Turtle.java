@@ -7,8 +7,8 @@ import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
 
 public class Turtle extends Group {
-	private static final String TURTLE_IMAGE = "view/turtle.png";
-	private ImageView myImage;
+	private final static String BASIC_IMAGE = "view/turtle.png";
+	private ImageView myImageView;
 
 	private TurtleDisplay myDisplay;
 
@@ -23,8 +23,8 @@ public class Turtle extends Group {
 	private Point myStepSize;
 
 	public Turtle(TurtleDisplay home) {
-		myImage = new ImageView(new Image(getClass().getClassLoader().getResourceAsStream(TURTLE_IMAGE)));
-		this.getChildren().add(myImage);
+		myImageView = new ImageView(new Image(getClass().getClassLoader().getResourceAsStream(BASIC_IMAGE)));
+		this.getChildren().add(myImageView);
 
 		myDisplay = home;
 
@@ -51,16 +51,20 @@ public class Turtle extends Group {
 	protected boolean isMoving() {
 		return (myStepsRemaining > 0);
 	}
+	
+	protected void setImage(String url) {
+		myImageView.setImage(new Image(url));
+	}
 
 	protected void setLocation(Point point) {
 		myLocation = point;
-		myImage.setX(point.getX() - myImage.getBoundsInLocal().getWidth() / 2.0);
-		myImage.setY(point.getY() - myImage.getBoundsInLocal().getHeight() / 2.0);
+		myImageView.setX(point.getX() - myImageView.getBoundsInLocal().getWidth() / 2.0);
+		myImageView.setY(point.getY() - myImageView.getBoundsInLocal().getHeight() / 2.0);
 	}
 
 	protected void setRotation(double degrees) {
 		myRotation = degrees;
-		myImage.setRotate(degrees + 90);
+		myImageView.setRotate(degrees + 90);
 	}
 
 	protected void setPenDown(boolean down) {

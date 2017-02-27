@@ -107,6 +107,10 @@ public class TurtleDisplay extends Group {
 		myTurtle.setVisible(visible);
 	}
 	
+	protected void setTurtleImage(String url) {
+		myTurtle.setImage(url);
+	}
+	
 	protected void drawLine(Point start, Point finish, Color color, double width) {
 		Line line = new Line(start.getX(), start.getY(), finish.getX(), finish.getY());
 		line.setStroke(color);
