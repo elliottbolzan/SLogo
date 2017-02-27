@@ -1,36 +1,35 @@
 package model.parse;
 
-import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Stack;
 
+import controller.Controller;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import model.commands.Command;
 
 /**
- * @author Zapata This is the class that will take the user-input and parse it
- *         from a string into a command (or if multiple commands the very last
+ * @author Alexander Zapata This is the class that will take the user-input and 
+ *         parse it from a string into a command (or if multiple commands the very last
  *         command executed. This class will also have an internal HashMap,
  *         whose keys are either the command history, or user-defined commands
  *         with buckets that are Command ArrayLists.
  */
 public class parseUserInput implements Parser {
-
 	private HashMap<String, ArrayList<Command>> parseMap;
-	private HashMap<String, String[]> stringToCommandMap;
-	// private Queue<Command> commandQueue;
+	private HashMap<String, Command> stringToCommandMap;
 	private Stack<String> commandStrings;
-	private Stack<Integer> arguments;
+	private Stack<Double> arguments;
+	private Command currentCommand;
+	private Controller controller;
 
-	public parseUserInput() {
+	public parseUserInput(Controller c) {
+		controller = c;
 		parseMap = new HashMap<String, ArrayList<Command>>();
 		parseMap.put("history", new ArrayList<Command>());
-		// commandQueue = new LinkedList<Command>();
 	}
-	
+
 	public void setLanguage(String langauge) {
 		// DO SOMETHING
 	}
@@ -48,7 +47,6 @@ public class parseUserInput implements Parser {
 		String[] tokens = input.split(" ");
 		ArrayList<Command> list = new ArrayList<>();
 		preOrderEvaluation(tokens);
-
 		return list;
 	}
 
@@ -70,7 +68,6 @@ public class parseUserInput implements Parser {
 	@Override
 	public void addUserDefinedCommand(String newCommand) {
 		if (!parseMap.keySet().contains(newCommand)) {
-
 		}
 		// Now parse through the commands that they use in order to add those
 		// methods to the ArrayList
@@ -84,27 +81,41 @@ public class parseUserInput implements Parser {
 				if (Character.isLetter(s[i].charAt(0))) {
 					commandStrings.push(s[i]);
 				} else if (Character.isDigit(s[i].charAt(0))) {
-					arguments.push(Integer.parseInt(s[i]));
+					arguments.push(Double.parseDouble(s[i]));
 				}
 			}
 		}
 	}
 
-	private ArrayList<Command> inputToCommands(Stack<String> commandStack, Stack<Integer> argumentStack){
+	private ArrayList<Command> inputToCommands(Stack<String> commandStack, Stack<Double> argumentStack) {
 		Stack<String> stringsOfCommands = new Stack<>();
-		Stack<Integer> argumentIntegers = new Stack<>();
+		Stack<Double> argumentIntegers = new Stack<>();
 		stringsOfCommands = (Stack<String>) commandStack.clone();
-		argumentIntegers = (Stack<Integer>) argumentStack.clone();
+		argumentIntegers = (Stack<Double>) argumentStack.clone();
 		ArrayList<Command> actualCommands = new ArrayList<>();
 		for (int i = 0; i < commandStack.size(); i++) {
 			String s = new String();
-			int numOfParameters = 0;
 			s = commandStack.pop();
-			Command here = new Command();
-			here = new stringToCommandMap.get(s)(argumentIntegers.pop());
-			
+			Command toExecute;
+			double evaluation = 0.0;
+			toExecute = stringToCommandMap.get(s);
+			currentCommand = toExecute;
+			int parameterNumber = toExecute.numParameters();
+			if (parameterNumber == 1) {
+				Double[] firstArg = new Double[1];
+				firstArg[0] = argumentStack.pop();
+				evaluation = toExecute.execute(firstArg, controller.getTurtle(), controller);
+			} else if (parameterNumber == 2) {
+				Double[] firstArg = new Double[2];
+				firstArg[0] = argumentStack.pop();
+				firstArg[1] = argumentStack.pop();
+				evaluation = toExecute.execute(firstArg, controller.getTurtle(), controller);
+			} else {
+				Double[] firstArg = null;
+				evaluation = toExecute.execute(firstArg, controller.getTurtle(), controller);
+			}
+			argumentStack.push(evaluation);
 		}
 		return actualCommands;
 	}
-
 }
