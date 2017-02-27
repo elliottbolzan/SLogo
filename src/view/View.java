@@ -146,7 +146,7 @@ public class View implements ViewAPI {
 	}
 	
 	protected void showSettings() {
-		SettingsView settings = new SettingsView(turtleWindow.getDisplay(), stage);
+		SettingsView settings = new SettingsView(controller, turtleWindow.getDisplay(), stage);
 		settings.show();
 	}
 }

@@ -7,22 +7,26 @@ import java.util.List;
 import model.commands.Command;
 
 /**
- * @author Zapata
- * This is the class that will take the user-input and parse it from a string into a command (or if multiple commands
- * the very last command executed.
- * This class will also have an internal HashMap, whose keys are either the command history, or user-defined commands
- * with buckets that are Command ArrayLists.
+ * @author Zapata This is the class that will take the user-input and parse it
+ *         from a string into a command (or if multiple commands the very last
+ *         command executed. This class will also have an internal HashMap,
+ *         whose keys are either the command history, or user-defined commands
+ *         with buckets that are Command ArrayLists.
  */
 public class parseUserInput implements Parser {
 
 	private HashMap<String, ArrayList<Command>> parseMap;
-	//private Queue<Command> commandQueue;
+	// private Queue<Command> commandQueue;
 	private Command currentCommand;
 
 	public parseUserInput() {
 		parseMap = new HashMap<String, ArrayList<Command>>();
 		parseMap.put("history", new ArrayList<Command>());
-		//commandQueue = new LinkedList<Command>();
+		// commandQueue = new LinkedList<Command>();
+	}
+	
+	public void setLanguage(String langauge) {
+		// DO SOMETHING
 	}
 
 	public Command getCurrentCommand() {
@@ -38,8 +42,9 @@ public class parseUserInput implements Parser {
 		String[] tokens = input.split(" ");
 		ArrayList<Command> parsedCommandList = new ArrayList<>();
 		recursivePreOrderEvaluation(tokens, parsedCommandList);
-		//Ask team-mates about how to get responses from properties folder.
-		//Or actually, maybe I should make an Enums file that goes from String to Command somehow.
+		// Ask team-mates about how to get responses from properties folder.
+		// Or actually, maybe I should make an Enums file that goes from String
+		// to Command somehow.
 		return null;
 	}
 
@@ -60,15 +65,16 @@ public class parseUserInput implements Parser {
 
 	@Override
 	public void addUserDefinedCommand(String newCommand) {
-		if(!parseMap.keySet().contains(newCommand)){
-			
+		if (!parseMap.keySet().contains(newCommand)) {
+
 		}
-		//Now parse through the commands that they use in order to add those methods to the ArrayList
-		//in the HashMap.
+		// Now parse through the commands that they use in order to add those
+		// methods to the ArrayList
+		// in the HashMap.
 	}
-	
-	private void recursivePreOrderEvaluation(String[] s, ArrayList<Command> emptyCommandList){
-		
+
+	private void recursivePreOrderEvaluation(String[] s, ArrayList<Command> emptyCommandList) {
+
 	}
 
 }
