@@ -26,8 +26,13 @@ public class SettingsView extends Stage {
 
 	private void setupStage(Stage primaryStage) {
 		VBox box = new VBox(16);
+		box.setAlignment(Pos.TOP_CENTER);
 		box.setPadding(new Insets(20, 20, 20, 20));
-				
+		
+		//TODO: button to launch file chooser for a turtle image
+		
+		//TODO: ComboBox of languages
+		
 		myBackgroundPicker = new ColorPicker(myTurtleDisplay.getBackgroundColor(), (e -> this.setTurtleBackground()));
 		VBox backgroundPickerBox = addLabelTo(myBackgroundPicker, "Background Color:");
 		
