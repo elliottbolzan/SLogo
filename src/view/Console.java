@@ -1,9 +1,4 @@
-/**
- * 
- */
 package view;
-
-import java.util.ArrayList;
 
 import javafx.scene.Group;
 import javafx.scene.control.TextArea;
@@ -105,16 +100,18 @@ public class Console extends Group {
 		return textArea.getText(index + preamble.length(), textArea.getText().length());
 	}
 	
-	private String removeNewline(String string) {
-		return string.replace("\n", "");
+	private String removeWhitespace(String string) {
+		return string.trim().replaceAll(" +", " ");
 	}
 	
 	private void enterPressed() {
+		String input = removeWhitespace(getCurrentCommand());
 		commandIndex = 0;
 		append(preamble);
 		try {
-			String input = removeNewline(getCurrentCommand());
-			view.getController().parse(input);
+			if (!(input.equals(""))) {
+				view.getController().parse(input);
+			}
 		}
 		catch (Exception e) {
 			view.showMessage(e.getMessage());
