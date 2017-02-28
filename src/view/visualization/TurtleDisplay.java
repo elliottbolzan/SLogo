@@ -1,4 +1,4 @@
-package view;
+package view.visualization;
 
 import utils.Point;
 
@@ -45,36 +45,36 @@ public class TurtleDisplay extends Group {
 		this.resetAnimation(myAnimationTickInterval);
 	}
 	
-	protected Turtle getTurtle() {
+	public Turtle getTurtle() {
 		return myTurtle;
 	}
 	
-	protected void clear() {
+	public void clear() {
 		myDisplayArea.getChildren().clear();
 		this.createTurtle();
 	}
 	
-	protected double getWidth() {
+	public double getWidth() {
 		return myDisplayArea.getWidth();
 	}
 	
-	protected double getHeight() {
+	public double getHeight() {
 		return myDisplayArea.getHeight();
 	}
 	
-	protected Color getBackgroundColor() {
+	public Color getBackgroundColor() {
 		return (Color) myDisplayArea.getBackground().getFills().get(0).getFill();
 	}
 	
-	protected Color getPenColor() {
+	public Color getPenColor() {
 		return myTurtle.getPenColor();
 	}
 	
-	protected Dimension getDimensions() {
+	public Dimension getDimensions() {
 		return myDimensions;
 	}
 	
-	protected void startAnimation() {
+	public void startAnimation() {
 		isAnimated = true;
 		myAnimation.play();
 	}
@@ -83,7 +83,7 @@ public class TurtleDisplay extends Group {
 	 * This method sets the destination of the turtle.
 	 * @param point
 	 */
-	protected void moveTurtle(Point destination) {
+	public void moveTurtle(Point destination) {
 		myTurtle.setDestination(destination, myLineLength);
 		
 		if(!isAnimated) {
@@ -91,30 +91,30 @@ public class TurtleDisplay extends Group {
 		}
 	}
 	
-	protected void turnTurtle(double degrees) {
+	public void turnTurtle(double degrees) {
 		myTurtle.setRotation(myTurtle.getRotation() + degrees);
 	}
 	
-	protected void setPenDown(boolean down) {
+	public void setPenDown(boolean down) {
 		myTurtle.setPenDown(down);
 	}
 	
-	protected void setPenColor(Color color) {
+	public void setPenColor(Color color) {
 		myTurtle.setPenColor(color);
 	}
 	
-	protected void setTurtleVisible(boolean visible) {
+	public void setTurtleVisible(boolean visible) {
 		myTurtle.setVisible(visible);
 	}
 	
-	protected void drawLine(Point start, Point finish, Color color, double width) {
+	public void drawLine(Point start, Point finish, Color color, double width) {
 		Line line = new Line(start.getX(), start.getY(), finish.getX(), finish.getY());
 		line.setStroke(color);
 		line.setStrokeWidth(width);
 		this.addToDisplayArea(line);
 	}
 	
-	protected void setBackgroundColor(Color color) {
+	public void setBackgroundColor(Color color) {
 		BackgroundFill primaryLayer = new BackgroundFill(color, CornerRadii.EMPTY, Insets.EMPTY);
 		Background background = new Background(primaryLayer);
 		myDisplayArea.setBackground(background);

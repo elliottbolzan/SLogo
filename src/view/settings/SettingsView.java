@@ -1,4 +1,4 @@
-package view;
+package view.settings;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -13,10 +13,13 @@ import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Separator;
+import javafx.scene.control.ScrollPane.ScrollBarPolicy;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import view.visualization.TurtleDisplay;
 
 public class SettingsView extends Stage {
 
@@ -35,6 +38,11 @@ public class SettingsView extends Stage {
 	}
 
 	private void setupStage(Stage primaryStage) {
+		
+		ScrollPane pane = new ScrollPane();
+		pane.setHbarPolicy(ScrollBarPolicy.NEVER);
+		pane.setVbarPolicy(ScrollBarPolicy.AS_NEEDED);
+		
 		VBox box = new VBox(16);
 		box.setAlignment(Pos.TOP_CENTER);
 		box.setPadding(new Insets(20, 20, 20, 20));
@@ -44,7 +52,7 @@ public class SettingsView extends Stage {
 		myLanguagePicker = new ComboBox<String>();
 		myLanguagePicker.getItems().addAll(getLanguages());
 		myLanguagePicker.setOnAction(e -> setLanguage());
-		// languagePicker.setValue(value); // Set to current language
+		myLanguagePicker.setValue(getLanguage());
 		VBox languagePickerBox = addLabelTo(myLanguagePicker, "Language:");
 
 		myBackgroundPicker = new ColorPicker(myTurtleDisplay.getBackgroundColor(), (e -> this.setTurtleBackground()));
@@ -55,7 +63,9 @@ public class SettingsView extends Stage {
 
 		box.getChildren().addAll(languagePickerBox, new Separator(), backgroundPickerBox, new Separator(), penPickerBox);
 
-		Scene scene = new Scene(box, 250, 400);
+		pane.setContent(box);
+		
+		Scene scene = new Scene(pane, 250, 400);
 		scene.getStylesheets().add("view/style.css");
 		this.initModality(Modality.WINDOW_MODAL);
 		this.initOwner(primaryStage);
@@ -67,9 +77,15 @@ public class SettingsView extends Stage {
 		List<File> options = Arrays.asList(new File("src/resources/languages").listFiles());
 		Collections.sort(options);
 		for (File file : options) {
-			result.add(file.getName().split("\\.")[0]);
+			if (!(file.getName().contains("Syntax"))) {
+				result.add(file.getName().split("\\.")[0]);
+			}
 		}
 		return result;
+	}
+	
+	private String getLanguage() {
+		return controller.getLanguage();
 	}
 
 	private void setLanguage() {

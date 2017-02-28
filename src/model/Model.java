@@ -37,4 +37,7 @@ public class Model implements ModelAPI {
 		parser.setLanguage(language);
 	}
 
+	public String getLanguage() {
+		return parser.getLanguage();
+	}
 }

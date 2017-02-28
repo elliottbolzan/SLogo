@@ -1,4 +1,4 @@
-package view;
+package view.visualization;
 
 import utils.Point;
 import javafx.scene.Group;

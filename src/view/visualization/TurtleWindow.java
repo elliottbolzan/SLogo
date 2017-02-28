@@ -1,4 +1,4 @@
-package view;
+package view.visualization;
 
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
