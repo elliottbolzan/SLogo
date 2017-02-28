@@ -27,6 +27,7 @@ public class View implements ViewAPI {
 	
 	private Controller controller;
 	private Stage stage;
+	private String stylesheetPath;
 	private Console console;
 	private Panel panel;
 	private TurtleWindow turtleWindow;
@@ -36,12 +37,13 @@ public class View implements ViewAPI {
 	 * @param stage the program's primary window.
 	 * @return a View object.
 	 */
-	public View(Controller controller, Stage stage) {
+	public View(Controller controller, Stage stage, String stylesheetPath) {
 		this.controller = controller;
 		this.stage = stage;
+		this.stylesheetPath = stylesheetPath;
 		console = new Console(this);
 		panel = new Panel(this);
-		turtleWindow = new TurtleWindow();
+		turtleWindow = new TurtleWindow(controller);
 		setup();
 	}
 	
@@ -50,7 +52,6 @@ public class View implements ViewAPI {
 		pane.setLeft(panel);
 		pane.setCenter(console);
 		setupStage(pane);
-		turtleWindow.show();
 	}
 	
 	public Console getConsole() {
@@ -60,13 +61,17 @@ public class View implements ViewAPI {
 	public Controller getController() {
 		return controller;
 	}
+	
+	public String getStylesheetPath() {
+		return stylesheetPath;
+	}
 
 	/**
 	 * Initializes the stage, by setting its title and properties.
 	 * The application will quit when the main window is closed.
 	 */
 	private void setupStage(BorderPane pane) {
-		stage.setTitle("SLogo Interpreter");
+		stage.setTitle(controller.getResources().getString("InterpreterTitle"));
 		stage.setResizable(false);
 		stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
 			public void handle(WindowEvent we) {
@@ -74,10 +79,15 @@ public class View implements ViewAPI {
 			}
 		});
 		Scene scene = new Scene(pane, 700, 400);
-		scene.getStylesheets().add("view/style.css");
+		scene.getStylesheets().add(stylesheetPath);
 		console.focus();
 		stage.setScene(scene);
+		stage.setX(200);
 		stage.show();
+		turtleWindow.setY(stage.getY());
+		turtleWindow.setX(stage.getX() + stage.getWidth() + 20);
+		turtleWindow.show();
+		stage.requestFocus();
 	}
 	
 	@Override
@@ -135,14 +145,14 @@ public class View implements ViewAPI {
 	
 	public void showMessage(String message) {
 		Alert alert = new Alert(AlertType.ERROR);
-		alert.setTitle("Error");
-		alert.setHeaderText("SLogo encountered an error.");
+		alert.setTitle(controller.getResources().getString("ErrorTitle"));
+		alert.setHeaderText(controller.getResources().getString("ErrorHeader"));
 		alert.setContentText(message);
 		alert.showAndWait();
 	}
 	
 	public void showHelp() {
-		HelpView helpView = new HelpView();
+		HelpView helpView = new HelpView(controller);
 		helpView.show();
 	}
 	

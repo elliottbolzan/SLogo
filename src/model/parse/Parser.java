@@ -18,7 +18,7 @@ import model.commands.Command;
 public class Parser implements ParserAPI {
 	
 	private Controller controller;
-	private String language;
+	private String language = "English";
 
 	private ObservableList<String> historyList;
 	private CommandMap stringToCommandMap;

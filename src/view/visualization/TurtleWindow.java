@@ -1,5 +1,6 @@
 package view.visualization;
 
+import controller.Controller;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
@@ -16,9 +17,9 @@ public class TurtleWindow extends Stage {
 	/**
 	 * 
 	 */
-	public TurtleWindow() {
+	public TurtleWindow(Controller controller) {
 		turtleDisplay = new TurtleDisplay(500, 500);
-		setTitle("Turtle Display");
+		setTitle(controller.getResources().getString("TurtleDisplayTitle"));
 		setResizable(false);
 		setScene(new Scene(turtleDisplay));
 		setOnCloseRequest(new EventHandler<WindowEvent>() {

@@ -1,6 +1,5 @@
 package view.panel;
 
-import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.scene.Group;
@@ -38,7 +37,7 @@ public class VariableTable extends Group {
 		table.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 		table.setEditable(true);
 		table.getStyleClass().add("panel-table");
-		table.setPlaceholder(new Label("No variables have been set"));
+		table.setPlaceholder(new Label(view.getController().getResources().getString("EmptyVariables")));
 
 		TableColumn<Variable, String> nameColumn = new TableColumn<Variable, String>("Name");
 		nameColumn.setCellValueFactory(new PropertyValueFactory<Variable, String>("name"));

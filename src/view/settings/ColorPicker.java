@@ -1,5 +1,6 @@
 package view.settings;
 
+import controller.Controller;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -15,12 +16,14 @@ import javafx.scene.shape.Rectangle;
 
 public class ColorPicker extends Group {
 	
+	private Controller controller;
 	private Rectangle myColorDisplay;
 	private SimpleDoubleProperty myRed;
 	private SimpleDoubleProperty myGreen;
 	private SimpleDoubleProperty myBlue;
 	
-	public ColorPicker(Color initial, EventHandler<ActionEvent> applyAction) {
+	public ColorPicker(Controller controller, Color initial, EventHandler<ActionEvent> applyAction) {
+		this.controller = controller;
 		int width = 200;
 		myRed = new SimpleDoubleProperty(initial.getRed());
 		myGreen = new SimpleDoubleProperty(initial.getGreen());
@@ -49,7 +52,7 @@ public class ColorPicker extends Group {
 		myColorDisplay = new Rectangle(0.4*width, 50);
 		myColorDisplay.setFill(this.getColor());
 		myColorDisplay.setStroke(Color.BLACK);
-		Button applyButton = new Button("Apply");
+		Button applyButton = new Button(controller.getResources().getString("SettingsApplyButton"));
 		applyButton.setOnAction(applyAction);
 		output.getChildren().addAll(myColorDisplay, applyButton);
 		
