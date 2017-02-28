@@ -10,7 +10,7 @@ public class TowardsCommand extends TurtleCommand {
 	}
 	
 	//how to calc angle? where is zero?
-	protected double calcValue(int[] parameters, Turtle myTurtle, Controller view){
+	public double execute(int[] parameters, Turtle myTurtle, Controller view){
 		double xdiff = parameters[0] - myTurtle.getLocation().getX();
 		double ydiff = parameters[1] - myTurtle.getLocation().getY();
 		double tempd = Math.atan2(ydiff, xdiff);

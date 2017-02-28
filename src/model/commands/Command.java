@@ -3,7 +3,8 @@ package model.commands;
 import controller.Controller;
 import view.visualization.Turtle;
 
-public abstract class Command implements CommandInterface {
+public abstract class Command /*implements CommandInterface*/ {
+
 	private int myParameters;
 	private String cmdName;
 
@@ -11,15 +12,11 @@ public abstract class Command implements CommandInterface {
 		myParameters = numOfParameters;
 		cmdName = name;
 	}
-	
-	public int numParameters(){
+
+	public int numParameters() {
 		return myParameters;
 	}
 
-	public double execute(int[] parameters, Turtle myTurtle, Controller view){
-		return calcValue(parameters, myTurtle, view);
-	}
-
-	protected abstract double calcValue(int[] parameters, Turtle myTurtle, Controller view);
+	public abstract double execute(int[] parameters, Turtle myTurtle, Controller controller);
 
 }

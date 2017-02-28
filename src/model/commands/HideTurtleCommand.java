@@ -9,7 +9,7 @@ public class HideTurtleCommand extends TurtleCommand {
 		super(numParameters, name);
 	}
 	
-	protected double calcValue(int[] parameters, Turtle myTurtle, Controller view){
+	public double execute(int[] parameters, Turtle myTurtle, Controller view){
 		view.setTurtleVisible(false);
 		return 0;
 	}
