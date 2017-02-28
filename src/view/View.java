@@ -45,7 +45,6 @@ public class View implements ViewAPI {
 		pane.setCenter(console);
 		setupStage(pane);
 		turtleWindow.show();
-		this.moveTo(new Point(10,5));
 	}
 	
 	protected Stage getStage() {
