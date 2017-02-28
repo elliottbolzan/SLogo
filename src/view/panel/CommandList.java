@@ -1,4 +1,4 @@
-package view;
+package view.panel;
 
 import javafx.beans.property.ListProperty;
 import javafx.beans.property.SimpleListProperty;
@@ -8,6 +8,7 @@ import javafx.scene.Group;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.input.MouseEvent;
+import view.View;
 
 /**
  * @author Elliott Bolzan

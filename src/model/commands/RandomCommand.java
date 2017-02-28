@@ -2,7 +2,7 @@ package model.commands;
 
 import java.util.Random;
 import controller.Controller;
-import view.Turtle;
+import view.visualization.Turtle;
 
 public class RandomCommand extends MathCommand {
 	Random value;

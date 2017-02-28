@@ -1,7 +1,7 @@
 /**
  * 
  */
-package view;
+package view.settings;
 
 import javafx.scene.Scene;
 import javafx.scene.web.WebEngine;

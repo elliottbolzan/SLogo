@@ -13,5 +13,7 @@ public interface ModelAPI {
 	public ObservableList<String> getUserDefinedCommands();
 
 	public void setLanguage(String language);
+	
+	public String getLanguage();
 
 }

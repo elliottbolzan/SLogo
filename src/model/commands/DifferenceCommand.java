@@ -1,7 +1,7 @@
 package model.commands;
 
 import controller.Controller;
-import view.Turtle;
+import view.visualization.Turtle;
 
 public class DifferenceCommand extends MathCommand {
 	

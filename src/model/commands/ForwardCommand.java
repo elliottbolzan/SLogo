@@ -2,11 +2,11 @@ package model.commands;
 
 import controller.Controller;
 import utils.Point;
-import view.Turtle;
+import view.visualization.Turtle;
 
-public class FowardCommand extends TurtleCommand {
-
-	public FowardCommand(int numParameters, String name) {
+public class ForwardCommand extends TurtleCommand {
+	
+	public ForwardCommand(int numParameters, String name) {
 		super(1, name);
 	}
 	

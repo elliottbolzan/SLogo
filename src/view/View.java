@@ -2,7 +2,12 @@ package view;
 
 import java.awt.Dimension;
 import utils.Point;
-
+import view.console.Console;
+import view.panel.Panel;
+import view.settings.HelpView;
+import view.settings.SettingsView;
+import view.visualization.Turtle;
+import view.visualization.TurtleWindow;
 import controller.Controller;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
@@ -48,15 +53,11 @@ public class View implements ViewAPI {
 		turtleWindow.show();
 	}
 	
-	protected Stage getStage() {
-		return stage;
-	}
-	
-	protected Console getConsole() {
+	public Console getConsole() {
 		return console;
 	}
 	
-	protected Controller getController() {
+	public Controller getController() {
 		return controller;
 	}
 
@@ -132,7 +133,7 @@ public class View implements ViewAPI {
 		return turtleWindow.getDisplay().getTurtle();
 	}
 	
-	protected void showMessage(String message) {
+	public void showMessage(String message) {
 		Alert alert = new Alert(AlertType.ERROR);
 		alert.setTitle("Error");
 		alert.setHeaderText("SLogo encountered an error.");
@@ -140,12 +141,12 @@ public class View implements ViewAPI {
 		alert.showAndWait();
 	}
 	
-	protected void showHelp() {
+	public void showHelp() {
 		HelpView helpView = new HelpView();
 		helpView.show();
 	}
 	
-	protected void showSettings() {
+	public void showSettings() {
 		SettingsView settings = new SettingsView(controller, turtleWindow.getDisplay(), stage);
 		settings.show();
 	}

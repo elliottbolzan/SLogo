@@ -1,4 +1,4 @@
-package view;
+package view.panel;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -11,6 +11,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import model.Variable;
+import view.View;
 
 /**
  * @author Elliott Bolzan

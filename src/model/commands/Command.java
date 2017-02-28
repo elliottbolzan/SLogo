@@ -1,7 +1,7 @@
 package model.commands;
 
 import controller.Controller;
-import view.Turtle;
+import view.visualization.Turtle;
 
 public abstract class Command implements CommandInterface {
 	private int myParameters;

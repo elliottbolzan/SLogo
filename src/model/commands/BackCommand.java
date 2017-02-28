@@ -2,7 +2,7 @@ package model.commands;
 
 import controller.Controller;
 import utils.Point;
-import view.Turtle;
+import view.visualization.Turtle;
 
 public class BackCommand extends TurtleCommand {
 

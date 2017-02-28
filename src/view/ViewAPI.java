@@ -2,6 +2,7 @@ package view;
 
 import java.awt.Dimension;
 import utils.Point;
+import view.visualization.Turtle;
 
 /**
  * @author Elliott Bolzan

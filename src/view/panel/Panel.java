@@ -1,7 +1,5 @@
-package view;
+package view.panel;
 
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -16,7 +14,7 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.control.ScrollPane.ScrollBarPolicy;
 import javafx.scene.control.Separator;
 import javafx.scene.layout.VBox;
-import model.Variable;
+import view.View;
 
 /**
  * @author Elliott Bolzan
@@ -48,7 +46,7 @@ public class Panel extends Group {
 		
 		Label title = new Label("Dashboard");
 		title.setStyle("-fx-font-size: 28; -fx-font-weight: bold;");
-		
+				
 		Node historyView = addLabelTo(new CommandList(view, view.getController().getHistory()), "Past Commands");
 		Node variableView = addLabelTo(new VariableTable(view, view.getController().getVariables()), "Variables");
 		Node commandView = addLabelTo(new CommandList(view, view.getController().getUserDefinedCommands()),

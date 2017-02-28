@@ -1,4 +1,4 @@
-package view;
+package view.visualization;
 
 import utils.Point;
 import javafx.scene.Group;
@@ -7,8 +7,8 @@ import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
 
 public class Turtle extends Group {
-	private static final String TURTLE_IMAGE = "view/turtle.png";
-	private ImageView myImage;
+	private final static String BASIC_IMAGE = "view/visualization/turtle.png";
+	private ImageView myImageView;
 
 	private TurtleDisplay myDisplay;
 
@@ -23,8 +23,8 @@ public class Turtle extends Group {
 	private Point myStepSize;
 
 	public Turtle(TurtleDisplay home) {
-		myImage = new ImageView(new Image(getClass().getClassLoader().getResourceAsStream(TURTLE_IMAGE)));
-		this.getChildren().add(myImage);
+		myImageView = new ImageView(new Image(getClass().getClassLoader().getResourceAsStream(BASIC_IMAGE)));
+		this.getChildren().add(myImageView);
 
 		myDisplay = home;
 
@@ -51,16 +51,15 @@ public class Turtle extends Group {
 	protected boolean isMoving() {
 		return (myStepsRemaining > 0);
 	}
-
-	protected void setLocation(Point point) {
-		myLocation = point;
-		myImage.setX(point.getX() - myImage.getBoundsInLocal().getWidth() / 2.0);
-		myImage.setY(point.getY() - myImage.getBoundsInLocal().getHeight() / 2.0);
+	
+	protected void setImage(String url) {
+		myImageView.setImage(new Image(url));
+		this.centerImage();
 	}
 
 	protected void setRotation(double degrees) {
 		myRotation = degrees;
-		myImage.setRotate(degrees + 90);
+		myImageView.setRotate(degrees + 90);
 	}
 
 	protected void setPenDown(boolean down) {
@@ -71,7 +70,7 @@ public class Turtle extends Group {
 		myPenColor = color;
 	}
 
-	protected void setPenWidth(double width) {
+	private void setPenWidth(double width) {
 		myPenWidth = width;
 	}
 
@@ -97,13 +96,23 @@ public class Turtle extends Group {
 		}
 	}
 
+	private void setLocation(Point point) {
+		myLocation = point;
+		this.centerImage();
+	}
+	
+	private void centerImage() {
+		myImageView.setX(myLocation.getX() - myImageView.getBoundsInLocal().getWidth() / 2.0);
+		myImageView.setY(myLocation.getY() - myImageView.getBoundsInLocal().getHeight() / 2.0);
+	}
+	
 	private void stepTowardsDestination() {
 		Point step = new Point(myLocation.getX() + myStepSize.getX(), myLocation.getY() + myStepSize.getY());
 
 		if (myPenDown) {
 			myDisplay.drawLine(myLocation, step, myPenColor, myPenWidth);
 		}
-
+		
 		this.setLocation(step);
 	}
 
