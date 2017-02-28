@@ -12,7 +12,7 @@ public class Model implements ModelAPI {
 	
 	public Model(Controller controller) {
 		this.controller = controller;
-		parser = new parseUserInput();
+		parser = new parseUserInput(controller);
 	}
 	
 	public void parse(String string) {

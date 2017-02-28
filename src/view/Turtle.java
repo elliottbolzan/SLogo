@@ -54,12 +54,7 @@ public class Turtle extends Group {
 	
 	protected void setImage(String url) {
 		myImageView.setImage(new Image(url));
-	}
-
-	protected void setLocation(Point point) {
-		myLocation = point;
-		myImageView.setX(point.getX() - myImageView.getBoundsInLocal().getWidth() / 2.0);
-		myImageView.setY(point.getY() - myImageView.getBoundsInLocal().getHeight() / 2.0);
+		this.centerImage();
 	}
 
 	protected void setRotation(double degrees) {
@@ -75,7 +70,7 @@ public class Turtle extends Group {
 		myPenColor = color;
 	}
 
-	protected void setPenWidth(double width) {
+	private void setPenWidth(double width) {
 		myPenWidth = width;
 	}
 
@@ -101,6 +96,16 @@ public class Turtle extends Group {
 		}
 	}
 
+	private void setLocation(Point point) {
+		myLocation = point;
+		this.centerImage();
+	}
+	
+	private void centerImage() {
+		myImageView.setX(myLocation.getX() - myImageView.getBoundsInLocal().getWidth() / 2.0);
+		myImageView.setY(myLocation.getY() - myImageView.getBoundsInLocal().getHeight() / 2.0);
+	}
+	
 	private void stepTowardsDestination() {
 		Point step = new Point(myLocation.getX() + myStepSize.getX(), myLocation.getY() + myStepSize.getY());
 

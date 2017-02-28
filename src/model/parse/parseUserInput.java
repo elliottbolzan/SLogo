@@ -104,15 +104,15 @@ public class parseUserInput implements Parser {
 			if (parameterNumber == 1) {
 				Double[] firstArg = new Double[1];
 				firstArg[0] = argumentStack.pop();
-				evaluation = toExecute.execute(firstArg, controller.getTurtle(), controller);
+				//evaluation = toExecute.execute(firstArg, controller.getTurtle(), controller);
 			} else if (parameterNumber == 2) {
 				Double[] firstArg = new Double[2];
 				firstArg[0] = argumentStack.pop();
 				firstArg[1] = argumentStack.pop();
-				evaluation = toExecute.execute(firstArg, controller.getTurtle(), controller);
+				//evaluation = toExecute.execute(firstArg, controller.getTurtle(), controller);
 			} else {
 				Double[] firstArg = null;
-				evaluation = toExecute.execute(firstArg, controller.getTurtle(), controller);
+				//evaluation = toExecute.execute(firstArg, controller.getTurtle(), controller);
 			}
 			argumentStack.push(evaluation);
 		}
