@@ -20,7 +20,7 @@ public class Model implements ModelAPI {
 	}
 	
 	public ObservableList<String> getHistory() {
-		return FXCollections.observableArrayList("test1", "test2", "test3");
+		return parser.getHistory();
 	}
 
 	@Override

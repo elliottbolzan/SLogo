@@ -48,7 +48,7 @@ public class Panel extends Group {
 		
 		Label title = new Label("Dashboard");
 		title.setStyle("-fx-font-size: 28; -fx-font-weight: bold;");
-		
+				
 		Node historyView = addLabelTo(new CommandList(view, view.getController().getHistory()), "Past Commands");
 		Node variableView = addLabelTo(new VariableTable(view, view.getController().getVariables()), "Variables");
 		Node commandView = addLabelTo(new CommandList(view, view.getController().getUserDefinedCommands()),
