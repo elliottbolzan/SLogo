@@ -107,16 +107,16 @@ public class Parser implements ParserAPI {
 				continue;
 			}
 			if (parameterNumber == 1) {
-				int[] firstArg = new int[1];
+				double[] firstArg = new double[1];
 				firstArg[0] = argumentStack.pop();
 				evaluation = (int) toExecute.execute(firstArg, controller.getTurtle(), controller);
 			} else if (parameterNumber == 2) {
-				int[] firstArg = new int[2];
+				double[] firstArg = new double[2];
 				firstArg[0] = argumentStack.pop();
 				firstArg[1] = argumentStack.pop();
 				evaluation = (int) toExecute.execute(firstArg, controller.getTurtle(), controller);
 			} else {
-				int[] firstArg = null;
+				double[] firstArg = null;
 				evaluation = (int) toExecute.execute(firstArg, controller.getTurtle(), controller);
 			}
 			if (!(commandStack.size() == 0)) {

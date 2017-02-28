@@ -10,8 +10,7 @@ public class RightCommand extends TurtleCommand {
 	}
 	
 	protected double calcValue(double[] parameters, Turtle myTurtle, Controller view){
-		double degrees = myTurtle.getRotation() + parameters[0];
-		view.turn(degrees);
+		view.turn(-1 * parameters[0]);
 		return parameters[0];
 	}
 }
