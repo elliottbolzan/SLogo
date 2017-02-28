@@ -112,7 +112,7 @@ public class Turtle extends Group {
 		if (myPenDown) {
 			myDisplay.drawLine(myLocation, step, myPenColor, myPenWidth);
 		}
-
+		
 		this.setLocation(step);
 	}
 

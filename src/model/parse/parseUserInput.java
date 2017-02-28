@@ -47,7 +47,7 @@ public class parseUserInput implements Parser {
 		historyList.add(0, input);
 		String[] tokens = input.split(" ");
 		preOrderEvaluation(tokens);
-		ObservableList<String> history = FXCollections.observableList(historyList);
+		//ObservableList<String> history = FXCollections.observableList(historyList);
 	}
 
 	@Override
