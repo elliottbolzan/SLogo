@@ -127,6 +127,9 @@ public class Parser implements ParserAPI {
 			if (!(commandStack.size() == 0)) {
 				argumentStack.push(evaluation);
 			}
+			else {
+				controller.print(Integer.toString(evaluation));
+			}
 		}
 		return actualCommands;
 	}
