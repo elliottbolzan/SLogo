@@ -9,7 +9,7 @@ public class PenQueryCommand extends LogicCommand {
 		super(numParameters, name);
 	}
 	
-	protected double calcValue(int[] parameters, Turtle myTurtle, Controller view){
+	public double execute(int[] parameters, Turtle myTurtle, Controller view){
 		//return super.checker(myTurtle.getPen());
 		return 0;
 	}

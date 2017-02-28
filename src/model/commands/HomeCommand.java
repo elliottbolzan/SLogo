@@ -10,8 +10,8 @@ public class HomeCommand extends TurtleCommand {
 		super(numParameters, name);
 	}
 	
-	protected double calcValue(int[] parameters, Turtle myTurtle, Controller view){
-		view.moveTo(new Point(parameters[0],parameters[1]));
+	public double execute(int[] parameters, Turtle myTurtle, Controller view){
+		view.moveTo(new Point(parameters[0], parameters[1]));
 		return super.distance(parameters,myTurtle);
 	}
 }

@@ -10,7 +10,7 @@ public class TanCommand extends MathCommand {
 	}
 
 	@Override
-	protected double calcValue(int[] parameters, Turtle myTurtle, Controller view) {
+	public double execute(int[] parameters, Turtle myTurtle, Controller view) {
 		return Math.tan(parameters[0]);
 	}
 }

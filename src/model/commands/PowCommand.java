@@ -10,7 +10,7 @@ public class PowCommand extends MathCommand {
 	}
 
 	@Override
-	protected double calcValue(int[] parameters, Turtle myTurtle, Controller view) {
+	public double execute(int[] parameters, Turtle myTurtle, Controller view) {
 		return Math.pow(parameters[0], parameters[1]);
 	}
 }

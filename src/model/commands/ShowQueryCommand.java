@@ -10,7 +10,7 @@ public class ShowQueryCommand extends LogicCommand {
 	}
 	
 	//where do i get show boolean?
-	protected double calcValue(int[] parameters, Turtle myTurtle, Controller view){
+	public double execute(int[] parameters, Turtle myTurtle, Controller view){
 		//return super.checker(myTurtle.getPen());
 		return 0;
 	}

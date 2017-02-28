@@ -9,7 +9,7 @@ public class HeadingCommand extends TurtleCommand {
 		super(numParameters, name);
 	}
 	
-	protected double calcValue(int[] parameters, Turtle myTurtle, Controller view){
+	public double execute(int[] parameters, Turtle myTurtle, Controller view){
 		return myTurtle.getRotation();
 	}
 }

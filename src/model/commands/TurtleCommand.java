@@ -10,7 +10,7 @@ public abstract class TurtleCommand extends Command {
 		super(numParameters, name);
 	}
 	
-	protected abstract double calcValue(int[] parameters, Turtle turtle, Controller view);
+	public abstract double execute(int[] parameters, Turtle turtle, Controller view);
 	
     protected Point endLocation(int distance, Turtle t) {
     	double rad = Math.toRadians(t.getRotation());
