@@ -9,8 +9,8 @@ public class SetHeadingCommand extends TurtleCommand {
 		super(1, name);
 	}
 	
-	protected double calcValue(double[] parameters, Turtle myTurtle, Controller view){
-		double degrees = parameters[0] - (myTurtle.getRotation());
+	public double execute(double[] parameters, Turtle myTurtle, Controller view){
+		double degrees = parameters[0] - myTurtle.getRotation();
 		view.turn(degrees);
 		return degrees;
 	}

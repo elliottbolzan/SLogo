@@ -9,10 +9,10 @@ public class ClearScreenCommand extends TurtleCommand {
 	public ClearScreenCommand(int numParameters, String name) {
 		super(0, name);
 	}
-	
-	protected double calcValue(double[] parameters, Turtle myTurtle, Controller view){
+
+	public double execute(double[] parameters, Turtle myTurtle, Controller view) {
 		view.clearDisplay();
-		view.moveTo(new Point(0,0));
-		return super.distance(parameters,myTurtle);
+		view.moveTo(new Point(0, 0));
+		return super.distance(parameters, myTurtle);
 	}
 }

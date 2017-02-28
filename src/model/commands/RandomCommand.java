@@ -13,7 +13,7 @@ public class RandomCommand extends MathCommand {
 	}
 
 	@Override
-	protected double calcValue(double[] parameters, Turtle myTurtle, Controller view) {
-		return value.nextInt((int) parameters[0]);
+	public double execute(double[] parameters, Turtle myTurtle, Controller view) {
+		return value.nextInt((int)parameters[0]);
 	}
 }

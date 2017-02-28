@@ -10,7 +10,7 @@ public class ForwardCommand extends TurtleCommand {
 		super(1, name);
 	}
 	
-	protected double calcValue(double[] parameters, Turtle myTurtle, Controller view){
+	public double execute(double[] parameters, Turtle myTurtle, Controller view) {
 		Point loc = super.endLocation(parameters[0], myTurtle);
 		view.moveTo(loc);
 		return parameters[0];

@@ -10,7 +10,7 @@ public class NotEqualCommand extends LogicCommand {
 	}
 
 	@Override
-	protected double calcValue(double[] parameters, Turtle myTurtle, Controller view) {
+	public double execute(double[] parameters, Turtle myTurtle, Controller view) {
 		return super.checker(parameters[0] != parameters[1]);
 	}
 }

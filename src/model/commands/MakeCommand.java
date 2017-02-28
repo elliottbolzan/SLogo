@@ -10,7 +10,7 @@ public class MakeCommand extends Command {
 	}
 
 	@Override
-	protected double calcValue(double[] parameters, Turtle myTurtle, Controller view) {
+	public double execute(double[] parameters, Turtle myTurtle, Controller view) {
 		return Math.sin(parameters[0]);
 	}
 }

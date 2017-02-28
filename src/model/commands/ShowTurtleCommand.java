@@ -8,8 +8,8 @@ public class ShowTurtleCommand extends TurtleCommand {
 	public ShowTurtleCommand(int numParameters, String name) {
 		super(0, name);
 	}
-	
-	protected double calcValue(double[] parameters, Turtle myTurtle, Controller view){
+
+	public double execute(double[] parameters, Turtle myTurtle, Controller view){
 		view.setTurtleVisible(true);
 		return 1;
 	}

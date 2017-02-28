@@ -10,7 +10,7 @@ public class AtanCommand extends MathCommand {
 	}
 
 	@Override
-	protected double calcValue(double[] parameters, Turtle myTurtle, Controller view) {
+	public double execute(double[] parameters, Turtle myTurtle, Controller view) {
 		return Math.atan(parameters[0]);
 	}
 }

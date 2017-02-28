@@ -9,9 +9,9 @@ public abstract class TurtleCommand extends Command {
 	protected TurtleCommand(int numParameters, String name) {
 		super(numParameters, name);
 	}
-	
-	protected abstract double calcValue(double[] parameters, Turtle turtle, Controller view);
-	
+
+	public abstract double execute(double[] parameters, Turtle turtle, Controller view);
+
     protected Point endLocation(double distance, Turtle t) {
     	double rad = Math.toRadians(t.getRotation());
         double x = (Math.cos(rad) * distance);

@@ -9,7 +9,7 @@ public class LeftCommand extends TurtleCommand {
 		super(1, name);
 	}
 	
-	protected double calcValue(double[] parameters, Turtle myTurtle, Controller view){
+	public double execute(double[] parameters, Turtle myTurtle, Controller view){
 		view.turn(parameters[0]);
 		return parameters[0];
 	}
