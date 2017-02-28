@@ -3,14 +3,10 @@ package view;
 import java.io.File;
 import java.net.MalformedURLException;
 
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.control.Button;
-import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
-import javafx.scene.text.Font;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.stage.Stage;
@@ -37,7 +33,7 @@ public class FilePicker extends Group {
 		this.getChildren().add(container);
 	}
 	
-	protected TextField getTextField() {
+	public TextField getTextField() {
 		return myTextField;
 	}
 	

@@ -8,9 +8,9 @@ import javafx.stage.Stage;
 import model.Model;
 import model.ModelAPI;
 import model.Variable;
-import view.Turtle;
 import view.View;
 import view.ViewAPI;
+import view.visualization.Turtle;
 
 /**
  * @author Elliott Bolzan
@@ -97,6 +97,11 @@ public class Controller implements ViewAPI, ModelAPI {
 	@Override
 	public void setLanguage(String language) {
 		model.setLanguage(language);
+	}
+	
+	@Override
+	public String getLanguage() {
+		return model.getLanguage();
 	}
 
 }
