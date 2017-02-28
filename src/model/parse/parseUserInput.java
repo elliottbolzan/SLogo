@@ -17,17 +17,17 @@ import model.commands.Command;
  *         with buckets that are Command ArrayLists.
  */
 public class parseUserInput implements Parser {
-	private HashMap<String, ArrayList<Command>> parseMap;
 	private HashMap<String, Command> stringToCommandMap;
+	private ArrayList<String> historyList = new ArrayList<String>();
 	private Stack<String> commandStrings;
-	private Stack<Double> arguments;
+	private Stack<Integer> arguments;
 	private Command currentCommand;
 	private Controller controller;
 
 	public parseUserInput(Controller c) {
 		controller = c;
-		parseMap = new HashMap<String, ArrayList<Command>>();
-		parseMap.put("history", new ArrayList<Command>());
+		arguments = new Stack<>();
+		commandStrings = new Stack<String>();
 	}
 
 	public void setLanguage(String langauge) {
@@ -43,35 +43,30 @@ public class parseUserInput implements Parser {
 	}
 
 	@Override
-	public ArrayList<Command> parse(String input) {
+	public void parse(String input) {
+		historyList.add(0, input);
 		String[] tokens = input.split(" ");
-		ArrayList<Command> list = new ArrayList<>();
 		preOrderEvaluation(tokens);
-		return list;
+		ObservableList<String> history = FXCollections.observableList(historyList);
 	}
 
 	@Override
 	public ObservableList<String> getHistory() {
-		ArrayList<Command> history = parseMap.get("history");
-		ObservableList<String> stringHistory = FXCollections.observableArrayList();
-		for (int i = 0; i < history.size(); i++) {
-			stringHistory.add(history.get(i).toString());
-		}
-		return stringHistory;
+		return FXCollections.observableList(historyList);
 	}
 
 	@Override
 	public String getPreviousCommand(int k) {
-		return parseMap.get("history").get(k).toString();
+		return historyList.get(0);
 	}
 
 	@Override
 	public void addUserDefinedCommand(String newCommand) {
-		if (!parseMap.keySet().contains(newCommand)) {
+		/*if (!parseMap.keySet().contains(newCommand)) {
 		}
 		// Now parse through the commands that they use in order to add those
 		// methods to the ArrayList
-		// in the HashMap.
+		// in the HashMap. */
 	}
 
 	private void preOrderEvaluation(String[] s) {
@@ -81,38 +76,34 @@ public class parseUserInput implements Parser {
 				if (Character.isLetter(s[i].charAt(0))) {
 					commandStrings.push(s[i]);
 				} else if (Character.isDigit(s[i].charAt(0))) {
-					arguments.push(Double.parseDouble(s[i]));
+					arguments.push(Integer.parseInt(s[i]));
 				}
 			}
 		}
 	}
 
-	private ArrayList<Command> inputToCommands(Stack<String> commandStack, Stack<Double> argumentStack) {
-		Stack<String> stringsOfCommands = new Stack<>();
-		Stack<Double> argumentIntegers = new Stack<>();
-		stringsOfCommands = (Stack<String>) commandStack.clone();
-		argumentIntegers = (Stack<Double>) argumentStack.clone();
+	private ArrayList<Command> inputToCommands(Stack<String> commandStack, Stack<Integer> argumentStack) {
 		ArrayList<Command> actualCommands = new ArrayList<>();
 		for (int i = 0; i < commandStack.size(); i++) {
 			String s = new String();
 			s = commandStack.pop();
 			Command toExecute;
-			double evaluation = 0.0;
+			int evaluation = 0;
 			toExecute = stringToCommandMap.get(s);
-			currentCommand = toExecute;
+			setCurrentCommand(toExecute);
 			int parameterNumber = toExecute.numParameters();
 			if (parameterNumber == 1) {
-				Double[] firstArg = new Double[1];
+				int[] firstArg = new int[1];
 				firstArg[0] = argumentStack.pop();
-				//evaluation = toExecute.execute(firstArg, controller.getTurtle(), controller);
+				evaluation = (int) toExecute.execute(firstArg, controller.getTurtle(), controller);
 			} else if (parameterNumber == 2) {
-				Double[] firstArg = new Double[2];
+				int[] firstArg = new int[2];
 				firstArg[0] = argumentStack.pop();
 				firstArg[1] = argumentStack.pop();
-				//evaluation = toExecute.execute(firstArg, controller.getTurtle(), controller);
+				evaluation = (int) toExecute.execute(firstArg, controller.getTurtle(), controller);
 			} else {
-				Double[] firstArg = null;
-				//evaluation = toExecute.execute(firstArg, controller.getTurtle(), controller);
+				int[] firstArg = null;
+				evaluation = (int) toExecute.execute(firstArg, controller.getTurtle(), controller);
 			}
 			argumentStack.push(evaluation);
 		}
