@@ -25,6 +25,8 @@ public class CommandMap {
 	private void createCommands() {
 		addCommand(myResources.getString("Forward"), new ForwardCommand(1, null));
 		addCommand(myResources.getString("Backward"), new BackCommand(1, null));
+		addCommand(myResources.getString("Left"), new LeftCommand(1, null));
+		addCommand(myResources.getString("Right"), new RightCommand(1, null));
 	}
 
 	private void addCommand(String string, Command command) {

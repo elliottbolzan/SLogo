@@ -114,7 +114,6 @@ public class Console extends Group {
 			}
 		}
 		catch (Exception e) {
-			e.printStackTrace();
 			view.showMessage(e.getMessage());
 		}
 	}

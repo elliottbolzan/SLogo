@@ -3,16 +3,16 @@ package model;
 import controller.Controller;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import model.parse.parseUserInput;
+import model.parse.Parser;
 
 public class Model implements ModelAPI {
 
 	private Controller controller;
-	private parseUserInput parser;
+	private Parser parser;
 	
 	public Model(Controller controller) {
 		this.controller = controller;
-		parser = new parseUserInput(controller);
+		parser = new Parser(controller);
 	}
 	
 	public void parse(String string) {
