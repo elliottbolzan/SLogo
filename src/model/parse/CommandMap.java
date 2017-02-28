@@ -29,7 +29,7 @@ public class CommandMap {
 		addCommand(myResources.getString("SetHeading"), new SetHeadingCommand(1, null));
 		addCommand(myResources.getString("SetTowards"), new TowardsCommand(2, null));
 		addCommand(myResources.getString("SetPosition"), new SetXYCommand(2, null));
-		addCommand(myResources.getString("PenDown"), new RightCommand(0, null));addCommand(myResources.getString("Forward"), new ForwardCommand(1, null));
+		addCommand(myResources.getString("PenDown"), new PenDownCommand(0, null));
 		addCommand(myResources.getString("PenUp"), new PenUpCommand(0, null));
 		addCommand(myResources.getString("ShowTurtle"), new ShowTurtleCommand(0, null));
 		addCommand(myResources.getString("HideTurtle"), new HideTurtleCommand(0, null));
