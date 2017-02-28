@@ -31,18 +31,12 @@ public class TurtleDisplay extends Group {
 	private double myLineLength;
 	
 	private Timeline myAnimation;
-	private boolean isAnimated;
-	private double myAnimationTickInterval;
 
 	public TurtleDisplay(int width, int height) {
 		this.createDisplayArea(width, height);
 		this.setBackgroundColor(Color.WHITE);
 		this.createTurtle();
 		myLineLength = 1.0;
-		
-		isAnimated = false;
-		myAnimationTickInterval = 25.0;
-		this.resetAnimation(myAnimationTickInterval);
 	}
 	
 	protected Turtle getTurtle() {
@@ -74,21 +68,14 @@ public class TurtleDisplay extends Group {
 		return myDimensions;
 	}
 	
-	protected void startAnimation() {
-		isAnimated = true;
-		myAnimation.play();
-	}
-	
 	/**
 	 * This method sets the destination of the turtle.
 	 * @param point
 	 */
 	protected void moveTurtle(Point destination) {
 		myTurtle.setDestination(destination, myLineLength);
-		
-		if(!isAnimated) {
-			this.rushTurtleToDestination();
-		}
+		this.recalculateAnimationSpeed(destination);
+		myAnimation.play();
 	}
 	
 	protected void turnTurtle(double degrees) {
@@ -105,6 +92,10 @@ public class TurtleDisplay extends Group {
 	
 	protected void setTurtleVisible(boolean visible) {
 		myTurtle.setVisible(visible);
+	}
+	
+	protected void setTurtleImage(String url) {
+		myTurtle.setImage(url);
 	}
 	
 	protected void drawLine(Point start, Point finish, Color color, double width) {
@@ -147,6 +138,18 @@ public class TurtleDisplay extends Group {
 		this.addToDisplayArea(myTurtle);
 	}
 	
+	private void recalculateAnimationSpeed(Point destination) {
+		double distance = this.distanceBetween(myTurtle.getLocation(), destination);
+		double animationTickInterval = 1000.0/distance;
+		this.resetAnimation(animationTickInterval);
+	}
+	
+	private double distanceBetween(Point a, Point b) {
+		double distanceX = a.getX() - b.getX();
+		double distanceY = a.getY() - b.getY();
+		return Math.sqrt(distanceX*distanceX + distanceY*distanceY);
+	}
+	
 	private void resetAnimation(double millisInterval) {
 		myAnimation = new Timeline();
 		myAnimation.getKeyFrames().clear();
@@ -158,12 +161,8 @@ public class TurtleDisplay extends Group {
 	private void stepAnimation() {
 		if(myTurtle.isMoving()) {
 			myTurtle.updateMovement();
-		}
-	}
-	
-	private void rushTurtleToDestination() {
-		while(myTurtle.isMoving()) {
-			myTurtle.updateMovement();
+		} else {
+			myAnimation.pause();
 		}
 	}
 }
