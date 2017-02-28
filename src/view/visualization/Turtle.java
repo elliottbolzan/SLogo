@@ -7,7 +7,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
 
 public class Turtle extends Group {
-	private final static String BASIC_IMAGE = "view/turtle.png";
+	private final static String BASIC_IMAGE = "view/visualization/turtle.png";
 	private ImageView myImageView;
 
 	private TurtleDisplay myDisplay;
