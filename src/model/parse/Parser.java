@@ -103,8 +103,13 @@ public class Parser implements ParserAPI {
 			setCurrentCommand(toExecute);
 			int parameterNumber = toExecute.numParameters();
 			if (argumentStack.size() == 0) {
-				commandStack.push(s);
-				continue;
+				if (parameterNumber == 0) {
+					evaluation = (int) toExecute.execute(new int[0], controller.getTurtle(), controller);
+				}
+				else {
+					commandStack.push(s);
+					continue;
+				}
 			}
 			if (parameterNumber == 1) {
 				int[] firstArg = new int[1];
