@@ -9,7 +9,7 @@ public class PenUpCommand extends TurtleCommand {
 		super(numParameters, name);
 	}
 	
-	public double execute(int[] parameters, Turtle myTurtle, Controller view){
+	public double execute(double[] parameters, Turtle myTurtle, Controller view){
 		view.setPenDown(false);
 		return 0;
 	}

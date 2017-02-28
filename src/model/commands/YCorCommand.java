@@ -10,7 +10,7 @@ public class YCorCommand extends TurtleCommand {
 	}
 	
 	@Override
-	public double execute(int[] parameters, Turtle myTurtle, Controller view){
+	public double execute(double[] parameters, Turtle myTurtle, Controller view){
 		return myTurtle.getLocation().getY();
 	}
 }

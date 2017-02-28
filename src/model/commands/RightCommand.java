@@ -9,7 +9,7 @@ public class RightCommand extends TurtleCommand {
 		super(numParameters, name);
 	}
 
-	public double execute(int[] parameters, Turtle myTurtle, Controller view) {
+	public double execute(double[] parameters, Turtle myTurtle, Controller view) {
 		view.turn(-parameters[0]);
 		return parameters[0];
 	}

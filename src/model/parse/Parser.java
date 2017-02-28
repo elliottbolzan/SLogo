@@ -104,7 +104,7 @@ public class Parser implements ParserAPI {
 			int parameterNumber = toExecute.numParameters();
 			if (argumentStack.size() == 0) {
 				if (parameterNumber == 0) {
-					evaluation = (int) toExecute.execute(new int[0], controller.getTurtle(), controller);
+					evaluation = (int) toExecute.execute(new double[0], controller.getTurtle(), controller);
 				}
 				else {
 					commandStack.push(s);
@@ -112,16 +112,16 @@ public class Parser implements ParserAPI {
 				}
 			}
 			if (parameterNumber == 1) {
-				int[] firstArg = new int[1];
+				double[] firstArg = new double[1];
 				firstArg[0] = argumentStack.pop();
 				evaluation = (int) toExecute.execute(firstArg, controller.getTurtle(), controller);
 			} else if (parameterNumber == 2) {
-				int[] firstArg = new int[2];
+				double[] firstArg = new double[2];
 				firstArg[0] = argumentStack.pop();
 				firstArg[1] = argumentStack.pop();
 				evaluation = (int) toExecute.execute(firstArg, controller.getTurtle(), controller);
 			} else {
-				int[] firstArg = null;
+				double[] firstArg = null;
 				evaluation = (int) toExecute.execute(firstArg, controller.getTurtle(), controller);
 			}
 			if (!(commandStack.size() == 0)) {

@@ -3,7 +3,7 @@ package model.commands;
 import controller.Controller;
 import view.visualization.Turtle;
 
-public abstract class Command /*implements CommandInterface*/ {
+public abstract class Command implements CommandInterface {
 
 	private int myParameters;
 	private String cmdName;
@@ -17,6 +17,6 @@ public abstract class Command /*implements CommandInterface*/ {
 		return myParameters;
 	}
 
-	public abstract double execute(int[] parameters, Turtle myTurtle, Controller controller);
+	public abstract double execute(double[] parameters, Turtle myTurtle, Controller controller);
 
 }
