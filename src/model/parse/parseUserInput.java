@@ -17,21 +17,26 @@ import model.commands.Command;
  *         with buckets that are Command ArrayLists.
  */
 public class parseUserInput implements Parser {
-	private HashMap<String, Command> stringToCommandMap;
-	private ArrayList<String> historyList = new ArrayList<String>();
+	
+	private CommandMap stringToCommandMap;
+	private ObservableList<String> historyList;
 	private Stack<String> commandStrings;
 	private Stack<Integer> arguments;
 	private Command currentCommand;
 	private Controller controller;
+	private String language;
 
 	public parseUserInput(Controller c) {
 		controller = c;
+		historyList = FXCollections.observableList(new ArrayList<String>());
 		arguments = new Stack<>();
 		commandStrings = new Stack<String>();
+		stringToCommandMap = new CommandMap();
 	}
 
-	public void setLanguage(String langauge) {
-		// DO SOMETHING
+	public void setLanguage(String language) {
+		this.language = language;
+		stringToCommandMap.updateMap(language);
 	}
 
 	public Command getCurrentCommand() {
@@ -47,12 +52,12 @@ public class parseUserInput implements Parser {
 		historyList.add(0, input);
 		String[] tokens = input.split(" ");
 		preOrderEvaluation(tokens);
-		ObservableList<String> history = FXCollections.observableList(historyList);
+		inputToCommands(commandStrings, arguments);
 	}
 
 	@Override
 	public ObservableList<String> getHistory() {
-		return FXCollections.observableList(historyList);
+		return historyList;
 	}
 
 	@Override
@@ -84,7 +89,8 @@ public class parseUserInput implements Parser {
 
 	private ArrayList<Command> inputToCommands(Stack<String> commandStack, Stack<Integer> argumentStack) {
 		ArrayList<Command> actualCommands = new ArrayList<>();
-		for (int i = 0; i < commandStack.size(); i++) {
+		int size = commandStack.size();
+		for (int i = 0; i < size; i++) {
 			String s = new String();
 			s = commandStack.pop();
 			Command toExecute;
@@ -92,6 +98,10 @@ public class parseUserInput implements Parser {
 			toExecute = stringToCommandMap.get(s);
 			setCurrentCommand(toExecute);
 			int parameterNumber = toExecute.numParameters();
+			if (argumentStack.size() == 0) {
+				commandStack.push(s);
+				continue;
+			}
 			if (parameterNumber == 1) {
 				int[] firstArg = new int[1];
 				firstArg[0] = argumentStack.pop();
@@ -105,7 +115,9 @@ public class parseUserInput implements Parser {
 				int[] firstArg = null;
 				evaluation = (int) toExecute.execute(firstArg, controller.getTurtle(), controller);
 			}
-			argumentStack.push(evaluation);
+			if (!(commandStack.size() == 0)) {
+				argumentStack.push(evaluation);
+			}
 		}
 		return actualCommands;
 	}
