@@ -9,5 +9,5 @@ public interface CommandInterface {
 
 	public int numParameters();
 	
-	public double execute(int[] parameters, Turtle myTurtle, Controller view);
+	public double execute(double[] parameters, Turtle myTurtle, Controller view);
 }

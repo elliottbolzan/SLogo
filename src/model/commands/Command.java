@@ -17,6 +17,6 @@ public abstract class Command /*implements CommandInterface*/ {
 		return myParameters;
 	}
 
-	public abstract double execute(int[] parameters, Turtle myTurtle, Controller controller);
+	public abstract double execute(double[] parameters, Turtle myTurtle, Controller controller);
 
 }
