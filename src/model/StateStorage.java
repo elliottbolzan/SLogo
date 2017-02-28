@@ -19,4 +19,12 @@ public class StateStorage{
 	public void setCommand(UserCommand cmd){
 		cmdList.put(cmd.getName(), cmd);
 	}
+	
+	public HashMap<String, Variable> getVarList(){
+		return varList;
+	}
+	
+	public HashMap<String, UserCommand> getCmdList(){
+		return cmdList;
+	}
 }
