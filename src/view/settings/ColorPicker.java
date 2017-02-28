@@ -1,4 +1,4 @@
-package view;
+package view.settings;
 
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.event.ActionEvent;

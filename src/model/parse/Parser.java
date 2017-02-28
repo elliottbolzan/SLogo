@@ -38,6 +38,10 @@ public class Parser implements ParserAPI {
 		this.language = language;
 		stringToCommandMap.updateMap(language);
 	}
+	
+	public String getLanguage() {
+		return language;
+	}
 
 	public Command getCurrentCommand() {
 		return currentCommand;

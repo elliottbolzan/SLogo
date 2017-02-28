@@ -1,9 +1,10 @@
-package view;
+package view.console;
 
 import javafx.scene.Group;
 import javafx.scene.control.TextArea;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import view.View;
 
 /**
  * @author Elliott Bolzan
@@ -28,24 +29,24 @@ public class Console extends Group {
 		createTextArea();
 	}
 
-	protected void print(String message) {
+	public void print(String message) {
 		textArea.appendText("\n" + message + "\n");
 	}
 	
-	protected void append(String string) {
+	public void append(String string) {
 		textArea.appendText(string);
 	}
 	
-	protected void clear() {
+	public void clear() {
 		textArea.setText(preamble);
 	}
 	
-	protected void clearCurrentCommand() {
+	public void clearCurrentCommand() {
 		textArea.setText(textArea.getText().substring(0, textArea.getText().lastIndexOf(getCurrentCommand())));
 		textArea.positionCaret(textArea.getText().length());
 	}
 	
-	protected void focus() {
+	public void focus() {
 		textArea.requestFocus();
 	}
 
