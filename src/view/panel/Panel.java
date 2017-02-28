@@ -31,7 +31,7 @@ public class Panel extends Group {
 		this.view = view;
 		setup();
 	}
-	
+
 	private void setup() {
 
 		ScrollPane scrollPane = new ScrollPane();
@@ -43,16 +43,19 @@ public class Panel extends Group {
 
 		VBox box = new VBox(16);
 		box.setPadding(new Insets(20, 20, 20, 20));
-		
-		Label title = new Label("Dashboard");
+
+		Label title = new Label(view.getController().getResources().getString("PanelTitle"));
 		title.setStyle("-fx-font-size: 28; -fx-font-weight: bold;");
-				
-		Node historyView = addLabelTo(new CommandList(view, view.getController().getHistory()), "Past Commands");
-		Node variableView = addLabelTo(new VariableTable(view, view.getController().getVariables()), "Variables");
+
+		Node historyView = addLabelTo(new CommandList(view, view.getController().getHistory()),
+				view.getController().getResources().getString("HistoryTitle"));
+		Node variableView = addLabelTo(new VariableTable(view, view.getController().getVariables()),
+				view.getController().getResources().getString("VariablesTitle"));
 		Node commandView = addLabelTo(new CommandList(view, view.getController().getUserDefinedCommands()),
-				"User-Defined Commands");
-		
-		box.getChildren().addAll(title, makeSeparator(), historyView, makeSeparator(), variableView, makeSeparator(), commandView, makeSeparator(), makeButtonBar());
+				view.getController().getResources().getString("UserCommandsTitle"));
+
+		box.getChildren().addAll(title, makeSeparator(), historyView, makeSeparator(), variableView, makeSeparator(),
+				commandView, makeSeparator(), makeButtonBar());
 		box.setAlignment(Pos.CENTER);
 
 		scrollPane.setContent(box);
@@ -74,11 +77,11 @@ public class Panel extends Group {
 		button.setOnAction(handler);
 		return button;
 	}
-	
+
 	private Node makeButtonBar() {
 		ButtonBar bar = new ButtonBar();
-		Button commandReferenceButton = makeButton("Help", e -> view.showHelp());
-		Button settingsButton = makeButton("Settings", e -> view.showSettings());
+		Button commandReferenceButton = makeButton(view.getController().getResources().getString("HelpButton"), e -> view.showHelp());
+		Button settingsButton = makeButton(view.getController().getResources().getString("SettingsButton"), e -> view.showSettings());
 		ButtonBar.setButtonData(commandReferenceButton, ButtonData.RIGHT);
 		ButtonBar.setButtonData(settingsButton, ButtonData.LEFT);
 		bar.getButtons().addAll(commandReferenceButton, settingsButton);

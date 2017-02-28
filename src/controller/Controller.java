@@ -1,6 +1,8 @@
 package controller;
 
 import java.awt.Dimension;
+import java.util.ResourceBundle;
+
 import utils.Point;
 
 import javafx.collections.ObservableList;
@@ -20,13 +22,23 @@ public class Controller implements ViewAPI, ModelAPI {
 	
 	private View view;
 	private Model model;
+	private ResourceBundle resources; 
 
 	/**
 	 * 
 	 */
 	public Controller(Stage stage) {
+		resources = ResourceBundle.getBundle("resources/UserInterface");
 		model = new Model(this);
-		view = new View(this, stage);
+		view = new View(this, stage, "resources/style.css");
+	}
+	
+	public ResourceBundle getResources() {
+		return resources;
+	}
+	
+	public View getView() {
+		return view;
 	}
 
 	@Override

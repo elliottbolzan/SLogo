@@ -1,7 +1,6 @@
 import controller.Controller;
 import javafx.application.Application;
 import javafx.stage.Stage;
-import view.View;
 
 /**
  * @author Elliott Bolzan

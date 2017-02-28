@@ -34,7 +34,7 @@ public class CommandList extends Group {
 		list.itemsProperty().bind(listProperty);
 		list.getStyleClass().add("panel-list");
 		list.setMinWidth(240);
-		list.setPlaceholder(new Label("No commands"));
+		list.setPlaceholder(new Label(view.getController().getResources().getString("EmptyCommands")));
 		list.setEditable(false);
 		list.setPrefHeight(100);
 		list.setOnMouseClicked(new EventHandler<MouseEvent>() {
