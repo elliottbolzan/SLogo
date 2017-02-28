@@ -15,7 +15,7 @@ public class Console extends Group {
 	private View view;
 
 	private TextArea textArea;
-	private String preamble = "slogo$ ";
+	private String preamble;
 	
 	private int width = 400;
 	private int height = 400;
@@ -26,6 +26,7 @@ public class Console extends Group {
 	 */
 	public Console(View view) {
 		this.view = view;
+		preamble = view.getController().getResources().getString("Preamble");
 		createTextArea();
 	}
 

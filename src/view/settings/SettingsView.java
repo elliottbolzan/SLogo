@@ -13,14 +13,10 @@ import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
-import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Separator;
-import javafx.scene.control.ScrollPane.ScrollBarPolicy;
-import javafx.scene.image.Image;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import view.FilePicker;
 import view.visualization.TurtleDisplay;
 
 public class SettingsView extends Stage {
@@ -31,11 +27,13 @@ public class SettingsView extends Stage {
 	private ColorPicker myBackgroundPicker;
 	private ColorPicker myPenPicker;
 	private FilePicker myImagePicker;
+	
+	private static final String PATH_TO_LANGUAGES = "src/resources/languages";
 
 	public SettingsView(Controller controller, TurtleDisplay display, Stage primaryStage) {
 		myTurtleDisplay = display;
 		this.controller = controller;
-		this.setTitle("SLogo Settings");
+		this.setTitle(controller.getResources().getString("SettingsTitle"));
 		this.setResizable(false);
 		this.setupStage(primaryStage);
 	}
@@ -46,26 +44,26 @@ public class SettingsView extends Stage {
 		box.setAlignment(Pos.TOP_CENTER);
 		box.setPadding(new Insets(20, 20, 20, 20));
 
-		myImagePicker = new FilePicker(primaryStage, 200, "selection", "Browse", "*.png", "*.jpg", "*.gif");
+		myImagePicker = new FilePicker(controller, primaryStage, 200, controller.getResources().getString("ImagePickerFieldString"), "*.png", "*.jpg", "*.gif");
 		myImagePicker.getTextField().textProperty().addListener(e -> this.setTurtleImage());
-		VBox imagePickerBox = addLabelTo(myImagePicker, "Turtle Image:");
+		VBox imagePickerBox = addLabelTo(myImagePicker, controller.getResources().getString("TurtlePickerLabel"));
 		
 		myLanguagePicker = new ComboBox<String>();
 		myLanguagePicker.getItems().addAll(getLanguages());
 		myLanguagePicker.setOnAction(e -> setLanguage());
 		myLanguagePicker.setValue(getLanguage());
-		VBox languagePickerBox = addLabelTo(myLanguagePicker, "Language:");
+		VBox languagePickerBox = addLabelTo(myLanguagePicker, controller.getResources().getString("LanguagePickerLabel"));
 
-		myBackgroundPicker = new ColorPicker(myTurtleDisplay.getBackgroundColor(), (e -> this.setTurtleBackground()));
-		VBox backgroundPickerBox = addLabelTo(myBackgroundPicker, "Background Color:");
+		myBackgroundPicker = new ColorPicker(controller, myTurtleDisplay.getBackgroundColor(), (e -> this.setTurtleBackground()));
+		VBox backgroundPickerBox = addLabelTo(myBackgroundPicker, controller.getResources().getString("BackgroundPickerLabel"));
 
-		myPenPicker = new ColorPicker(myTurtleDisplay.getPenColor(), (e -> this.setPenColor()));
-		VBox penPickerBox = addLabelTo(myPenPicker, "Pen Color:");
+		myPenPicker = new ColorPicker(controller, myTurtleDisplay.getPenColor(), (e -> this.setPenColor()));
+		VBox penPickerBox = addLabelTo(myPenPicker, controller.getResources().getString("PenPickerLabel"));
 
 		box.getChildren().addAll(languagePickerBox, new Separator(), imagePickerBox, new Separator(), backgroundPickerBox, new Separator(), penPickerBox);
 
 		Scene scene = new Scene(box, 250, 525);
-		scene.getStylesheets().add("view/style.css");
+		scene.getStylesheets().add(controller.getView().getStylesheetPath());
 		this.initModality(Modality.WINDOW_MODAL);
 		this.initOwner(primaryStage);
 		this.setScene(scene);
@@ -73,7 +71,7 @@ public class SettingsView extends Stage {
 
 	private List<String> getLanguages() {
 		List<String> result = new ArrayList<String>();
-		List<File> options = Arrays.asList(new File("src/resources/languages").listFiles());
+		List<File> options = Arrays.asList(new File(PATH_TO_LANGUAGES).listFiles());
 		Collections.sort(options);
 		for (File file : options) {
 			if (!(file.getName().contains("Syntax"))) {
