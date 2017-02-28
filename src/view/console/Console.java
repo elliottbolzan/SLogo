@@ -31,7 +31,7 @@ public class Console extends Group {
 	}
 
 	public void print(String message) {
-		textArea.appendText("\n" + message + "\n");
+		append("\n" + message + "\n" + preamble);
 	}
 	
 	public void append(String string) {
@@ -58,7 +58,6 @@ public class Console extends Group {
 		textArea.setWrapText(true);
 		textArea.setOnMouseClicked(e -> textArea.positionCaret(textArea.getText().length()));
 		textArea.setOnKeyPressed(e -> handleKeyCode(e));
-		textArea.textProperty().addListener(e -> determineTextInput(textArea.getText()));
 		getChildren().add(textArea);
 		append(preamble);
 	}
@@ -79,21 +78,10 @@ public class Console extends Group {
 			}
 		}
 		else if (event.getCode() == KeyCode.ENTER) {
-			if (textArea.getSelectedText().length() != 0) {
-				event.consume();
+			event.consume();
+			if (textArea.getSelectedText().length() == 0) {
+				enterPressed();
 			}
-		}
-	}
-	
-	private void handleTextInput(String input) {
-		if (input.equals("\n")) {
-			enterPressed();
-		}
-	}
-	
-	private void determineTextInput(String input) {
-		if (input.length() > 0) {
-			handleTextInput(input.substring(input.length() - 1));
 		}
 	}
 	
@@ -109,10 +97,12 @@ public class Console extends Group {
 	private void enterPressed() {
 		String input = removeWhitespace(getCurrentCommand());
 		commandIndex = 0;
-		append(preamble);
 		try {
 			if (!(input.equals(""))) {
 				view.getController().parse(input);
+			}
+			else {
+				append("\n" + preamble);
 			}
 		}
 		catch (Exception e) {
