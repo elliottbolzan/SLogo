@@ -11,11 +11,11 @@ public abstract class TurtleCommand extends Command {
 	}
 
 	public abstract double execute(double[] parameters, Turtle turtle, Controller view);
-
-    protected Point endLocation(double distance, Turtle t) {
+	
+    protected Point endLocation(double parameters, Turtle t) {
     	double rad = Math.toRadians(t.getRotation());
-        double x = (Math.cos(rad) * distance);
-        double y = (Math.sin(rad) * distance);
+        double x = (Math.cos(rad) * parameters);
+        double y = (Math.sin(rad) * parameters);
 
         return new Point(t.getLocation().getX() + x, t.getLocation().getY() + y);
     }
