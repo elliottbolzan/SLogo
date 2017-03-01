@@ -16,4 +16,9 @@ public class ClearScreenCommand extends TurtleCommand {
 		controller.clearDisplay();
 		return distance;
 	}
+	
+	@Override
+	public int numParameters() {
+		return 0;
+	}
 }

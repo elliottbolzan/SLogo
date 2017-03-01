@@ -7,7 +7,7 @@ import view.visualization.Turtle;
 public abstract class TurtleCommand extends Command {
 
 	protected TurtleCommand(int numParameters, String name) {
-		super(numParameters, name);
+		super();
 	}
 
 	public abstract double execute(double[] parameters, Turtle turtle, Controller view);

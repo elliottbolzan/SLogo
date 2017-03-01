@@ -13,4 +13,9 @@ public class LogCommand extends MathCommand {
 	public double execute(double[] parameters, Turtle myTurtle, Controller view) {
 		return Math.log(parameters[0]);
 	}
+	
+	@Override
+	public int numParameters() {
+		return 1;
+	}
 }

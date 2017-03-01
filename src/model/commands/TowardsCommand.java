@@ -18,4 +18,9 @@ public class TowardsCommand extends TurtleCommand {
 		view.turn(degrees);
 		return degrees;
 	}
+	
+	@Override
+	public int numParameters() {
+		return 2;
+	}
 }

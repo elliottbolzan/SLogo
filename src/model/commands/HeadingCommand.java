@@ -12,4 +12,9 @@ public class HeadingCommand extends TurtleCommand {
 	public double execute(double[] parameters, Turtle myTurtle, Controller view){
 		return myTurtle.getRotation();
 	}
+	
+	@Override
+	public int numParameters() {
+		return 1;
+	}
 }

@@ -10,6 +10,7 @@ import javafx.stage.Stage;
 import model.Model;
 import model.ModelAPI;
 import model.Variable;
+import model.commands.Command;
 import view.View;
 import view.ViewAPI;
 import view.visualization.Turtle;
@@ -49,6 +50,11 @@ public class Controller implements ViewAPI, ModelAPI {
 	@Override
 	public void clearConsole() {
 		view.clearConsole();
+	}
+	
+	@Override
+	public void handleCommand(Command action) {
+		view.handleCommand(action);
 	}
 
 	@Override

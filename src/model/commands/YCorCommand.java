@@ -13,4 +13,9 @@ public class YCorCommand extends TurtleCommand {
 	public double execute(double[] parameters, Turtle myTurtle, Controller view){
 		return myTurtle.getLocation().getY();
 	}
+	
+	@Override
+	public int numParameters() {
+		return 0;
+	}
 }

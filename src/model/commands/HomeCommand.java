@@ -14,4 +14,9 @@ public class HomeCommand extends TurtleCommand {
 		view.moveTo(new Point(0, 0));
 		return super.distance(new double[]{0, 0}, myTurtle);
 	}
+	
+	@Override
+	public int numParameters() {
+		return 0;
+	}
 }

@@ -1,6 +1,9 @@
 package view;
 
 import java.awt.Dimension;
+import java.util.LinkedList;
+import java.util.Queue;
+
 import utils.Point;
 import view.console.Console;
 import view.panel.Panel;
@@ -16,6 +19,7 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
+import model.commands.Command;
 
 /**
  * @author Elliott Bolzan
@@ -31,6 +35,7 @@ public class View implements ViewAPI {
 	private Console console;
 	private Panel panel;
 	private TurtleWindow turtleWindow;
+	private Queue<Command> commandQueue;
 
 	/**
 	 * Creates a View object.
@@ -44,6 +49,8 @@ public class View implements ViewAPI {
 		console = new Console(this);
 		panel = new Panel(this);
 		turtleWindow = new TurtleWindow(controller);
+		commandQueue = new LinkedList<Command>();
+		turtleWindow.getDisplay().isTurtleMovingProperty().addListener(e -> dequeCommands());
 		setup();
 	}
 	
@@ -101,6 +108,22 @@ public class View implements ViewAPI {
 		console.clear();
 	}
 
+	
+	@Override
+	public void handleCommand(Command action) {
+		if(turtleWindow.getDisplay().isTurtleMovingProperty().get()) {
+			commandQueue.add(action);
+		} else {
+			//TODO: action.execute();
+		}
+	}
+	
+	private void dequeCommands() {
+		while (!commandQueue.isEmpty() && 
+			!turtleWindow.getDisplay().isTurtleMovingProperty().get()) {
+			//TODO: commandQueue.poll().execute();
+		}
+	}
 
 	@Override
 	public void moveTo(Point point) {

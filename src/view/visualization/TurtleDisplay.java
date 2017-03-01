@@ -5,6 +5,7 @@ import utils.Point;
 import java.awt.Dimension;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.geometry.Insets;
 import javafx.scene.Group;
 import javafx.scene.Node;
@@ -49,8 +50,8 @@ public class TurtleDisplay extends Group {
 		this.createTurtle();
 	}
 	
-	public boolean hasMovingTurtles() {
-		return myTurtle.isMoving();
+	public SimpleBooleanProperty isTurtleMovingProperty() {
+		return myTurtle.isMovingProperty();
 	}
 
 	public double getWidth() {
@@ -79,7 +80,7 @@ public class TurtleDisplay extends Group {
 	 * @param point
 	 */
 	public void moveTurtle(Point destination) {
-		if(myTurtle.isMoving()) {
+		if(myTurtle.isMovingProperty().get()) {
 			myTurtle.addFutureDestination(destination);
 		} else {
 			myTurtle.setDestination(destination, myLineLength);
@@ -89,7 +90,7 @@ public class TurtleDisplay extends Group {
 		
 		//TODO: remove this to make animation work
 		if(!isAnimated) {
-			while(myTurtle.isMoving()) {
+			while(myTurtle.isMovingProperty().get()) {
 				myTurtle.updateMovement();
 			}
 			myAnimation.pause();
@@ -181,7 +182,7 @@ public class TurtleDisplay extends Group {
 	}
 
 	private void stepAnimation() {
-		if (myTurtle.isMoving()) {
+		if (myTurtle.isMovingProperty().get()) {
 			myTurtle.updateMovement();
 		} else {
 			myAnimation.pause();

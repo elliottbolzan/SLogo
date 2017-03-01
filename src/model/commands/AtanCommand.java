@@ -13,4 +13,9 @@ public class AtanCommand extends MathCommand {
 	public double execute(double[] parameters, Turtle myTurtle, Controller view) {
 		return Math.atan(parameters[0]);
 	}
+	
+	@Override
+	public int numParameters() {
+		return 1;
+	}
 }

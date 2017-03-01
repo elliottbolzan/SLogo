@@ -13,4 +13,9 @@ public class RightCommand extends TurtleCommand {
 		view.turn(-parameters[0]);
 		return parameters[0];
 	}
+	
+	@Override
+	public int numParameters() {
+		return 1;
+	}
 }

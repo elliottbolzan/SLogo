@@ -13,4 +13,9 @@ public class NotCommand extends LogicCommand {
 	public double execute(double[] parameters, Turtle myTurtle, Controller view) {
 		return super.booleanToInt(parameters[0] == 0);
 	}
+	
+	@Override
+	public int numParameters() {
+		return 1;
+	}
 }

@@ -14,4 +14,8 @@ public class AndCommand extends LogicCommand {
 		return super.booleanToInt((parameters[0] != 0) && (parameters[1] != 0));
 	}
 
+	@Override
+	public int numParameters() {
+		return 2;
+	}
 }

@@ -5,6 +5,7 @@ import utils.Point;
 import java.util.LinkedList;
 import java.util.Queue;
 
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.scene.Group;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -24,6 +25,7 @@ public class Turtle extends Group {
 	private Color myPenColor;
 	private double myPenWidth;
 
+	private SimpleBooleanProperty isMovingProperty;
 	private int myStepsRemaining;
 	private Point myStepSize;
 
@@ -40,6 +42,7 @@ public class Turtle extends Group {
 		this.setLocation(new Point(0, 0));
 		myFutureDestinations = new LinkedList<Point>();
 		this.setRotation(90.0);
+		isMovingProperty = new SimpleBooleanProperty(false);
 	}
 
 	public Point getLocation() {
@@ -58,8 +61,8 @@ public class Turtle extends Group {
 		return myPenColor;
 	}
 
-	protected boolean isMoving() {
-		return (myStepsRemaining > 0);
+	protected SimpleBooleanProperty isMovingProperty() {
+		return isMovingProperty;
 	}
 	
 	protected void setImage(String url) {
@@ -85,6 +88,7 @@ public class Turtle extends Group {
 	}
 	
 	protected void setDestination(Point destination, double speed) {
+		isMovingProperty.set(true);
 		double distX = destination.getX() - myLocation.getX();
 		double distY = destination.getY() - myLocation.getY();
 		double stepsToDestination = getNumStepsAlongPath(distX, distY, speed);
@@ -99,13 +103,16 @@ public class Turtle extends Group {
 		if (myStepsRemaining > 0) {
 			this.stepTowardsDestination();
 			myStepsRemaining--;
-		} 
+		} else {
+			isMovingProperty.set(false);
+		}
 
 		if (!isInBounds(myLocation)) {
 			this.setLocation(this.wrap(myLocation));
 		}
 	}
 
+	
 	protected void addFutureDestination(Point destination) {
 		myFutureDestinations.add(destination);
 	}
