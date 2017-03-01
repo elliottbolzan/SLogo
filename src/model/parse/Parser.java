@@ -94,7 +94,7 @@ public class Parser implements ParserAPI {
 			double evaluation = toExecute.execute(createArguments(argumentStack, toExecute.numParameters()), controller.getTurtle(), controller);
 			if (!(commandStack.size() == 0)) {
 				argumentStack.push(evaluation);
-				return;
+				continue;
 			}
 			controller.print(Double.toString(evaluation));
 		}
