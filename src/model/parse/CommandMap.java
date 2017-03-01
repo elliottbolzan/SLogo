@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.ResourceBundle;
 import java.util.Set;
 
+import model.MakeVariableCommand;
 import model.commands.*;
 
 public class CommandMap {
