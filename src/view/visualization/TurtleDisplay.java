@@ -3,7 +3,6 @@ package view.visualization;
 import utils.Point;
 
 import java.awt.Dimension;
-
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.geometry.Insets;
@@ -31,12 +30,14 @@ public class TurtleDisplay extends Group {
 	private double myLineLength;
 
 	private Timeline myAnimation;
+	private boolean isAnimated;
 
 	public TurtleDisplay(int width, int height) {
 		this.createDisplayArea(width, height);
 		this.setBackgroundColor(Color.WHITE);
 		this.createTurtle();
 		myLineLength = 1.0;
+		isAnimated = false;
 	}
 
 	public Turtle getTurtle() {
@@ -46,6 +47,10 @@ public class TurtleDisplay extends Group {
 	public void clear() {
 		myDisplayArea.getChildren().clear();
 		this.createTurtle();
+	}
+	
+	public boolean hasMovingTurtles() {
+		return myTurtle.isMoving();
 	}
 
 	public double getWidth() {
@@ -74,9 +79,21 @@ public class TurtleDisplay extends Group {
 	 * @param point
 	 */
 	public void moveTurtle(Point destination) {
-		myTurtle.setDestination(destination, myLineLength);
-		this.recalculateAnimationSpeed(destination);
-		myAnimation.play();
+		if(myTurtle.isMoving()) {
+			myTurtle.addFutureDestination(destination);
+		} else {
+			myTurtle.setDestination(destination, myLineLength);
+			this.recalculateAnimationSpeed(destination);
+			myAnimation.play();
+		}
+		
+		//TODO: remove this to make animation work
+		if(!isAnimated) {
+			while(myTurtle.isMoving()) {
+				myTurtle.updateMovement();
+			}
+			myAnimation.pause();
+		}
 	}
 
 	public void turnTurtle(double degrees) {
@@ -168,6 +185,9 @@ public class TurtleDisplay extends Group {
 			myTurtle.updateMovement();
 		} else {
 			myAnimation.pause();
+			if(myTurtle.hasAnotherDestination()) {
+				this.moveTurtle(myTurtle.pollFutureDestination());
+			}
 		}
 	}
 }
