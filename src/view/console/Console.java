@@ -31,7 +31,7 @@ public class Console extends Group {
 	}
 
 	public void print(String message) {
-		append("\n" + message + "\n" + preamble);
+		append("\n" + message);
 	}
 	
 	public void append(String string) {
@@ -101,9 +101,7 @@ public class Console extends Group {
 			if (!(input.equals(""))) {
 				view.getController().parse(input);
 			}
-			else {
-				append("\n" + preamble);
-			}
+			append("\n" + preamble);
 		}
 		catch (Exception e) {
 			view.showMessage(e.getMessage());
