@@ -1,34 +1,35 @@
+package model;
 
-public abstract class LoopCommand {
+import java.util.ArrayList;
+
+public abstract class LoopCommand extends ControlCommand{
     protected StateStorage s;
     protected String varName;
     protected int start;
     protected int increment;
     protected int end;
     
-    /**
-     * Instantiates a new ForNode
-     */
     public LoopCommand (StateStorage store, String var) {
+    	super(new ArrayList<ControlCommand>());
         s = store;
         varName = var;
     }
     
     @Override
-    protected int getValue() throws IllegalArgumentException, ParseException {
+    protected int getValue(){
         setVariables();
         return runLoops();
     }
     
-    private int runLoops() throws IllegalArgumentException, ParseException {
+    private int runLoops(){
         int lastValue = 0;
-        for(int n = myStart ; n <= myEnd ; n += myIncrement) {
-            myScope.setVariable(myVariable, n);
+        for(int k=start ; k<=end ; k+=increment) {
+            s.setVariable(new Variable(varName, k));
             lastValue = myChildren.get(myChildren.size() - 1).getValue();
         }
         
         return lastValue;
     }
     
-    protected abstract void setVariables() throws IllegalArgumentException, ParseException;
+    protected abstract void setVariables();
 }
