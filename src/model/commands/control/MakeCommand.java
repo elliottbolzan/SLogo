@@ -11,13 +11,14 @@ public class MakeCommand extends ControlCommand {
     }
     
 	@Override
-	public double execute(String cmd, String[] varList, String[] cmdList, double expr, StateStorage s) {
-		s.setCommand(new UserCommand(cmd, varList, cmdList));
+	public double execute() {
+		//s.setCommand(new UserCommand(cmd, varList, cmdList));
 		return 1;
 	}
 
+
 	@Override
-	public int getNumOfArguments() {
+	public int numParameters() {
 		return 2;
 	}
 }
