@@ -3,9 +3,6 @@ package view.visualization;
 import utils.Point;
 
 import java.awt.Dimension;
-import java.util.LinkedList;
-import java.util.Queue;
-
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.geometry.Insets;
@@ -33,12 +30,14 @@ public class TurtleDisplay extends Group {
 	private double myLineLength;
 
 	private Timeline myAnimation;
+	private boolean isAnimated;
 
 	public TurtleDisplay(int width, int height) {
 		this.createDisplayArea(width, height);
 		this.setBackgroundColor(Color.WHITE);
 		this.createTurtle();
 		myLineLength = 1.0;
+		isAnimated = false;
 	}
 
 	public Turtle getTurtle() {
@@ -48,6 +47,10 @@ public class TurtleDisplay extends Group {
 	public void clear() {
 		myDisplayArea.getChildren().clear();
 		this.createTurtle();
+	}
+	
+	public boolean hasMovingTurtles() {
+		return myTurtle.isMoving();
 	}
 
 	public double getWidth() {
@@ -82,6 +85,14 @@ public class TurtleDisplay extends Group {
 			myTurtle.setDestination(destination, myLineLength);
 			this.recalculateAnimationSpeed(destination);
 			myAnimation.play();
+		}
+		
+		//TODO: remove this to make animation work
+		if(!isAnimated) {
+			while(myTurtle.isMoving()) {
+				myTurtle.updateMovement();
+			}
+			myAnimation.pause();
 		}
 	}
 
