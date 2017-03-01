@@ -90,8 +90,11 @@ public class Parser implements ParserAPI {
 			for (int i = 0; i < arrayLength; i++) {
 				boolean isCommand = stringToCommandMap.keySet().contains(s[i]);
 				if (isCommand) {
+					if(!commands.isEmpty() && !arguments.isEmpty() && (stringToCommandMap.get(commands.peek()).numParameters() <= arguments.size())){
+						inputToCommands(commands, arguments);
+					}
 					commands.push(s[i]);
-				}else if(!commands.isEmpty() && !isCommand){
+				} else if (!commands.isEmpty() && !isCommand) {
 					String toPush = checkArgument(s[i]);
 					if (!toPush.equals(ErrorStatement)) {
 						arguments.push(Double.parseDouble(s[i]));
@@ -122,7 +125,7 @@ public class Parser implements ParserAPI {
 
 	private double[] createArguments(Stack<Double> argumentStack, int numberOfParameters) {
 		double[] arguments = new double[numberOfParameters];
-		for (int i = 0; i < numberOfParameters; i++) {
+		for (int i = numberOfParameters - 1; i >= 0; i--) {
 			arguments[i] = argumentStack.pop();
 		}
 		return arguments;
