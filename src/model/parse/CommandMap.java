@@ -4,8 +4,47 @@ import java.util.HashMap;
 import java.util.ResourceBundle;
 import java.util.Set;
 
-import model.MakeVariableCommand;
 import model.commands.*;
+import model.commands.control.MakeVariableCommand;
+import model.commands.logic.AndCommand;
+import model.commands.logic.EqualCommand;
+import model.commands.logic.GreaterCommand;
+import model.commands.logic.LessCommand;
+import model.commands.logic.NotCommand;
+import model.commands.logic.NotEqualCommand;
+import model.commands.logic.OrCommand;
+import model.commands.logic.PenQueryCommand;
+import model.commands.logic.ShowQueryCommand;
+import model.commands.math.AtanCommand;
+import model.commands.math.CosCommand;
+import model.commands.math.DifferenceCommand;
+import model.commands.math.LogCommand;
+import model.commands.math.MinusCommand;
+import model.commands.math.PiCommand;
+import model.commands.math.PowCommand;
+import model.commands.math.ProductCommand;
+import model.commands.math.QuotientCommand;
+import model.commands.math.RandomCommand;
+import model.commands.math.RemainderCommand;
+import model.commands.math.SinCommand;
+import model.commands.math.SumCommand;
+import model.commands.math.TanCommand;
+import model.commands.turtle.BackCommand;
+import model.commands.turtle.ClearScreenCommand;
+import model.commands.turtle.ForwardCommand;
+import model.commands.turtle.HeadingCommand;
+import model.commands.turtle.HideTurtleCommand;
+import model.commands.turtle.HomeCommand;
+import model.commands.turtle.LeftCommand;
+import model.commands.turtle.PenDownCommand;
+import model.commands.turtle.PenUpCommand;
+import model.commands.turtle.RightCommand;
+import model.commands.turtle.SetHeadingCommand;
+import model.commands.turtle.SetXYCommand;
+import model.commands.turtle.ShowTurtleCommand;
+import model.commands.turtle.TowardsCommand;
+import model.commands.turtle.XCorCommand;
+import model.commands.turtle.YCorCommand;
 
 public class CommandMap {
 

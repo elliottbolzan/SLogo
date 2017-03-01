@@ -1,0 +1,23 @@
+package model.commands.turtle;
+
+import controller.Controller;
+import utils.Point;
+import view.visualization.Turtle;
+
+public class BackCommand extends TurtleCommand {
+
+	public BackCommand(int numParameters, String name) {
+		super(numParameters, name);
+	}
+	
+	public double execute(double[] parameters, Turtle myTurtle, Controller view){
+		Point loc = super.endLocation(-1 * parameters[0], myTurtle);
+		view.moveTo(loc);
+		return parameters[0];
+	}
+	
+	@Override
+	public int numParameters() {
+		return 1;
+	}
+}
