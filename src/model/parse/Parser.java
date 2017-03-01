@@ -58,8 +58,7 @@ public class Parser implements ParserAPI {
 	}
 	
 	public ObservableList<Variable> getVariables() {
-		// DO STUFF
-		return FXCollections.emptyObservableList();
+		return stateStorage.getVariables();
 	}
 	
 	public ObservableList<String> getUserDefinedCommands() {
