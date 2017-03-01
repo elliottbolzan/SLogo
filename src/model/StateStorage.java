@@ -5,6 +5,7 @@ import java.util.HashMap;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import model.commands.control.UserCommand;
 
 public class StateStorage {
 
