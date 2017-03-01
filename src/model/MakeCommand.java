@@ -1,18 +1,22 @@
 package model;
 
-import controller.Controller;
-import model.commands.Command;
-import view.visualization.Turtle;
+import java.util.ArrayList;
 
-public class MakeCommand extends UserCommand {
+public class MakeCommand extends ControlCommand {
 	
-	public MakeCommand(String name, String[] varList, String[] cmdList) {
-		super(name, varList, cmdList);
+    public MakeCommand (StateStorage store, String var) {
+    	super(new ArrayList<ControlCommand>());
+    }
+    
+
+	@Override
+	public double execute(String cmd, String[] varList, String[] cmdList, double expr, StateStorage s) {
+		s.setCommand(new UserCommand(cmd, varList, cmdList));
+		return 1;
 	}
 
 	@Override
-	public double execute(String cmd, String[] varList, String[] cmdList, StateStorage s) {
-		s.getCmdList();
-		return 0;
+	public int getNumOfArguments() {
+		return 2;
 	}
 }

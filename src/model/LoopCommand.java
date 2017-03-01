@@ -16,16 +16,16 @@ public abstract class LoopCommand extends ControlCommand{
     }
     
     @Override
-    protected int getValue(){
+    protected double execute(String cmd, String[] varList, String[] cmdList, double expr, StateStorage s){
         setVariables();
-        return runLoops();
+        return runLoops(cmd, varList, cmdList, expr, s);
     }
     
-    private int runLoops(){
+    private double runLoops(String cmd, String[] varList, String[] cmdList, double expr, StateStorage s){
         int lastValue = 0;
         for(int k=start ; k<=end ; k+=increment) {
             s.setVariable(new Variable(varName, k));
-            lastValue = myChildren.get(myChildren.size() - 1).getValue();
+            lastValue = (int) myChildren.get(myChildren.size() - 1).execute(cmd, varList, cmdList, expr, s);
         }
         
         return lastValue;

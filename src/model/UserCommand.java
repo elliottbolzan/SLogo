@@ -15,11 +15,8 @@ public class UserCommand{
 	}
 	
 	public double execute(String cmd, String[] var, String[] cmdList, StateStorage s){
-		//need parser for user created commands
-		for(String cmds: commands){
-			//prase cmds to execute them
-		}
-		return myParameters;
+		s.setCommand(new UserCommand(name, variables, commands));
+		return 1;
 	}
 	
 	public String getName(){

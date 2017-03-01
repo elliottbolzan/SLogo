@@ -13,12 +13,8 @@ public abstract class ControlCommand {
         myChildren = childList;
     }
 
-    public int runAndGetValue(){
-        return getValue();
-    }
-
-    protected abstract int getValue ();
-    public abstract int getNumOfArguments ();
+    protected abstract double execute(String cmd, String[] varList, String[] cmdList, double expr, StateStorage s);
+    public abstract int getNumOfArguments();
     
     public void addChildNode (ControlCommand node) {
         myChildren.add(node);

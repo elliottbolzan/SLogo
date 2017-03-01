@@ -1,12 +1,22 @@
 package model;
 
-import controller.Controller;
-import model.commands.Command;
-import view.visualization.Turtle;
+import java.util.ArrayList;
 
-public class MakeVariableCommand{
-	public double execute(String name, double expr, StateStorage s) {
+public class MakeVariableCommand extends ControlCommand{
+	
+	
+	protected MakeVariableCommand(ArrayList<ControlCommand> childList) {
+		super(childList);
+	}
+
+	@Override
+	public double execute(String name, String[] varList, String[] cmdList, double expr, StateStorage s) {
 		s.setVariable(new Variable(name, expr));
 		return expr;
+	}
+
+	@Override
+	public int getNumOfArguments() {
+		return 2;
 	}
 }
