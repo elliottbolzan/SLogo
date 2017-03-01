@@ -1,13 +1,10 @@
 package model.parse;
-
 import java.util.ArrayList;
 import java.util.Stack;
-
 import controller.Controller;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import model.commands.Command;
-
 /**
  * @author Alexander Zapata This is the class that will take the user-input and 
  *         parse it from a string into a command (or if multiple commands the very last
@@ -19,12 +16,10 @@ public class Parser implements ParserAPI {
 	
 	private Controller controller;
 	private String language = "English";
-
 	private ObservableList<String> historyList;
 	private CommandMap stringToCommandMap;
 	private Stack<String> commands;
 	private Stack<Double> arguments;
-
 	public Parser(Controller c) {
 		controller = c;
 		historyList = FXCollections.observableList(new ArrayList<String>());
@@ -32,7 +27,6 @@ public class Parser implements ParserAPI {
 		commands = new Stack<String>();
 		stringToCommandMap = new CommandMap();
 	}
-
 	public void setLanguage(String language) {
 		this.language = language;
 		stringToCommandMap.updateMap(language);
@@ -41,7 +35,6 @@ public class Parser implements ParserAPI {
 	public String getLanguage() {
 		return language;
 	}
-
 	@Override
 	public void parse(String input) {
 		historyList.add(0, input);
@@ -49,17 +42,14 @@ public class Parser implements ParserAPI {
 		preOrderEvaluation(tokens);
 		inputToCommands(commands, arguments);
 	}
-
 	@Override
 	public ObservableList<String> getHistory() {
 		return historyList;
 	}
-
 	@Override
 	public String getPreviousCommand(int k) {
 		return historyList.get(0);
 	}
-
 	@Override
 	public void addUserDefinedCommand(String newCommand) {
 		/*if (!parseMap.keySet().contains(newCommand)) {
@@ -68,7 +58,6 @@ public class Parser implements ParserAPI {
 		// methods to the ArrayList
 		// in the HashMap. */
 	}
-
 	private void preOrderEvaluation(String[] s) {
 		if (s != null) {
 			int arrayLength = s.length;
@@ -81,7 +70,6 @@ public class Parser implements ParserAPI {
 			}
 		}
 	}
-
 	private void inputToCommands(Stack<String> commandStack, Stack<Double> argumentStack) {
 		int size = commandStack.size();
 		for (int i = 0; i < size; i++) {
