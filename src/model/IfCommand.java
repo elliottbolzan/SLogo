@@ -1,6 +1,7 @@
-package model.commands;
+package model;
 
 import controller.Controller;
+import model.commands.LogicCommand;
 import view.visualization.Turtle;
 
 public class IfCommand extends LogicCommand {
@@ -11,6 +12,6 @@ public class IfCommand extends LogicCommand {
 
 	@Override
 	public double execute(double[] parameters, Turtle myTurtle, Controller view) {
-		return super.checker(parameters[1] != 0);
+		return super.checker(parameters[0] != 0);
 	}
 }
