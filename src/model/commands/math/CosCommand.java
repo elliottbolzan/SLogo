@@ -18,4 +18,9 @@ public class CosCommand extends MathCommand {
 	public int numParameters() {
 		return 1;
 	}
+
+	@Override
+	public double getReturnValue() {
+		return Math.cos(this.getParameterList().get(0));
+	}
 }

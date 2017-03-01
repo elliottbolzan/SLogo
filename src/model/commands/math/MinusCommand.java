@@ -16,6 +16,11 @@ public class MinusCommand extends MathCommand {
 	
 	@Override
 	public int numParameters() {
-		return 2;
+		return 1;
+	}
+
+	@Override
+	public double getReturnValue() {
+		return this.getParameterList().get(0) * -1;
 	}
 }

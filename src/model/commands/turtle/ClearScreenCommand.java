@@ -6,8 +6,8 @@ import view.visualization.Turtle;
 
 public class ClearScreenCommand extends TurtleCommand {
 
-	public ClearScreenCommand(int numParameters, String name) {
-		super(numParameters, name);
+	public ClearScreenCommand() {
+		super();
 	}
 
 	public double execute(double[] parameters, Turtle myTurtle, Controller controller) {
@@ -20,5 +20,16 @@ public class ClearScreenCommand extends TurtleCommand {
 	@Override
 	public int numParameters() {
 		return 0;
+	}
+
+	@Override
+	public double getReturnValue() {
+		return super.distance(this.getController().getTurtle().getLocation(), new Point(0, 0));
+	}
+
+	@Override
+	public void execute() {
+		this.getController().moveTo(new Point(0, 0));
+		this.getController().clearDisplay();
 	}
 }

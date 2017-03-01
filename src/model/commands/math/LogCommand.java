@@ -18,4 +18,9 @@ public class LogCommand extends MathCommand {
 	public int numParameters() {
 		return 1;
 	}
+
+	@Override
+	public double getReturnValue() {
+		return Math.log(this.getParameterList().get(0));
+	}
 }

@@ -18,4 +18,9 @@ public class NotCommand extends LogicCommand {
 	public int numParameters() {
 		return 1;
 	}
+
+	@Override
+	public double getReturnValue() {
+		return super.booleanToInt(this.getParameterList().get(0) == 0);
+	}
 }

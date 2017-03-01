@@ -17,4 +17,9 @@ public class ShowQueryCommand extends LogicCommand {
 	public int numParameters() {
 		return 0;
 	}
+
+	@Override
+	public double getReturnValue() {
+		return super.booleanToInt(this.getController().getTurtle().isVisible());
+	}
 }

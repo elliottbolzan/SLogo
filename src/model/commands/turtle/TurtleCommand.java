@@ -7,7 +7,7 @@ import view.visualization.Turtle;
 
 public abstract class TurtleCommand extends Command {
 
-	protected TurtleCommand(int numParameters, String name) {
+	protected TurtleCommand() {
 		super();
 	}
 

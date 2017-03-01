@@ -1,8 +1,6 @@
 package model.commands.logic;
 
-import controller.Controller;
 import model.commands.Command;
-import view.visualization.Turtle;
 
 public abstract class LogicCommand extends Command {
 
@@ -10,9 +8,12 @@ public abstract class LogicCommand extends Command {
 		super();
 	}
 
-	public abstract double execute(double[] parameters, Turtle myTurtle, Controller controller);
-
 	protected int booleanToInt(boolean input) {
 		return input ? 1 : 0;
+	}
+	
+	@Override
+	public void execute() {
+		//Do nothing to the display
 	}
 }

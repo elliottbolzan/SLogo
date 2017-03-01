@@ -6,8 +6,8 @@ import view.visualization.Turtle;
 
 public class BackCommand extends TurtleCommand {
 
-	public BackCommand(int numParameters, String name) {
-		super(numParameters, name);
+	public BackCommand() {
+		super();
 	}
 	
 	public double execute(double[] parameters, Turtle myTurtle, Controller view){
@@ -19,5 +19,16 @@ public class BackCommand extends TurtleCommand {
 	@Override
 	public int numParameters() {
 		return 1;
+	}
+
+	@Override
+	public double getReturnValue() {
+		return this.getParameterList().get(0);
+	}
+
+	@Override
+	public void execute() {
+		Point loc = super.endLocation(-1 * this.getParameterList().get(0), this.getController().getTurtle());
+		this.getController().moveTo(loc);
 	}
 }

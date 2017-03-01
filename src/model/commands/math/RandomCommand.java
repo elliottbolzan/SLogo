@@ -21,4 +21,9 @@ public class RandomCommand extends MathCommand {
 	public int numParameters() {
 		return 1;
 	}
+
+	@Override
+	public double getReturnValue() {
+		return value.nextInt(this.getParameterList().get(0).intValue());
+	}
 }
