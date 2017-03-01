@@ -58,15 +58,13 @@ public class Parser implements ParserAPI {
 	}
 	
 	public ObservableList<Variable> getVariables() {
+		// DO STUFF
 		return FXCollections.emptyObservableList();
-		// Maybe? Not sure this will update as it should.
-		//return FXCollections.observableArrayList(stateStorage.getVarList().values());
 	}
 	
 	public ObservableList<String> getUserDefinedCommands() {
+		// DO STUFF
 		return FXCollections.emptyObservableList();
-		// Maybe? Not sure this will update as it should.
-		//return FXCollections.observableArrayList(stateStorage.getCmdList().keySet());
 	}
 	
 	@Override
