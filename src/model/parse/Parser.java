@@ -9,6 +9,7 @@ import java.util.AbstractMap.SimpleEntry;
 import controller.Controller;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import model.StateStorage;
 import model.commands.Command;
 /**
  * @author Alexander Zapata This is the class that will take the user-input and
@@ -23,14 +24,16 @@ public class Parser implements ParserAPI {
 	private String type;
 	private String regEx;
 	private String ErrorStatement = "No Matching Commands";
+	private String language = "English";
 
 	private Controller controller;
-	private String language = "English";
+
 	private ObservableList<String> historyList;
 	private CommandMap stringToCommandMap;
 	private Stack<String> commands;
 	private Stack<Double> arguments;
 	private List<Entry<String, Pattern>> mySymbols;
+	private StateStorage stateStorage;
 
 	public Parser(Controller c) {
 		controller = c;
@@ -42,6 +45,7 @@ public class Parser implements ParserAPI {
 		type = "Constant";
 		regEx = ResourceBundle.getBundle(path).getString(type);
 		mySymbols.add(new SimpleEntry<>(type, Pattern.compile(regEx, Pattern.CASE_INSENSITIVE)));
+		stateStorage = new StateStorage();
 	}
 	public void setLanguage(String language) {
 		this.language = language;
@@ -80,7 +84,8 @@ public class Parser implements ParserAPI {
 			for (int i = 0; i < arrayLength; i++) {
 				boolean isCommand = stringToCommandMap.keySet().contains(s[i]);
 				if (isCommand) {
-					if(!commands.isEmpty() && !arguments.isEmpty() && (stringToCommandMap.get(commands.peek()).numParameters() <= arguments.size())){
+					if (!commands.isEmpty() && !arguments.isEmpty()
+							&& (stringToCommandMap.get(commands.peek()).numParameters() <= arguments.size())) {
 						inputToCommands(commands, arguments);
 					}
 					commands.push(s[i]);
@@ -90,6 +95,8 @@ public class Parser implements ParserAPI {
 						arguments.push(Double.parseDouble(s[i]));
 					}
 				}
+				if (checkArgument(s[i]).equals(ErrorStatement) && !isCommand)
+					controller.getView().showMessage(ErrorStatement + " " + s[i]);
 			}
 		}
 	}
@@ -102,13 +109,17 @@ public class Parser implements ParserAPI {
 				commandStack.push(s);
 				continue;
 			}
-			double evaluation = toExecute.execute(createArguments(argumentStack, toExecute.numParameters()),
-					controller.getTurtle(), controller);
-			if (!(commandStack.size() == 0)) {
-				argumentStack.push(evaluation);
-				continue;
+			if ((stringToCommandMap.get(s).numParameters() <= arguments.size())) {
+				double evaluation = toExecute.execute(createArguments(argumentStack, toExecute.numParameters()),
+						controller.getTurtle(), controller);
+				if (!(commandStack.size() == 0)) {
+					argumentStack.push(evaluation);
+					continue;
+				}
+				controller.print(Double.toString(evaluation));
+			} else {
+				commandStack.push(s);
 			}
-			controller.print(Double.toString(evaluation));
 		}
 	}
 
