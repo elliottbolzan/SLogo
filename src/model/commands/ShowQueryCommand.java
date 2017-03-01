@@ -11,7 +11,7 @@ public class ShowQueryCommand extends LogicCommand {
 	
 	//where do i get show boolean?
 	public double execute(double[] parameters, Turtle myTurtle, Controller view){
-		//return super.checker(myTurtle.getPen());
+		//return super.checker(myTurtle.isPenDown());
 		return 0;
 	}
 }

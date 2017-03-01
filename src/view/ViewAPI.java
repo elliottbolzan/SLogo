@@ -21,7 +21,7 @@ public interface ViewAPI {
 	public void setPenDown(boolean down);
 	
 	public void setTurtleVisible(boolean visible);
-	
+		
 	public Turtle getTurtle();
 	
 	public void clearDisplay();

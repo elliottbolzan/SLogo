@@ -43,6 +43,10 @@ public class Turtle extends Group {
 	public double getRotation() {
 		return myRotation;
 	}
+	
+	public boolean isPenDown() {
+		return myPenDown;
+	}
 
 	protected Color getPenColor() {
 		return myPenColor;
