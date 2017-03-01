@@ -10,6 +10,6 @@ public class ShowQueryCommand extends LogicCommand {
 	}
 	
 	public double execute(double[] parameters, Turtle myTurtle, Controller view){
-		return super.checker(myTurtle.isVisible());
+		return super.booleanToInt(myTurtle.isVisible());
 	}
 }

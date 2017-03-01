@@ -8,11 +8,10 @@ public abstract class LogicCommand extends Command {
 	protected LogicCommand(int numParameters, String name) {
 		super(numParameters, name);
 	}
-	
-	public abstract double execute(double[] parameters, Turtle myTurtle, Controller view);
-	
-	protected int checker(boolean input){
-		if(input) return 1;
-		else return 0;
+
+	public abstract double execute(double[] parameters, Turtle myTurtle, Controller controller);
+
+	protected int booleanToInt(boolean input) {
+		return input ? 1 : 0;
 	}
 }
