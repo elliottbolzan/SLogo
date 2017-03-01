@@ -62,8 +62,7 @@ public class Parser implements ParserAPI {
 	}
 	
 	public ObservableList<String> getUserDefinedCommands() {
-		// DO STUFF
-		return FXCollections.emptyObservableList();
+		return stateStorage.getUserDefinedCommands();
 	}
 	
 	@Override
