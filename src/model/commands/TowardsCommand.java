@@ -15,7 +15,7 @@ public class TowardsCommand extends TurtleCommand {
 		double ydiff = parameters[1] - myTurtle.getLocation().getY();
 		double tempd = Math.atan2(ydiff, xdiff);
 		
-		double degrees = parameters[0] - Math.toDegrees(tempd);
+		double degrees = Math.toDegrees(tempd) - myTurtle.getRotation();
 		view.turn(degrees);
 		return degrees;
 	}
