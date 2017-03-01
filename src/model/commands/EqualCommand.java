@@ -11,6 +11,6 @@ public class EqualCommand extends LogicCommand {
 
 	@Override
 	public double execute(double[] parameters, Turtle myTurtle, Controller view) {
-		return super.checker(parameters[0] == parameters[1]);
+		return super.booleanToInt(parameters[0] == parameters[1]);
 	}
 }
