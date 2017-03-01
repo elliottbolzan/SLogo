@@ -2,6 +2,7 @@ package model.parse;
 
 import java.util.HashMap;
 import java.util.ResourceBundle;
+import java.util.Set;
 
 import model.commands.*;
 
@@ -72,6 +73,10 @@ public class CommandMap {
 
 	public Command get(String key) {
 		return stringToCommandMap.get(key);
+	}
+
+	public Set<String> keySet() {
+		return stringToCommandMap.keySet();
 	}
 
 }
