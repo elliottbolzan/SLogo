@@ -1,5 +1,6 @@
 package model.parse;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.ResourceBundle;
@@ -120,8 +121,22 @@ public class Parser implements ParserAPI {
 				continue;
 			}
 			if ((stringToCommandMap.get(s).numParameters() <= arguments.size())) {
-				double evaluation = toExecute.execute(createArguments(argumentStack, toExecute.numParameters()),
-						controller.getTurtle(), controller);
+				//double evaluation = toExecute.execute(createArguments(argumentStack, toExecute.numParameters()),
+				//		controller.getTurtle(), controller);
+				
+				Command newInstance;
+				double evaluation = 0.0;
+			
+				try {
+					newInstance = toExecute.getClass().newInstance();
+					List<Double> params = createArgumentList(argumentStack, toExecute.numParameters());
+					newInstance.initialize(params, controller);
+					evaluation = newInstance.getReturnValue();
+					controller.handleCommand(newInstance);
+				} catch (InstantiationException | IllegalAccessException e) {
+					controller.getView().showMessage("Command not found at runtime.");			
+				}
+				
 				if (!(commandStack.size() == 0)) {
 					argumentStack.push(evaluation);
 					continue;
@@ -139,8 +154,15 @@ public class Parser implements ParserAPI {
 			arguments[i] = argumentStack.pop();
 		}
 		return arguments;
+	}
+	
+	private List<Double> createArgumentList(Stack<Double> argumentStack, int numberOfParameters) {
+		List<Double> arguments = Arrays.asList(new Double[numberOfParameters]);
+		for (int i = numberOfParameters - 1; i >= 0; i--) {
+			arguments.set(i, argumentStack.pop());
+		}
+		return arguments;
 	}	
-
 
 	private boolean match(String text, Pattern regex) {
 		return regex.matcher(text).matches();
