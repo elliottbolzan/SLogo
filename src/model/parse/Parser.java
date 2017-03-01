@@ -10,6 +10,7 @@ import controller.Controller;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import model.StateStorage;
+import model.Variable;
 import model.commands.Command;
 /**
  * @author Alexander Zapata This is the class that will take the user-input and
@@ -55,6 +56,19 @@ public class Parser implements ParserAPI {
 	public String getLanguage() {
 		return language;
 	}
+	
+	public ObservableList<Variable> getVariables() {
+		return FXCollections.emptyObservableList();
+		// Maybe? Not sure this will update as it should.
+		//return FXCollections.observableArrayList(stateStorage.getVarList().values());
+	}
+	
+	public ObservableList<String> getUserDefinedCommands() {
+		return FXCollections.emptyObservableList();
+		// Maybe? Not sure this will update as it should.
+		//return FXCollections.observableArrayList(stateStorage.getCmdList().keySet());
+	}
+	
 	@Override
 	public void parse(String input) {
 		historyList.add(0, input);
