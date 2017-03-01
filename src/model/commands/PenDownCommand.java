@@ -13,4 +13,9 @@ public class PenDownCommand extends TurtleCommand {
 		view.setPenDown(true);
 		return 1;
 	}
+	
+	@Override
+	public int numParameters() {
+		return 0;
+	}
 }

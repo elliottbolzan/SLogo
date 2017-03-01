@@ -16,4 +16,9 @@ public class RandomCommand extends MathCommand {
 	public double execute(double[] parameters, Turtle myTurtle, Controller view) {
 		return value.nextInt((int) parameters[0]);
 	}
+	
+	@Override
+	public int numParameters() {
+		return 1;
+	}
 }

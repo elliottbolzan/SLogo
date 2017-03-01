@@ -13,4 +13,9 @@ public class XCorCommand extends TurtleCommand {
 	public double execute(double[] parameters, Turtle myTurtle, Controller view){
 		return myTurtle.getLocation().getX();
 	}
+	
+	@Override
+	public int numParameters() {
+		return 0;
+	}
 }

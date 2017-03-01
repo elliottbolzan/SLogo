@@ -13,4 +13,9 @@ public class TanCommand extends MathCommand {
 	public double execute(double[] parameters, Turtle myTurtle, Controller view) {
 		return Math.tan(parameters[0]);
 	}
+	
+	@Override
+	public int numParameters() {
+		return 1;
+	}
 }

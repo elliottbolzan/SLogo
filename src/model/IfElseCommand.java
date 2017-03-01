@@ -4,7 +4,7 @@ import controller.Controller;
 import model.commands.LogicCommand;
 import view.visualization.Turtle;
 
-public class IfElseCommand extends LogicCommand {
+public abstract class IfElseCommand extends LogicCommand {
 
 	public IfElseCommand(int numParameters, String name) {
 		super(numParameters, name);

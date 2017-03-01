@@ -5,17 +5,12 @@ import view.visualization.Turtle;
 
 public abstract class Command implements CommandInterface {
 
-	private int myParameters;
-	private String cmdName;
-
-	public Command(int numOfParameters, String name) {
-		myParameters = numOfParameters;
-		cmdName = name;
+	public Command() {
+		
 	}
-
-	public int numParameters() {
-		return myParameters;
-	}
+	
+	//TODO public abstract double execute();
+	//TODO public abstract Command makeCommand(double[] parameters, Turtle myTurtle, Controller controller);
 
 	public abstract double execute(double[] parameters, Turtle myTurtle, Controller controller);
 }

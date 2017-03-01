@@ -13,4 +13,9 @@ public class MinusCommand extends MathCommand {
 	public double execute(double[] parameters, Turtle myTurtle, Controller view) {
 		return parameters[0] * -1;
 	}
+	
+	@Override
+	public int numParameters() {
+		return 2;
+	}
 }

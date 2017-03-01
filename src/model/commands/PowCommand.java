@@ -13,4 +13,9 @@ public class PowCommand extends MathCommand {
 	public double execute(double[] parameters, Turtle myTurtle, Controller view) {
 		return Math.pow(parameters[0], parameters[1]);
 	}
+	
+	@Override
+	public int numParameters() {
+		return 2;
+	}
 }

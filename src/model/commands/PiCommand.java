@@ -13,4 +13,9 @@ public class PiCommand extends MathCommand {
 	public double execute(double[] parameters, Turtle myTurtle, Controller view) {
 		return Math.PI;
 	}
+	
+	@Override
+	public int numParameters() {
+		return 0;
+	}
 }

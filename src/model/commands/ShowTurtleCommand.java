@@ -13,4 +13,9 @@ public class ShowTurtleCommand extends TurtleCommand {
 		view.setTurtleVisible(true);
 		return 1;
 	}
+	
+	@Override
+	public int numParameters() {
+		return 0;
+	}
 }

@@ -1,6 +1,8 @@
 package view;
 
 import java.awt.Dimension;
+
+import model.commands.Command;
 import utils.Point;
 import view.visualization.Turtle;
 
@@ -13,6 +15,8 @@ public interface ViewAPI {
 	public void print(String string);
 	
 	public void clearConsole();
+	
+	public void handleCommand(Command action);
 	
 	public void moveTo(Point point);
 	

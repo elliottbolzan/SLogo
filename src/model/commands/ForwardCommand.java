@@ -15,4 +15,9 @@ public class ForwardCommand extends TurtleCommand {
 		view.moveTo(loc);
 		return parameters[0];
 	}
+	
+	@Override
+	public int numParameters() {
+		return 1;
+	}
 }

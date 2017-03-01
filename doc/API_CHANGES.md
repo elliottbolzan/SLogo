@@ -10,3 +10,5 @@ For now we have decided to handle bounds checking within TurtleDisplay, which me
 
 ##### Change 3: getTurtle
 We decided to add a method to get the turtle object from the front end so that the back end can get the location and rotation of the Turtle. 
+
+##### Change 4: 

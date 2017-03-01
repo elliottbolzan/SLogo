@@ -16,4 +16,9 @@ public class SetXYCommand extends TurtleCommand {
 		view.moveTo(loc);
 		return distance;
 	}
+	
+	@Override
+	public int numParameters() {
+		return 2;
+	}
 }
