@@ -18,5 +18,4 @@ public abstract class Command implements CommandInterface {
 	}
 
 	public abstract double execute(double[] parameters, Turtle myTurtle, Controller controller);
-
 }

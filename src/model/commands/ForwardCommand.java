@@ -5,11 +5,11 @@ import utils.Point;
 import view.visualization.Turtle;
 
 public class ForwardCommand extends TurtleCommand {
-
+	
 	public ForwardCommand(int numParameters, String name) {
 		super(numParameters, name);
 	}
-
+	
 	public double execute(double[] parameters, Turtle myTurtle, Controller view) {
 		Point loc = super.endLocation(parameters[0], myTurtle);
 		view.moveTo(loc);

@@ -9,7 +9,7 @@ public abstract class TurtleCommand extends Command {
 	protected TurtleCommand(int numParameters, String name) {
 		super(numParameters, name);
 	}
-	
+
 	public abstract double execute(double[] parameters, Turtle turtle, Controller view);
 	
     protected Point endLocation(double parameters, Turtle t) {
