@@ -10,7 +10,6 @@ public class PenQueryCommand extends LogicCommand {
 	}
 	
 	public double execute(double[] parameters, Turtle myTurtle, Controller view){
-		//return super.checker(myTurtle.getPen());
-		return 0;
+		return super.checker(myTurtle.isPenDown());
 	}
 }
