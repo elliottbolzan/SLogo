@@ -12,6 +12,6 @@ public class IfCommand extends LogicCommand {
 
 	@Override
 	public double execute(double[] parameters, Turtle myTurtle, Controller view) {
-		return super.checker(parameters[0] != 0);
+		return super.booleanToInt(parameters[0] != 0);
 	}
 }
