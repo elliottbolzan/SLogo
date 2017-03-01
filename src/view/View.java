@@ -114,14 +114,14 @@ public class View implements ViewAPI {
 		if(turtleWindow.getDisplay().isTurtleMovingProperty().get()) {
 			commandQueue.add(action);
 		} else {
-			//TODO: action.execute();
+			action.execute();
 		}
 	}
 	
 	private void dequeCommands() {
 		while (!commandQueue.isEmpty() && 
 			!turtleWindow.getDisplay().isTurtleMovingProperty().get()) {
-			//TODO: commandQueue.poll().execute();
+			commandQueue.poll().execute();
 		}
 	}
 
