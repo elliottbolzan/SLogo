@@ -2,9 +2,8 @@ package model;
 
 import java.util.ArrayList;
 
-public class MakeVariableCommand extends ControlCommand{
-	
-	
+public class MakeVariableCommand extends ControlCommand {
+
 	protected MakeVariableCommand(ArrayList<ControlCommand> childList) {
 		super(childList);
 	}
