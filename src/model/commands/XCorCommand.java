@@ -6,7 +6,7 @@ import view.visualization.Turtle;
 public class XCorCommand extends TurtleCommand {
 
 	public XCorCommand(int numParameters, String name) {
-		super(0, name);
+		super(numParameters, name);
 	}
 	
 	@Override

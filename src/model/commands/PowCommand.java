@@ -6,7 +6,7 @@ import view.visualization.Turtle;
 public class PowCommand extends MathCommand {
 	
 	public PowCommand(int numParameters, String name) {
-		super(1, name);
+		super(numParameters, name);
 	}
 
 	@Override

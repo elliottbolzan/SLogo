@@ -7,7 +7,7 @@ import view.visualization.Turtle;
 public class SetXYCommand extends TurtleCommand {
 
 	public SetXYCommand(int numParameters, String name) {
-		super(2, name);
+		super(numParameters, name);
 	}
 
 	public double execute(double[] parameters, Turtle myTurtle, Controller view) {

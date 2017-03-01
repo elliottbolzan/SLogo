@@ -6,7 +6,7 @@ import view.visualization.Turtle;
 public class OrCommand extends LogicCommand {
 
 	public OrCommand(int numParameters, String name) {
-		super(2, name);
+		super(numParameters, name);
 	}
 
 	@Override

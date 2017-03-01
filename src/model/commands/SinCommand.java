@@ -6,7 +6,7 @@ import view.visualization.Turtle;
 public class SinCommand extends MathCommand {
 	
 	public SinCommand(int numParameters, String name) {
-		super(1, name);
+		super(numParameters, name);
 	}
 
 	@Override

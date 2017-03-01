@@ -6,7 +6,7 @@ import view.visualization.Turtle;
 public class RightCommand extends TurtleCommand {
 
 	public RightCommand(int numParameters, String name) {
-		super(1, name);
+		super(numParameters, name);
 	}
 
 	public double execute(double[] parameters, Turtle myTurtle, Controller view) {

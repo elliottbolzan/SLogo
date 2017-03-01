@@ -6,7 +6,7 @@ import view.visualization.Turtle;
 public class MinusCommand extends MathCommand {
 	
 	public MinusCommand(int numParameters, String name) {
-		super(1, name);
+		super(numParameters, name);
 	}
 
 	@Override

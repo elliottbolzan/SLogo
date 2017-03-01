@@ -8,7 +8,7 @@ public class RandomCommand extends MathCommand {
 	Random value;
 	
 	public RandomCommand(int numParameters, String name) {
-		super(1, name);
+		super(numParameters, name);
 		value = new Random();
 	}
 

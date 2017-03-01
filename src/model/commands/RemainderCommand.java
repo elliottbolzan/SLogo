@@ -6,7 +6,7 @@ import view.visualization.Turtle;
 public class RemainderCommand extends MathCommand {
 	
 	public RemainderCommand(int numParameters, String name) {
-		super(2, name);
+		super(numParameters, name);
 	}
 
 	@Override

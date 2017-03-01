@@ -7,7 +7,7 @@ import view.visualization.Turtle;
 public class ClearScreenCommand extends TurtleCommand {
 
 	public ClearScreenCommand(int numParameters, String name) {
-		super(0, name);
+		super(numParameters, name);
 	}
 
 	public double execute(double[] parameters, Turtle myTurtle, Controller controller) {
