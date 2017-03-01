@@ -3,6 +3,8 @@ package view.visualization;
 import utils.Point;
 
 import java.awt.Dimension;
+import java.util.LinkedList;
+import java.util.Queue;
 
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -74,9 +76,13 @@ public class TurtleDisplay extends Group {
 	 * @param point
 	 */
 	public void moveTurtle(Point destination) {
-		myTurtle.setDestination(destination, myLineLength);
-		this.recalculateAnimationSpeed(destination);
-		myAnimation.play();
+		if(myTurtle.isMoving()) {
+			myTurtle.addFutureDestination(destination);
+		} else {
+			myTurtle.setDestination(destination, myLineLength);
+			this.recalculateAnimationSpeed(destination);
+			myAnimation.play();
+		}
 	}
 
 	public void turnTurtle(double degrees) {
@@ -168,6 +174,9 @@ public class TurtleDisplay extends Group {
 			myTurtle.updateMovement();
 		} else {
 			myAnimation.pause();
+			if(myTurtle.hasAnotherDestination()) {
+				this.moveTurtle(myTurtle.pollFutureDestination());
+			}
 		}
 	}
 }

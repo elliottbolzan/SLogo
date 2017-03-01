@@ -1,6 +1,10 @@
 package view.visualization;
 
 import utils.Point;
+
+import java.util.LinkedList;
+import java.util.Queue;
+
 import javafx.scene.Group;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -14,6 +18,7 @@ public class Turtle extends Group {
 
 	private Point myLocation;
 	private double myRotation;
+	private Queue<Point> myFutureDestinations;
 
 	private boolean myPenDown;
 	private Color myPenColor;
@@ -33,6 +38,7 @@ public class Turtle extends Group {
 		myPenWidth = 1.0;
 
 		this.setLocation(new Point(0, 0));
+		myFutureDestinations = new LinkedList<Point>();
 		this.setRotation(90.0);
 	}
 
@@ -77,7 +83,7 @@ public class Turtle extends Group {
 	private void setPenWidth(double width) {
 		myPenWidth = width;
 	}
-
+	
 	protected void setDestination(Point destination, double speed) {
 		double distX = destination.getX() - myLocation.getX();
 		double distY = destination.getY() - myLocation.getY();
@@ -93,13 +99,25 @@ public class Turtle extends Group {
 		if (myStepsRemaining > 0) {
 			this.stepTowardsDestination();
 			myStepsRemaining--;
-		}
+		} 
 
 		if (!isInBounds(myLocation)) {
 			this.setLocation(this.wrap(myLocation));
 		}
 	}
 
+	protected void addFutureDestination(Point destination) {
+		myFutureDestinations.add(destination);
+	}
+	
+	protected boolean hasAnotherDestination() {
+		return !myFutureDestinations.isEmpty();
+	}
+	
+	protected Point pollFutureDestination() {
+		return myFutureDestinations.poll();
+	}
+	
 	private void setLocation(Point point) {
 		myLocation = point;
 		this.centerImage();
@@ -119,7 +137,7 @@ public class Turtle extends Group {
 		
 		this.setLocation(step);
 	}
-
+	
 	private boolean isInBounds(Point point) {
 		return (point.getX() >= (-myDisplay.getWidth() / 2.0) && point.getX() < (myDisplay.getWidth() / 2.0)
 				&& point.getY() >= (-myDisplay.getHeight() / 2.0) && point.getY() < (myDisplay.getHeight() / 2.0));
