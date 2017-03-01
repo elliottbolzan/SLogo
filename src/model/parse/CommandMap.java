@@ -36,9 +36,9 @@ public class CommandMap {
 		addCommand(myResources.getString("HideTurtle"), new HideTurtleCommand(0, null));
 		addCommand(myResources.getString("Home"), new HomeCommand(0, null));
 		addCommand(myResources.getString("ClearScreen"), new ClearScreenCommand(0, null));
-		addCommand(myResources.getString("XCoordinate"), new XCorCommand(1, null));
-		addCommand(myResources.getString("YCoordinate"), new YCorCommand(1, null));
-		addCommand(myResources.getString("Heading"), new HeadingCommand(1, null));
+		addCommand(myResources.getString("XCoordinate"), new XCorCommand(0, null));
+		addCommand(myResources.getString("YCoordinate"), new YCorCommand(0, null));
+		addCommand(myResources.getString("Heading"), new HeadingCommand(0, null));
 		addCommand(myResources.getString("IsPenDown"), new PenQueryCommand(0, null));
 		addCommand(myResources.getString("IsShowing"), new ShowQueryCommand(0, null));
 		addCommand(myResources.getString("Sum"), new SumCommand(2, null));
@@ -67,6 +67,7 @@ public class CommandMap {
 	private void addCommand(String string, Command command) {
 		String[] names = string.split("[|]");
 		for (String name : names) {
+			name = name.replace("\\", "");
 			stringToCommandMap.put(name, command);
 		}
 	}
