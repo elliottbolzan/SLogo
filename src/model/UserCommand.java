@@ -12,7 +12,7 @@ public class UserCommand{
 		myParameters = cmdList.length;
 	}
 	
-	public int execute(){
+	public double execute(){
 		//need parser for user created commands
 		for(String cmds: commands){
 		}
