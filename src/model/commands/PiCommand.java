@@ -18,4 +18,9 @@ public class PiCommand extends MathCommand {
 	public int numParameters() {
 		return 0;
 	}
+
+	@Override
+	public double getReturnValue() {
+		return Math.PI;
+	}
 }

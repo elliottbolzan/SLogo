@@ -24,22 +24,22 @@ public class CommandMap {
 	}
 	
 	private void createCommands() {
-		addCommand(myResources.getString("Forward"), new ForwardCommand(1, null));
-		addCommand(myResources.getString("Backward"), new BackCommand(1, null));
-		addCommand(myResources.getString("Left"), new LeftCommand(1, null));
-		addCommand(myResources.getString("Right"), new RightCommand(1, null));
-		addCommand(myResources.getString("SetHeading"), new SetHeadingCommand(1, null));
-		addCommand(myResources.getString("SetTowards"), new TowardsCommand(2, null));
-		addCommand(myResources.getString("SetPosition"), new SetXYCommand(2, null));
-		addCommand(myResources.getString("PenDown"), new PenDownCommand(0, null));
-		addCommand(myResources.getString("PenUp"), new PenUpCommand(0, null));
-		addCommand(myResources.getString("ShowTurtle"), new ShowTurtleCommand(0, null));
-		addCommand(myResources.getString("HideTurtle"), new HideTurtleCommand(0, null));
-		addCommand(myResources.getString("Home"), new HomeCommand(0, null));
-		addCommand(myResources.getString("ClearScreen"), new ClearScreenCommand(0, null));
-		addCommand(myResources.getString("XCoordinate"), new XCorCommand(0, null));
-		addCommand(myResources.getString("YCoordinate"), new YCorCommand(0, null));
-		addCommand(myResources.getString("Heading"), new HeadingCommand(0, null));
+		addCommand(myResources.getString("Forward"), new ForwardCommand());
+		addCommand(myResources.getString("Backward"), new BackCommand());
+		addCommand(myResources.getString("Left"), new LeftCommand());
+		addCommand(myResources.getString("Right"), new RightCommand());
+		addCommand(myResources.getString("SetHeading"), new SetHeadingCommand());
+		addCommand(myResources.getString("SetTowards"), new TowardsCommand());
+		addCommand(myResources.getString("SetPosition"), new SetXYCommand());
+		addCommand(myResources.getString("PenDown"), new PenDownCommand());
+		addCommand(myResources.getString("PenUp"), new PenUpCommand());
+		addCommand(myResources.getString("ShowTurtle"), new ShowTurtleCommand());
+		addCommand(myResources.getString("HideTurtle"), new HideTurtleCommand());
+		addCommand(myResources.getString("Home"), new HomeCommand());
+		addCommand(myResources.getString("ClearScreen"), new ClearScreenCommand());
+		addCommand(myResources.getString("XCoordinate"), new XCorCommand());
+		addCommand(myResources.getString("YCoordinate"), new YCorCommand());
+		addCommand(myResources.getString("Heading"), new HeadingCommand());
 		addCommand(myResources.getString("IsPenDown"), new PenQueryCommand(0, null));
 		addCommand(myResources.getString("IsShowing"), new ShowQueryCommand(0, null));
 		addCommand(myResources.getString("Sum"), new SumCommand(2, null));
@@ -47,7 +47,7 @@ public class CommandMap {
 		addCommand(myResources.getString("Product"), new ProductCommand(2, null));
 		addCommand(myResources.getString("Quotient"), new QuotientCommand(2, null));
 		addCommand(myResources.getString("Remainder"), new RemainderCommand(2, null));
-		addCommand(myResources.getString("Minus"), new MinusCommand(2, null));
+		addCommand(myResources.getString("Minus"), new MinusCommand(1, null));
 		addCommand(myResources.getString("Random"), new RandomCommand(1, null));
 		addCommand(myResources.getString("Sine"), new SinCommand(1, null));
 		addCommand(myResources.getString("Cosine"), new CosCommand(1, null));

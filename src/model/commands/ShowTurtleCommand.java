@@ -5,8 +5,8 @@ import view.visualization.Turtle;
 
 public class ShowTurtleCommand extends TurtleCommand {
 
-	public ShowTurtleCommand(int numParameters, String name) {
-		super(numParameters, name);
+	public ShowTurtleCommand() {
+		super();
 	}
 
 	public double execute(double[] parameters, Turtle myTurtle, Controller view){
@@ -17,5 +17,15 @@ public class ShowTurtleCommand extends TurtleCommand {
 	@Override
 	public int numParameters() {
 		return 0;
+	}
+
+	@Override
+	public double getReturnValue() {
+		return 1;
+	}
+
+	@Override
+	public void execute() {
+		this.getController().setTurtleVisible(true);
 	}
 }

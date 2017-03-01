@@ -5,8 +5,8 @@ import view.visualization.Turtle;
 
 public class YCorCommand extends TurtleCommand {
 
-	public YCorCommand(int numParameters, String name) {
-		super(numParameters, name);
+	public YCorCommand() {
+		super();
 	}
 	
 	@Override
@@ -17,5 +17,15 @@ public class YCorCommand extends TurtleCommand {
 	@Override
 	public int numParameters() {
 		return 0;
+	}
+
+	@Override
+	public double getReturnValue() {
+		return this.getController().getTurtle().getLocation().getY();
+	}
+
+	@Override
+	public void execute() {
+		//Do nothing to the display
 	}
 }

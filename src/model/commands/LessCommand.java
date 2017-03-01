@@ -18,4 +18,9 @@ public class LessCommand extends LogicCommand {
 	public int numParameters() {
 		return 2;
 	}
+
+	@Override
+	public double getReturnValue() {
+		return super.booleanToInt(this.getParameterList().get(0) < this.getParameterList().get(1));
+	}
 }

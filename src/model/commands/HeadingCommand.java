@@ -5,8 +5,8 @@ import view.visualization.Turtle;
 
 public class HeadingCommand extends TurtleCommand {
 
-	public HeadingCommand(int numParameters, String name) {
-		super(numParameters, name);
+	public HeadingCommand() {
+		super();
 	}
 
 	public double execute(double[] parameters, Turtle myTurtle, Controller view){
@@ -16,5 +16,15 @@ public class HeadingCommand extends TurtleCommand {
 	@Override
 	public int numParameters() {
 		return 1;
+	}
+
+	@Override
+	public double getReturnValue() {
+		return this.getController().getTurtle().getRotation();
+	}
+
+	@Override
+	public void execute() {
+		//Do nothing to the display
 	}
 }
