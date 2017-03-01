@@ -68,10 +68,6 @@ public class TurtleDisplay extends Group {
 		return myDimensions;
 	}
 
-	public void startAnimation() {
-		myAnimation.play();
-	}
-
 	/**
 	 * This method sets the destination of the turtle.
 	 * 

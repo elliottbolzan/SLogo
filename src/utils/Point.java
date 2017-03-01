@@ -46,4 +46,5 @@ public class Point {
 	public void setY(double y) {
 		myY = y;
 	}
+	
 }
