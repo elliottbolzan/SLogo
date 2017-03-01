@@ -23,8 +23,7 @@ public class Parser implements ParserAPI {
 	private ObservableList<String> historyList;
 	private CommandMap stringToCommandMap;
 	private Stack<String> commands;
-	private Stack<Integer> arguments;
-	private Command currentCommand;
+	private Stack<Double> arguments;
 
 	public Parser(Controller c) {
 		controller = c;
@@ -41,14 +40,6 @@ public class Parser implements ParserAPI {
 	
 	public String getLanguage() {
 		return language;
-	}
-
-	public Command getCurrentCommand() {
-		return currentCommand;
-	}
-
-	public void setCurrentCommand(Command currentCommand) {
-		this.currentCommand = currentCommand;
 	}
 
 	@Override
@@ -85,52 +76,36 @@ public class Parser implements ParserAPI {
 				if (Character.isLetter(s[i].charAt(0))) {
 					commands.push(s[i]);
 				} else if (Character.isDigit(s[i].charAt(0))) {
-					arguments.push(Integer.parseInt(s[i]));
+					arguments.push(Double.parseDouble(s[i]));
 				}
 			}
 		}
 	}
 
-	private ArrayList<Command> inputToCommands(Stack<String> commandStack, Stack<Integer> argumentStack) {
-		ArrayList<Command> actualCommands = new ArrayList<>();
+	private void inputToCommands(Stack<String> commandStack, Stack<Double> argumentStack) {
 		int size = commandStack.size();
 		for (int i = 0; i < size; i++) {
-			String s = new String();
-			s = commandStack.pop();
-			Command toExecute;
-			int evaluation = 0;
-			toExecute = stringToCommandMap.get(s);
-			setCurrentCommand(toExecute);
-			int parameterNumber = toExecute.numParameters();
-			if (argumentStack.size() == 0) {
-				if (parameterNumber == 0) {
-					evaluation = (int) toExecute.execute(new double[0], controller.getTurtle(), controller);
-				}
-				else {
-					commandStack.push(s);
-					continue;
-				}
+			String s = commandStack.pop();
+			Command toExecute = stringToCommandMap.get(s);
+			if (argumentStack.size() == 0 && toExecute.numParameters() != 0) {
+				commandStack.push(s);
+				continue;
 			}
-			if (parameterNumber == 1) {
-				double[] firstArg = new double[1];
-				firstArg[0] = argumentStack.pop();
-				evaluation = (int) toExecute.execute(firstArg, controller.getTurtle(), controller);
-			} else if (parameterNumber == 2) {
-				double[] firstArg = new double[2];
-				firstArg[0] = argumentStack.pop();
-				firstArg[1] = argumentStack.pop();
-				evaluation = (int) toExecute.execute(firstArg, controller.getTurtle(), controller);
-			} else {
-				double[] firstArg = null;
-				evaluation = (int) toExecute.execute(firstArg, controller.getTurtle(), controller);
-			}
+			double evaluation = toExecute.execute(createArguments(argumentStack, toExecute.numParameters()), controller.getTurtle(), controller);
 			if (!(commandStack.size() == 0)) {
 				argumentStack.push(evaluation);
+				return;
 			}
-			else {
-				controller.print(Integer.toString(evaluation));
-			}
+			controller.print(Double.toString(evaluation));
 		}
-		return actualCommands;
 	}
+	
+	private double[] createArguments(Stack<Double> argumentStack, int numberOfParameters) {
+		double[] arguments = new double[numberOfParameters];
+		for (int i = 0; i < numberOfParameters; i++) {
+			arguments[i] = argumentStack.pop();
+		}
+		return arguments;
+	}
+	
 }
