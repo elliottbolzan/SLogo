@@ -82,8 +82,7 @@ public class Parser implements ParserAPI {
 		}
 	}
 
-	private ArrayList<Command> inputToCommands(Stack<String> commandStack, Stack<Double> argumentStack) {
-		ArrayList<Command> actualCommands = new ArrayList<>();
+	private void inputToCommands(Stack<String> commandStack, Stack<Double> argumentStack) {
 		int size = commandStack.size();
 		for (int i = 0; i < size; i++) {
 			String s = commandStack.pop();
@@ -95,12 +94,10 @@ public class Parser implements ParserAPI {
 			double evaluation = toExecute.execute(createArguments(argumentStack, toExecute.numParameters()), controller.getTurtle(), controller);
 			if (!(commandStack.size() == 0)) {
 				argumentStack.push(evaluation);
+				return;
 			}
-			else {
-				controller.print(Double.toString(evaluation));
-			}
+			controller.print(Double.toString(evaluation));
 		}
-		return actualCommands;
 	}
 	
 	private double[] createArguments(Stack<Double> argumentStack, int numberOfParameters) {
