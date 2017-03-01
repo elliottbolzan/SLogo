@@ -1,5 +1,4 @@
 package model.parse;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map.Entry;
@@ -7,12 +6,10 @@ import java.util.ResourceBundle;
 import java.util.Stack;
 import java.util.regex.Pattern;
 import java.util.AbstractMap.SimpleEntry;
-
 import controller.Controller;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import model.commands.Command;
-
 /**
  * @author Alexander Zapata This is the class that will take the user-input and
  *         parse it from a string into a command (or if multiple commands the
@@ -29,7 +26,6 @@ public class Parser implements ParserAPI {
 
 	private Controller controller;
 	private String language = "English";
-
 	private ObservableList<String> historyList;
 	private CommandMap stringToCommandMap;
 	private Stack<String> commands;
@@ -47,7 +43,6 @@ public class Parser implements ParserAPI {
 		regEx = ResourceBundle.getBundle(path).getString(type);
 		mySymbols.add(new SimpleEntry<>(type, Pattern.compile(regEx, Pattern.CASE_INSENSITIVE)));
 	}
-
 	public void setLanguage(String language) {
 		this.language = language;
 		stringToCommandMap.updateMap(language);
@@ -56,7 +51,6 @@ public class Parser implements ParserAPI {
 	public String getLanguage() {
 		return language;
 	}
-
 	@Override
 	public void parse(String input) {
 		historyList.add(0, input);
@@ -64,17 +58,14 @@ public class Parser implements ParserAPI {
 		preOrderEvaluation(tokens);
 		inputToCommands(commands, arguments);
 	}
-
 	@Override
 	public ObservableList<String> getHistory() {
 		return historyList;
 	}
-
 	@Override
 	public String getPreviousCommand(int k) {
 		return historyList.get(0);
 	}
-
 	@Override
 	public void addUserDefinedCommand(String newCommand) {
 		/*
@@ -83,7 +74,6 @@ public class Parser implements ParserAPI {
 		 * ArrayList // in the HashMap.
 		 */
 	}
-
 	private void preOrderEvaluation(String[] s) {
 		if (s != null) {
 			int arrayLength = s.length;
@@ -103,7 +93,6 @@ public class Parser implements ParserAPI {
 			}
 		}
 	}
-
 	private void inputToCommands(Stack<String> commandStack, Stack<Double> argumentStack) {
 		int size = commandStack.size();
 		for (int i = 0; i < size; i++) {
@@ -129,7 +118,8 @@ public class Parser implements ParserAPI {
 			arguments[i] = argumentStack.pop();
 		}
 		return arguments;
-	}
+	}	
+
 
 	private boolean match(String text, Pattern regex) {
 		return regex.matcher(text).matches();

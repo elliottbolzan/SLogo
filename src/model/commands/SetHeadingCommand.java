@@ -10,7 +10,7 @@ public class SetHeadingCommand extends TurtleCommand {
 	}
 	
 	public double execute(double[] parameters, Turtle myTurtle, Controller view){
-		double degrees = parameters[0] - myTurtle.getRotation() ;
+		double degrees = parameters[0] - myTurtle.getRotation();
 		view.turn(degrees);
 		return degrees;
 	}
