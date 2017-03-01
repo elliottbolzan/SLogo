@@ -5,8 +5,8 @@ import view.visualization.Turtle;
 
 public class PenDownCommand extends TurtleCommand {
 
-	public PenDownCommand(int numParameters, String name) {
-		super(numParameters, name);
+	public PenDownCommand() {
+		super();
 	}
 	
 	public double execute(double[] parameters, Turtle myTurtle, Controller view){
@@ -17,5 +17,15 @@ public class PenDownCommand extends TurtleCommand {
 	@Override
 	public int numParameters() {
 		return 0;
+	}
+
+	@Override
+	public double getReturnValue() {
+		return 1;
+	}
+
+	@Override
+	public void execute() {
+		this.getController().setPenDown(true);
 	}
 }

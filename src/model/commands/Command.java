@@ -1,16 +1,28 @@
 package model.commands;
 
+import java.util.List;
+
 import controller.Controller;
-import view.visualization.Turtle;
 
 public abstract class Command implements CommandInterface {
 
+	private Controller myController;
+	private List<Double> myParameters;
+	
 	public Command() {
 		
 	}
 	
-	//TODO public abstract double execute();
-	//TODO public abstract Command makeCommand(double[] parameters, Turtle myTurtle, Controller controller);
-
-	public abstract double execute(double[] parameters, Turtle myTurtle, Controller controller);
+	public void initialize(List<Double> params, Controller control) {
+		myController = control;
+		myParameters = params;
+	}
+	
+	protected Controller getController() {
+		return myController;
+	}
+	
+	protected List<Double> getParameterList() {
+		return myParameters;
+	}
 }

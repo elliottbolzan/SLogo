@@ -6,8 +6,8 @@ import view.visualization.Turtle;
 
 public class SetXYCommand extends TurtleCommand {
 
-	public SetXYCommand(int numParameters, String name) {
-		super(numParameters, name);
+	public SetXYCommand() {
+		super();
 	}
 
 	public double execute(double[] parameters, Turtle myTurtle, Controller view) {
@@ -20,5 +20,16 @@ public class SetXYCommand extends TurtleCommand {
 	@Override
 	public int numParameters() {
 		return 2;
+	}
+
+	@Override
+	public double getReturnValue() {
+		return super.distance(new double[] {this.getParameterList().get(0), this.getParameterList().get(1)}, this.getController().getTurtle());
+	}
+
+	@Override
+	public void execute() {
+		Point loc = new Point(this.getParameterList().get(0), this.getParameterList().get(1));
+		this.getController().moveTo(loc);
 	}
 }

@@ -18,4 +18,9 @@ public class TanCommand extends MathCommand {
 	public int numParameters() {
 		return 1;
 	}
+
+	@Override
+	public double getReturnValue() {
+		return Math.tan(this.getParameterList().get(0));
+	}
 }
