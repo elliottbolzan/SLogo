@@ -11,9 +11,11 @@ public class StateStorage {
 	private HashMap<String, UserCommand> cmdList;
 
 	private ObservableList<Variable> variables;
+	private ObservableList<String> userDefinedCommandNames;
 
 	public StateStorage() {
 		variables = FXCollections.observableArrayList(new ArrayList<Variable>());
+		userDefinedCommandNames = FXCollections.observableArrayList(new ArrayList<String>());
 		cmdList = new HashMap<String, UserCommand>();
 	}
 
@@ -26,6 +28,7 @@ public class StateStorage {
 	}
 
 	public void setCommand(UserCommand cmd) {
+		userDefinedCommandNames.add(cmd.getName());
 		cmdList.put(cmd.getName(), cmd);
 	}
 
@@ -33,6 +36,10 @@ public class StateStorage {
 		return variables;
 	}
 
+	public ObservableList<String> getUserDefinedCommands() {
+		return userDefinedCommandNames;
+	}
+	
 	public HashMap<String, UserCommand> getCmdList() {
 		return cmdList;
 	}
