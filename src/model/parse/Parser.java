@@ -2,6 +2,7 @@ package model.parse;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Enumeration;
 import java.util.List;
 import java.util.Map.Entry;
@@ -16,6 +17,7 @@ import model.StateStorage;
 import model.Variable;
 import model.commands.Command;
 import model.commands.control.MakeVariableCommand;
+import model.commands.control.UserCommand;
 
 /**
  * @author Alexander Zapata This is the class that will take the user-input and
@@ -40,8 +42,9 @@ public class Parser implements ParserAPI {
 
 	private ObservableList<String> historyList;
 	private CommandMap stringToCommandMap;
-	private Stack<String> commands;
+	private Stack<Command> commands;
 	private Stack<Double> arguments;
+	private Stack<String> variables;
 	private Stack<String> text;
 	private List<Entry<String, Pattern>> mySymbols;
 	private StateStorage stateStorage;
@@ -51,7 +54,8 @@ public class Parser implements ParserAPI {
 		historyList = FXCollections.observableList(new ArrayList<String>());
 		this.createPatternMap();
 		arguments = new Stack<Double>();
-		commands = new Stack<String>();
+		commands = new Stack<Command>();
+		variables = new Stack<String>();
 		text = new Stack<String>();
 		stringToCommandMap = new CommandMap();
 		stateStorage = new StateStorage();
@@ -130,18 +134,24 @@ public class Parser implements ParserAPI {
 				} else if (isConstant(token)) {
 					this.addArgumentAsDouble(token);
 				} else if (isVariable(token)) {
-					int varIndex = stateStorage.getVariableIndex(new Variable(token.replaceAll("[:]", ""), 0.0));
+					int varIndex = stateStorage.getVariableIndex(new Variable(token, 0.0));
 					if (varIndex != -1) {
 						Variable var = stateStorage.getVariables().get(varIndex);
 						this.addArgumentAsDouble(var.getValue());
 					}
+					variables.push(token);
 				} else if (isText(token)) {
 					if (isBuiltInCommand(token)) {
-						if (!commands.isEmpty()
-								&& (stringToCommandMap.get(commands.peek()).numParameters() <= arguments.size())) {
+						if (!commands.isEmpty() && (commands.peek().numParameters() <= arguments.size())) {
 							mostRecentReturnValue = inputToCommands(commands, arguments);
 						}
-						commands.push(token);
+						commands.push(stringToCommandMap.get(token));
+					} else if (stateStorage.getCmdList().containsKey(token)) {
+						if (!commands.isEmpty()
+								&& (stateStorage.getCmdList().get(token).numParameters() <= arguments.size())) {
+							mostRecentReturnValue = inputToCommands(commands, arguments);
+						}
+						commands.push(stateStorage.getCmdList().get(token));
 					} else {
 						text.push(token);
 					}
@@ -153,28 +163,31 @@ public class Parser implements ParserAPI {
 		return mostRecentReturnValue;
 	}
 
-	private double inputToCommands(Stack<String> commandStack, Stack<Double> argumentStack) {
+	private double inputToCommands(Stack<Command> commandStack, Stack<Double> argumentStack) {
 		double result = 0.0;
 		int size = commandStack.size();
 		for (int i = 0; i < size; i++) {
-			String s = commandStack.pop();
-			Command toExecute = stringToCommandMap.get(s);
+			Command toExecute = commandStack.pop();
 			if (argumentStack.size() == 0 && toExecute.numParameters() != 0) {
-				commandStack.push(s);
+				commandStack.push(toExecute);
 				continue;
 			}
-			if ((stringToCommandMap.get(s).numParameters() <= arguments.size())) {
+			if ((toExecute.numParameters() <= arguments.size())) {
 
-				Command newInstance;
+				Command newInstance = toExecute;
 				double evaluation = 0.0;
 
 				try {
-					newInstance = toExecute.getClass().newInstance();
-					List<Double> params = createArgumentList(argumentStack, toExecute.numParameters());
+
+					if (!(toExecute instanceof UserCommand)) {
+						newInstance = toExecute.getClass().newInstance();
+					}
+					
+					List<Double> params = createArgumentList(argumentStack, newInstance.numParameters());
 					newInstance.initialize(params, controller);
 
 					if (newInstance instanceof MakeVariableCommand) {
-						((MakeVariableCommand) newInstance).initialize(text.pop(), stateStorage);
+						((MakeVariableCommand) newInstance).initialize(variables.pop().replace(":", ""), stateStorage);
 					}
 
 					evaluation = newInstance.getReturnValue();
@@ -187,10 +200,12 @@ public class Parser implements ParserAPI {
 					argumentStack.push(evaluation);
 					continue;
 				}
-				controller.print(Double.toString(evaluation));
+				if (!(toExecute instanceof UserCommand)) {
+					controller.print(Double.toString(evaluation));
+				}
 				result = evaluation;
 			} else {
-				commandStack.push(s);
+				commandStack.push(toExecute);
 			}
 		}
 		return result;
@@ -257,29 +272,6 @@ public class Parser implements ParserAPI {
 		return index;
 	}
 
-	private int handleTo(int index, List<String> tokens) {
-		index = index + 1;
-		String expression = "";
-		while (index < tokens.size() && !isListStart(tokens.get(index))) {
-			expression += " " + tokens.get(index);
-			index++;
-		}
-
-		double result = internalParse(expression.trim());
-
-		String commands = "";
-		index = index + 1;
-		while (index < tokens.size() && !isListEnd(tokens.get(index))) {
-			commands += tokens.get(index) + " ";
-			index++;
-		}
-
-		if (result != 0.0) {
-			internalParse(commands.trim());
-		}
-		return index;
-	}
-
 	private int handleIfElse(int index, List<String> tokens) {
 		index = index + 1;
 		String expression = "";
@@ -314,6 +306,44 @@ public class Parser implements ParserAPI {
 		return index;
 	}
 
+	private int handleTo(int index, List<String> tokens) {
+		index = index + 1;
+
+		String expression = tokens.get(index);
+
+		index += 2;
+
+		internalParse(expression.trim());
+
+		// added to text our command name
+
+		while (index < tokens.size() && !isListEnd(tokens.get(index))) {
+			expression += " " + tokens.get(index);
+			index++;
+		}
+		
+		internalParse(expression.trim());
+
+		index = index + 2;
+
+		expression = "";
+
+		while (index < tokens.size() && !isListEnd(tokens.get(index))) {
+			expression += " " + tokens.get(index);
+			index++;
+		}
+		
+		ArrayList<String> variableNames = new ArrayList<String>();
+		for (int i = 0; i < variables.size(); i++) {
+			variableNames.add(variables.pop());
+			i--;
+		}
+		Collections.reverse(variableNames);
+		UserCommand command = new UserCommand(text.pop(), variableNames, expression, stateStorage);
+		
+		return index;
+	}
+		
 	private int handleRepeat(int index, List<String> tokens) {
 		index = index + 1;
 		String expression = "";
