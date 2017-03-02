@@ -93,7 +93,7 @@ public class Controller implements ViewAPI, ModelAPI {
 	}
 	
 	@Override
-	public void parse(String string) {
+	public void parse(String string) throws Exception {
 		model.parse(string);
 	}
 
