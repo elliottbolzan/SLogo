@@ -5,8 +5,8 @@ import view.visualization.Turtle;
 
 public class LogCommand extends MathCommand {
 	
-	public LogCommand(int numParameters, String name) {
-		super(numParameters, name);
+	public LogCommand() {
+		super();
 	}
 
 	@Override

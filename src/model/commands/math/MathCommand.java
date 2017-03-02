@@ -4,7 +4,7 @@ import model.commands.Command;
 
 public abstract class MathCommand extends Command {
 
-	protected MathCommand(int numParameters, String name) {
+	protected MathCommand() {
 		super();
 	}
 	

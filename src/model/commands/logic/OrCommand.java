@@ -5,8 +5,8 @@ import view.visualization.Turtle;
 
 public class OrCommand extends LogicCommand {
 
-	public OrCommand(int numParameters, String name) {
-		super(numParameters, name);
+	public OrCommand() {
+		super();
 	}
 
 	@Override

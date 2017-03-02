@@ -1,6 +1,7 @@
 package model.parse;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Enumeration;
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.ResourceBundle;
@@ -22,11 +23,19 @@ import model.commands.Command;
  */
 public class Parser implements ParserAPI {
 
-	private String path = "resources/languages/Syntax";
-	private String type;
-	private String regEx;
-	private String ErrorStatement = "No Matching Commands";
+	private String syntaxPath = "resources/languages/Syntax";
 	private String language = "English";
+	private String ERROR_MATCH = "No Matching Commands";
+	private String COMMENT_MATCH = "Comment";
+	private String CONSTANT_MATCH = "Constant";
+	private String VARIABLE_MATCH = "Variable";
+	private String COMMAND_MATCH = "Command";
+	private String LIST_START_MATCH = "ListStart";
+	private String LIST_END_MATCH = "ListEnd";
+	private String GROUP_START_MATCH = "GroupStart";
+	private String GROUP_END_MATCH = "GroupEnd";
+	private String WHITESPACE_MATCH = "Whitespace";
+	private String NEWLINE_MATCH = "Newline";
 
 	private Controller controller;
 
@@ -40,15 +49,13 @@ public class Parser implements ParserAPI {
 	public Parser(Controller c) {
 		controller = c;
 		historyList = FXCollections.observableList(new ArrayList<String>());
-		mySymbols = new ArrayList<>();
-		arguments = new Stack<>();
+		this.createPatternMap();
+		arguments = new Stack<Double>();
 		commands = new Stack<String>();
 		stringToCommandMap = new CommandMap();
-		type = "Constant";
-		regEx = ResourceBundle.getBundle(path).getString(type);
-		mySymbols.add(new SimpleEntry<>(type, Pattern.compile(regEx, Pattern.CASE_INSENSITIVE)));
 		stateStorage = new StateStorage();
 	}
+	
 	public void setLanguage(String language) {
 		this.language = language;
 		stringToCommandMap.updateMap(language);
@@ -73,14 +80,17 @@ public class Parser implements ParserAPI {
 		preOrderEvaluation(tokens);
 		inputToCommands(commands, arguments);
 	}
+	
 	@Override
 	public ObservableList<String> getHistory() {
 		return historyList;
 	}
+	
 	@Override
 	public String getPreviousCommand(int k) {
 		return historyList.get(0);
 	}
+	
 	@Override
 	public void addUserDefinedCommand(String newCommand) {
 		/*
@@ -89,28 +99,32 @@ public class Parser implements ParserAPI {
 		 * ArrayList // in the HashMap.
 		 */
 	}
+	
 	private void preOrderEvaluation(String[] s) {
 		if (s != null) {
 			int arrayLength = s.length;
 			for (int i = 0; i < arrayLength; i++) {
-				boolean isCommand = stringToCommandMap.keySet().contains(s[i]);
-				if (isCommand) {
-					if (!commands.isEmpty() && !arguments.isEmpty()
+				String token = s[i];
+				if (isBuiltInCommand(token)) {
+					if (!commands.isEmpty()
 							&& (stringToCommandMap.get(commands.peek()).numParameters() <= arguments.size())) {
 						inputToCommands(commands, arguments);
 					}
-					commands.push(s[i]);
-				} else if (!commands.isEmpty() && !isCommand) {
-					String toPush = checkArgument(s[i]);
-					if (!toPush.equals(ErrorStatement)) {
-						arguments.push(Double.parseDouble(s[i]));
+					commands.push(token);
+				} else if (!commands.isEmpty() && !isBuiltInCommand(token)) {
+					String toPush = checkArgument(token);
+					if (!toPush.equals(ERROR_MATCH)) {
+						arguments.push(Double.parseDouble(token));
 					}
 				}
-				if (checkArgument(s[i]).equals(ErrorStatement) && !isCommand)
-					controller.getView().showMessage(ErrorStatement + " " + s[i]);
+				
+				if (isError(token) && !isBuiltInCommand(token)) {
+					controller.getView().showMessage(ERROR_MATCH + " " + token);
+				}
 			}
 		}
 	}
+	
 	private void inputToCommands(Stack<String> commandStack, Stack<Double> argumentStack) {
 		int size = commandStack.size();
 		for (int i = 0; i < size; i++) {
@@ -148,12 +162,61 @@ public class Parser implements ParserAPI {
 		}
 	}
 
+	/*
 	private double[] createArguments(Stack<Double> argumentStack, int numberOfParameters) {
 		double[] arguments = new double[numberOfParameters];
 		for (int i = numberOfParameters - 1; i >= 0; i--) {
 			arguments[i] = argumentStack.pop();
 		}
 		return arguments;
+	}*/
+	
+	private boolean isBuiltInCommand(String token) {
+		return stringToCommandMap.keySet().contains(token);
+	}
+	
+	private boolean isError(String token) {
+		return checkArgument(token).equals(ERROR_MATCH);
+	}
+	
+	private boolean isComment(String token) {
+		return checkArgument(token).equals(COMMENT_MATCH);
+	}
+	
+	private boolean isConstant(String token) {
+		return checkArgument(token).equals(CONSTANT_MATCH);
+	}
+	
+	private boolean isVariable(String token) {
+		return checkArgument(token).equals(VARIABLE_MATCH);
+	}
+	
+	private boolean isText(String token) {
+		return checkArgument(token).equals(COMMAND_MATCH);
+	}
+	
+	private boolean isListStart(String token) {
+		return checkArgument(token).equals(LIST_START_MATCH);
+	}
+	
+	private boolean isListEnd(String token) {
+		return checkArgument(token).equals(LIST_END_MATCH);
+	}
+	
+	private boolean isGroupStart(String token) {
+		return checkArgument(token).equals(GROUP_START_MATCH);
+	}
+	
+	private boolean isGroupEnd(String token) {
+		return checkArgument(token).equals(GROUP_END_MATCH);
+	}
+	
+	private boolean isWhitespace(String token) {
+		return checkArgument(token).equals(WHITESPACE_MATCH);
+	}
+	
+	private boolean isNewline(String token) {
+		return checkArgument(token).equals(NEWLINE_MATCH);
 	}
 	
 	private List<Double> createArgumentList(Stack<Double> argumentStack, int numberOfParameters) {
@@ -169,7 +232,7 @@ public class Parser implements ParserAPI {
 	}
 
 	private String checkArgument(String text) {
-		final String ERROR = ErrorStatement;
+		final String ERROR = ERROR_MATCH;
 		for (Entry<String, Pattern> e : mySymbols) {
 			if (match(text, e.getValue())) {
 				return e.getKey();
@@ -177,5 +240,15 @@ public class Parser implements ParserAPI {
 		}
 		return ERROR;
 	}
-
+	
+	private void createPatternMap() {
+		ResourceBundle resources = ResourceBundle.getBundle(syntaxPath);
+		Enumeration<String> iter = resources.getKeys();
+		mySymbols = new ArrayList<Entry<String, Pattern>>();
+	    while (iter.hasMoreElements()) {
+            String key = iter.nextElement();
+            String regex = resources.getString(key);
+            mySymbols.add(new SimpleEntry<String, Pattern>(key, Pattern.compile(regex, Pattern.CASE_INSENSITIVE)));
+	    }
+	}
 }

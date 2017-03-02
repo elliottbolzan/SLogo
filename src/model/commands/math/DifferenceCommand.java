@@ -5,8 +5,8 @@ import view.visualization.Turtle;
 
 public class DifferenceCommand extends MathCommand {
 	
-	public DifferenceCommand(int numParameters, String name) {
-		super(numParameters, name);
+	public DifferenceCommand() {
+		super();
 	}
 
 	@Override

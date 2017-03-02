@@ -5,8 +5,8 @@ import view.visualization.Turtle;
 
 public class SumCommand extends MathCommand {
 	
-	public SumCommand(int numParameters, String name) {
-		super(numParameters, name);
+	public SumCommand() {
+		super();
 	}
 
 	@Override
