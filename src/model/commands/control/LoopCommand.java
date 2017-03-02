@@ -5,7 +5,8 @@ import java.util.ArrayList;
 import model.StateStorage;
 import model.Variable;
 
-public abstract class LoopCommand extends ControlCommand {
+/*
+public abstract class LoopCommand extends Command {
 	
 	protected StateStorage s;
 	protected String varName;
@@ -14,7 +15,7 @@ public abstract class LoopCommand extends ControlCommand {
 	protected int end;
 
 	public LoopCommand(StateStorage store, String var) {
-		super(new ArrayList<ControlCommand>());
+		super(new ArrayList<Command>());
 		s = store;
 		varName = var;
 	}
@@ -41,4 +42,4 @@ public abstract class LoopCommand extends ControlCommand {
 
 	protected abstract void setVar();
 	
-}
+}*/

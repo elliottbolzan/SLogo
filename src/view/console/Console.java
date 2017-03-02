@@ -104,7 +104,7 @@ public class Console extends Group {
 			append("\n" + preamble);
 		}
 		catch (Exception e) {
-			view.showMessage(e.getMessage());
+			view.showMessage("Command not found.");
 		}
 	}
 	

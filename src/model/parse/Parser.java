@@ -57,6 +57,10 @@ public class Parser implements ParserAPI {
 	public String getLanguage() {
 		return language;
 	}
+	
+	public StateStorage getStateStorage() {
+		return stateStorage;
+	}
 
 	public ObservableList<Variable> getVariables() {
 		return stateStorage.getVariables();
@@ -82,7 +86,7 @@ public class Parser implements ParserAPI {
 		return historyList.get(0);
 	}
 
-	private double internalParse(String input) throws BadInputException {
+	protected double internalParse(String input) throws BadInputException {
 		double result = 0.0;
 		List<String> tokens = Arrays.asList(input.split("\\s+"));
 		result = preOrderEvaluation(tokens);
@@ -104,15 +108,15 @@ public class Parser implements ParserAPI {
 				String token = tokens.get(i);
 
 				if (token.equals("if")) {
-					i = handleIf(i, tokens);
+					i = (new IfBlockHandler(this)).handleIf(i, tokens);
 				} else if (token.equals("ifelse")) {
-					i = handleIfElse(i, tokens);
+					i = (new IfElseBlockHandler(this)).handleIfElse(i, tokens);
 				} else if (token.equals("repeat")) {
-					i = handleRepeat(i, tokens);
+					i = (new RepeatBlockHandler(this)).handleRepeat(i, tokens);
 				} else if (token.equals("dotimes")) {
-					i = handleDoTimes(i, tokens);
+					i = (new DoTimesHandler(this)).handleDoTimes(i, tokens);
 				} else if (token.equals("for")) {
-					i = handleForLoop(i, tokens);
+					i = (new ForLoopHandler(this)).handleForLoop(i, tokens);
 				} else if (token.equals("to")) {
 					i = handleTo(i, tokens);
 				}
@@ -150,7 +154,7 @@ public class Parser implements ParserAPI {
 		return mostRecentReturnValue;
 	}
 
-	private double inputToCommands(Stack<Command> commandStack, Stack<Double> argumentStack) {
+	private double inputToCommands(Stack<Command> commandStack, Stack<Double> argumentStack) throws BadInputException {
 		double result = 0.0;
 		int size = commandStack.size();
 		for (int i = 0; i < size; i++) {
@@ -182,8 +186,7 @@ public class Parser implements ParserAPI {
 				} catch (InstantiationException | IllegalAccessException e) {
 					controller.getView().showMessage("Command not found at runtime.");
 				} catch (BadInputException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+					throw new BadInputException("Command not found at runtime");
 				}
 
 				if (!(commandStack.size() == 0)) {
@@ -211,63 +214,6 @@ public class Parser implements ParserAPI {
 		return stringToCommandMap.keySet().contains(token);
 	}
 
-	private int handleIf(int index, List<String> tokens) throws BadInputException {
-		index = index + 1;
-		String expression = "";
-		while (index < tokens.size() && !(Identify.determineType(tokens.get(index)) == TokenType.LIST_START)) {
-			expression += " " + tokens.get(index);
-			index++;
-		}
-
-		double result = internalParse(expression.trim());
-
-		String commands = "";
-		index = index + 1;
-		while (index < tokens.size() && !(Identify.determineType(tokens.get(index)) == TokenType.LIST_END)) {
-			commands += tokens.get(index) + " ";
-			index++;
-		}
-
-		if (result != 0.0) {
-			internalParse(commands.trim());
-		}
-		return index;
-	}
-
-	private int handleIfElse(int index, List<String> tokens) throws BadInputException {
-		index = index + 1;
-		String expression = "";
-		while (index < tokens.size() && !(Identify.determineType(tokens.get(index)) == TokenType.LIST_START)) {
-			expression += " " + tokens.get(index);
-			index++;
-		}
-
-		double result = internalParse(expression.trim());
-
-		String commandsTrue = "";
-		index = index + 1;
-		while (index < tokens.size() && !(Identify.determineType(tokens.get(index)) == TokenType.LIST_END)) {
-			commandsTrue += tokens.get(index) + " ";
-			index++;
-		}
-
-		if (result != 0.0) {
-			internalParse(commandsTrue.trim());
-		}
-
-		String commandsFalse = "";
-		index = index + 2;
-		while (index < tokens.size() && !(Identify.determineType(tokens.get(index)) == TokenType.LIST_END)) {
-			commandsFalse += tokens.get(index) + " ";
-			index++;
-		}
-
-		if (result == 0.0) {
-			internalParse(commandsFalse.trim());
-		}
-		return index;
-	}
-
 	private int handleTo(int index, List<String> tokens) throws BadInputException {
 		index = index + 1;
 
@@ -276,8 +222,6 @@ public class Parser implements ParserAPI {
 		index += 2;
 
 		internalParse(expression.trim());
-
-		// added to text our command name
 
 		while (index < tokens.size() && !(Identify.determineType(tokens.get(index)) == TokenType.LIST_END)) {
 			expression += " " + tokens.get(index);
@@ -305,77 +249,6 @@ public class Parser implements ParserAPI {
 
 		return index;
 	}
-		
-	private int handleRepeat(int index, List<String> tokens) throws BadInputException {
-		index = index + 1;
-		String expression = "";
-		while (index < tokens.size() && !(Identify.determineType(tokens.get(index)) == TokenType.LIST_START)) {
-			expression += " " + tokens.get(index);
-			index++;
-		}
-
-		double numRepeats = internalParse(expression.trim());
-
-		String commands = "";
-		index = index + 1;
-		while (index < tokens.size() && !(Identify.determineType(tokens.get(index)) == TokenType.LIST_END)) {
-			commands += tokens.get(index) + " ";
-			index++;
-		}
-
-		for (int k = 1; k <= numRepeats; k++) {
-			stateStorage.setVariable(new Variable("repcount", k));
-			internalParse(commands.trim());
-		}
-		return index;
-	}
-
-	private int handleDoTimes(int index, List<String> tokens) throws BadInputException {
-		index += 2;
-		String variableName = tokens.get(index).replaceAll("[:]", "");
-		int variableIndex = stateStorage.getVariableIndex(new Variable(variableName, 0.0));
-		double variableValue = Double.parseDouble(stateStorage.getVariables().get(variableIndex).getValue());
-
-		index += 1;
-		double limit = Double.parseDouble(tokens.get(index));
-
-		index += 3;
-		String commands = "";
-		while (index < tokens.size() && !(Identify.determineType(tokens.get(index)) == TokenType.LIST_END)) {
-			commands += tokens.get(index) + " ";
-			index++;
-		}
-
-		for (double k = variableValue; k <= limit; k++) {
-			stateStorage.setVariable(new Variable(variableName, k));
-			internalParse(commands.trim());
-		}
-		return index;
-	}
-
-	private int handleForLoop(int index, List<String> tokens) throws BadInputException {
-		index += 2;
-		String variableName = tokens.get(index).replaceAll("[:]", "");
-		index += 1;
-		double variableStart = Double.parseDouble(tokens.get(index));
-		index += 1;
-		double variableEnd = Double.parseDouble(tokens.get(index));
-		index += 1;
-		double variableIncrement = Double.parseDouble(tokens.get(index));
-
-		index += 3;
-		String commands = "";
-		while (index < tokens.size() && !(Identify.determineType(tokens.get(index)) == TokenType.LIST_END)) {
-			commands += tokens.get(index) + " ";
-			index++;
-		}
-
-		for (double k = variableStart; k <= variableEnd; k += variableIncrement) {
-			stateStorage.setVariable(new Variable(variableName, k));
-			internalParse(commands.trim());
-		}
-		return index;
-	}
 
 	private List<Double> createArgumentList(Stack<Double> argumentStack, int numberOfParameters) {
 		List<Double> arguments = Arrays.asList(new Double[numberOfParameters]);
@@ -384,5 +257,4 @@ public class Parser implements ParserAPI {
 		}
 		return arguments;
 	}
-
 }
