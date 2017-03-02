@@ -104,6 +104,7 @@ public class Console extends Group {
 			append("\n" + preamble);
 		}
 		catch (Exception e) {
+			e.printStackTrace();
 			view.showMessage(e.getMessage());
 		}
 	}
