@@ -1,7 +1,7 @@
 package model.commands.control;
 
 import model.StateStorage;
-
+/*
 public class DotimesCommand extends LoopCommand {
 	public DotimesCommand(StateStorage store, String var) {
 		super(store, var);
@@ -19,3 +19,4 @@ public class DotimesCommand extends LoopCommand {
 		return 2;
 	}
 }
+*/
