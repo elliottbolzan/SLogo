@@ -35,8 +35,6 @@ public class Parser implements ParserAPI {
 	private String COMMAND_MATCH = "Command";
 	private String LIST_START_MATCH = "ListStart";
 	private String LIST_END_MATCH = "ListEnd";
-	private String GROUP_START_MATCH = "GroupStart";
-	private String GROUP_END_MATCH = "GroupEnd";
 
 	private Controller controller;
 
@@ -79,9 +77,7 @@ public class Parser implements ParserAPI {
 	@Override
 	public void parse(String input) {
 		historyList.add(0, input);
-		List<String> tokens = Arrays.asList(input.split("\\s+"));
-		preOrderEvaluation(tokens);
-		inputToCommands(commands, arguments);
+		internalParse(input);
 	}
 
 	@Override
@@ -94,16 +90,21 @@ public class Parser implements ParserAPI {
 		return historyList.get(0);
 	}
 
-	@Override
-	public void addUserDefinedCommand(String newCommand) {
-		/*
-		 * if (!parseMap.keySet().contains(newCommand)) { } // Now parse through
-		 * the commands that they use in order to add those // methods to the
-		 * ArrayList // in the HashMap.
-		 */
+	private double internalParse(String input) {
+		double result = 0.0;
+		List<String> tokens = Arrays.asList(input.split("\\s+"));
+		result = preOrderEvaluation(tokens);
+		if (!commands.isEmpty()) {
+			result = inputToCommands(commands, arguments);
+		}
+		return result;
 	}
 
 	private double preOrderEvaluation(List<String> tokens) {
+		if(tokens.size() == 1 && isConstant(tokens.get(0))) {
+			return Double.parseDouble(tokens.get(0));
+		}
+		
 		double mostRecentReturnValue = 0.0;
 		if (tokens != null) {
 			int arrayLength = tokens.size();
@@ -133,6 +134,11 @@ public class Parser implements ParserAPI {
 						preOrderEvaluation(expression);
 						inputToCommands(commands, arguments);
 					}
+				
+				if(token.equals("if")) {
+					i = handleIf(i, tokens);
+				} else if(token.equals("ifelse")) {
+					i = handleIfElse(i, tokens);
 				}
 
 				if (isConstant(token)) {
@@ -153,17 +159,13 @@ public class Parser implements ParserAPI {
 					}
 					else {
 						text.push(token);
-						//i++;
 					}
 				} else if (isListStart(token)) {
 					// Do nothing?
 				} else if (isListEnd(token)) {
 					// Do nothing?
-				} else if (isGroupStart(token)) {
-					// Do nothing?
-				} else if (isGroupEnd(token)) {
-					// Do nothing?
-				} else if (isError(token)) {
+				}
+				} else if(isError(token)) {
 					controller.getView().showMessage(ERROR_MATCH + " " + token);
 				}
 			}
@@ -182,10 +184,6 @@ public class Parser implements ParserAPI {
 				continue;
 			}
 			if ((stringToCommandMap.get(s).numParameters() <= arguments.size())) {
-				// double evaluation =
-				// toExecute.execute(createArguments(argumentStack,
-				// toExecute.numParameters()),
-				// controller.getTurtle(), controller);
 
 				Command newInstance;
 				double evaluation = 0.0;
@@ -217,7 +215,7 @@ public class Parser implements ParserAPI {
 		}
 		return result;
 	}
-	
+
 	private void addArgumentAsDouble(String token) {
 		if (!commands.isEmpty()) {
 			arguments.push(Double.parseDouble(token));
@@ -256,12 +254,61 @@ public class Parser implements ParserAPI {
 		return checkArgument(token).equals(LIST_END_MATCH);
 	}
 
-	private boolean isGroupStart(String token) {
-		return checkArgument(token).equals(GROUP_START_MATCH);
+	private int handleIf(int index, List<String> tokens) {
+		index = index + 1;
+		String expression = "";
+		while (index < tokens.size() && !isListStart(tokens.get(index))) {
+			expression += " " + tokens.get(index);
+			index++;
+		}
+
+		double result = internalParse(expression.trim());
+
+		String commands = "";
+		index = index + 1;
+		while (index < tokens.size() && !isListEnd(tokens.get(index))) {
+			commands += tokens.get(index) + " ";
+			index++;
+		}
+
+		if (result != 0.0) {
+			internalParse(commands.trim());
+		}
+		return index;
 	}
 
-	private boolean isGroupEnd(String token) {
-		return checkArgument(token).equals(GROUP_END_MATCH);
+	private int handleIfElse(int index, List<String> tokens) {
+		index = index + 1;
+		String expression = "";
+		while (index < tokens.size() && !isListStart(tokens.get(index))) {
+			expression += " " + tokens.get(index);
+			index++;
+		}
+
+		double result = internalParse(expression.trim());
+
+		String commandsTrue = "";
+		index = index + 1;
+		while (index < tokens.size() && !isListEnd(tokens.get(index))) {
+			commandsTrue += tokens.get(index) + " ";
+			index++;
+		}
+
+		if (result != 0.0) {
+			internalParse(commandsTrue.trim());
+		}
+
+		String commandsFalse = "";
+		index = index + 2;
+		while (index < tokens.size() && !isListEnd(tokens.get(index))) {
+			commandsFalse += tokens.get(index) + " ";
+			index++;
+		}
+
+		if (result == 0.0) {
+			internalParse(commandsFalse.trim());
+		}
+		return index;
 	}
 
 	private List<Double> createArgumentList(Stack<Double> argumentStack, int numberOfParameters) {
