@@ -1,0 +1,11 @@
+# make a bunch of turtles
+tell [ 1 2 3 4 5 6 7 8 9 10 ]
+
+# line them up at different y-coordinates along the starting line 
+setxy -100 - * 20 id 110
+
+# do these turtles "race" across the screen or
+#    do they all use the same random values and arrive at the same time
+repeat 10 [
+    fd random 30
+]
