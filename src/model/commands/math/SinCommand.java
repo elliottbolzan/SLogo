@@ -8,11 +8,6 @@ public class SinCommand extends MathCommand {
 	public SinCommand() {
 		super();
 	}
-
-	@Override
-	public double execute(double[] parameters, Turtle myTurtle, Controller view) {
-		return Math.sin(parameters[0]);
-	}
 	
 	@Override
 	public int numParameters() {

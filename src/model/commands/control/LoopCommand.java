@@ -29,14 +29,14 @@ public abstract class LoopCommand extends ControlCommand {
 		int previous = 0;
 		for (int k = start; k <= end; k += increment) {
 			s.setVariable(new Variable(varName, k));
-			previous = (int) cmdTree.get(cmdTree.size() - 1).execute();
+			//previous = (int) cmdTree.get(cmdTree.size() - 1).execute();
 		}
 
 		return previous;
 	}
 	
-	protected double getReturnValue() {
-		
+	public double getReturnValue() {
+		return 0;
 	}
 
 	protected abstract void setVar();

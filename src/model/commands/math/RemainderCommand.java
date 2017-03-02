@@ -8,11 +8,6 @@ public class RemainderCommand extends MathCommand {
 	public RemainderCommand() {
 		super();
 	}
-
-	@Override
-	public double execute(double[] parameters, Turtle myTurtle, Controller view) {
-		return parameters[0] % parameters[1];
-	}
 	
 	@Override
 	public int numParameters() {

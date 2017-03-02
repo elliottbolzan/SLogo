@@ -8,11 +8,6 @@ public class LogCommand extends MathCommand {
 	public LogCommand() {
 		super();
 	}
-
-	@Override
-	public double execute(double[] parameters, Turtle myTurtle, Controller view) {
-		return Math.log(parameters[0]);
-	}
 	
 	@Override
 	public int numParameters() {
