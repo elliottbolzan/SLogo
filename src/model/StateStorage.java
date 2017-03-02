@@ -48,7 +48,8 @@ public class StateStorage {
 	public int getVariableIndex(Variable var) {
 		int index = -1;
 		for (Variable existing: variables) {
-			if (existing.getName().equals(var.getName())) {
+			String name = var.getName().replace(":", "");
+			if (existing.getName().equals(name)) {
 				index = variables.indexOf(existing);
 				break;
 			}

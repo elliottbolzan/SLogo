@@ -1,18 +1,13 @@
 package model.commands.control;
 
-import java.util.ArrayList;
-
 import model.StateStorage;
 import model.Variable;
+import model.commands.Command;
 
-public class MakeVariableCommand extends ControlCommand {
+public class MakeVariableCommand extends Command {
 	
 	private String name;
 	private StateStorage stateStorage;
-
-	public MakeVariableCommand() {
-		super(new ArrayList<ControlCommand>());
-	}
 	
 	public void initialize(String name, StateStorage stateStorage) {
 		this.name = name;
