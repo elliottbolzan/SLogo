@@ -285,7 +285,6 @@ public class Parser implements ParserAPI {
 			expression += " " + tokens.get(index);
 			index++;
 		}
-
 		internalParse(expression.trim());
 
 		index = index + 2;
