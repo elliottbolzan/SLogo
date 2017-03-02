@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import model.StateStorage;
 
-public class MakeCommand extends ControlCommand {
+public class MakeCommand extends ControlCommand{
 	
     public MakeCommand (StateStorage store, String var) {
     	super(new ArrayList<ControlCommand>());

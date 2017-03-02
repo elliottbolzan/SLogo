@@ -11,6 +11,7 @@ public abstract class LoopCommand extends ControlCommand{
     protected int start;
     protected int increment;
     protected int end;
+    protected int myValue;
     
     public LoopCommand (StateStorage store, String var) {
     	super(new ArrayList<ControlCommand>());
@@ -19,19 +20,22 @@ public abstract class LoopCommand extends ControlCommand{
     }
     
     @Override
-    protected double execute(){
+	public void execute(){
         setVar();
-        return loop();
+        loop();
     }
     
-    private double loop(){
-        int previous = 0;
+    private void loop(){
+        double previous = 0;
         for(int k=start ; k<=end ; k+=increment) {
             s.setVariable(new Variable(varName, k));
-            previous = (int) cmdTree.get(cmdTree.size() - 1).execute();
+            previous = cmdTree.get(cmdTree.size() - 1).execute();
         }
-        
-        return previous;
+        previous = myValue;
+    }
+    
+    public double getReturnValue(){
+    	return myValue;
     }
     
     protected abstract void setVar();

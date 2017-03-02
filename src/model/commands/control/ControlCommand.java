@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import model.StateStorage;
 import model.commands.Command;
 
-public abstract class ControlCommand{
+public abstract class ControlCommand extends Command{
 
     protected ArrayList<ControlCommand> cmdTree;
 
@@ -15,7 +15,6 @@ public abstract class ControlCommand{
         cmdTree = previousTree;
     }
 
-    protected abstract double execute();
     public abstract int numParameters();
     
     public void addNext(ControlCommand next) {
