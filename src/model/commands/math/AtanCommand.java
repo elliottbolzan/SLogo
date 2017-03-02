@@ -8,11 +8,6 @@ public class AtanCommand extends MathCommand {
 	public AtanCommand() {
 		super();
 	}
-
-	@Override
-	public double execute(double[] parameters, Turtle myTurtle, Controller view) {
-		return Math.atan(parameters[0]);
-	}
 	
 	@Override
 	public int numParameters() {

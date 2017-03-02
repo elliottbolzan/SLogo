@@ -8,11 +8,6 @@ public class CosCommand extends MathCommand {
 	public CosCommand() {
 		super();
 	}
-
-	@Override
-	public double execute(double[] parameters, Turtle myTurtle, Controller view) {
-		return Math.cos(parameters[0]);
-	}
 	
 	@Override
 	public int numParameters() {
