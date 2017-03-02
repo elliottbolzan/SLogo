@@ -90,7 +90,7 @@ public class Parser implements ParserAPI {
 		return historyList.get(0);
 	}
 
-	private double internalParse(String input) {
+	protected double internalParse(String input) {
 		double result = 0.0;
 		List<String> tokens = Arrays.asList(input.split("\\s+"));
 		result = preOrderEvaluation(tokens);
@@ -145,10 +145,6 @@ public class Parser implements ParserAPI {
 					} else {
 						text.push(token);
 					}
-				} else if (isListStart(token)) {
-					// Do nothing?
-				} else if (isListEnd(token)) {
-					// Do nothing?
 				} else if (isError(token)) {
 					controller.getView().showMessage(ERROR_MATCH + " " + token);
 				}
