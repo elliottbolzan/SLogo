@@ -1,16 +1,21 @@
 package model.parse;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
-public class ControlBlockHandler {
+import model.commands.control.UserCommand;
+
+public class IfBlockHandler {
 
 	private Parser myParser;
 	
-	public ControlBlockHandler(Parser parser) {
+	public IfBlockHandler(Parser parser) {
 		myParser = parser;
 	}
 
-	private int handleIf(int index, List<String> tokens) {
+	/*
+	protected int handleIf(int index, List<String> tokens) {
 		index = index + 1;
 		String expression = "";
 		while (index < tokens.size() && !isListStart(tokens.get(index))) {
@@ -31,6 +36,5 @@ public class ControlBlockHandler {
 			myParser.internalParse(commands.trim());
 		}
 		return index;
-	}
-	
+	}*/
 }
