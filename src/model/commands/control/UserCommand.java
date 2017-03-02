@@ -3,41 +3,47 @@ package model.commands.control;
 import java.util.ArrayList;
 
 import model.StateStorage;
+import model.commands.Command;
 
-public class UserCommand extends ControlCommand{
-	protected UserCommand(ArrayList<ControlCommand> previousTree) {
-		super(previousTree);
-	}
-
+public class UserCommand extends Command {
+	
 	private String name;
-	private String[] commands;
-	private String[] variables;
-	private int myParameters;
-
-//	public UserCommand() {
-//		name = cmdName;
-//		commands = cmdList;
-//		variables = varList;
-//
-//		myParameters = cmdList.length;
-//	}
-
-	public double execute(String cmd, String[] var, String[] cmdList, StateStorage s) {
-		//s.setCommand(new UserCommand(name, variables, commands));
-		return 1;
+	private ArrayList<String> variableNames;
+	private String command;
+	private StateStorage storage;
+	
+	public UserCommand(String name, ArrayList<String> variableNames, String command, StateStorage storage) {
+		this.name = name;
+		this.variableNames = variableNames;
+		this.command = command.trim();
+		this.storage = storage;
+		this.storage.setCommand(this);
 	}
+	
+	public UserCommand() {}
+
+	@Override
+	public int numParameters() {
+		return variableNames.size();
+	}
+
+	@Override
+	public double getReturnValue() {
+		return 0;
+	}
+
+	@Override
+	public void execute() {
+		String currentCommand = command;
+		for (String variableName: variableNames) {
+			currentCommand = currentCommand.replaceAll(variableName, getParameterList().get(variableNames.indexOf(variableName)).toString()); 
+		}
+		getController().parse(currentCommand);
+	}
+
 
 	public String getName() {
 		return name;
 	}
-
-	@Override
-	protected double execute() {
-		return 0;
-	}
-
-	@Override
-	public int numParameters() {
-		return 0;
-	}
+	
 }
