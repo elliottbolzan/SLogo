@@ -2,6 +2,9 @@ package model.parse;
 
 import java.util.List;
 
+import model.parse.tokens.Identify;
+import model.parse.tokens.TokenType;
+
 public class IfElseBlockHandler {
 
 	private Parser myParser;
@@ -10,11 +13,10 @@ public class IfElseBlockHandler {
 		myParser = parser;
 	}
 
-	/*
-	protected int handleIfElse(int index, List<String> tokens) {
+	protected int handleIfElse(int index, List<String> tokens) throws Exception {
 		index = index + 1;
 		String expression = "";
-		while (index < tokens.size() && !isListStart(tokens.get(index))) {
+		while (index < tokens.size() && !(Identify.determineType(tokens.get(index)) == TokenType.LIST_START)) {
 			expression += " " + tokens.get(index);
 			index++;
 		}
@@ -23,7 +25,7 @@ public class IfElseBlockHandler {
 
 		String commandsTrue = "";
 		index = index + 1;
-		while (index < tokens.size() && !isListEnd(tokens.get(index))) {
+		while (index < tokens.size() && !(Identify.determineType(tokens.get(index)) == TokenType.LIST_END)) {
 			commandsTrue += tokens.get(index) + " ";
 			index++;
 		}
@@ -34,7 +36,7 @@ public class IfElseBlockHandler {
 
 		String commandsFalse = "";
 		index = index + 2;
-		while (index < tokens.size() && !isListEnd(tokens.get(index))) {
+		while (index < tokens.size() && !(Identify.determineType(tokens.get(index)) == TokenType.LIST_END)) {
 			commandsFalse += tokens.get(index) + " ";
 			index++;
 		}
@@ -43,5 +45,5 @@ public class IfElseBlockHandler {
 			myParser.internalParse(commandsFalse.trim());
 		}
 		return index;
-	}*/
+	}
 }

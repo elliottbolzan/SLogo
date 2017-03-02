@@ -1,10 +1,8 @@
 package model.parse;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
-
-import model.commands.control.UserCommand;
+import model.parse.tokens.TokenType;
+import model.parse.tokens.Identify;
 
 public class IfBlockHandler {
 
@@ -14,11 +12,10 @@ public class IfBlockHandler {
 		myParser = parser;
 	}
 
-	/*
-	protected int handleIf(int index, List<String> tokens) {
+	protected int handleIf(int index, List<String> tokens) throws Exception {
 		index = index + 1;
 		String expression = "";
-		while (index < tokens.size() && !isListStart(tokens.get(index))) {
+		while (index < tokens.size() && !(Identify.determineType(tokens.get(index)) == TokenType.LIST_START)) {
 			expression += " " + tokens.get(index);
 			index++;
 		}
@@ -27,7 +24,7 @@ public class IfBlockHandler {
 
 		String commands = "";
 		index = index + 1;
-		while (index < tokens.size() && !isListEnd(tokens.get(index))) {
+		while (index < tokens.size() && !(Identify.determineType(tokens.get(index)) == TokenType.LIST_END)) {
 			commands += tokens.get(index) + " ";
 			index++;
 		}
@@ -36,5 +33,5 @@ public class IfBlockHandler {
 			myParser.internalParse(commands.trim());
 		}
 		return index;
-	}*/
+	}
 }

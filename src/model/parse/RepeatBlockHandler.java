@@ -3,6 +3,8 @@ package model.parse;
 import java.util.List;
 
 import model.Variable;
+import model.parse.tokens.Identify;
+import model.parse.tokens.TokenType;
 
 public class RepeatBlockHandler {
 
@@ -12,11 +14,10 @@ public class RepeatBlockHandler {
 		myParser = parser;
 	}
 	
-	/*
-	protected int handleRepeat(int index, List<String> tokens) {
+	protected int handleRepeat(int index, List<String> tokens) throws NumberFormatException, Exception {
 		index = index + 1;
 		String expression = "";
-		while (index < tokens.size() && !isListStart(tokens.get(index))) {
+		while (index < tokens.size() && !(Identify.determineType(tokens.get(index)) == TokenType.LIST_START)) {
 			expression += " " + tokens.get(index);
 			index++;
 		}
@@ -25,15 +26,15 @@ public class RepeatBlockHandler {
 
 		String commands = "";
 		index = index + 1;
-		while (index < tokens.size() && !isListEnd(tokens.get(index))) {
+		while (index < tokens.size() && !(Identify.determineType(tokens.get(index)) == TokenType.LIST_END)) {
 			commands += tokens.get(index) + " ";
 			index++;
 		}
 
 		for (int k = 1; k <= numRepeats; k++) {
-			stateStorage.setVariable(new Variable("repcount", k));
+			myParser.getStateStorage().setVariable(new Variable("repcount", k));
 			myParser.internalParse(commands.trim());
 		}
 		return index;
-	}*/
+	}
 }
