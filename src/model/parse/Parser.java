@@ -1,4 +1,5 @@
 package model.parse;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Enumeration;
@@ -14,6 +15,8 @@ import javafx.collections.ObservableList;
 import model.StateStorage;
 import model.Variable;
 import model.commands.Command;
+import model.commands.control.MakeVariableCommand;
+
 /**
  * @author Alexander Zapata This is the class that will take the user-input and
  *         parse it from a string into a command (or if multiple commands the
@@ -35,13 +38,13 @@ public class Parser implements ParserAPI {
 	private String GROUP_START_MATCH = "GroupStart";
 	private String GROUP_END_MATCH = "GroupEnd";
 
-
 	private Controller controller;
 
 	private ObservableList<String> historyList;
 	private CommandMap stringToCommandMap;
 	private Stack<String> commands;
 	private Stack<Double> arguments;
+	private Stack<String> text;
 	private List<Entry<String, Pattern>> mySymbols;
 	private StateStorage stateStorage;
 
@@ -51,10 +54,11 @@ public class Parser implements ParserAPI {
 		this.createPatternMap();
 		arguments = new Stack<Double>();
 		commands = new Stack<String>();
+		text = new Stack<String>();
 		stringToCommandMap = new CommandMap();
 		stateStorage = new StateStorage();
 	}
-	
+
 	public void setLanguage(String language) {
 		this.language = language;
 		stringToCommandMap.updateMap(language);
@@ -63,15 +67,15 @@ public class Parser implements ParserAPI {
 	public String getLanguage() {
 		return language;
 	}
-	
+
 	public ObservableList<Variable> getVariables() {
 		return stateStorage.getVariables();
 	}
-	
+
 	public ObservableList<String> getUserDefinedCommands() {
 		return stateStorage.getUserDefinedCommands();
 	}
-	
+
 	@Override
 	public void parse(String input) {
 		historyList.add(0, input);
@@ -79,17 +83,17 @@ public class Parser implements ParserAPI {
 		preOrderEvaluation(tokens);
 		inputToCommands(commands, arguments);
 	}
-	
+
 	@Override
 	public ObservableList<String> getHistory() {
 		return historyList;
 	}
-	
+
 	@Override
 	public String getPreviousCommand(int k) {
 		return historyList.get(0);
 	}
-	
+
 	@Override
 	public void addUserDefinedCommand(String newCommand) {
 		/*
@@ -98,73 +102,75 @@ public class Parser implements ParserAPI {
 		 * ArrayList // in the HashMap.
 		 */
 	}
-	
+
 	private double preOrderEvaluation(List<String> tokens) {
 		double mostRecentReturnValue = 0.0;
 		if (tokens != null) {
 			int arrayLength = tokens.size();
 			for (int i = 0; i < arrayLength; i++) {
 				String token = tokens.get(i);
-				
-				if(token.equals("if")) {
-					
+
+				if (token.equals("if")) {
+
 					i = i + 1;
 					List<String> expression = new ArrayList<String>();
-					while(i < tokens.size() && !isListStart(tokens.get(i))) {
+					while (i < tokens.size() && !isListStart(tokens.get(i))) {
 						expression.add(tokens.get(i));
 						i++;
 					}
-					
+
 					double result = preOrderEvaluation(expression);
 					result = inputToCommands(commands, arguments);
-					
+
 					expression = new ArrayList<String>();
 					i = i + 1;
-					while(i < tokens.size() && !isListEnd(tokens.get(i))) {
+					while (i < tokens.size() && !isListEnd(tokens.get(i))) {
 						expression.add(tokens.get(i));
 						i++;
 					}
-					
-					if(result != 0.0) {
+
+					if (result != 0.0) {
 						preOrderEvaluation(expression);
 						inputToCommands(commands, arguments);
-					} 
+					}
 				}
-				
-				if(isComment(token)) {
-					//DO NOTHING
-				} else if(isConstant(token)) {
+
+				if (isConstant(token)) {
 					this.addArgumentAsDouble(token);
-				} else if(isVariable(token)) {
-					int varIndex = stateStorage.getVariableIndex(new Variable(token, 0.0));
-					if(varIndex != -1) {
+				} else if (isVariable(token)) {
+					int varIndex = stateStorage.getVariableIndex(new Variable(token.replace(":", ""), 0.0));
+					if (varIndex != -1) {
 						Variable var = stateStorage.getVariables().get(varIndex);
 						this.addArgumentAsDouble(var.getValue());
 					}
-				} else if(isText(token)) {
+				} else if (isText(token)) {
 					if (isBuiltInCommand(token)) {
 						if (!commands.isEmpty()
 								&& (stringToCommandMap.get(commands.peek()).numParameters() <= arguments.size())) {
 							mostRecentReturnValue = inputToCommands(commands, arguments);
 						}
 						commands.push(token);
-					} 
-				} else if(isListStart(token)) {
-					//Do nothing?
-				} else if(isListEnd(token)) {
-					//Do nothing?
-				} else if(isGroupStart(token)) {
-					//Do nothing?
-				} else if(isGroupEnd(token)) {
-					//Do nothing?
-				} else if(isError(token)) {
+					}
+					else {
+						text.push(token);
+						//i++;
+					}
+				} else if (isListStart(token)) {
+					// Do nothing?
+				} else if (isListEnd(token)) {
+					// Do nothing?
+				} else if (isGroupStart(token)) {
+					// Do nothing?
+				} else if (isGroupEnd(token)) {
+					// Do nothing?
+				} else if (isError(token)) {
 					controller.getView().showMessage(ERROR_MATCH + " " + token);
 				}
 			}
 		}
 		return mostRecentReturnValue;
 	}
-	
+
 	private double inputToCommands(Stack<String> commandStack, Stack<Double> argumentStack) {
 		double result = 0.0;
 		int size = commandStack.size();
@@ -176,22 +182,29 @@ public class Parser implements ParserAPI {
 				continue;
 			}
 			if ((stringToCommandMap.get(s).numParameters() <= arguments.size())) {
-				//double evaluation = toExecute.execute(createArguments(argumentStack, toExecute.numParameters()),
-				//		controller.getTurtle(), controller);
-				
+				// double evaluation =
+				// toExecute.execute(createArguments(argumentStack,
+				// toExecute.numParameters()),
+				// controller.getTurtle(), controller);
+
 				Command newInstance;
 				double evaluation = 0.0;
-			
+
 				try {
 					newInstance = toExecute.getClass().newInstance();
 					List<Double> params = createArgumentList(argumentStack, toExecute.numParameters());
 					newInstance.initialize(params, controller);
+
+					if (newInstance instanceof MakeVariableCommand) {
+						((MakeVariableCommand) newInstance).initialize(text.pop(), stateStorage);
+					}
+					
 					evaluation = newInstance.getReturnValue();
 					controller.handleCommand(newInstance);
 				} catch (InstantiationException | IllegalAccessException e) {
-					controller.getView().showMessage("Command not found at runtime.");			
+					controller.getView().showMessage("Command not found at runtime.");
 				}
-				
+
 				if (!(commandStack.size() == 0)) {
 					argumentStack.push(evaluation);
 					continue;
@@ -204,69 +217,60 @@ public class Parser implements ParserAPI {
 		}
 		return result;
 	}
-
-	/*
-	private double[] createArguments(Stack<Double> argumentStack, int numberOfParameters) {
-		double[] arguments = new double[numberOfParameters];
-		for (int i = numberOfParameters - 1; i >= 0; i--) {
-			arguments[i] = argumentStack.pop();
-		}
-		return arguments;
-	}*/
 	
 	private void addArgumentAsDouble(String token) {
-		if(!commands.isEmpty()) {
+		if (!commands.isEmpty()) {
 			arguments.push(Double.parseDouble(token));
 		}
 	}
-	
+
 	private boolean isBuiltInCommand(String token) {
 		return stringToCommandMap.keySet().contains(token);
 	}
-	
+
 	private boolean isError(String token) {
 		return checkArgument(token).equals(ERROR_MATCH);
 	}
-	
+
 	private boolean isComment(String token) {
 		return checkArgument(token).equals(COMMENT_MATCH);
 	}
-	
+
 	private boolean isConstant(String token) {
 		return checkArgument(token).equals(CONSTANT_MATCH);
 	}
-	
+
 	private boolean isVariable(String token) {
 		return checkArgument(token).equals(VARIABLE_MATCH);
 	}
-	
+
 	private boolean isText(String token) {
 		return checkArgument(token).equals(COMMAND_MATCH);
 	}
-	
+
 	private boolean isListStart(String token) {
 		return checkArgument(token).equals(LIST_START_MATCH);
 	}
-	
+
 	private boolean isListEnd(String token) {
 		return checkArgument(token).equals(LIST_END_MATCH);
 	}
-	
+
 	private boolean isGroupStart(String token) {
 		return checkArgument(token).equals(GROUP_START_MATCH);
 	}
-	
+
 	private boolean isGroupEnd(String token) {
 		return checkArgument(token).equals(GROUP_END_MATCH);
 	}
-	
+
 	private List<Double> createArgumentList(Stack<Double> argumentStack, int numberOfParameters) {
 		List<Double> arguments = Arrays.asList(new Double[numberOfParameters]);
 		for (int i = numberOfParameters - 1; i >= 0; i--) {
 			arguments.set(i, argumentStack.pop());
 		}
 		return arguments;
-	}	
+	}
 
 	private boolean match(String text, Pattern regex) {
 		return regex.matcher(text).matches();
@@ -281,15 +285,15 @@ public class Parser implements ParserAPI {
 		}
 		return ERROR;
 	}
-	
+
 	private void createPatternMap() {
 		ResourceBundle resources = ResourceBundle.getBundle(syntaxPath);
 		Enumeration<String> iter = resources.getKeys();
 		mySymbols = new ArrayList<Entry<String, Pattern>>();
-	    while (iter.hasMoreElements()) {
-            String key = iter.nextElement();
-            String regex = resources.getString(key);
-            mySymbols.add(new SimpleEntry<String, Pattern>(key, Pattern.compile(regex, Pattern.CASE_INSENSITIVE)));
-	    }
+		while (iter.hasMoreElements()) {
+			String key = iter.nextElement();
+			String regex = resources.getString(key);
+			mySymbols.add(new SimpleEntry<String, Pattern>(key, Pattern.compile(regex, Pattern.CASE_INSENSITIVE)));
+		}
 	}
 }

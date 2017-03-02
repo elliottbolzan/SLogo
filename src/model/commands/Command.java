@@ -9,10 +9,6 @@ public abstract class Command implements CommandInterface {
 	private Controller myController;
 	private List<Double> myParameters;
 	
-	public Command() {
-		
-	}
-	
 	public void initialize(List<Double> params, Controller control) {
 		myController = control;
 		myParameters = params;
@@ -25,4 +21,5 @@ public abstract class Command implements CommandInterface {
 	protected List<Double> getParameterList() {
 		return myParameters;
 	}
+	
 }
