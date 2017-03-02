@@ -75,7 +75,7 @@ public class Parser implements ParserAPI {
 	@Override
 	public void parse(String input) {
 		historyList.add(0, input);
-		String[] tokens = input.split("\\s+");
+		List<String> tokens = Arrays.asList(input.split("\\s+"));
 		preOrderEvaluation(tokens);
 		inputToCommands(commands, arguments);
 	}
@@ -99,11 +99,37 @@ public class Parser implements ParserAPI {
 		 */
 	}
 	
-	private void preOrderEvaluation(String[] s) {
-		if (s != null) {
-			int arrayLength = s.length;
+	private double preOrderEvaluation(List<String> tokens) {
+		double mostRecentReturnValue = 0.0;
+		if (tokens != null) {
+			int arrayLength = tokens.size();
 			for (int i = 0; i < arrayLength; i++) {
-				String token = s[i];
+				String token = tokens.get(i);
+				
+				if(token.equals("if")) {
+					
+					i = i + 1;
+					List<String> expression = new ArrayList<String>();
+					while(i < tokens.size() && !isListStart(tokens.get(i))) {
+						expression.add(tokens.get(i));
+						i++;
+					}
+					
+					double result = preOrderEvaluation(expression);
+					result = inputToCommands(commands, arguments);
+					
+					expression = new ArrayList<String>();
+					i = i + 1;
+					while(i < tokens.size() && !isListEnd(tokens.get(i))) {
+						expression.add(tokens.get(i));
+						i++;
+					}
+					
+					if(result != 0.0) {
+						preOrderEvaluation(expression);
+						inputToCommands(commands, arguments);
+					} 
+				}
 				
 				if(isComment(token)) {
 					//DO NOTHING
@@ -119,7 +145,7 @@ public class Parser implements ParserAPI {
 					if (isBuiltInCommand(token)) {
 						if (!commands.isEmpty()
 								&& (stringToCommandMap.get(commands.peek()).numParameters() <= arguments.size())) {
-							inputToCommands(commands, arguments);
+							mostRecentReturnValue = inputToCommands(commands, arguments);
 						}
 						commands.push(token);
 					} 
@@ -136,9 +162,11 @@ public class Parser implements ParserAPI {
 				}
 			}
 		}
+		return mostRecentReturnValue;
 	}
 	
-	private void inputToCommands(Stack<String> commandStack, Stack<Double> argumentStack) {
+	private double inputToCommands(Stack<String> commandStack, Stack<Double> argumentStack) {
+		double result = 0.0;
 		int size = commandStack.size();
 		for (int i = 0; i < size; i++) {
 			String s = commandStack.pop();
@@ -169,10 +197,12 @@ public class Parser implements ParserAPI {
 					continue;
 				}
 				controller.print(Double.toString(evaluation));
+				result = evaluation;
 			} else {
 				commandStack.push(s);
 			}
 		}
+		return result;
 	}
 
 	/*
