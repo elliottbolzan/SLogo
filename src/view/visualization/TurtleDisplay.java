@@ -49,7 +49,7 @@ public class TurtleDisplay extends Group {
 		myDisplayArea.getChildren().clear();
 		this.createTurtle();
 	}
-	
+
 	public SimpleBooleanProperty isTurtleMovingProperty() {
 		return myTurtle.isMovingProperty();
 	}
@@ -80,17 +80,17 @@ public class TurtleDisplay extends Group {
 	 * @param point
 	 */
 	public void moveTurtle(Point destination) {
-		if(myTurtle.isMovingProperty().get()) {
+		if (myTurtle.isMovingProperty().get()) {
 			myTurtle.addFutureDestination(destination);
 		} else {
 			myTurtle.setDestination(destination, myLineLength);
 			this.recalculateAnimationSpeed(destination);
 			myAnimation.play();
 		}
-		
-		//TODO: remove this to make animation work
-		if(!isAnimated) {
-			while(myTurtle.isMovingProperty().get()) {
+
+		// TODO: remove this to make animation work
+		if (!isAnimated) {
+			while (myTurtle.isMovingProperty().get()) {
 				myTurtle.updateMovement();
 			}
 			myAnimation.pause();
@@ -186,7 +186,7 @@ public class TurtleDisplay extends Group {
 			myTurtle.updateMovement();
 		} else {
 			myAnimation.pause();
-			if(myTurtle.hasAnotherDestination()) {
+			if (myTurtle.hasAnotherDestination()) {
 				this.moveTurtle(myTurtle.pollFutureDestination());
 			}
 		}
