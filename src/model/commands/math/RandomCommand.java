@@ -7,8 +7,8 @@ import view.visualization.Turtle;
 public class RandomCommand extends MathCommand {
 	Random value;
 	
-	public RandomCommand(int numParameters, String name) {
-		super(numParameters, name);
+	public RandomCommand() {
+		super();
 		value = new Random();
 	}
 

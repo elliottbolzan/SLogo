@@ -5,8 +5,8 @@ import view.visualization.Turtle;
 
 public class LessCommand extends LogicCommand {
 
-	public LessCommand(int numParameters, String name) {
-		super(numParameters, name);
+	public LessCommand() {
+		super();
 	}
 
 	@Override

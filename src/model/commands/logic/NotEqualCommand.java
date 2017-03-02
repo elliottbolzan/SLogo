@@ -5,8 +5,8 @@ import view.visualization.Turtle;
 
 public class NotEqualCommand extends LogicCommand {
 
-	public NotEqualCommand(int numParameters, String name) {
-		super(numParameters, name);
+	public NotEqualCommand() {
+		super();
 	}
 
 	@Override

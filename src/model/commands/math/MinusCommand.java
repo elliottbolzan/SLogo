@@ -5,8 +5,8 @@ import view.visualization.Turtle;
 
 public class MinusCommand extends MathCommand {
 	
-	public MinusCommand(int numParameters, String name) {
-		super(numParameters, name);
+	public MinusCommand() {
+		super();
 	}
 
 	@Override

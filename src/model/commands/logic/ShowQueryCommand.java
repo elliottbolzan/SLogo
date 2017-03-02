@@ -5,8 +5,8 @@ import view.visualization.Turtle;
 
 public class ShowQueryCommand extends LogicCommand {
 
-	public ShowQueryCommand(int numParameters, String name) {
-		super(numParameters, name);
+	public ShowQueryCommand() {
+		super();
 	}
 	
 	public double execute(double[] parameters, Turtle myTurtle, Controller view){

@@ -4,7 +4,7 @@ import model.commands.Command;
 
 public abstract class LogicCommand extends Command {
 
-	protected LogicCommand(int numParameters, String name) {
+	protected LogicCommand() {
 		super();
 	}
 

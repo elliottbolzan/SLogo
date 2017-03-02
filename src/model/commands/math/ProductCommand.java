@@ -5,8 +5,8 @@ import view.visualization.Turtle;
 
 public class ProductCommand extends MathCommand {
 	
-	public ProductCommand(int numParameters, String name) {
-		super(numParameters, name);
+	public ProductCommand() {
+		super();
 	}
 
 	@Override

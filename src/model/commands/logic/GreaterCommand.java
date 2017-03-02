@@ -5,8 +5,8 @@ import view.visualization.Turtle;
 
 public class GreaterCommand extends LogicCommand {
 
-	public GreaterCommand(int numParameters, String name) {
-		super(numParameters, name);
+	public GreaterCommand() {
+		super();
 	}
 
 	@Override

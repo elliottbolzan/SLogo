@@ -5,8 +5,8 @@ import view.visualization.Turtle;
 
 public class AtanCommand extends MathCommand {
 	
-	public AtanCommand(int numParameters, String name) {
-		super(numParameters, name);
+	public AtanCommand() {
+		super();
 	}
 
 	@Override

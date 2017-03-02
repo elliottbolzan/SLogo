@@ -5,8 +5,8 @@ import view.visualization.Turtle;
 
 public class QuotientCommand extends MathCommand {
 	
-	public QuotientCommand(int numParameters, String name) {
-		super(numParameters, name);
+	public QuotientCommand() {
+		super();
 	}
 
 	@Override

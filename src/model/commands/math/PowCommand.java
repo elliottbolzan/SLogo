@@ -5,8 +5,8 @@ import view.visualization.Turtle;
 
 public class PowCommand extends MathCommand {
 	
-	public PowCommand(int numParameters, String name) {
-		super(numParameters, name);
+	public PowCommand() {
+		super();
 	}
 
 	@Override

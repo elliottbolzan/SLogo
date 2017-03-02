@@ -6,8 +6,8 @@ import view.visualization.Turtle;
 
 public abstract class IfCommand extends LogicCommand {
 
-	public IfCommand(int numParameters, String name) {
-		super(numParameters, name);
+	public IfCommand() {
+		super();
 	}
 
 	@Override

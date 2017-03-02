@@ -5,8 +5,8 @@ import view.visualization.Turtle;
 
 public class PiCommand extends MathCommand {
 	
-	public PiCommand(int numParameters, String name) {
-		super(numParameters, name);
+	public PiCommand() {
+		super();
 	}
 
 	@Override
