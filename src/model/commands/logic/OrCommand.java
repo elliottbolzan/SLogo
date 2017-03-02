@@ -8,11 +8,6 @@ public class OrCommand extends LogicCommand {
 	public OrCommand() {
 		super();
 	}
-
-	@Override
-	public double execute(double[] parameters, Turtle myTurtle, Controller view) {
-		return super.booleanToInt((parameters[0] != 0) || (parameters[1] != 0));
-	}
 	
 	@Override
 	public int numParameters() {
