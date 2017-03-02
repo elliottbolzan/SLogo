@@ -126,7 +126,6 @@ public class Parser implements ParserAPI {
 				}
 
 				if(isComment(token)) {
-					System.out.println(i);
 					break;
 				} else if (isConstant(token)) {
 					this.addArgumentAsDouble(token);
