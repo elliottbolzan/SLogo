@@ -3,13 +3,8 @@ package model.parse;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.Enumeration;
 import java.util.List;
-import java.util.Map.Entry;
-import java.util.ResourceBundle;
 import java.util.Stack;
-import java.util.regex.Pattern;
-import java.util.AbstractMap.SimpleEntry;
 import controller.Controller;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -19,6 +14,8 @@ import model.commands.Command;
 import model.commands.control.MakeVariableCommand;
 import model.commands.control.UserCommand;
 import utils.BadInputException;
+import model.parse.tokens.Identify;
+import model.parse.tokens.TokenType;
 
 /**
  * @author Alexander Zapata This is the class that will take the user-input and
@@ -29,16 +26,7 @@ import utils.BadInputException;
  */
 public class Parser implements ParserAPI {
 
-	private String syntaxPath = "resources/languages/Syntax";
 	private String language = "English";
-	private String ERROR_MATCH = "ERROR";
-	private String ErrorMessage = "This is a Bad Input: ";
-	private String COMMENT_MATCH = "Comment";
-	private String CONSTANT_MATCH = "Constant";
-	private String VARIABLE_MATCH = "Variable";
-	private String COMMAND_MATCH = "Command";
-	private String LIST_START_MATCH = "ListStart";
-	private String LIST_END_MATCH = "ListEnd";
 
 	private Controller controller;
 
@@ -48,13 +36,11 @@ public class Parser implements ParserAPI {
 	private Stack<Double> arguments;
 	private Stack<String> variables;
 	private Stack<String> text;
-	private List<Entry<String, Pattern>> mySymbols;
 	private StateStorage stateStorage;
 
 	public Parser(Controller c) {
 		controller = c;
 		historyList = FXCollections.observableList(new ArrayList<String>());
-		this.createPatternMap();
 		arguments = new Stack<Double>();
 		commands = new Stack<Command>();
 		variables = new Stack<String>();
@@ -107,7 +93,7 @@ public class Parser implements ParserAPI {
 	}
 
 	private double preOrderEvaluation(List<String> tokens) throws BadInputException {
-		if (tokens.size() == 1 && isConstant(tokens.get(0))) {
+		if (tokens.size() == 1 && Identify.determineType((tokens.get(0))) == TokenType.CONSTANT) {
 			return Double.parseDouble(tokens.get(0));
 		}
 
@@ -131,19 +117,19 @@ public class Parser implements ParserAPI {
 					i = handleTo(i, tokens);
 				}
 
-				if(isComment(token)) {
-					System.out.println(i);
+				TokenType type = Identify.determineType(token);
+				if (type == TokenType.COMMENT) {
 					break;
-				} else if (isConstant(token)) {
+				} else if (type == TokenType.CONSTANT) {
 					this.addArgumentAsDouble(token);
-				} else if (isVariable(token)) {
+				} else if (type == TokenType.VARIABLE) {
 					int varIndex = stateStorage.getVariableIndex(new Variable(token, 0.0));
 					if (varIndex != -1) {
 						Variable var = stateStorage.getVariables().get(varIndex);
 						this.addArgumentAsDouble(var.getValue());
 					}
 					variables.push(token);
-				} else if (isText(token)) {
+				} else if (type == TokenType.COMMAND) {
 					if (isBuiltInCommand(token)) {
 						if (!commands.isEmpty() && (commands.peek().numParameters() <= arguments.size())) {
 							mostRecentReturnValue = inputToCommands(commands, arguments);
@@ -157,13 +143,7 @@ public class Parser implements ParserAPI {
 						commands.push(stateStorage.getCmdList().get(token));
 					} else{
 						text.push(token);
-					} 
-				} else if (isListStart(token)) {
-					// Do nothing?
-				} else if (isListEnd(token)) {
-					// Do nothing?
-				} else if (isError(token)) {
-					throw new BadInputException(ErrorMessage + token);
+					}
 				}
 			}
 		}
@@ -189,7 +169,7 @@ public class Parser implements ParserAPI {
 					if (!(toExecute instanceof UserCommand)) {
 						newInstance = toExecute.getClass().newInstance();
 					}
-					
+
 					List<Double> params = createArgumentList(argumentStack, newInstance.numParameters());
 					newInstance.initialize(params, controller);
 
@@ -231,38 +211,10 @@ public class Parser implements ParserAPI {
 		return stringToCommandMap.keySet().contains(token);
 	}
 
-	private boolean isError(String token) {
-		return checkArgument(token).equals(ERROR_MATCH);
-	}
-
-	private boolean isComment(String token) {
-		return checkArgument(token).equals(COMMENT_MATCH);
-	}
-
-	private boolean isConstant(String token) {
-		return checkArgument(token).equals(CONSTANT_MATCH);
-	}
-
-	private boolean isVariable(String token) {
-		return checkArgument(token).equals(VARIABLE_MATCH);
-	}
-
-	private boolean isText(String token) {
-		return checkArgument(token).equals(COMMAND_MATCH);
-	}
-
-	private boolean isListStart(String token) {
-		return checkArgument(token).equals(LIST_START_MATCH);
-	}
-
-	private boolean isListEnd(String token) {
-		return checkArgument(token).equals(LIST_END_MATCH);
-	}
-
 	private int handleIf(int index, List<String> tokens) throws BadInputException {
 		index = index + 1;
 		String expression = "";
-		while (index < tokens.size() && !isListStart(tokens.get(index))) {
+		while (index < tokens.size() && !(Identify.determineType(tokens.get(index)) == TokenType.LIST_START)) {
 			expression += " " + tokens.get(index);
 			index++;
 		}
@@ -271,7 +223,7 @@ public class Parser implements ParserAPI {
 
 		String commands = "";
 		index = index + 1;
-		while (index < tokens.size() && !isListEnd(tokens.get(index))) {
+		while (index < tokens.size() && !(Identify.determineType(tokens.get(index)) == TokenType.LIST_END)) {
 			commands += tokens.get(index) + " ";
 			index++;
 		}
@@ -285,7 +237,7 @@ public class Parser implements ParserAPI {
 	private int handleIfElse(int index, List<String> tokens) throws BadInputException {
 		index = index + 1;
 		String expression = "";
-		while (index < tokens.size() && !isListStart(tokens.get(index))) {
+		while (index < tokens.size() && !(Identify.determineType(tokens.get(index)) == TokenType.LIST_START)) {
 			expression += " " + tokens.get(index);
 			index++;
 		}
@@ -294,7 +246,7 @@ public class Parser implements ParserAPI {
 
 		String commandsTrue = "";
 		index = index + 1;
-		while (index < tokens.size() && !isListEnd(tokens.get(index))) {
+		while (index < tokens.size() && !(Identify.determineType(tokens.get(index)) == TokenType.LIST_END)) {
 			commandsTrue += tokens.get(index) + " ";
 			index++;
 		}
@@ -305,7 +257,7 @@ public class Parser implements ParserAPI {
 
 		String commandsFalse = "";
 		index = index + 2;
-		while (index < tokens.size() && !isListEnd(tokens.get(index))) {
+		while (index < tokens.size() && !(Identify.determineType(tokens.get(index)) == TokenType.LIST_END)) {
 			commandsFalse += tokens.get(index) + " ";
 			index++;
 		}
@@ -327,22 +279,22 @@ public class Parser implements ParserAPI {
 
 		// added to text our command name
 
-		while (index < tokens.size() && !isListEnd(tokens.get(index))) {
+		while (index < tokens.size() && !(Identify.determineType(tokens.get(index)) == TokenType.LIST_END)) {
 			expression += " " + tokens.get(index);
 			index++;
 		}
-		
+
 		internalParse(expression.trim());
 
 		index = index + 2;
 
 		expression = "";
 
-		while (index < tokens.size() && !isListEnd(tokens.get(index))) {
+		while (index < tokens.size() && !(Identify.determineType(tokens.get(index)) == TokenType.LIST_END)) {
 			expression += " " + tokens.get(index);
 			index++;
 		}
-		
+
 		ArrayList<String> variableNames = new ArrayList<String>();
 		for (int i = 0; i < variables.size(); i++) {
 			variableNames.add(variables.pop());
@@ -350,14 +302,14 @@ public class Parser implements ParserAPI {
 		}
 		Collections.reverse(variableNames);
 		UserCommand command = new UserCommand(text.pop(), variableNames, expression, stateStorage);
-		
+
 		return index;
 	}
 		
 	private int handleRepeat(int index, List<String> tokens) throws BadInputException {
 		index = index + 1;
 		String expression = "";
-		while (index < tokens.size() && !isListStart(tokens.get(index))) {
+		while (index < tokens.size() && !(Identify.determineType(tokens.get(index)) == TokenType.LIST_START)) {
 			expression += " " + tokens.get(index);
 			index++;
 		}
@@ -366,7 +318,7 @@ public class Parser implements ParserAPI {
 
 		String commands = "";
 		index = index + 1;
-		while (index < tokens.size() && !isListEnd(tokens.get(index))) {
+		while (index < tokens.size() && !(Identify.determineType(tokens.get(index)) == TokenType.LIST_END)) {
 			commands += tokens.get(index) + " ";
 			index++;
 		}
@@ -389,7 +341,7 @@ public class Parser implements ParserAPI {
 
 		index += 3;
 		String commands = "";
-		while (index < tokens.size() && !isListEnd(tokens.get(index))) {
+		while (index < tokens.size() && !(Identify.determineType(tokens.get(index)) == TokenType.LIST_END)) {
 			commands += tokens.get(index) + " ";
 			index++;
 		}
@@ -413,7 +365,7 @@ public class Parser implements ParserAPI {
 
 		index += 3;
 		String commands = "";
-		while (index < tokens.size() && !isListEnd(tokens.get(index))) {
+		while (index < tokens.size() && !(Identify.determineType(tokens.get(index)) == TokenType.LIST_END)) {
 			commands += tokens.get(index) + " ";
 			index++;
 		}
@@ -433,28 +385,4 @@ public class Parser implements ParserAPI {
 		return arguments;
 	}
 
-	private boolean match(String text, Pattern regex) {
-		return regex.matcher(text).matches();
-	}
-
-	private String checkArgument(String text) {
-		final String ERROR = ERROR_MATCH;
-		for (Entry<String, Pattern> e : mySymbols) {
-			if (match(text, e.getValue())) {
-				return e.getKey();
-			}
-		}
-		return ERROR;
-	}
-
-	private void createPatternMap() {
-		ResourceBundle resources = ResourceBundle.getBundle(syntaxPath);
-		Enumeration<String> iter = resources.getKeys();
-		mySymbols = new ArrayList<Entry<String, Pattern>>();
-		while (iter.hasMoreElements()) {
-			String key = iter.nextElement();
-			String regex = resources.getString(key);
-			mySymbols.add(new SimpleEntry<String, Pattern>(key, Pattern.compile(regex, Pattern.CASE_INSENSITIVE)));
-		}
-	}
 }

@@ -43,7 +43,12 @@ public class UserCommand extends Command {
 				throw new BadInputException("Variable was not instantiated: " + variableName);
 			} 
 		}
-		getController().parse(currentCommand);
+		try {
+			getController().parse(currentCommand);
+		}
+		catch (Exception e) {
+			getController().getView().showMessage(e.getMessage());
+		}
 	}
 
 
