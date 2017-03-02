@@ -3,8 +3,8 @@ package model.commands.control;
 import java.util.ArrayList;
 
 import model.StateStorage;
-
-public class MakeCommand extends ControlCommand {
+/*
+public class MakeCommand extends Command {
 	
     public MakeCommand (StateStorage store, String var) {
     	super(new ArrayList<ControlCommand>());
@@ -22,3 +22,4 @@ public class MakeCommand extends ControlCommand {
 		return 2;
 	}
 }
+*/
