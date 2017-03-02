@@ -277,8 +277,6 @@ public class Parser implements ParserAPI {
 
 		internalParse(expression.trim());
 
-		// added to text our command name
-
 		while (index < tokens.size() && !(Identify.determineType(tokens.get(index)) == TokenType.LIST_END)) {
 			expression += " " + tokens.get(index);
 			index++;
