@@ -45,7 +45,7 @@ public class StateStorage {
 		return cmdList;
 	}
 	
-	private int getVariableIndex(Variable var) {
+	public int getVariableIndex(Variable var) {
 		int index = -1;
 		for (Variable existing: variables) {
 			if (existing.getName().equals(var.getName())) {

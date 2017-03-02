@@ -34,8 +34,7 @@ public class Parser implements ParserAPI {
 	private String LIST_END_MATCH = "ListEnd";
 	private String GROUP_START_MATCH = "GroupStart";
 	private String GROUP_END_MATCH = "GroupEnd";
-	private String WHITESPACE_MATCH = "Whitespace";
-	private String NEWLINE_MATCH = "Newline";
+
 
 	private Controller controller;
 
@@ -76,7 +75,7 @@ public class Parser implements ParserAPI {
 	@Override
 	public void parse(String input) {
 		historyList.add(0, input);
-		String[] tokens = input.split(" ");
+		List<String> tokens = Arrays.asList(input.split("\\s+"));
 		preOrderEvaluation(tokens);
 		inputToCommands(commands, arguments);
 	}
@@ -100,32 +99,74 @@ public class Parser implements ParserAPI {
 		 */
 	}
 	
-	private void preOrderEvaluation(String[] s) {
-		if (s != null) {
-			int arrayLength = s.length;
+	private double preOrderEvaluation(List<String> tokens) {
+		double mostRecentReturnValue = 0.0;
+		if (tokens != null) {
+			int arrayLength = tokens.size();
 			for (int i = 0; i < arrayLength; i++) {
-				String token = s[i];
-				if (isBuiltInCommand(token)) {
-					if (!commands.isEmpty()
-							&& (stringToCommandMap.get(commands.peek()).numParameters() <= arguments.size())) {
+				String token = tokens.get(i);
+				
+				if(token.equals("if")) {
+					
+					i = i + 1;
+					List<String> expression = new ArrayList<String>();
+					while(i < tokens.size() && !isListStart(tokens.get(i))) {
+						expression.add(tokens.get(i));
+						i++;
+					}
+					
+					double result = preOrderEvaluation(expression);
+					result = inputToCommands(commands, arguments);
+					
+					expression = new ArrayList<String>();
+					i = i + 1;
+					while(i < tokens.size() && !isListEnd(tokens.get(i))) {
+						expression.add(tokens.get(i));
+						i++;
+					}
+					
+					if(result != 0.0) {
+						preOrderEvaluation(expression);
 						inputToCommands(commands, arguments);
-					}
-					commands.push(token);
-				} else if (!commands.isEmpty() && !isBuiltInCommand(token)) {
-					String toPush = checkArgument(token);
-					if (!toPush.equals(ERROR_MATCH)) {
-						arguments.push(Double.parseDouble(token));
-					}
+					} 
 				}
 				
-				if (isError(token) && !isBuiltInCommand(token)) {
+				if(isComment(token)) {
+					//DO NOTHING
+				} else if(isConstant(token)) {
+					this.addArgumentAsDouble(token);
+				} else if(isVariable(token)) {
+					int varIndex = stateStorage.getVariableIndex(new Variable(token, 0.0));
+					if(varIndex != -1) {
+						Variable var = stateStorage.getVariables().get(varIndex);
+						this.addArgumentAsDouble(var.getValue());
+					}
+				} else if(isText(token)) {
+					if (isBuiltInCommand(token)) {
+						if (!commands.isEmpty()
+								&& (stringToCommandMap.get(commands.peek()).numParameters() <= arguments.size())) {
+							mostRecentReturnValue = inputToCommands(commands, arguments);
+						}
+						commands.push(token);
+					} 
+				} else if(isListStart(token)) {
+					//Do nothing?
+				} else if(isListEnd(token)) {
+					//Do nothing?
+				} else if(isGroupStart(token)) {
+					//Do nothing?
+				} else if(isGroupEnd(token)) {
+					//Do nothing?
+				} else if(isError(token)) {
 					controller.getView().showMessage(ERROR_MATCH + " " + token);
 				}
 			}
 		}
+		return mostRecentReturnValue;
 	}
 	
-	private void inputToCommands(Stack<String> commandStack, Stack<Double> argumentStack) {
+	private double inputToCommands(Stack<String> commandStack, Stack<Double> argumentStack) {
+		double result = 0.0;
 		int size = commandStack.size();
 		for (int i = 0; i < size; i++) {
 			String s = commandStack.pop();
@@ -156,10 +197,12 @@ public class Parser implements ParserAPI {
 					continue;
 				}
 				controller.print(Double.toString(evaluation));
+				result = evaluation;
 			} else {
 				commandStack.push(s);
 			}
 		}
+		return result;
 	}
 
 	/*
@@ -170,6 +213,12 @@ public class Parser implements ParserAPI {
 		}
 		return arguments;
 	}*/
+	
+	private void addArgumentAsDouble(String token) {
+		if(!commands.isEmpty()) {
+			arguments.push(Double.parseDouble(token));
+		}
+	}
 	
 	private boolean isBuiltInCommand(String token) {
 		return stringToCommandMap.keySet().contains(token);
@@ -209,14 +258,6 @@ public class Parser implements ParserAPI {
 	
 	private boolean isGroupEnd(String token) {
 		return checkArgument(token).equals(GROUP_END_MATCH);
-	}
-	
-	private boolean isWhitespace(String token) {
-		return checkArgument(token).equals(WHITESPACE_MATCH);
-	}
-	
-	private boolean isNewline(String token) {
-		return checkArgument(token).equals(NEWLINE_MATCH);
 	}
 	
 	private List<Double> createArgumentList(Stack<Double> argumentStack, int numberOfParameters) {
