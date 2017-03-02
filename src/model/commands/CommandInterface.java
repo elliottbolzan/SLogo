@@ -1,5 +1,7 @@
 package model.commands;
 
+import utils.BadInputException;
+
 public interface CommandInterface {
 
 	public String toString();
@@ -8,5 +10,5 @@ public interface CommandInterface {
 	
 	public double getReturnValue();
 	
-	public void execute();
+	public void execute() throws BadInputException;
 }

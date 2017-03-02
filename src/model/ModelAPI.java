@@ -1,10 +1,11 @@
 package model;
 
 import javafx.collections.ObservableList;
+import utils.BadInputException;
 
 public interface ModelAPI {
 
-	public void parse(String string);
+	public void parse(String string) throws BadInputException;
 
 	public ObservableList<String> getHistory();
 

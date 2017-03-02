@@ -18,6 +18,7 @@ import model.Variable;
 import model.commands.Command;
 import model.commands.control.MakeVariableCommand;
 import model.commands.control.UserCommand;
+import utils.BadInputException;
 
 /**
  * @author Alexander Zapata This is the class that will take the user-input and
@@ -30,7 +31,8 @@ public class Parser implements ParserAPI {
 
 	private String syntaxPath = "resources/languages/Syntax";
 	private String language = "English";
-	private String ERROR_MATCH = "No Matching Commands";
+	private String ERROR_MATCH = "ERROR";
+	private String ErrorMessage = "This is a Bad Input: ";
 	private String COMMENT_MATCH = "Comment";
 	private String CONSTANT_MATCH = "Constant";
 	private String VARIABLE_MATCH = "Variable";
@@ -79,7 +81,7 @@ public class Parser implements ParserAPI {
 	}
 
 	@Override
-	public void parse(String input) {
+	public void parse(String input) throws BadInputException {
 		historyList.add(0, input);
 		internalParse(input.trim());
 	}
@@ -94,7 +96,7 @@ public class Parser implements ParserAPI {
 		return historyList.get(0);
 	}
 
-	private double internalParse(String input) {
+	private double internalParse(String input) throws BadInputException {
 		double result = 0.0;
 		List<String> tokens = Arrays.asList(input.split("\\s+"));
 		result = preOrderEvaluation(tokens);
@@ -104,7 +106,7 @@ public class Parser implements ParserAPI {
 		return result;
 	}
 
-	private double preOrderEvaluation(List<String> tokens) {
+	private double preOrderEvaluation(List<String> tokens) throws BadInputException {
 		if (tokens.size() == 1 && isConstant(tokens.get(0))) {
 			return Double.parseDouble(tokens.get(0));
 		}
@@ -153,15 +155,15 @@ public class Parser implements ParserAPI {
 							mostRecentReturnValue = inputToCommands(commands, arguments);
 						}
 						commands.push(stateStorage.getCmdList().get(token));
-					} else {
+					} else{
 						text.push(token);
-					}
+					} 
 				} else if (isListStart(token)) {
 					// Do nothing?
 				} else if (isListEnd(token)) {
 					// Do nothing?
 				} else if (isError(token)) {
-					controller.getView().showMessage(ERROR_MATCH + " " + token);
+					throw new BadInputException(ErrorMessage + token);
 				}
 			}
 		}
@@ -199,6 +201,9 @@ public class Parser implements ParserAPI {
 					controller.handleCommand(newInstance);
 				} catch (InstantiationException | IllegalAccessException e) {
 					controller.getView().showMessage("Command not found at runtime.");
+				} catch (BadInputException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
 				}
 
 				if (!(commandStack.size() == 0)) {
@@ -254,7 +259,7 @@ public class Parser implements ParserAPI {
 		return checkArgument(token).equals(LIST_END_MATCH);
 	}
 
-	private int handleIf(int index, List<String> tokens) {
+	private int handleIf(int index, List<String> tokens) throws BadInputException {
 		index = index + 1;
 		String expression = "";
 		while (index < tokens.size() && !isListStart(tokens.get(index))) {
@@ -277,7 +282,7 @@ public class Parser implements ParserAPI {
 		return index;
 	}
 
-	private int handleIfElse(int index, List<String> tokens) {
+	private int handleIfElse(int index, List<String> tokens) throws BadInputException {
 		index = index + 1;
 		String expression = "";
 		while (index < tokens.size() && !isListStart(tokens.get(index))) {
@@ -311,7 +316,7 @@ public class Parser implements ParserAPI {
 		return index;
 	}
 
-	private int handleTo(int index, List<String> tokens) {
+	private int handleTo(int index, List<String> tokens) throws BadInputException {
 		index = index + 1;
 
 		String expression = tokens.get(index);
@@ -349,7 +354,7 @@ public class Parser implements ParserAPI {
 		return index;
 	}
 		
-	private int handleRepeat(int index, List<String> tokens) {
+	private int handleRepeat(int index, List<String> tokens) throws BadInputException {
 		index = index + 1;
 		String expression = "";
 		while (index < tokens.size() && !isListStart(tokens.get(index))) {
@@ -373,7 +378,7 @@ public class Parser implements ParserAPI {
 		return index;
 	}
 
-	private int handleDoTimes(int index, List<String> tokens) {
+	private int handleDoTimes(int index, List<String> tokens) throws BadInputException {
 		index += 2;
 		String variableName = tokens.get(index).replaceAll("[:]", "");
 		int variableIndex = stateStorage.getVariableIndex(new Variable(variableName, 0.0));
@@ -396,7 +401,7 @@ public class Parser implements ParserAPI {
 		return index;
 	}
 
-	private int handleForLoop(int index, List<String> tokens) {
+	private int handleForLoop(int index, List<String> tokens) throws BadInputException {
 		index += 2;
 		String variableName = tokens.get(index).replaceAll("[:]", "");
 		index += 1;
