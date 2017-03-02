@@ -101,20 +101,21 @@ public class Parser implements ParserAPI {
 	}
 
 	private double preOrderEvaluation(List<String> tokens) {
-		if(tokens.size() == 1 && isConstant(tokens.get(0))) {
+		if (tokens.size() == 1 && isConstant(tokens.get(0))) {
 			return Double.parseDouble(tokens.get(0));
 		}
-		
+
 		double mostRecentReturnValue = 0.0;
 		if (tokens != null) {
 			int arrayLength = tokens.size();
 			for (int i = 0; i < arrayLength; i++) {
 				String token = tokens.get(i);
-
 				if (token.equals("if")){
 					i = handleIf(i, tokens);
-				} else if(token.equals("ifelse")) {
+				} else if (token.equals("ifelse")) {
 					i = handleIfElse(i, tokens);
+				} else if (token.equals("to")) {
+					i = handleTo(i, tokens);
 				}
 
 				if (isConstant(token)) {
@@ -132,16 +133,14 @@ public class Parser implements ParserAPI {
 							mostRecentReturnValue = inputToCommands(commands, arguments);
 						}
 						commands.push(token);
-					}
-					else {
+					} else {
 						text.push(token);
 					}
 				} else if (isListStart(token)) {
 					// Do nothing?
 				} else if (isListEnd(token)) {
 					// Do nothing?
-				}
-				} else if(isError(token)) {
+				} else if (isError(token)) {
 					controller.getView().showMessage(ERROR_MATCH + " " + token);
 				}
 			}
@@ -172,7 +171,7 @@ public class Parser implements ParserAPI {
 					if (newInstance instanceof MakeVariableCommand) {
 						((MakeVariableCommand) newInstance).initialize(text.pop(), stateStorage);
 					}
-					
+
 					evaluation = newInstance.getReturnValue();
 					controller.handleCommand(newInstance);
 				} catch (InstantiationException | IllegalAccessException e) {
@@ -231,6 +230,29 @@ public class Parser implements ParserAPI {
 	}
 
 	private int handleIf(int index, List<String> tokens) {
+		index = index + 1;
+		String expression = "";
+		while (index < tokens.size() && !isListStart(tokens.get(index))) {
+			expression += " " + tokens.get(index);
+			index++;
+		}
+
+		double result = internalParse(expression.trim());
+
+		String commands = "";
+		index = index + 1;
+		while (index < tokens.size() && !isListEnd(tokens.get(index))) {
+			commands += tokens.get(index) + " ";
+			index++;
+		}
+
+		if (result != 0.0) {
+			internalParse(commands.trim());
+		}
+		return index;
+	}
+
+	private int handleTo(int index, List<String> tokens) {
 		index = index + 1;
 		String expression = "";
 		while (index < tokens.size() && !isListStart(tokens.get(index))) {
