@@ -48,11 +48,11 @@ public class Turtle extends Group {
 	public Point getLocation() {
 		return myLocation;
 	}
-	
+
 	public double getRotation() {
 		return myRotation;
 	}
-	
+
 	public boolean isPenDown() {
 		return myPenDown;
 	}
@@ -64,7 +64,7 @@ public class Turtle extends Group {
 	protected SimpleBooleanProperty isMovingProperty() {
 		return isMovingProperty;
 	}
-	
+
 	protected void setImage(String url) {
 		myImageView.setImage(new Image(url));
 		this.centerImage();
@@ -86,7 +86,7 @@ public class Turtle extends Group {
 	private void setPenWidth(double width) {
 		myPenWidth = width;
 	}
-	
+
 	protected void setDestination(Point destination, double speed) {
 		isMovingProperty.set(true);
 		double distX = destination.getX() - myLocation.getX();
@@ -112,39 +112,38 @@ public class Turtle extends Group {
 		}
 	}
 
-	
 	protected void addFutureDestination(Point destination) {
 		myFutureDestinations.add(destination);
 	}
-	
+
 	protected boolean hasAnotherDestination() {
 		return !myFutureDestinations.isEmpty();
 	}
-	
+
 	protected Point pollFutureDestination() {
 		return myFutureDestinations.poll();
 	}
-	
+
 	private void setLocation(Point point) {
 		myLocation = point;
 		this.centerImage();
 	}
-	
+
 	private void centerImage() {
 		myImageView.setX(myLocation.getX() - myImageView.getBoundsInLocal().getWidth() / 2.0);
 		myImageView.setY(myLocation.getY() - myImageView.getBoundsInLocal().getHeight() / 2.0);
 	}
-	
+
 	private void stepTowardsDestination() {
 		Point step = new Point(myLocation.getX() + myStepSize.getX(), myLocation.getY() + myStepSize.getY());
 
 		if (myPenDown) {
 			myDisplay.drawLine(myLocation, step, myPenColor, myPenWidth);
 		}
-		
+
 		this.setLocation(step);
 	}
-	
+
 	private boolean isInBounds(Point point) {
 		return (point.getX() >= (-myDisplay.getWidth() / 2.0) && point.getX() < (myDisplay.getWidth() / 2.0)
 				&& point.getY() >= (-myDisplay.getHeight() / 2.0) && point.getY() < (myDisplay.getHeight() / 2.0));

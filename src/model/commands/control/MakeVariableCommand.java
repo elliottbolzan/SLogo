@@ -6,25 +6,32 @@ import model.StateStorage;
 import model.Variable;
 
 public class MakeVariableCommand extends ControlCommand {
-	String varName;
-	StateStorage store;
+	
+	private String name;
+	private StateStorage stateStorage;
 
-	protected MakeVariableCommand(String var, StateStorage s) {
+	public MakeVariableCommand() {
 		super(new ArrayList<ControlCommand>());
-		varName = var;
-		store = s;
 	}
-
-	@Override
-	public double execute() {
-		//store.setVariable(new Variable(varName, expr));
-		return 0;
+	
+	public void initialize(String name, StateStorage stateStorage) {
+		this.name = name;
+		this.stateStorage = stateStorage;
 	}
-
-
 
 	@Override
 	public int numParameters() {
-		return 2;
+		return 1;
 	}
+
+	@Override
+	public double getReturnValue() {
+		return getParameterList().get(0);
+	}
+
+	@Override
+	public void execute() {
+		stateStorage.setVariable(new Variable(name, getParameterList().get(0)));
+	}
+
 }

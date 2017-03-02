@@ -102,6 +102,7 @@ public class CommandMap {
 		addCommand(myResources.getString("And"), new AndCommand());
 		addCommand(myResources.getString("Or"), new OrCommand());
 		addCommand(myResources.getString("Not"), new NotCommand());
+		addCommand(myResources.getString("MakeVariable"), new MakeVariableCommand());
 	}
 
 	private void addCommand(String string, Command command) {
