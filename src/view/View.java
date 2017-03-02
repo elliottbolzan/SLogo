@@ -4,6 +4,7 @@ import java.awt.Dimension;
 import java.util.LinkedList;
 import java.util.Queue;
 
+import utils.BadInputException;
 import utils.Point;
 import view.console.Console;
 import view.panel.Panel;
@@ -50,7 +51,14 @@ public class View implements ViewAPI {
 		panel = new Panel(this);
 		turtleWindow = new TurtleWindow(controller);
 		commandQueue = new LinkedList<Command>();
-		turtleWindow.getDisplay().isTurtleMovingProperty().addListener(e -> dequeCommands());
+		turtleWindow.getDisplay().isTurtleMovingProperty().addListener(e -> {
+			try {
+				dequeCommands();
+			} catch (BadInputException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+		});
 		setup();
 	}
 	
@@ -110,7 +118,7 @@ public class View implements ViewAPI {
 
 	
 	@Override
-	public void handleCommand(Command action) {
+	public void handleCommand(Command action) throws BadInputException {
 		if(turtleWindow.getDisplay().isTurtleMovingProperty().get()) {
 			commandQueue.add(action);
 		} else {
@@ -118,7 +126,7 @@ public class View implements ViewAPI {
 		}
 	}
 	
-	private void dequeCommands() {
+	private void dequeCommands() throws BadInputException {
 		while (!commandQueue.isEmpty() && 
 			!turtleWindow.getDisplay().isTurtleMovingProperty().get()) {
 			commandQueue.poll().execute();

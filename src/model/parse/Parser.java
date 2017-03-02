@@ -3,13 +3,8 @@ package model.parse;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.Enumeration;
 import java.util.List;
-import java.util.Map.Entry;
-import java.util.ResourceBundle;
 import java.util.Stack;
-import java.util.regex.Pattern;
-import java.util.AbstractMap.SimpleEntry;
 import controller.Controller;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -18,6 +13,7 @@ import model.Variable;
 import model.commands.Command;
 import model.commands.control.MakeVariableCommand;
 import model.commands.control.UserCommand;
+import utils.BadInputException;
 import model.parse.tokens.Identify;
 import model.parse.tokens.TokenType;
 
@@ -31,6 +27,7 @@ import model.parse.tokens.TokenType;
 public class Parser implements ParserAPI {
 
 	private String language = "English";
+
 	private Controller controller;
 
 	private ObservableList<String> historyList;
@@ -74,7 +71,7 @@ public class Parser implements ParserAPI {
 	}
 
 	@Override
-	public void parse(String input) throws Exception {
+	public void parse(String input) throws BadInputException {
 		historyList.add(0, input);
 		internalParse(input.trim());
 	}
@@ -89,8 +86,7 @@ public class Parser implements ParserAPI {
 		return historyList.get(0);
 	}
 
-
-	protected double internalParse(String input) throws NumberFormatException, Exception {
+	protected double internalParse(String input) throws BadInputException {
 		double result = 0.0;
 		List<String> tokens = Arrays.asList(input.split("\\s+"));
 		result = preOrderEvaluation(tokens);
@@ -100,8 +96,8 @@ public class Parser implements ParserAPI {
 		return result;
 	}
 
-	private double preOrderEvaluation(List<String> tokens) throws NumberFormatException, Exception {
-		if (tokens.size() == 1 && Identify.determineType(tokens.get(0)) == TokenType.CONSTANT) {
+	private double preOrderEvaluation(List<String> tokens) throws BadInputException {
+		if (tokens.size() == 1 && Identify.determineType((tokens.get(0))) == TokenType.CONSTANT) {
 			return Double.parseDouble(tokens.get(0));
 		}
 
@@ -149,7 +145,7 @@ public class Parser implements ParserAPI {
 							mostRecentReturnValue = inputToCommands(commands, arguments);
 						}
 						commands.push(stateStorage.getCmdList().get(token));
-					} else {
+					} else{
 						text.push(token);
 					}
 				}
@@ -158,7 +154,7 @@ public class Parser implements ParserAPI {
 		return mostRecentReturnValue;
 	}
 
-	private double inputToCommands(Stack<Command> commandStack, Stack<Double> argumentStack) {
+	private double inputToCommands(Stack<Command> commandStack, Stack<Double> argumentStack) throws BadInputException {
 		double result = 0.0;
 		int size = commandStack.size();
 		for (int i = 0; i < size; i++) {
@@ -189,6 +185,8 @@ public class Parser implements ParserAPI {
 					controller.handleCommand(newInstance);
 				} catch (InstantiationException | IllegalAccessException e) {
 					controller.getView().showMessage("Command not found at runtime.");
+				} catch (BadInputException e) {
+					throw new BadInputException("Command not found at runtime");
 				}
 
 				if (!(commandStack.size() == 0)) {
@@ -216,7 +214,7 @@ public class Parser implements ParserAPI {
 		return stringToCommandMap.keySet().contains(token);
 	}
 
-	private int handleTo(int index, List<String> tokens) throws Exception {
+	private int handleTo(int index, List<String> tokens) throws BadInputException {
 		index = index + 1;
 
 		String expression = tokens.get(index);

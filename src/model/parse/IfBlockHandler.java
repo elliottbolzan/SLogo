@@ -2,6 +2,7 @@ package model.parse;
 
 import java.util.List;
 import model.parse.tokens.TokenType;
+import utils.BadInputException;
 import model.parse.tokens.Identify;
 
 public class IfBlockHandler {
@@ -12,7 +13,7 @@ public class IfBlockHandler {
 		myParser = parser;
 	}
 
-	protected int handleIf(int index, List<String> tokens) throws Exception {
+	protected int handleIf(int index, List<String> tokens) throws BadInputException {
 		index = index + 1;
 		String expression = "";
 		while (index < tokens.size() && !(Identify.determineType(tokens.get(index)) == TokenType.LIST_START)) {

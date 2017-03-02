@@ -3,6 +3,7 @@ package model;
 import controller.Controller;
 import javafx.collections.ObservableList;
 import model.parse.Parser;
+import utils.BadInputException;
 
 public class Model implements ModelAPI {
 
@@ -14,7 +15,7 @@ public class Model implements ModelAPI {
 		parser = new Parser(controller);
 	}
 	
-	public void parse(String string) throws Exception {
+	public void parse(String string) throws BadInputException {
 		parser.parse(string);
 	}
 	

@@ -4,6 +4,7 @@ import java.util.List;
 
 import model.parse.tokens.Identify;
 import model.parse.tokens.TokenType;
+import utils.BadInputException;
 
 public class IfElseBlockHandler {
 
@@ -13,7 +14,7 @@ public class IfElseBlockHandler {
 		myParser = parser;
 	}
 
-	protected int handleIfElse(int index, List<String> tokens) throws Exception {
+	protected int handleIfElse(int index, List<String> tokens) throws BadInputException {
 		index = index + 1;
 		String expression = "";
 		while (index < tokens.size() && !(Identify.determineType(tokens.get(index)) == TokenType.LIST_START)) {
