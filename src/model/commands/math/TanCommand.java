@@ -8,11 +8,6 @@ public class TanCommand extends MathCommand {
 	public TanCommand() {
 		super();
 	}
-
-	@Override
-	public double execute(double[] parameters, Turtle myTurtle, Controller view) {
-		return Math.tan(parameters[0]);
-	}
 	
 	@Override
 	public int numParameters() {

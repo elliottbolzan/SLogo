@@ -10,7 +10,7 @@ public class DotimesCommand extends LoopCommand {
 	@Override
 	protected void setVar() {
 		start = 0;
-		end = (int) cmdTree.get(0).execute();
+		//end = (int) cmdTree.get(0).execute();
 		increment = 1;
 	}
 

@@ -8,11 +8,6 @@ public class PiCommand extends MathCommand {
 	public PiCommand() {
 		super();
 	}
-
-	@Override
-	public double execute(double[] parameters, Turtle myTurtle, Controller view) {
-		return Math.PI;
-	}
 	
 	@Override
 	public int numParameters() {
