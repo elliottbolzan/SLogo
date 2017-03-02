@@ -38,7 +38,12 @@ public class UserCommand extends Command {
 		for (String variableName: variableNames) {
 			currentCommand = currentCommand.replaceAll(variableName, getParameterList().get(variableNames.indexOf(variableName)).toString()); 
 		}
-		getController().parse(currentCommand);
+		try {
+			getController().parse(currentCommand);
+		}
+		catch (Exception e) {
+			getController().getView().showMessage(e.getMessage());
+		}
 	}
 
 
