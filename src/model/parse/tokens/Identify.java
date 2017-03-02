@@ -11,6 +11,8 @@ import java.util.AbstractMap.SimpleEntry;
 import java.util.Map.Entry;
 import java.util.regex.Pattern;
 
+import utils.BadInputException;
+
 /**
  * @author Elliott Bolzan
  *
@@ -26,7 +28,7 @@ public class Identify {
 	private static String LIST_START_MATCH = "ListStart";
 	private static String LIST_END_MATCH = "ListEnd";
 
-	public static TokenType determineType(String token) throws Exception {
+	public static TokenType determineType(String token) throws BadInputException {
 		if (checkArgument(token).equals(COMMENT_MATCH)) {
 			return TokenType.COMMENT;
 		}
@@ -45,20 +47,20 @@ public class Identify {
 		else if (checkArgument(token).equals(LIST_END_MATCH)) {
 			return TokenType.LIST_END;
 		}
-		throw new Exception();
+		throw new BadInputException();
 	}
 
 	private static boolean match(String text, Pattern regex) {
 		return regex.matcher(text).matches();
 	}
 
-	private static String checkArgument(String text) throws Exception {
+	private static String checkArgument(String text) throws BadInputException {
 		for (Entry<String, Pattern> e : createPatternMap()) {
 			if (match(text, e.getValue())) {
 				return e.getKey();
 			}
 		}
-		throw new Exception();
+		throw new BadInputException();
 	}
 
 	private static List<Entry<String, Pattern>> createPatternMap() {

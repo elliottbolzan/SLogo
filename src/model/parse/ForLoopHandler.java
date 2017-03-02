@@ -5,6 +5,7 @@ import java.util.List;
 import model.Variable;
 import model.parse.tokens.Identify;
 import model.parse.tokens.TokenType;
+import utils.BadInputException;
 
 public class ForLoopHandler {
 
@@ -14,7 +15,7 @@ public class ForLoopHandler {
 		myParser = parser;
 	}
 	
-	protected int handleForLoop(int index, List<String> tokens) throws Exception {
+	protected int handleForLoop(int index, List<String> tokens) throws BadInputException {
 		index += 2;
 		String variableName = tokens.get(index).replaceAll("[:]", "");
 		index += 1;
