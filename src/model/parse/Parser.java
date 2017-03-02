@@ -120,6 +120,10 @@ public class Parser implements ParserAPI {
 					i = handleIf(i, tokens);
 				} else if(token.equals("ifelse")) {
 					i = handleIfElse(i, tokens);
+				} else if(token.equals("repeat")) {
+					i = handleRepeat(i, tokens);
+				} else if(token.equals("dotimes")) {
+					i = handleDoTimes(i, tokens);
 				}
 				
 				if(isComment(token)) {
@@ -127,7 +131,7 @@ public class Parser implements ParserAPI {
 				} else if(isConstant(token)) {
 					this.addArgumentAsDouble(token);
 				} else if(isVariable(token)) {
-					int varIndex = stateStorage.getVariableIndex(new Variable(token, 0.0));
+					int varIndex = stateStorage.getVariableIndex(new Variable(token.replaceAll("[:]", ""), 0.0));
 					if(varIndex != -1) {
 						Variable var = stateStorage.getVariables().get(varIndex);
 						this.addArgumentAsDouble(var.getValue());
@@ -280,6 +284,53 @@ public class Parser implements ParserAPI {
 		return index;
 	}
 		
+	private int handleRepeat(int index, List<String> tokens) {
+		index = index + 1;
+		String expression = "";
+		while(index < tokens.size() && !isListStart(tokens.get(index))) {
+			expression += " " + tokens.get(index);
+			index++;
+		}
+		
+		double numRepeats = internalParse(expression.trim());
+		
+		String commands = "";
+		index = index + 1;
+		while(index < tokens.size() && !isListEnd(tokens.get(index))) {
+			commands += tokens.get(index) + " ";
+			index++;
+		}
+		
+		for(int k = 1; k <= numRepeats; k++) {
+			stateStorage.setVariable(new Variable("repcount", k));
+			internalParse(commands.trim());
+		} 
+		return index;
+	}
+	
+	private int handleDoTimes(int index, List<String> tokens) {
+		index += 2;
+		String variableName = tokens.get(index).replaceAll("[:]", "");
+		int variableIndex = stateStorage.getVariableIndex(new Variable(variableName, 0.0));
+		double variableValue = Double.parseDouble(stateStorage.getVariables().get(variableIndex).getValue());
+		
+		index += 1;
+		double limit = Double.parseDouble(tokens.get(index));
+		
+		index += 3;
+		String commands = "";
+		while(index < tokens.size() && !isListEnd(tokens.get(index))) {
+			commands += tokens.get(index) + " ";
+			index++;
+		}
+		
+		for(double k = variableValue; k <= limit; k++) {
+			stateStorage.setVariable(new Variable(variableName, k));
+			internalParse(commands.trim());
+		} 
+		return index;
+	}
+	
 	private List<Double> createArgumentList(Stack<Double> argumentStack, int numberOfParameters) {
 		List<Double> arguments = Arrays.asList(new Double[numberOfParameters]);
 		for (int i = numberOfParameters - 1; i >= 0; i--) {
