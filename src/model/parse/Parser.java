@@ -34,8 +34,7 @@ public class Parser implements ParserAPI {
 	private String LIST_END_MATCH = "ListEnd";
 	private String GROUP_START_MATCH = "GroupStart";
 	private String GROUP_END_MATCH = "GroupEnd";
-	private String WHITESPACE_MATCH = "Whitespace";
-	private String NEWLINE_MATCH = "Newline";
+
 
 	private Controller controller;
 
@@ -76,7 +75,7 @@ public class Parser implements ParserAPI {
 	@Override
 	public void parse(String input) {
 		historyList.add(0, input);
-		String[] tokens = input.split(" ");
+		String[] tokens = input.split("\\s+");
 		preOrderEvaluation(tokens);
 		inputToCommands(commands, arguments);
 	}
@@ -105,20 +104,34 @@ public class Parser implements ParserAPI {
 			int arrayLength = s.length;
 			for (int i = 0; i < arrayLength; i++) {
 				String token = s[i];
-				if (isBuiltInCommand(token)) {
-					if (!commands.isEmpty()
-							&& (stringToCommandMap.get(commands.peek()).numParameters() <= arguments.size())) {
-						inputToCommands(commands, arguments);
-					}
-					commands.push(token);
-				} else if (!commands.isEmpty() && !isBuiltInCommand(token)) {
-					String toPush = checkArgument(token);
-					if (!toPush.equals(ERROR_MATCH)) {
-						arguments.push(Double.parseDouble(token));
-					}
-				}
 				
-				if (isError(token) && !isBuiltInCommand(token)) {
+				if(isComment(token)) {
+					//DO NOTHING
+				} else if(isConstant(token)) {
+					this.addArgumentAsDouble(token);
+				} else if(isVariable(token)) {
+					int varIndex = stateStorage.getVariableIndex(new Variable(token, 0.0));
+					if(varIndex != -1) {
+						Variable var = stateStorage.getVariables().get(varIndex);
+						this.addArgumentAsDouble(var.getValue());
+					}
+				} else if(isText(token)) {
+					if (isBuiltInCommand(token)) {
+						if (!commands.isEmpty()
+								&& (stringToCommandMap.get(commands.peek()).numParameters() <= arguments.size())) {
+							inputToCommands(commands, arguments);
+						}
+						commands.push(token);
+					} 
+				} else if(isListStart(token)) {
+					//Do nothing?
+				} else if(isListEnd(token)) {
+					//Do nothing?
+				} else if(isGroupStart(token)) {
+					//Do nothing?
+				} else if(isGroupEnd(token)) {
+					//Do nothing?
+				} else if(isError(token)) {
 					controller.getView().showMessage(ERROR_MATCH + " " + token);
 				}
 			}
@@ -171,6 +184,12 @@ public class Parser implements ParserAPI {
 		return arguments;
 	}*/
 	
+	private void addArgumentAsDouble(String token) {
+		if(!commands.isEmpty()) {
+			arguments.push(Double.parseDouble(token));
+		}
+	}
+	
 	private boolean isBuiltInCommand(String token) {
 		return stringToCommandMap.keySet().contains(token);
 	}
@@ -209,14 +228,6 @@ public class Parser implements ParserAPI {
 	
 	private boolean isGroupEnd(String token) {
 		return checkArgument(token).equals(GROUP_END_MATCH);
-	}
-	
-	private boolean isWhitespace(String token) {
-		return checkArgument(token).equals(WHITESPACE_MATCH);
-	}
-	
-	private boolean isNewline(String token) {
-		return checkArgument(token).equals(NEWLINE_MATCH);
 	}
 	
 	private List<Double> createArgumentList(Stack<Double> argumentStack, int numberOfParameters) {
