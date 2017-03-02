@@ -4,7 +4,7 @@ import javafx.collections.ObservableList;
 
 public interface ModelAPI {
 
-	public void parse(String string);
+	public void parse(String input) throws Exception;
 
 	public ObservableList<String> getHistory();
 

@@ -14,7 +14,7 @@ public class Model implements ModelAPI {
 		parser = new Parser(controller);
 	}
 	
-	public void parse(String string) {
+	public void parse(String string) throws Exception {
 		parser.parse(string);
 	}
 	
