@@ -101,9 +101,6 @@ public class Parser implements ParserAPI {
 	}
 
 	private double preOrderEvaluation(List<String> tokens) throws BadInputException {
-		if (tokens.size() == 1 && Identify.determineType((tokens.get(0))) == TokenType.CONSTANT) {
-			return Double.parseDouble(tokens.get(0));
-		}
 
 		double mostRecentReturnValue = 0.0;
 		if (tokens != null) {
@@ -149,9 +146,12 @@ public class Parser implements ParserAPI {
 							mostRecentReturnValue = inputToCommands(commands, arguments);
 						}
 						commands.push(stateStorage.getCmdList().get(token));
-					} else{
+					} else {
 						text.push(token);
 					}
+				}
+				if (tokens.size() == 1 && Identify.determineType((tokens.get(0))) == TokenType.CONSTANT) {
+					return Double.parseDouble(tokens.get(0));
 				}
 			}
 		}
@@ -168,7 +168,6 @@ public class Parser implements ParserAPI {
 				continue;
 			}
 			if ((toExecute.numParameters() <= arguments.size())) {
-
 				Command newInstance = toExecute;
 				double evaluation = 0.0;
 
@@ -190,7 +189,12 @@ public class Parser implements ParserAPI {
 				} catch (InstantiationException | IllegalAccessException e) {
 					controller.getView().showMessage("Command not found at runtime.");
 				} catch (BadInputException e) {
+					commands.clear();
+					arguments.clear();
+					variables.clear();
+					text.clear();
 					throw new BadInputException("Command not found at runtime");
+
 				}
 
 				if (!(commandStack.size() == 0)) {
