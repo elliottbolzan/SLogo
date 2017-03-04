@@ -6,12 +6,11 @@ import java.util.LinkedList;
 import java.util.Queue;
 
 import javafx.beans.property.SimpleBooleanProperty;
-import javafx.scene.Group;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
 
-public class Turtle extends Group {
+public class Turtle {
 	private final static String BASIC_IMAGE = "view/visualization/turtle.png";
 	private ImageView myImageView;
 
@@ -31,7 +30,6 @@ public class Turtle extends Group {
 
 	public Turtle(TurtleDisplay home) {
 		myImageView = new ImageView(new Image(getClass().getClassLoader().getResourceAsStream(BASIC_IMAGE)));
-		this.getChildren().add(myImageView);
 
 		myDisplay = home;
 
@@ -56,7 +54,11 @@ public class Turtle extends Group {
 	public boolean isPenDown() {
 		return myPenDown;
 	}
-
+	
+	public boolean isVisible() {
+		return myImageView.isVisible();
+	}
+	
 	protected Color getPenColor() {
 		return myPenColor;
 	}
@@ -65,6 +67,10 @@ public class Turtle extends Group {
 		return isMovingProperty;
 	}
 
+	protected ImageView getView() {
+		return myImageView;
+	}
+	
 	protected void setImage(String url) {
 		myImageView.setImage(new Image(url));
 		this.centerImage();

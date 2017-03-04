@@ -3,6 +3,9 @@ package view.visualization;
 import utils.Point;
 
 import java.awt.Dimension;
+import java.util.HashMap;
+import java.util.Map;
+
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -22,12 +25,13 @@ import javafx.scene.layout.Pane;
  * @author Jay Doherty
  *
  */
-public class TurtleDisplay extends Group {
+public class TurtleDisplay {
 
 	private Pane myDisplayArea;
 	private Dimension myDimensions;
 
 	private Turtle myTurtle;
+	//TODO private Map<Integer, Turtle> myTurtles;
 	private double myLineLength;
 
 	private Timeline myAnimation;
@@ -36,22 +40,25 @@ public class TurtleDisplay extends Group {
 	public TurtleDisplay(int width, int height) {
 		this.createDisplayArea(width, height);
 		this.setBackgroundColor(Color.WHITE);
-		this.createTurtle();
+		//TODO myTurtles = new HashMap<Integer, Turtle>();
+		this.createTurtle(1);
 		myLineLength = 1.0;
-		isAnimated = false;
+		isAnimated = true;
 	}
 
 	public Turtle getTurtle() {
 		return myTurtle;
+		//TODO return myTurtles.get(id);
 	}
 
 	public void clear() {
 		myDisplayArea.getChildren().clear();
-		this.createTurtle();
+		this.createTurtle(1);
 	}
 
 	public SimpleBooleanProperty isTurtleMovingProperty() {
 		return myTurtle.isMovingProperty();
+		//TODO return myTurtles.get(id).isMovingProperty();
 	}
 
 	public double getWidth() {
@@ -68,6 +75,7 @@ public class TurtleDisplay extends Group {
 
 	public Color getPenColor() {
 		return myTurtle.getPenColor();
+		//TODO return myTurtles.get(id).getPenColor();
 	}
 
 	public Dimension getDimensions() {
@@ -88,7 +96,6 @@ public class TurtleDisplay extends Group {
 			myAnimation.play();
 		}
 
-		// TODO: remove this to make animation work
 		if (!isAnimated) {
 			while (myTurtle.isMovingProperty().get()) {
 				myTurtle.updateMovement();
@@ -103,18 +110,22 @@ public class TurtleDisplay extends Group {
 
 	public void setPenDown(boolean down) {
 		myTurtle.setPenDown(down);
+		//TODO myTurtles.get(id).setPenDown(down);
 	}
 
 	public void setPenColor(Color color) {
 		myTurtle.setPenColor(color);
+		//TODO myTurtles.get(id).setPenColor(color);
 	}
 
 	public void setTurtleVisible(boolean visible) {
-		myTurtle.setVisible(visible);
+		myTurtle.getView().setVisible(visible);
+		//TODO myTurtles.get(id).getImageView().setVisible(visible);
 	}
 
 	public void setTurtleImage(String url) {
 		myTurtle.setImage(url);
+		//TODO myTurtles.get(id).setImage(url);
 	}
 
 	public void drawLine(Point start, Point finish, Color color, double width) {
@@ -130,6 +141,10 @@ public class TurtleDisplay extends Group {
 		myDisplayArea.setBackground(background);
 	}
 
+	protected Group getView() {
+		return new Group(myDisplayArea);
+	}
+	
 	private void createDisplayArea(int width, int height) {
 		myDisplayArea = new Pane();
 		myDisplayArea.setPrefSize(width, height);
@@ -140,8 +155,6 @@ public class TurtleDisplay extends Group {
 		clipBoundaries.widthProperty().bind(myDisplayArea.widthProperty());
 		clipBoundaries.heightProperty().bind(myDisplayArea.heightProperty());
 		myDisplayArea.setClip(clipBoundaries);
-
-		this.getChildren().addAll(myDisplayArea);
 	}
 
 	private void addToDisplayArea(Node element) {
@@ -156,9 +169,10 @@ public class TurtleDisplay extends Group {
 		myDisplayArea.getChildren().add(element);
 	}
 
-	private void createTurtle() {
+	private void createTurtle(int id) {
 		myTurtle = new Turtle(this);
-		this.addToDisplayArea(myTurtle);
+		//TODO myTurtles.put(id, new Turtle(this));
+		this.addToDisplayArea(myTurtle.getView());
 	}
 
 	private void recalculateAnimationSpeed(Point destination) {
