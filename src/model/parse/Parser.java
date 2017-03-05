@@ -3,13 +3,9 @@ package model.parse;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.Enumeration;
 import java.util.List;
-import java.util.Map.Entry;
 import java.util.ResourceBundle;
 import java.util.Stack;
-import java.util.regex.Pattern;
-import java.util.AbstractMap.SimpleEntry;
 import controller.Controller;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -18,9 +14,9 @@ import model.Variable;
 import model.commands.Command;
 import model.commands.control.MakeVariableCommand;
 import model.commands.control.UserCommand;
+import utils.BadInputException;
 import model.parse.tokens.Identify;
 import model.parse.tokens.TokenType;
-import utils.BadInputException;
 
 /**
  * @author Alexander Zapata This is the class that will take the user-input and
@@ -32,7 +28,10 @@ import utils.BadInputException;
 public class Parser implements ParserAPI {
 
 	private String language = "English";
+	private String path = "resources/languages/";
+
 	private Controller controller;
+	private ResourceBundle resources = ResourceBundle.getBundle(path + language);
 
 	private ObservableList<String> historyList;
 	private CommandMap stringToCommandMap;
@@ -55,13 +54,14 @@ public class Parser implements ParserAPI {
 
 	public void setLanguage(String language) {
 		this.language = language;
+		resources = ResourceBundle.getBundle(path + language);
 		stringToCommandMap.updateMap(language);
 	}
 
 	public String getLanguage() {
 		return language;
 	}
-	
+
 	public StateStorage getStateStorage() {
 		return stateStorage;
 	}
@@ -90,7 +90,6 @@ public class Parser implements ParserAPI {
 		return historyList.get(0);
 	}
 
-
 	protected double internalParse(String input) throws BadInputException {
 		double result = 0.0;
 		List<String> tokens = Arrays.asList(input.split("\\s+"));
@@ -102,9 +101,6 @@ public class Parser implements ParserAPI {
 	}
 
 	private double preOrderEvaluation(List<String> tokens) throws BadInputException {
-		if (tokens.size() == 1 && Identify.determineType(tokens.get(0)) == TokenType.CONSTANT) {
-			return Double.parseDouble(tokens.get(0));
-		}
 
 		double mostRecentReturnValue = 0.0;
 		if (tokens != null) {
@@ -112,17 +108,17 @@ public class Parser implements ParserAPI {
 			for (int i = 0; i < arrayLength; i++) {
 				String token = tokens.get(i);
 
-				if (token.equals("if")) {
+				if (resources.getString("If").equals(token)) {
 					i = (new IfBlockHandler(this)).handleIf(i, tokens);
-				} else if (token.equals("ifelse")) {
+				} else if (resources.getString("IfElse").equals(token)) {
 					i = (new IfElseBlockHandler(this)).handleIfElse(i, tokens);
-				} else if (token.equals("repeat")) {
+				} else if (resources.getString("Repeat").equals(token)) {
 					i = (new RepeatBlockHandler(this)).handleRepeat(i, tokens);
-				} else if (token.equals("dotimes")) {
+				} else if (resources.getString("DoTimes").equals(token)) {
 					i = (new DoTimesHandler(this)).handleDoTimes(i, tokens);
-				} else if (token.equals("for")) {
+				} else if (resources.getString("For").equals(token)) {
 					i = (new ForLoopHandler(this)).handleForLoop(i, tokens);
-				} else if (token.equals("to")) {
+				} else if (resources.getString("MakeUserInstruction").equals(token)) {
 					i = handleTo(i, tokens);
 				}
 
@@ -154,6 +150,9 @@ public class Parser implements ParserAPI {
 						text.push(token);
 					}
 				}
+				if (tokens.size() == 1 && Identify.determineType((tokens.get(0))) == TokenType.CONSTANT) {
+					return Double.parseDouble(tokens.get(0));
+				}
 			}
 		}
 		return mostRecentReturnValue;
@@ -169,7 +168,6 @@ public class Parser implements ParserAPI {
 				continue;
 			}
 			if ((toExecute.numParameters() <= arguments.size())) {
-
 				Command newInstance = toExecute;
 				double evaluation = 0.0;
 
@@ -196,6 +194,7 @@ public class Parser implements ParserAPI {
 					variables.clear();
 					text.clear();
 					throw new BadInputException("Command not found at runtime");
+
 				}
 
 				if (!(commandStack.size() == 0)) {
