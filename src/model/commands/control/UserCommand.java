@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import model.StateStorage;
 import model.commands.Command;
+import utils.BadInputException;
 
 public class UserCommand extends Command {
 	
@@ -33,10 +34,14 @@ public class UserCommand extends Command {
 	}
 
 	@Override
-	public void execute() {
+	public void execute() throws BadInputException {
 		String currentCommand = command;
 		for (String variableName: variableNames) {
-			currentCommand = currentCommand.replaceAll(variableName, getParameterList().get(variableNames.indexOf(variableName)).toString()); 
+			try {
+				currentCommand = currentCommand.replaceAll(variableName, getParameterList().get(variableNames.indexOf(variableName)).toString());
+			} catch (Exception e) {
+				throw new BadInputException("Variable was not instantiated: " + variableName);
+			} 
 		}
 		try {
 			getController().parse(currentCommand);

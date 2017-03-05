@@ -5,6 +5,7 @@ import java.util.List;
 import model.Variable;
 import model.parse.tokens.Identify;
 import model.parse.tokens.TokenType;
+import utils.BadInputException;
 
 public class RepeatBlockHandler {
 
@@ -14,7 +15,7 @@ public class RepeatBlockHandler {
 		myParser = parser;
 	}
 	
-	protected int handleRepeat(int index, List<String> tokens) throws NumberFormatException, Exception {
+	protected int handleRepeat(int index, List<String> tokens) throws NumberFormatException, BadInputException {
 		index = index + 1;
 		String expression = "";
 		while (index < tokens.size() && !(Identify.determineType(tokens.get(index)) == TokenType.LIST_START)) {
