@@ -51,7 +51,7 @@ public class View implements ViewAPI {
 		panel = new Panel(this);
 		turtleWindow = new TurtleWindow(controller);
 		commandQueue = new LinkedList<Command>();
-		turtleWindow.getDisplay().isTurtleMovingProperty().addListener(e -> {
+		this.getTurtle().isMovingProperty().addListener(e -> {
 			try {
 				dequeCommands();
 			} catch (BadInputException e1) {
@@ -119,7 +119,7 @@ public class View implements ViewAPI {
 	
 	@Override
 	public void handleCommand(Command action) throws BadInputException {
-		if(turtleWindow.getDisplay().isTurtleMovingProperty().get()) {
+		if(this.getTurtle().isMovingProperty().get()) {
 			commandQueue.add(action);
 		} else {
 			action.execute();
@@ -128,32 +128,36 @@ public class View implements ViewAPI {
 	
 	private void dequeCommands() throws BadInputException {
 		while (!commandQueue.isEmpty() && 
-			!turtleWindow.getDisplay().isTurtleMovingProperty().get()) {
+			!this.getTurtle().isMovingProperty().get()) {
 			commandQueue.poll().execute();
 		}
 	}
 
 	@Override
 	public void moveTo(Point point) {
-		turtleWindow.getDisplay().moveTurtle(point);
+		//TODO require turtle id
+		turtleWindow.getDisplay().moveTurtle(1, point);
 	}
 
 
 	@Override
 	public void turn(double degrees) {
-		turtleWindow.getDisplay().turnTurtle(degrees);
+		//TODO require turtle id
+		turtleWindow.getDisplay().turnTurtle(1, degrees);
 	}
 
 
 	@Override
 	public void setPenDown(boolean down) {
-		turtleWindow.getDisplay().setPenDown(down);
+		//TODO require turtle id
+		turtleWindow.getDisplay().setPenDown(1, down);
 	}
 
 
 	@Override
 	public void setTurtleVisible(boolean visible) {
-		turtleWindow.getDisplay().setTurtleVisible(visible);
+		//TODO require turtle id
+		turtleWindow.getDisplay().setTurtleVisible(1, visible);
 	}
 
 
@@ -171,7 +175,8 @@ public class View implements ViewAPI {
 	
 	@Override
 	public Turtle getTurtle() {
-		return turtleWindow.getDisplay().getTurtle();
+		//TODO require turtle id
+		return turtleWindow.getDisplay().getTurtle(1);
 	}
 	
 	public void showMessage(String message) {

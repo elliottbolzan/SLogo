@@ -15,8 +15,10 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.Separator;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import view.visualization.Turtle;
 import view.visualization.TurtleDisplay;
 
 public class SettingsView extends Stage {
@@ -57,7 +59,7 @@ public class SettingsView extends Stage {
 		myBackgroundPicker = new ColorPicker(controller, myTurtleDisplay.getBackgroundColor(), (e -> this.setTurtleBackground()));
 		VBox backgroundPickerBox = addLabelTo(myBackgroundPicker, controller.getResources().getString("BackgroundPickerLabel"));
 
-		myPenPicker = new ColorPicker(controller, myTurtleDisplay.getPenColor(), (e -> this.setPenColor()));
+		myPenPicker = new ColorPicker(controller, Color.BLACK, (e -> this.setPenColor()));
 		VBox penPickerBox = addLabelTo(myPenPicker, controller.getResources().getString("PenPickerLabel"));
 
 		box.getChildren().addAll(languagePickerBox, new Separator(), imagePickerBox, new Separator(), backgroundPickerBox, new Separator(), penPickerBox);
@@ -90,11 +92,15 @@ public class SettingsView extends Stage {
 	}
 
 	private void setPenColor() {
-		myTurtleDisplay.setPenColor(myPenPicker.getColor());
+		for(Turtle t : myTurtleDisplay.getAllTurtles()) {
+			myTurtleDisplay.setPenColor(t.getID(), myPenPicker.getColor());
+		}
 	}
 
 	private void setTurtleImage() {
-		myTurtleDisplay.setTurtleImage(myImagePicker.getTextField().getText());
+		for(Turtle t : myTurtleDisplay.getAllTurtles()) {
+			myTurtleDisplay.setTurtleImage(t.getID(), myImagePicker.getTextField().getText());
+		}
 	}
 
 	private void setTurtleBackground() {

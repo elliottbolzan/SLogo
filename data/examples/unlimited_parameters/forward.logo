@@ -1,0 +1,12 @@
+# go forward 100
+fd ( sum 10 20 30 40 )
+
+# go forward 100
+( fd 10 20 30 40 )
+
+# go forward 100
+( make :a 10 :b 20 :c 30 :d 40 )
+( fd :a :b :c :d )
+
+# go forward 1000
+( fd * :a :d * :b :c )
