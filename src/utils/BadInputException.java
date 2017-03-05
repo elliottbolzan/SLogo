@@ -1,7 +1,9 @@
 package utils;
 
 public class BadInputException extends Exception {
-    public BadInputException() {}
+	private static final long serialVersionUID = 1L;
+
+	public BadInputException() {}
 
     public BadInputException(String message)
     {

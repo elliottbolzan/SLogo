@@ -6,16 +6,16 @@ import java.util.LinkedList;
 import java.util.Queue;
 
 import javafx.beans.property.SimpleBooleanProperty;
-import javafx.scene.Group;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
 
-public class Turtle extends Group {
+public class Turtle {
 	private final static String BASIC_IMAGE = "view/visualization/turtle.png";
 	private ImageView myImageView;
 
 	private TurtleDisplay myDisplay;
+	private int myID;
 
 	private Point myLocation;
 	private double myRotation;
@@ -29,11 +29,11 @@ public class Turtle extends Group {
 	private int myStepsRemaining;
 	private Point myStepSize;
 
-	public Turtle(TurtleDisplay home) {
+	public Turtle(int id, TurtleDisplay home) {
 		myImageView = new ImageView(new Image(getClass().getClassLoader().getResourceAsStream(BASIC_IMAGE)));
-		this.getChildren().add(myImageView);
 
 		myDisplay = home;
+		myID = id;
 
 		myPenDown = true;
 		myPenColor = Color.BLACK;
@@ -45,6 +45,10 @@ public class Turtle extends Group {
 		isMovingProperty = new SimpleBooleanProperty(false);
 	}
 
+	public int getID() {
+		return myID;
+	}
+	
 	public Point getLocation() {
 		return myLocation;
 	}
@@ -56,15 +60,23 @@ public class Turtle extends Group {
 	public boolean isPenDown() {
 		return myPenDown;
 	}
-
-	protected Color getPenColor() {
+	
+	public boolean isVisible() {
+		return myImageView.isVisible();
+	}
+	
+	public Color getPenColor() {
 		return myPenColor;
 	}
 
-	protected SimpleBooleanProperty isMovingProperty() {
+	public SimpleBooleanProperty isMovingProperty() {
 		return isMovingProperty;
 	}
 
+	protected ImageView getView() {
+		return myImageView;
+	}
+	
 	protected void setImage(String url) {
 		myImageView.setImage(new Image(url));
 		this.centerImage();
@@ -176,9 +188,5 @@ public class Turtle extends Group {
 		} else {
 			return Math.abs(distanceX / stepLength);
 		}
-	}
-
-	public final class ImmutableTurtle {
-		// TODO: implement this so getTurtle() is less exposing
 	}
 }
