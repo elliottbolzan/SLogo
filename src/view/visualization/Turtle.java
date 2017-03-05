@@ -15,6 +15,7 @@ public class Turtle {
 	private ImageView myImageView;
 
 	private TurtleDisplay myDisplay;
+	private int myID;
 
 	private Point myLocation;
 	private double myRotation;
@@ -28,10 +29,11 @@ public class Turtle {
 	private int myStepsRemaining;
 	private Point myStepSize;
 
-	public Turtle(TurtleDisplay home) {
+	public Turtle(int id, TurtleDisplay home) {
 		myImageView = new ImageView(new Image(getClass().getClassLoader().getResourceAsStream(BASIC_IMAGE)));
 
 		myDisplay = home;
+		myID = id;
 
 		myPenDown = true;
 		myPenColor = Color.BLACK;
@@ -43,6 +45,10 @@ public class Turtle {
 		isMovingProperty = new SimpleBooleanProperty(false);
 	}
 
+	public int getID() {
+		return myID;
+	}
+	
 	public Point getLocation() {
 		return myLocation;
 	}
@@ -59,11 +65,11 @@ public class Turtle {
 		return myImageView.isVisible();
 	}
 	
-	protected Color getPenColor() {
+	public Color getPenColor() {
 		return myPenColor;
 	}
 
-	protected SimpleBooleanProperty isMovingProperty() {
+	public SimpleBooleanProperty isMovingProperty() {
 		return isMovingProperty;
 	}
 
@@ -182,9 +188,5 @@ public class Turtle {
 		} else {
 			return Math.abs(distanceX / stepLength);
 		}
-	}
-
-	public final class ImmutableTurtle {
-		// TODO: implement this so getTurtle() is less exposing
 	}
 }
