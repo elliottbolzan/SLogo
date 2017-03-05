@@ -66,6 +66,9 @@ public class TurtleDisplay {
 	}
 	
 	public Turtle getTurtle(int id) {
+		if(!myTurtles.containsKey(id)) {
+			this.createTurtle(id);
+		}
 		return myTurtles.get(id);
 	}
 	
