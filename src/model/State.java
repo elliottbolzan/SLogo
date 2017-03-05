@@ -7,14 +7,14 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import model.commands.control.UserCommand;
 
-public class StateStorage {
+public class State {
 
 	private HashMap<String, UserCommand> cmdList;
 
 	private ObservableList<Variable> variables;
 	private ObservableList<String> userDefinedCommandNames;
 
-	public StateStorage() {
+	public State() {
 		variables = FXCollections.observableArrayList(new ArrayList<Variable>());
 		userDefinedCommandNames = FXCollections.observableArrayList(new ArrayList<String>());
 		cmdList = new HashMap<String, UserCommand>();
@@ -35,6 +35,15 @@ public class StateStorage {
 
 	public ObservableList<Variable> getVariables() {
 		return variables;
+	}
+	
+	public double getVariableValue(String name) {
+		for (Variable variable: variables) {
+			if (variable.getName().equals(name)) {
+				return Double.parseDouble(variable.getValue());
+			}
+		}
+		return 0;
 	}
 
 	public ObservableList<String> getUserDefinedCommands() {
