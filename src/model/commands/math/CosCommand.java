@@ -1,10 +1,9 @@
 package model.commands.math;
 
-import controller.Controller;
-import parser.Argument;
-import view.visualization.Turtle;
+import model.commands.Command;
+import model.parser.Argument;
 
-public class CosCommand extends MathCommand {
+public class CosCommand extends Command {
 	
 	public CosCommand() {
 		super();
@@ -16,7 +15,7 @@ public class CosCommand extends MathCommand {
 	}
 
 	@Override
-	public Argument getReturnValue() {
-		return Math.cos(this.getParameterList().get(0));
+	public Argument execute() {
+		return new Argument(Math.cos(this.getParameter(0).getDouble()));
 	}
 }

@@ -1,10 +1,9 @@
 package model.commands.math;
 
-import controller.Controller;
-import parser.Argument;
-import view.visualization.Turtle;
+import model.commands.Command;
+import model.parser.Argument;
 
-public class RemainderCommand extends MathCommand {
+public class RemainderCommand extends Command {
 	
 	public RemainderCommand() {
 		super();
@@ -16,7 +15,7 @@ public class RemainderCommand extends MathCommand {
 	}
 
 	@Override
-	public Argument getReturnValue() {
-		return (this.getParameterList().get(0) % this.getParameterList().get(1));
+	public Argument execute() {
+		return new Argument(getParameter(0).getDouble() % getParameter(1).getDouble());
 	}
 }

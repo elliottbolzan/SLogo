@@ -1,10 +1,9 @@
 package model.commands.math;
 
-import controller.Controller;
-import parser.Argument;
-import view.visualization.Turtle;
+import model.commands.Command;
+import model.parser.Argument;
 
-public class LogCommand extends MathCommand {
+public class LogCommand extends Command {
 	
 	public LogCommand() {
 		super();
@@ -16,7 +15,7 @@ public class LogCommand extends MathCommand {
 	}
 
 	@Override
-	public Argument getReturnValue() {
-		return Math.log(this.getParameterList().get(0));
+	public Argument execute() {
+		return new Argument(Math.log(getParameter(0).getDouble()));
 	}
 }

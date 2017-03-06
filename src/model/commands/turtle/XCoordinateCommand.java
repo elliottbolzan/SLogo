@@ -2,9 +2,9 @@ package model.commands.turtle;
 
 import model.parser.Argument;
 
-public class PenUpCommand extends TurtleCommand {
+public class XCoordinateCommand extends TurtleCommand {
 
-	public PenUpCommand() {
+	public XCoordinateCommand() {
 		super();
 	}
 	
@@ -15,7 +15,6 @@ public class PenUpCommand extends TurtleCommand {
 
 	@Override
 	public Argument execute() {
-		this.getController().setPenDown(false);
-		return new Argument(0);
+		return new Argument(this.getController().getTurtle().getLocation().getX());
 	}
 }
