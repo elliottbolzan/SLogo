@@ -5,7 +5,7 @@ import model.commands.Command;
 import model.parser.Argument;
 import utils.BadInputException;
 
-public class DoTimesCommand extends Command {
+public class DotimesCommand extends Command {
 
 	@Override
 	public int numParameters() {
