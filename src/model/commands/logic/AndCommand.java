@@ -14,7 +14,7 @@ public class AndCommand extends LogicCommand {
 	}
 
 	@Override
-	public Argument getReturnValue() {
+	public Argument execute() {
 		return super.booleanToInt(this.getParameterList().get(0) != 0 && this.getParameterList().get(1) != 0);
 	}
 }
