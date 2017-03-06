@@ -7,14 +7,14 @@ import model.commands.Command;
 import model.parser.Argument;
 import utils.BadInputException;
 
-public class UserCommand extends Command {
+public class MakeUserInstructionCommand extends Command {
 	
 	private String name;
 	private ArrayList<String> variableNames;
 	private String command;
 	private State storage;
 	
-	public UserCommand(String name, ArrayList<String> variableNames, String command, State storage) {
+	public MakeUserInstructionCommand(String name, ArrayList<String> variableNames, String command, State storage) {
 		this.name = name;
 		this.variableNames = variableNames;
 		this.command = command.trim();
@@ -22,16 +22,11 @@ public class UserCommand extends Command {
 		this.storage.setCommand(this);
 	}
 	
-	public UserCommand() {}
+	public MakeUserInstructionCommand() {}
 
 	@Override
 	public int numParameters() {
 		return variableNames.size();
-	}
-
-	@Override
-	public Argument getReturnValue() {
-		return 0;
 	}
 
 	@Override
@@ -46,9 +41,11 @@ public class UserCommand extends Command {
 		}
 		try {
 			getController().parse(currentCommand);
+			return new Argument(1);
 		}
 		catch (Exception e) {
 			getController().getView().showMessage(e.getMessage());
+			return new Argument(0);
 		}
 	}
 
@@ -56,5 +53,4 @@ public class UserCommand extends Command {
 	public String getName() {
 		return name;
 	}
-	
 }

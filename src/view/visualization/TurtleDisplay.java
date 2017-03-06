@@ -44,7 +44,7 @@ public class TurtleDisplay {
 		this.createTurtle(1);
 		this.createTurtleInfo();
 		myLineLength = 1.0;
-		isAnimated = false;
+		isAnimated = true;
 	}
 
 	public Dimension getDimensions() {
