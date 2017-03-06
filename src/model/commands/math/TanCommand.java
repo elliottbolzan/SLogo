@@ -1,10 +1,9 @@
 package model.commands.math;
 
-import controller.Controller;
-import parser.Argument;
-import view.visualization.Turtle;
+import model.commands.Command;
+import model.parser.Argument;
 
-public class TanCommand extends MathCommand {
+public class TanCommand extends Command {
 	
 	public TanCommand() {
 		super();
@@ -16,7 +15,7 @@ public class TanCommand extends MathCommand {
 	}
 
 	@Override
-	public Argument getReturnValue() {
-		return Math.tan(this.getParameterList().get(0));
+	public Argument execute() {
+		return new Argument(Math.tan(getParameter(0).getDouble()));
 	}
 }

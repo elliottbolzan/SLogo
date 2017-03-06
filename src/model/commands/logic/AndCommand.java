@@ -1,6 +1,6 @@
 package model.commands.logic;
 
-import parser.Argument;
+import model.parser.Argument;
 
 public class AndCommand extends LogicCommand {
 
@@ -15,6 +15,6 @@ public class AndCommand extends LogicCommand {
 
 	@Override
 	public Argument execute() {
-		return super.booleanToInt(this.getParameterList().get(0) != 0 && this.getParameterList().get(1) != 0);
+		return new Argument((super.booleanToInt(getParameter(0).getDouble() != 0 && getParameter(1).getDouble() != 0)));
 	}
 }

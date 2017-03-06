@@ -1,7 +1,7 @@
 package model.commands.turtle;
 
 import controller.Controller;
-import parser.Argument;
+import model.parser.Argument;
 import view.visualization.Turtle;
 
 public class HeadingCommand extends TurtleCommand {
@@ -20,12 +20,7 @@ public class HeadingCommand extends TurtleCommand {
 	}
 
 	@Override
-	public Argument getReturnValue() {
-		return this.getController().getTurtle().getRotation();
-	}
-
-	@Override
 	public Argument execute() {
-		//Do nothing to the display
+		return new Argument(this.getController().getTurtle().getRotation());
 	}
 }

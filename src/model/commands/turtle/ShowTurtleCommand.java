@@ -1,18 +1,11 @@
 package model.commands.turtle;
 
-import controller.Controller;
-import parser.Argument;
-import view.visualization.Turtle;
+import model.parser.Argument;
 
 public class ShowTurtleCommand extends TurtleCommand {
 
 	public ShowTurtleCommand() {
 		super();
-	}
-
-	public double execute(double[] parameters, Turtle myTurtle, Controller view){
-		view.setTurtleVisible(true);
-		return 1;
 	}
 	
 	@Override
@@ -21,12 +14,8 @@ public class ShowTurtleCommand extends TurtleCommand {
 	}
 
 	@Override
-	public Argument getReturnValue() {
-		return 1;
-	}
-
-	@Override
 	public Argument execute() {
 		this.getController().setTurtleVisible(true);
+		return new Argument(1);
 	}
 }

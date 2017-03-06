@@ -1,10 +1,9 @@
 package model.commands.math;
 
-import controller.Controller;
-import parser.Argument;
-import view.visualization.Turtle;
+import model.commands.Command;
+import model.parser.Argument;
 
-public class AtanCommand extends MathCommand {
+public class AtanCommand extends Command {
 	
 	public AtanCommand() {
 		super();
@@ -16,7 +15,7 @@ public class AtanCommand extends MathCommand {
 	}
 
 	@Override
-	public Argument getReturnValue() {
-		return Math.atan(this.getParameterList().get(0));
+	public Argument execute() {
+		return new Argument(Math.atan(getParameter(0).getDouble()));
 	}
 }

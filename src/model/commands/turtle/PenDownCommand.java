@@ -1,7 +1,7 @@
 package model.commands.turtle;
 
 import controller.Controller;
-import parser.Argument;
+import model.parser.Argument;
 import view.visualization.Turtle;
 
 public class PenDownCommand extends TurtleCommand {
@@ -21,12 +21,8 @@ public class PenDownCommand extends TurtleCommand {
 	}
 
 	@Override
-	public Argument getReturnValue() {
-		return 1;
-	}
-
-	@Override
 	public Argument execute() {
 		this.getController().setPenDown(true);
+		return new Argument(1);
 	}
 }
