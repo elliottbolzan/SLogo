@@ -1,10 +1,9 @@
 package model.commands.math;
 
-import controller.Controller;
-import parser.Argument;
-import view.visualization.Turtle;
+import model.commands.Command;
+import model.parser.Argument;
 
-public class PiCommand extends MathCommand {
+public class PiCommand extends Command {
 	
 	public PiCommand() {
 		super();
@@ -16,7 +15,7 @@ public class PiCommand extends MathCommand {
 	}
 
 	@Override
-	public Argument getReturnValue() {
-		return Math.PI;
+	public Argument execute() {
+		return new Argument(Math.PI);
 	}
 }
