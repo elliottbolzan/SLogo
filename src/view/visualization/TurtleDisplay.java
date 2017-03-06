@@ -43,7 +43,7 @@ public class TurtleDisplay {
 		myTurtles = new HashMap<Integer, Turtle>();
 		this.createTurtle(1);
 		myLineLength = 1.0;
-		isAnimated = false;
+		isAnimated = true;
 	}
 
 	public Dimension getDimensions() {
