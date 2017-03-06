@@ -1,6 +1,7 @@
 package model.commands.turtle;
 
 import controller.Controller;
+import parser.Argument;
 import view.visualization.Turtle;
 
 public class XCorCommand extends TurtleCommand {
@@ -20,12 +21,12 @@ public class XCorCommand extends TurtleCommand {
 	}
 
 	@Override
-	public double getReturnValue() {
+	public Argument getReturnValue() {
 		return this.getController().getTurtle().getLocation().getX();
 	}
 
 	@Override
-	public void execute() {
+	public Argument execute() {
 		//Do nothing to the display
 	}
 }

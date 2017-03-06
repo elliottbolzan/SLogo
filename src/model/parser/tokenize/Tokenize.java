@@ -1,7 +1,7 @@
 /**
  * 
  */
-package model.parse.tokens;
+package model.parser.tokenize;
 
 import java.util.ArrayList;
 import java.util.Enumeration;
@@ -17,7 +17,7 @@ import utils.BadInputException;
  * @author Elliott Bolzan
  *
  */
-public class Identify {
+public class Tokenize {
 
 	private static String syntaxPath = "resources/languages/Syntax";
 
@@ -28,39 +28,39 @@ public class Identify {
 	private static String LIST_START_MATCH = "ListStart";
 	private static String LIST_END_MATCH = "ListEnd";
 
-	public static TokenType determineType(String token) throws BadInputException {
+	public static Token determineType(String token) {
 		if (checkArgument(token).equals(COMMENT_MATCH)) {
-			return TokenType.COMMENT;
+			return Token.COMMENT;
 		}
 		else if (checkArgument(token).equals(CONSTANT_MATCH)) {
-			return TokenType.CONSTANT;
+			return Token.CONSTANT;
 		}
 		else if (checkArgument(token).equals(VARIABLE_MATCH)) {
-			return TokenType.VARIABLE;
+			return Token.VARIABLE;
 		}
 		else if (checkArgument(token).equals(COMMAND_MATCH)) {
-			return TokenType.COMMAND;
+			return Token.COMMAND;
 		}
 		else if (checkArgument(token).equals(LIST_START_MATCH)) {
-			return TokenType.LIST_START;
+			return Token.LIST_START;
 		}
 		else if (checkArgument(token).equals(LIST_END_MATCH)) {
-			return TokenType.LIST_END;
+			return Token.LIST_END;
 		}
-		throw new BadInputException();
+		return Token.COMMENT;
 	}
 
 	private static boolean match(String text, Pattern regex) {
 		return regex.matcher(text).matches();
 	}
 
-	private static String checkArgument(String text) throws BadInputException {
+	private static String checkArgument(String text) {
 		for (Entry<String, Pattern> e : createPatternMap()) {
 			if (match(text, e.getValue())) {
 				return e.getKey();
 			}
 		}
-		throw new BadInputException();
+		return "";
 	}
 
 	private static List<Entry<String, Pattern>> createPatternMap() {

@@ -2,17 +2,17 @@ package model;
 
 import controller.Controller;
 import javafx.collections.ObservableList;
-import model.parse.Parser;
+import model.parser.TreeParser;
 import utils.BadInputException;
 
 public class Model implements ModelAPI {
 
 	private Controller controller;
-	private Parser parser;
+	private TreeParser parser;
 	
 	public Model(Controller controller) {
 		this.controller = controller;
-		parser = new Parser(controller);
+		parser = new TreeParser(controller);
 	}
 	
 	public void parse(String string) throws BadInputException {

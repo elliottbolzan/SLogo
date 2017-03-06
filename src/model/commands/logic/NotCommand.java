@@ -1,6 +1,7 @@
 package model.commands.logic;
 
 import controller.Controller;
+import parser.Argument;
 import view.visualization.Turtle;
 
 public class NotCommand extends LogicCommand {
@@ -15,7 +16,7 @@ public class NotCommand extends LogicCommand {
 	}
 
 	@Override
-	public double getReturnValue() {
+	public Argument getReturnValue() {
 		return super.booleanToInt(this.getParameterList().get(0) == 0);
 	}
 }

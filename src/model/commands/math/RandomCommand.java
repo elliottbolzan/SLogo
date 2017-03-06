@@ -1,16 +1,10 @@
 package model.commands.math;
 
 import java.util.Random;
-import controller.Controller;
-import view.visualization.Turtle;
+import model.commands.Command;
+import parser.Argument;
 
-public class RandomCommand extends MathCommand {
-	Random value;
-	
-	public RandomCommand() {
-		super();
-		value = new Random();
-	}
+public class RandomCommand extends Command {
 	
 	@Override
 	public int numParameters() {
@@ -18,7 +12,7 @@ public class RandomCommand extends MathCommand {
 	}
 
 	@Override
-	public double getReturnValue() {
-		return value.nextInt(this.getParameterList().get(0).intValue());
+	public Argument execute() {
+		return new Argument(new Random().nextInt((int) getParameter(0).getDouble()));
 	}
 }
