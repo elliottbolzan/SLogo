@@ -6,6 +6,7 @@ import java.util.LinkedList;
 import java.util.Queue;
 
 import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.property.SimpleDoubleProperty;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
@@ -18,10 +19,10 @@ public class Turtle {
 	private int myID;
 
 	private Point myLocation;
-	private double myRotation;
+	private SimpleDoubleProperty myRotationProperty;
 	private Queue<Point> myFutureDestinations;
 
-	private boolean myPenDown;
+	private SimpleBooleanProperty myPenDownProperty;
 	private Color myPenColor;
 	private double myPenWidth;
 
@@ -35,7 +36,7 @@ public class Turtle {
 		myDisplay = home;
 		myID = id;
 
-		myPenDown = true;
+		myPenDownProperty.set(true);
 		myPenColor = Color.BLACK;
 		myPenWidth = 1.0;
 
@@ -54,11 +55,11 @@ public class Turtle {
 	}
 
 	public double getRotation() {
-		return myRotation;
+		return myRotationProperty.get();
 	}
 
 	public boolean isPenDown() {
-		return myPenDown;
+		return myPenDownProperty.get();
 	}
 	
 	public boolean isVisible() {
@@ -83,12 +84,12 @@ public class Turtle {
 	}
 
 	protected void setRotation(double degrees) {
-		myRotation = degrees;
+		myRotationProperty.set(degrees);
 		myImageView.setRotate(degrees + 90);
 	}
 
 	protected void setPenDown(boolean down) {
-		myPenDown = down;
+		myPenDownProperty.set(down);
 	}
 
 	protected void setPenColor(Color color) {
@@ -149,7 +150,7 @@ public class Turtle {
 	private void stepTowardsDestination() {
 		Point step = new Point(myLocation.getX() + myStepSize.getX(), myLocation.getY() + myStepSize.getY());
 
-		if (myPenDown) {
+		if (myPenDownProperty.get()) {
 			myDisplay.drawLine(myLocation, step, myPenColor, myPenWidth);
 		}
 
