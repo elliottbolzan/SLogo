@@ -13,7 +13,6 @@ public class MakeVariableCommand extends Command {
 
 	@Override
 	public Argument execute() {
-		getState().setVariable(new Variable(getParameter(0).getString(), 0));
 		getState().setVariable(new Variable(getParameter(0).getString(), getParameter(1).getDouble()));
 		return getParameter(1);
 	}

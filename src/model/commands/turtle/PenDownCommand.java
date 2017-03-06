@@ -20,7 +20,6 @@ public class PenDownCommand extends TurtleCommand {
 		return 0;
 	}
 
-
 	@Override
 	public Argument execute() {
 		this.getController().setPenDown(true);
