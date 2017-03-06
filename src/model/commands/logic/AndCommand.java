@@ -1,10 +1,9 @@
 package model.commands.logic;
 
-import controller.Controller;
-import view.visualization.Turtle;
+import parser.Argument;
 
-public class AndCommand extends LogicCommand {	
-	
+public class AndCommand extends LogicCommand {
+
 	public AndCommand() {
 		super();
 	}
@@ -15,8 +14,7 @@ public class AndCommand extends LogicCommand {
 	}
 
 	@Override
-	public double getReturnValue() {
-		return super.booleanToInt(this.getParameterList().get(0) != 0 &&
-								  this.getParameterList().get(1) != 0);
+	public Argument execute() {
+		return super.booleanToInt(this.getParameterList().get(0) != 0 && this.getParameterList().get(1) != 0);
 	}
 }

@@ -5,7 +5,7 @@ import model.commands.Command;
 import model.parser.Argument;
 import utils.BadInputException;
 
-public class DotimesCommand extends Command {
+public class ForCommand extends Command {
 
 	@Override
 	public int numParameters() {
@@ -16,8 +16,10 @@ public class DotimesCommand extends Command {
 	public Argument execute() throws BadInputException {
 		Argument result = new Argument();
 		String name = getChildren().get(0).getChildren().get(0).evaluate().getString();
-		int limit = (int) getChildren().get(0).getChildren().get(1).evaluate().getDouble();
-		for (double k = 0; k <= limit; k += 1) {
+		int start = (int) getChildren().get(0).getChildren().get(1).evaluate().getDouble();
+		int end = (int) getChildren().get(0).getChildren().get(2).evaluate().getDouble();
+		int increment = (int) getChildren().get(0).getChildren().get(3).evaluate().getDouble();
+		for (double k = start; k <= end; k += increment) {
 			getState().setVariable(new Variable(name, k));
 			result = getParameter(1);
 		}

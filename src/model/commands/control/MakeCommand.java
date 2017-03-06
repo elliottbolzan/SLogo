@@ -2,7 +2,7 @@ package model.commands.control;
 
 import java.util.ArrayList;
 
-import model.StateStorage;
+import model.State;
 /*
 public class MakeCommand extends Command {
 	

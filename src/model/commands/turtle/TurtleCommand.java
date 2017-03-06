@@ -1,6 +1,5 @@
 package model.commands.turtle;
 
-import controller.Controller;
 import model.commands.Command;
 import utils.Point;
 import view.visualization.Turtle;
@@ -10,8 +9,6 @@ public abstract class TurtleCommand extends Command {
 	protected TurtleCommand() {
 		super();
 	}
-
-	public abstract double execute(double[] parameters, Turtle turtle, Controller view);
 	
     protected Point endLocation(double parameters, Turtle t) {
     	double rad = Math.toRadians(t.getRotation());

@@ -2,8 +2,9 @@ package model.commands.control;
 
 import java.util.ArrayList;
 
-import model.StateStorage;
+import model.State;
 import model.commands.Command;
+import parser.Argument;
 import utils.BadInputException;
 
 public class UserCommand extends Command {
@@ -11,9 +12,9 @@ public class UserCommand extends Command {
 	private String name;
 	private ArrayList<String> variableNames;
 	private String command;
-	private StateStorage storage;
+	private State storage;
 	
-	public UserCommand(String name, ArrayList<String> variableNames, String command, StateStorage storage) {
+	public UserCommand(String name, ArrayList<String> variableNames, String command, State storage) {
 		this.name = name;
 		this.variableNames = variableNames;
 		this.command = command.trim();
@@ -29,12 +30,12 @@ public class UserCommand extends Command {
 	}
 
 	@Override
-	public double getReturnValue() {
+	public Argument getReturnValue() {
 		return 0;
 	}
 
 	@Override
-	public void execute() throws BadInputException {
+	public Argument execute() throws BadInputException {
 		String currentCommand = command;
 		for (String variableName: variableNames) {
 			try {

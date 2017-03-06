@@ -1,6 +1,7 @@
 package model.commands.logic;
 
 import controller.Controller;
+import parser.Argument;
 import view.visualization.Turtle;
 
 public class ShowQueryCommand extends LogicCommand {
@@ -19,7 +20,7 @@ public class ShowQueryCommand extends LogicCommand {
 	}
 
 	@Override
-	public double getReturnValue() {
+	public Argument getReturnValue() {
 		return super.booleanToInt(this.getController().getTurtle().isVisible());
 	}
 }

@@ -1,6 +1,7 @@
 package model.commands.turtle;
 
 import controller.Controller;
+import parser.Argument;
 import view.visualization.Turtle;
 
 public class ShowTurtleCommand extends TurtleCommand {
@@ -20,12 +21,12 @@ public class ShowTurtleCommand extends TurtleCommand {
 	}
 
 	@Override
-	public double getReturnValue() {
+	public Argument getReturnValue() {
 		return 1;
 	}
 
 	@Override
-	public void execute() {
+	public Argument execute() {
 		this.getController().setTurtleVisible(true);
 	}
 }

@@ -1,13 +1,9 @@
 package model.commands.math;
 
-import controller.Controller;
-import view.visualization.Turtle;
+import model.commands.Command;
+import model.parser.Argument;
 
-public class DifferenceCommand extends MathCommand {
-	
-	public DifferenceCommand() {
-		super();
-	}
+public class DifferenceCommand extends Command {
 	
 	@Override
 	public int numParameters() {
@@ -15,7 +11,7 @@ public class DifferenceCommand extends MathCommand {
 	}
 
 	@Override
-	public double getReturnValue() {
-		return this.getParameterList().get(0) - this.getParameterList().get(1);
+	public Argument execute() {
+		return new Argument(getParameter(0).getDouble() - getParameter(1).getDouble());
 	}
 }

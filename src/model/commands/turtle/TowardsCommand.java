@@ -1,6 +1,7 @@
 package model.commands.turtle;
 
 import controller.Controller;
+import parser.Argument;
 import view.visualization.Turtle;
 
 public class TowardsCommand extends TurtleCommand {
@@ -25,7 +26,7 @@ public class TowardsCommand extends TurtleCommand {
 	}
 
 	@Override
-	public double getReturnValue() {
+	public Argument getReturnValue() {
 		double xdiff = this.getParameterList().get(0) - this.getController().getTurtle().getLocation().getX();
 		double ydiff = this.getParameterList().get(1) - this.getController().getTurtle().getLocation().getY();
 		double tempd = Math.atan2(ydiff, xdiff);
@@ -34,7 +35,7 @@ public class TowardsCommand extends TurtleCommand {
 	}
 
 	@Override
-	public void execute() {
+	public Argument execute() {
 		double xdiff = this.getParameterList().get(0) - this.getController().getTurtle().getLocation().getX();
 		double ydiff = this.getParameterList().get(1) - this.getController().getTurtle().getLocation().getY();
 		double tempd = Math.atan2(ydiff, xdiff);

@@ -1,14 +1,12 @@
 package model.commands;
 
+import model.parser.Argument;
 import utils.BadInputException;
 
 public interface CommandInterface {
 
-	public String toString();
-
 	public int numParameters();
+		
+	public Argument execute() throws BadInputException;
 	
-	public double getReturnValue();
-	
-	public void execute() throws BadInputException;
 }
