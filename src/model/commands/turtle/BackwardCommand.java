@@ -12,8 +12,9 @@ public class BackwardCommand extends TurtleCommand {
 
 	@Override
 	public Argument execute() {
-		Point loc = super.endLocation(-1 * getParameter(0).getDouble(), getController().getTurtle());
+		Argument result = getParameter(0);
+		Point loc = endLocation(-result.getDouble(), getController().getTurtle());
 		getController().moveTo(loc);
-		return getParameter(0);
+		return result;
 	}
 }

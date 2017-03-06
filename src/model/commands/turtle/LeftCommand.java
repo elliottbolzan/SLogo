@@ -11,7 +11,8 @@ public class LeftCommand extends TurtleCommand {
 	
 	@Override
 	public Argument execute() {
-		getController().turn(getParameter(0).getDouble());
-		return getParameter(0);
+		Argument result = getParameter(0);
+		getController().turn(result.getDouble());
+		return result;
 	}
 }

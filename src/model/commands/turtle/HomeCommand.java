@@ -16,7 +16,8 @@ public class HomeCommand extends TurtleCommand {
 
 	@Override
 	public Argument execute() {
+		double distance = distance(new double[]{0, 0}, getController().getTurtle());
 		getController().moveTo(new Point(0, 0));
-		return new Argument(distance(new double[]{0, 0}, getController().getTurtle()));
+		return new Argument(distance);
 	}
 }
