@@ -2,7 +2,7 @@ package model.commands.math;
 
 import java.util.Random;
 import model.commands.Command;
-import parser.Argument;
+import model.parser.Argument;
 
 public class RandomCommand extends Command {
 	
