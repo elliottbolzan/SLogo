@@ -1,6 +1,7 @@
 package model.commands.logic;
 
 import model.commands.Command;
+import parser.Argument;
 
 public abstract class LogicCommand extends Command {
 
@@ -13,7 +14,7 @@ public abstract class LogicCommand extends Command {
 	}
 	
 	@Override
-	public void execute() {
+	public Argument execute() {
 		//Do nothing to the display
 	}
 }

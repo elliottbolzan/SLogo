@@ -1,6 +1,7 @@
 package model.commands.math;
 
 import controller.Controller;
+import parser.Argument;
 import view.visualization.Turtle;
 
 public class CosCommand extends MathCommand {
@@ -15,7 +16,7 @@ public class CosCommand extends MathCommand {
 	}
 
 	@Override
-	public double getReturnValue() {
+	public Argument getReturnValue() {
 		return Math.cos(this.getParameterList().get(0));
 	}
 }

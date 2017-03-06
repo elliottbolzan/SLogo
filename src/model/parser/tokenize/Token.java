@@ -1,11 +1,11 @@
-package model.parse.tokens;
+package model.parser.tokenize;
 
 /**
  * @author Elliott Bolzan
  *
  */
 
-public enum TokenType {
+public enum Token {
 	COMMENT,
 	CONSTANT,
 	VARIABLE,
