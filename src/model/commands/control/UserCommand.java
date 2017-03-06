@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import model.State;
 import model.commands.Command;
-import parser.Argument;
+import model.parser.Argument;
 import utils.BadInputException;
 
 public class UserCommand extends Command {

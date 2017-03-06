@@ -18,7 +18,8 @@ public class Turtle {
 	private TurtleDisplay myDisplay;
 	private int myID;
 
-	private Point myLocation;
+	private SimpleDoubleProperty myXProperty;
+	private SimpleDoubleProperty myYProperty;
 	private Point myDestination;
 	private SimpleDoubleProperty myRotationProperty;
 	private Queue<Point> myFutureDestinations;
@@ -42,8 +43,11 @@ public class Turtle {
 		myPenColor = Color.BLACK;
 		myPenWidth = 1.0;
 
+		myXProperty = new SimpleDoubleProperty();
+		myYProperty = new SimpleDoubleProperty();
 		this.setLocation(new Point(0, 0));
 		myDestination = new Point(0, 0);
+		
 		myRotationProperty = new SimpleDoubleProperty();
 		this.setRotation(90.0);
 		isMovingProperty = new SimpleBooleanProperty(false);
@@ -55,10 +59,6 @@ public class Turtle {
 	
 	public Point getDestination() {
 		return myDestination;
-	}
-	
-	public Point getCurrentLocation() {
-		return myLocation;
 	}
 
 	public double getRotation() {
@@ -77,7 +77,27 @@ public class Turtle {
 		return myPenColor;
 	}
 
-	public SimpleBooleanProperty isMovingProperty() {
+	protected Point getCurrentLocation() {
+		return new Point(myXProperty.get(), myYProperty.get());
+	}
+	
+	protected SimpleDoubleProperty xProperty() {
+		return myXProperty;
+	}
+	
+	protected SimpleDoubleProperty yProperty() {
+		return myYProperty;
+	}
+	
+	protected SimpleDoubleProperty rotationProperty() {
+		return myRotationProperty;
+	}
+	
+	protected SimpleBooleanProperty penDownProperty() {
+		return myPenDownProperty;
+	}
+	
+	protected SimpleBooleanProperty isMovingProperty() {
 		return isMovingProperty;
 	}
 
@@ -109,8 +129,8 @@ public class Turtle {
 	
 	protected void setDestination(Point destination, double speed) {
 		isMovingProperty.set(true);
-		double distX = destination.getX() - myLocation.getX();
-		double distY = destination.getY() - myLocation.getY();
+		double distX = destination.getX() - myXProperty.get();
+		double distY = destination.getY() - myYProperty.get();
 		double stepsToDestination = getNumStepsAlongPath(distX, distY, speed);
 		
 		myStepsRemaining = (int) (stepsToDestination);
@@ -144,12 +164,13 @@ public class Turtle {
 	}
 
 	private void setLocation(Point point) {
-		myLocation = point;
+		myXProperty.set(point.getX());
+		myYProperty.set(point.getY());
 		this.centerImage();
 	}
 
 	private void centerImage() {
-		Point adjusted = myLocation;
+		Point adjusted = new Point(myXProperty.get(), myYProperty.get());
 		if(!isInBounds(adjusted)) {
 			adjusted = wrap(adjusted);
 		}
@@ -158,16 +179,18 @@ public class Turtle {
 	}
 
 	private void stepTowardsDestination() {
-		Point step = new Point(myLocation.getX() + myStepSize.getX(), myLocation.getY() + myStepSize.getY());
+		Point step = new Point(myXProperty.get() + myStepSize.getX(), myYProperty.get() + myStepSize.getY());
 
 		if (myPenDownProperty.get()) {
-			Point adjustedLoc = myLocation;
+			Point adjustedLoc = new Point(myXProperty.get(), myYProperty.get());
 			Point adjustedStep = step;
-			if(!isInBounds(myLocation) && !isInBounds(step)) {
-				adjustedLoc = wrap(myLocation);
-				adjustedStep = wrap(step);
+			if(!isInBounds(adjustedLoc) && !isInBounds(adjustedStep)) {
+				adjustedLoc = wrap(adjustedLoc);
+				adjustedStep = wrap(adjustedStep);
 			}
-			myDisplay.drawLine(adjustedLoc, adjustedStep, myPenColor, myPenWidth);
+			if(areAdjacentPoints(adjustedLoc, adjustedStep)) {
+				myDisplay.drawLine(adjustedLoc, adjustedStep, myPenColor, myPenWidth);
+			}
 		}
 
 		this.setLocation(step);
@@ -187,13 +210,13 @@ public class Turtle {
 			double lowerBoundary = -myDisplay.getHeight() / 2.0;
 			double upperBoundary = myDisplay.getHeight() / 2.0;
 	
-			while(adjustedX > rightBoundary) {
+			while(adjustedX >= rightBoundary) {
 				adjustedX -= myDisplay.getWidth();
 			}
 			while(adjustedX < leftBoundary) {
 				adjustedX += myDisplay.getWidth();
 			}
-			while(adjustedY > upperBoundary) {
+			while(adjustedY >= upperBoundary) {
 				adjustedY -= myDisplay.getHeight();
 			}
 			while(adjustedY < lowerBoundary) {
@@ -201,6 +224,10 @@ public class Turtle {
 			}
 		}
 		return new Point(adjustedX, adjustedY);
+	}
+	
+	private boolean areAdjacentPoints(Point a, Point b) {
+		return (a.getX() * b.getX() >= 0) && (a.getY() * b.getY() >= 0);
 	}
 
 	private double getNumStepsAlongPath(double distanceX, double distanceY, double stepLength) {
