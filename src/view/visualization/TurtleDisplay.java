@@ -42,6 +42,7 @@ public class TurtleDisplay {
 		this.setBackgroundColor(Color.WHITE);
 		myTurtles = new HashMap<Integer, Turtle>();
 		this.createTurtle(1);
+		this.createTurtleInfo();
 		myLineLength = 1.0;
 		isAnimated = true;
 	}
@@ -53,6 +54,7 @@ public class TurtleDisplay {
 	public void clear() {
 		myDisplayArea.getChildren().clear();
 		this.createTurtle(1);
+		this.createTurtleInfo();
 	}
 	
 	public Color getBackgroundColor() {
@@ -94,7 +96,7 @@ public class TurtleDisplay {
 
 	public void turnTurtle(int id, double degrees) {
 		//TODO do animation
-		this.getTurtle(id).setRotation(myTurtles.get(id).getRotation() + degrees);
+		this.getTurtle(id).setRotation(this.getTurtle(id).getRotation() + degrees);
 	}
 	
 	/**
@@ -169,6 +171,12 @@ public class TurtleDisplay {
 		myTurtles.put(id, turtle);
 		this.addToDisplayArea(turtle.getView());
 	}
+	
+	private void createTurtleInfo() {
+		TurtleInfo turtleInfo = new TurtleInfo(this, 1); 	//TODO
+		turtleInfo.getView().setScaleY(-1);
+		myDisplayArea.getChildren().add(turtleInfo.getView());
+	}
 
 	private void stepAnimation() {
 		for(Turtle turtle : myTurtles.values()) {
@@ -191,7 +199,7 @@ public class TurtleDisplay {
 	}
 
 	private void recalculateAnimationSpeed(int id, Point destination) {
-		double distance = this.distanceBetween(myTurtles.get(id).getCurrentLocation(), destination);
+		double distance = this.distanceBetween(this.getTurtle(id).getCurrentLocation(), destination);
 		double animationTickInterval = 1000.0 / distance;
 		this.resetAnimation(animationTickInterval);
 	}

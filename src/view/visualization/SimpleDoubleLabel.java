@@ -3,17 +3,18 @@ package view.visualization;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.scene.control.Label;
 
-public class SimpleDoubleDisplay {
+public class SimpleDoubleLabel {
 
 	Label propertyLabel;
 	String propertyName;
 	SimpleDoubleProperty propertyValue;
 	
-	public SimpleDoubleDisplay(String name, SimpleDoubleProperty property) {
+	public SimpleDoubleLabel(String name, SimpleDoubleProperty property) {
 		propertyLabel = new Label();
 		propertyName = name;
 		propertyValue = property;
 		property.addListener(e -> this.updateLabel());
+		this.updateLabel();
 	}
 	
 	protected Label getLabel() {
@@ -21,6 +22,6 @@ public class SimpleDoubleDisplay {
 	}
 	
 	private void updateLabel() {
-		propertyLabel.setText(propertyName + " : " + propertyValue.get());
+		propertyLabel.setText(String.format("%s : %.2f", propertyName, propertyValue.get()));
 	}
 }

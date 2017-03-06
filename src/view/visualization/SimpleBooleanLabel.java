@@ -3,7 +3,7 @@ package view.visualization;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.scene.control.Label;
 
-public class SimpleBooleanDisplay {
+public class SimpleBooleanLabel {
 
 	Label propertyLabel;
 	String propertyName;
@@ -11,13 +11,14 @@ public class SimpleBooleanDisplay {
 	String myFalseLabel;
 	SimpleBooleanProperty propertyValue;
 	
-	public SimpleBooleanDisplay(String name, SimpleBooleanProperty property, String trueLabel, String falseLabel) {
+	public SimpleBooleanLabel(String name, SimpleBooleanProperty property, String trueLabel, String falseLabel) {
 		propertyLabel = new Label();
 		propertyName = name;
 		propertyValue = property;
 		myTrueLabel = trueLabel;
 		myFalseLabel = falseLabel;
 		property.addListener(e -> this.updateLabel());
+		this.updateLabel();
 	}
 	
 	protected Label getLabel() {
@@ -26,9 +27,9 @@ public class SimpleBooleanDisplay {
 	
 	private void updateLabel() {
 		if(propertyValue.get()) {
-			propertyLabel.setText(propertyName + " : " + myTrueLabel);
+			propertyLabel.setText(String.format("%s : %s", propertyName, myTrueLabel));
 		} else {
-			propertyLabel.setText(propertyName + " : " + myFalseLabel);
+			propertyLabel.setText(String.format("%s : %s", propertyName, myFalseLabel));
 		}
 	}
 }
