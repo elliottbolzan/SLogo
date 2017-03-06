@@ -15,12 +15,12 @@ public abstract class TurtleCommand extends Command {
         double x = (Math.cos(rad) * parameters);
         double y = (Math.sin(rad) * parameters);
 
-        return new Point(t.getLocation().getX() + x, t.getLocation().getY() + y);
+        return new Point(t.getDestination().getX() + x, t.getDestination().getY() + y);
     }
     
     protected double distance(double[] parameters, Turtle t) {
-    	double x = parameters[0]-t.getLocation().getX();
-		double y = parameters[1]-t.getLocation().getY();
+    	double x = parameters[0]-t.getDestination().getX();
+		double y = parameters[1]-t.getDestination().getY();
 		return Math.sqrt(x*x+y*y);
     }
     

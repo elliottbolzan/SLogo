@@ -36,7 +36,6 @@ public class View implements ViewAPI {
 	private Console console;
 	private Panel panel;
 	private TurtleWindow turtleWindow;
-	private Queue<Command> commandQueue;
 
 	/**
 	 * Creates a View object.
@@ -50,15 +49,6 @@ public class View implements ViewAPI {
 		console = new Console(this);
 		panel = new Panel(this);
 		turtleWindow = new TurtleWindow(controller);
-		commandQueue = new LinkedList<Command>();
-		this.getTurtle().isMovingProperty().addListener(e -> {
-			try {
-				dequeCommands();
-			} catch (BadInputException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
-		});
 		setup();
 	}
 	
@@ -114,23 +104,6 @@ public class View implements ViewAPI {
 	@Override
 	public void clearConsole() {
 		console.clear();
-	}
-
-	
-	@Override
-	public void handleCommand(Command action) throws BadInputException {
-		if(this.getTurtle().isMovingProperty().get()) {
-			commandQueue.add(action);
-		} else {
-			action.execute();
-		}
-	}
-	
-	private void dequeCommands() throws BadInputException {
-		while (!commandQueue.isEmpty() && 
-			!this.getTurtle().isMovingProperty().get()) {
-			commandQueue.poll().execute();
-		}
 	}
 
 	@Override

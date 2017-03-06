@@ -15,8 +15,8 @@ public class SetTowardsCommand extends TurtleCommand {
 
 	@Override
 	public Argument execute() {
-		double xdiff = getParameter(0).getDouble() - this.getController().getTurtle().getLocation().getX();
-		double ydiff = getParameter(1).getDouble() - this.getController().getTurtle().getLocation().getY();
+		double xdiff = getParameter(0).getDouble() - this.getController().getTurtle().getDestination().getX();
+		double ydiff = getParameter(1).getDouble() - this.getController().getTurtle().getDestination().getY();
 		double tempd = Math.atan2(ydiff, xdiff);
 		 
 		double degrees = (Math.toDegrees(tempd) - this.getController().getTurtle().getRotation());

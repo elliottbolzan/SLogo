@@ -16,9 +16,7 @@ public interface ViewAPI {
 	public void print(String string);
 	
 	public void clearConsole();
-	
-	public void handleCommand(Command action) throws BadInputException;
-	
+		
 	public void moveTo(Point point);
 	
 	public void turn(double degrees);
