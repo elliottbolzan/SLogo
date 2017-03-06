@@ -21,7 +21,7 @@ public class TurtleWindow extends Stage {
 		turtleDisplay = new TurtleDisplay(500, 500);
 		setTitle(controller.getResources().getString("TurtleDisplayTitle"));
 		setResizable(false);
-		setScene(new Scene(turtleDisplay));
+		setScene(new Scene(turtleDisplay.getView()));
 		setOnCloseRequest(new EventHandler<WindowEvent>() {
 			public void handle(WindowEvent we) {
 				System.exit(0);

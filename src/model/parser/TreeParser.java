@@ -2,7 +2,6 @@ package model.parser;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.ResourceBundle;
 
 import controller.Controller;
 import javafx.collections.FXCollections;
