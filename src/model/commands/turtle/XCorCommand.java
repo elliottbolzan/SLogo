@@ -12,7 +12,7 @@ public class XCorCommand extends TurtleCommand {
 	
 	@Override
 	public double execute(double[] parameters, Turtle myTurtle, Controller view){
-		return myTurtle.getLocation().getX();
+		return myTurtle.getDestination().getX();
 	}
 	
 	@Override
@@ -22,7 +22,7 @@ public class XCorCommand extends TurtleCommand {
 
 	@Override
 	public Argument getReturnValue() {
-		return this.getController().getTurtle().getLocation().getX();
+		return this.getController().getTurtle().getDestination().getX();
 	}
 
 	@Override

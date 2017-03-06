@@ -52,11 +52,6 @@ public class Controller implements ViewAPI, ModelAPI {
 	public void clearConsole() {
 		view.clearConsole();
 	}
-	
-	@Override
-	public void handleCommand(Command action) throws BadInputException {
-		view.handleCommand(action);
-	}
 
 	@Override
 	public void moveTo(Point point) {

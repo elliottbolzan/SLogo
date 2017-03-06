@@ -43,7 +43,7 @@ public class TurtleDisplay {
 		myTurtles = new HashMap<Integer, Turtle>();
 		this.createTurtle(1);
 		myLineLength = 1.0;
-		isAnimated = true;
+		isAnimated = false;
 	}
 
 	public Dimension getDimensions() {
@@ -77,24 +77,24 @@ public class TurtleDisplay {
 	}
 	
 	public void setPenDown(int id, boolean down) {
-		myTurtles.get(id).setPenDown(down);
+		this.getTurtle(id).setPenDown(down);
 	}
 
 	public void setPenColor(int id, Color color) {
-		myTurtles.get(id).setPenColor(color);
+		this.getTurtle(id).setPenColor(color);
 	}
 	
 	public void setTurtleVisible(int id, boolean visible) {
-		myTurtles.get(id).getView().setVisible(visible);
+		this.getTurtle(id).getView().setVisible(visible);
 	}
 
 	public void setTurtleImage(int id, String url) {
-		myTurtles.get(id).setImage(url);
+		this.getTurtle(id).setImage(url);
 	}
 
 	public void turnTurtle(int id, double degrees) {
 		//TODO do animation
-		myTurtles.get(id).setRotation(myTurtles.get(id).getRotation() + degrees);
+		this.getTurtle(id).setRotation(myTurtles.get(id).getRotation() + degrees);
 	}
 	
 	/**
@@ -104,7 +104,7 @@ public class TurtleDisplay {
 	 * @param point
 	 */
 	public void moveTurtle(int id, Point destination) {
-		Turtle turtle = myTurtles.get(id);
+		Turtle turtle = this.getTurtle(id);
 		
 		if (turtle.isMovingProperty().get()) {
 			turtle.addFutureDestination(destination);
@@ -118,7 +118,6 @@ public class TurtleDisplay {
 			while (turtle.isMovingProperty().get()) {
 				turtle.updateMovement();
 			}
-			myAnimation.pause();
 		}
 	}
 
@@ -192,7 +191,7 @@ public class TurtleDisplay {
 	}
 
 	private void recalculateAnimationSpeed(int id, Point destination) {
-		double distance = this.distanceBetween(myTurtles.get(id).getLocation(), destination);
+		double distance = this.distanceBetween(myTurtles.get(id).getCurrentLocation(), destination);
 		double animationTickInterval = 1000.0 / distance;
 		this.resetAnimation(animationTickInterval);
 	}
