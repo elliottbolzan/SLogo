@@ -3,7 +3,6 @@ package model.commands.control;
 import model.Variable;
 import model.commands.Command;
 import model.parser.Argument;
-import utils.BadInputException;
 
 public class RepeatCommand extends Command {
 
@@ -13,7 +12,7 @@ public class RepeatCommand extends Command {
 	}
 
 	@Override
-	public Argument execute() throws BadInputException {
+	public Argument execute(){
 		Argument result = new Argument();
 		int repeats = (int) getParameter(0).getDouble();
 		for (int k = 1; k <= repeats; k++) {

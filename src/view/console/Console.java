@@ -94,15 +94,10 @@ public class Console extends View {
 	private void enterPressed() {
 		String input = removeWhitespace(getCurrentCommand());
 		commandIndex = 0;
-		try {
 			if (!(input.equals(""))) {
 				workspace.getController().parse(input);
 			}
 			append("\n" + preamble);
-		}
-		catch (Exception e) {
-			workspace.showMessage("Command not found.");
-		}
 	}
 	
 	private void upPressed() {
