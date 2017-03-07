@@ -3,6 +3,10 @@ package view.visualization;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.scene.control.Label;
 
+/**
+ * @author Jay Doherty
+ *
+ */
 public class SimpleDoubleLabel {
 
 	Label propertyLabel;
@@ -22,6 +26,6 @@ public class SimpleDoubleLabel {
 	}
 	
 	private void updateLabel() {
-		propertyLabel.setText(String.format("%s : %.2f", propertyName, propertyValue.get()));
+		propertyLabel.setText(String.format("%s %.2f", propertyName, propertyValue.get()));
 	}
 }
