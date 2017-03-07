@@ -2,8 +2,6 @@ package view;
 
 import java.awt.Dimension;
 
-import model.commands.Command;
-import utils.BadInputException;
 import utils.Point;
 import view.visualization.Turtle;
 

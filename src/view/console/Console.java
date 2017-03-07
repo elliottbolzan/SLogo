@@ -97,15 +97,10 @@ public class Console extends Group {
 	private void enterPressed() {
 		String input = removeWhitespace(getCurrentCommand());
 		commandIndex = 0;
-		try {
 			if (!(input.equals(""))) {
 				view.getController().parse(input);
 			}
 			append("\n" + preamble);
-		}
-		catch (Exception e) {
-			view.showMessage("Command not found.");
-		}
 	}
 	
 	private void upPressed() {

@@ -1,10 +1,7 @@
 package view;
 
 import java.awt.Dimension;
-import java.util.LinkedList;
-import java.util.Queue;
 
-import utils.BadInputException;
 import utils.Point;
 import view.console.Console;
 import view.panel.Panel;
@@ -20,7 +17,6 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
-import model.commands.Command;
 
 /**
  * @author Elliott Bolzan

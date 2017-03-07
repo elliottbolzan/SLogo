@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import model.State;
 import model.commands.Command;
 import model.parser.Argument;
-import utils.BadInputException;
 
 public class MakeUserInstructionCommand extends Command {
 	
@@ -30,13 +29,13 @@ public class MakeUserInstructionCommand extends Command {
 	}
 
 	@Override
-	public Argument execute() throws BadInputException {
+	public Argument execute(){
 		String currentCommand = command;
 		for (String variableName: variableNames) {
 			try {
 				currentCommand = currentCommand.replaceAll(variableName, getParameterList().get(variableNames.indexOf(variableName)).toString());
 			} catch (Exception e) {
-				throw new BadInputException("Variable was not instantiated: " + variableName);
+				getController().getView().showMessage("Variable was not instantiated: " + variableName);
 			} 
 		}
 		try {

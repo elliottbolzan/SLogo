@@ -2,7 +2,6 @@ package model.commands.math;
 
 import model.commands.Command;
 import model.parser.Argument;
-import utils.BadInputException;
 
 public class SumCommand extends Command {
 	
@@ -12,7 +11,7 @@ public class SumCommand extends Command {
 	}
 
 	@Override
-	public Argument execute() throws BadInputException {
+	public Argument execute() {
 		return new Argument(getParameter(0).getDouble() + getParameter(1).getDouble());
 	}
 	

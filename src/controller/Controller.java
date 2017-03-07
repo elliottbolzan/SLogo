@@ -3,7 +3,6 @@ package controller;
 import java.awt.Dimension;
 import java.util.ResourceBundle;
 
-import utils.BadInputException;
 import utils.Point;
 
 import javafx.collections.ObservableList;
@@ -11,7 +10,6 @@ import javafx.stage.Stage;
 import model.Model;
 import model.ModelAPI;
 import model.Variable;
-import model.commands.Command;
 import view.View;
 import view.ViewAPI;
 import view.visualization.Turtle;
@@ -89,7 +87,7 @@ public class Controller implements ViewAPI, ModelAPI {
 	}
 	
 	@Override
-	public void parse(String string) throws BadInputException {
+	public void parse(String string) {
 		model.parse(string);
 	}
 

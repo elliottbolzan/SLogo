@@ -4,7 +4,6 @@ import model.parser.Input;
 import model.parser.TreeParser;
 import model.parser.tokenize.Token;
 import model.parser.tokenize.Tokenize;
-import utils.BadInputException;
 
 public class ListNode extends Node {
 		
@@ -30,8 +29,7 @@ public class ListNode extends Node {
 		}
 		try {
 			getChildren().addAll(parser.parseInternal(newExpression.trim()).getChildren());
-		} catch (BadInputException e) {
-			e.printStackTrace();
+		} catch (Exception e) {
 		}
 	}
 
