@@ -72,22 +72,24 @@ public class TreeParser implements ParserAPI {
 	}
 
 	@Override
-	public Node parse(String input){
+	public Node parse(String input) {
 		parseHistory.addStringToHistory(input);
 		Node root = parseInternal(input);
 		printTree(root, "");
-		if(!(root.getChildren().get(0) instanceof CommentNode)) controller.print(String.valueOf(root.evaluate().getDouble()));
+		if (!(root.getChildren().get(0) instanceof CommentNode))
+			controller.print(String.valueOf(root.evaluate().getDouble()));
 		return root;
 	}
 
-	public Node parseInternal(String input){
+	public Node parseInternal(String input) {
 		return createTree(input);
 	}
 
 	private Node createTree(String string) {
 		ArrayList<String> words = new ArrayList<String>();
 		words.add(string);
-		if(string.charAt(0) != '#') words = new ArrayList<String>(Arrays.asList(string.split("\\s+")));
+		if (string.charAt(0) != '#')
+			words = new ArrayList<String>(Arrays.asList(string.split("\\s+")));
 		Node node = new RootNode(this, null);
 		Input input = new Input(node, 0, words);
 		while (input.getIndex() < input.getWords().size() && input != null) {
@@ -106,26 +108,27 @@ public class TreeParser implements ParserAPI {
 			input.addToIndex(1);
 			if (token == Token.CONSTANT) {
 				child = new ConstantNode(this, node, Double.parseDouble(word));
-			} else if(token == Token.COMMENT){
-				child = new CommentNode(this, node, word.substring(0, word.length()-1));
+			} else if (token == Token.COMMENT) {
+				child = new CommentNode(this, node, word.substring(0, word.length() - 1));
 			} else if (token == Token.VARIABLE) {
 				child = new VariableNode(this, node, word.replaceAll(":", ""));
 			} else if (token == Token.COMMAND) {
-				try{
+				try {
 					child = commands.get(word);
 					// If child is null, your command is probably misnamed.
 					((Command) child).setup(controller, state);
 					for (int i = 0; i < ((Command) child).numParameters(); i++) {
 						input = createTree(new Input(child, input.getIndex(), input.getWords()));
 					}
-				}catch (Exception e){
-					controller.getView().showMessage("No such Command" + " " +  word);
+				} catch (Exception e) {
+					controller.getView().showMessage("No such Command" + " " + word);
 				}
 			} else if (token == Token.LIST_START) {
 				child = new ListNode(this, node, input);
 			}
 			// Work on comments.
-			// In UI, implement new Console behavior: don't strip newlines. Use newlines to parse comments.
+			// In UI, implement new Console behavior: don't strip newlines. Use
+			// newlines to parse comments.
 			node.addChild(child);
 			return new Input(child, input.getIndex(), input.getWords());
 		} catch (Exception e) {
