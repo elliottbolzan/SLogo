@@ -9,7 +9,6 @@ import model.State;
 import model.Variable;
 import model.commands.Command;
 import model.commands.Commands;
-import model.parser.nodes.CommentNode;
 import model.parser.nodes.ConstantNode;
 import model.parser.nodes.ListNode;
 import model.parser.nodes.Node;
@@ -74,9 +73,11 @@ public class TreeParser implements ParserAPI {
 	@Override
 	public Node parse(String input){
 		parseHistory.addStringToHistory(input);
+		input = handleComment(input);
 		Node root = parseInternal(input);
 		printTree(root, "");
-		if(!(root.getChildren().get(0) instanceof CommentNode)) controller.print(String.valueOf(root.evaluate().getDouble()));
+		controller.print(String.valueOf(root.evaluate().getDouble()));
+		parseHistory.addCommandToHistory(root);
 		return root;
 	}
 
@@ -86,8 +87,7 @@ public class TreeParser implements ParserAPI {
 
 	private Node createTree(String string) {
 		ArrayList<String> words = new ArrayList<String>();
-		words.add(string);
-		if(string.charAt(0) != '#') words = new ArrayList<String>(Arrays.asList(string.split("\\s+")));
+		words = new ArrayList<String>(Arrays.asList(string.split("\\s+")));
 		Node node = new RootNode(this, null);
 		Input input = new Input(node, 0, words);
 		while (input.getIndex() < input.getWords().size() && input != null) {
@@ -106,8 +106,6 @@ public class TreeParser implements ParserAPI {
 			input.addToIndex(1);
 			if (token == Token.CONSTANT) {
 				child = new ConstantNode(this, node, Double.parseDouble(word));
-			} else if(token == Token.COMMENT){
-				child = new CommentNode(this, node, word.substring(0, word.length()-1));
 			} else if (token == Token.VARIABLE) {
 				child = new VariableNode(this, node, word.replaceAll(":", ""));
 			} else if (token == Token.COMMAND) {
@@ -132,6 +130,15 @@ public class TreeParser implements ParserAPI {
 			e.printStackTrace();
 		}
 		return null;
+	}
+	
+	private String handleComment(String s){
+		ArrayList<String> commentFinder = new ArrayList<>(Arrays.asList(s.split("\\n")));
+		StringBuilder sb = new StringBuilder();
+		commentFinder.stream().filter(e -> e.trim().charAt(0) != '#').forEach(e -> sb.append(e + " "));
+		String result = sb.toString();
+		if(result.contains("#")) controller.getView().showMessage("Proper comment must have its own line and begin with #.");
+		return result;
 	}
 
 }
