@@ -79,8 +79,7 @@ public class WorkspaceBrowser extends BorderPane {
 	private Scene createScene() {
 		Scene scene = new Scene(this, 1000, 480);
 		scene.getStylesheets().add(stylesheetPath);
-		scene.addEventFilter(MouseEvent.MOUSE_PRESSED, e -> handler.mouseClicked(e));
-		scene.addEventFilter(KeyEvent.KEY_PRESSED, e -> handler.keyPressed(e));
+		//scene.addEventFilter(KeyEvent.KEY_PRESSED, e -> handler.keyPressed(e));
 		return scene;
 	}
 
@@ -118,14 +117,6 @@ public class WorkspaceBrowser extends BorderPane {
 	private void showHelp() {
 		HelpView helpView = new HelpView(resources);
 		helpView.show();
-	}
-	
-	public void clickedTurtle(Turtle turtle) {
-		handler.setSelectedTurtle(turtle);
-	}
-	
-	public Turtle getSelectedTurtle() {
-		return handler.getSelectedTurtle();
 	}
 
 }
