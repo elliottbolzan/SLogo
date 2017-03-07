@@ -10,7 +10,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import model.Variable;
-import view.View;
+import view.Workspace;
 
 /**
  * @author Elliott Bolzan
@@ -18,14 +18,14 @@ import view.View;
  */
 public class VariableTable extends Group {
 
-	private View view;
+	private Workspace workspace;
 	private ObservableList<Variable> data;
 
 	/**
 	 * 
 	 */
-	public VariableTable(View view, ObservableList<Variable> data) {
-		this.view = view;
+	public VariableTable(Workspace workspace, ObservableList<Variable> data) {
+		this.workspace = workspace;
 		this.data = data;
 		setup();
 	}
@@ -37,7 +37,7 @@ public class VariableTable extends Group {
 		table.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 		table.setEditable(true);
 		table.getStyleClass().add("panel-table");
-		table.setPlaceholder(new Label(view.getController().getResources().getString("EmptyVariables")));
+		table.setPlaceholder(new Label(workspace.getController().getResources().getString("EmptyVariables")));
 
 		TableColumn<Variable, String> nameColumn = new TableColumn<Variable, String>("Name");
 		nameColumn.setCellValueFactory(new PropertyValueFactory<Variable, String>("name"));
@@ -55,7 +55,7 @@ public class VariableTable extends Group {
 				catch (Exception e) {
 					((Variable) event.getTableView().getItems().get(event.getTablePosition().getRow())).setValue("0");
 					event.getTableView().refresh();
-					view.showMessage(e.getMessage());
+					workspace.showMessage(e.getMessage());
 				}
 			}
 		});

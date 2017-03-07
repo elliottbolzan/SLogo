@@ -18,13 +18,15 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import view.Workspace;
 import view.visualization.Turtle;
 import view.visualization.TurtleDisplay;
 
-public class SettingsView extends Stage {
+public class SettingsView extends VBox {
 
+	private Workspace workspace;
 	private Controller controller;
-	private TurtleDisplay myTurtleDisplay;
+	private TurtleDisplay turtleDisplay;
 	private ComboBox<String> myLanguagePicker;
 	private ColorPicker myBackgroundPicker;
 	private ColorPicker myPenPicker;
@@ -32,21 +34,20 @@ public class SettingsView extends Stage {
 	
 	private static final String PATH_TO_LANGUAGES = "src/resources/languages";
 
-	public SettingsView(Controller controller, TurtleDisplay display, Stage primaryStage) {
-		myTurtleDisplay = display;
-		this.controller = controller;
-		this.setTitle(controller.getResources().getString("SettingsTitle"));
-		this.setResizable(false);
-		this.setupStage(primaryStage);
+	public SettingsView(Workspace workspace) {
+		super(16);
+		this.workspace = workspace;
+		controller = workspace.getController();
+		turtleDisplay = workspace.getDisplay();
+		this.setup();
 	}
 
-	private void setupStage(Stage primaryStage) {
+	private void setup() {
 
-		VBox box = new VBox(16);
-		box.setAlignment(Pos.TOP_CENTER);
-		box.setPadding(new Insets(20, 20, 20, 20));
+		setAlignment(Pos.TOP_CENTER);
+		setPadding(new Insets(20, 20, 20, 20));
 
-		myImagePicker = new FilePicker(controller, primaryStage, 200, controller.getResources().getString("ImagePickerFieldString"), "*.png", "*.jpg", "*.gif");
+		myImagePicker = new FilePicker(controller, 200, controller.getResources().getString("ImagePickerFieldString"), "*.png", "*.jpg", "*.gif");
 		myImagePicker.getTextField().textProperty().addListener(e -> this.setTurtleImage());
 		VBox imagePickerBox = addLabelTo(myImagePicker, controller.getResources().getString("TurtlePickerLabel"));
 		
@@ -56,19 +57,14 @@ public class SettingsView extends Stage {
 		myLanguagePicker.setValue(getLanguage());
 		VBox languagePickerBox = addLabelTo(myLanguagePicker, controller.getResources().getString("LanguagePickerLabel"));
 
-		myBackgroundPicker = new ColorPicker(controller, myTurtleDisplay.getBackgroundColor(), (e -> this.setTurtleBackground()));
+		myBackgroundPicker = new ColorPicker(controller, turtleDisplay.getBackgroundColor(), (e -> this.setTurtleBackground()));
 		VBox backgroundPickerBox = addLabelTo(myBackgroundPicker, controller.getResources().getString("BackgroundPickerLabel"));
 
 		myPenPicker = new ColorPicker(controller, Color.BLACK, (e -> this.setPenColor()));
 		VBox penPickerBox = addLabelTo(myPenPicker, controller.getResources().getString("PenPickerLabel"));
 
-		box.getChildren().addAll(languagePickerBox, new Separator(), imagePickerBox, new Separator(), backgroundPickerBox, new Separator(), penPickerBox);
-
-		Scene scene = new Scene(box, 250, 525);
-		scene.getStylesheets().add(controller.getView().getStylesheetPath());
-		this.initModality(Modality.WINDOW_MODAL);
-		this.initOwner(primaryStage);
-		this.setScene(scene);
+		getChildren().addAll(languagePickerBox, new Separator(), imagePickerBox, new Separator(), backgroundPickerBox, new Separator(), penPickerBox);
+		
 	}
 
 	private List<String> getLanguages() {
@@ -92,19 +88,19 @@ public class SettingsView extends Stage {
 	}
 
 	private void setPenColor() {
-		for(Turtle t : myTurtleDisplay.getAllTurtles()) {
-			myTurtleDisplay.setPenColor(t.getID(), myPenPicker.getColor());
+		for(Turtle t : turtleDisplay.getAllTurtles()) {
+			turtleDisplay.setPenColor(t.getID(), myPenPicker.getColor());
 		}
 	}
 
 	private void setTurtleImage() {
-		for(Turtle t : myTurtleDisplay.getAllTurtles()) {
-			myTurtleDisplay.setTurtleImage(t.getID(), myImagePicker.getTextField().getText());
+		for(Turtle t : turtleDisplay.getAllTurtles()) {
+			turtleDisplay.setTurtleImage(t.getID(), myImagePicker.getTextField().getText());
 		}
 	}
 
 	private void setTurtleBackground() {
-		myTurtleDisplay.setBackgroundColor(myBackgroundPicker.getColor());
+		turtleDisplay.setBackgroundColor(myBackgroundPicker.getColor());
 	}
 
 	private VBox addLabelTo(Node node, String string) {

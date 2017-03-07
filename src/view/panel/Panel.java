@@ -1,11 +1,20 @@
 package view.panel;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Node;
+import javafx.scene.control.Accordion;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonBar;
 import javafx.scene.control.ButtonBar.ButtonData;
@@ -13,23 +22,50 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.ScrollPane.ScrollBarPolicy;
 import javafx.scene.control.Separator;
+import javafx.scene.control.TitledPane;
 import javafx.scene.layout.VBox;
-import view.View;
+import view.Workspace;
+import view.settings.SettingsView;
+import view.visualization.View;
 
 /**
  * @author Elliott Bolzan
  *
  */
-public class Panel extends Group {
+public class Panel extends View {
 
-	private View view;
+	private Workspace workspace;
+	private List<Node> subviews;
+	private List<String> subviewTitles;
 
 	/**
 	 * 
 	 */
-	public Panel(View view) {
-		this.view = view;
+	public Panel(Workspace workspace, int index) {
+		super(workspace.getPane(), index, true);
+		this.workspace = workspace;
+		setTitle(workspace.getController().getResources().getString("PanelTitle"));
+		createSubviews();
 		setup();
+	}
+
+	private void createSubviews() {
+		subviewTitles = new ArrayList<String>() {
+			{
+				add(workspace.getController().getResources().getString("HistoryTitle"));
+				add(workspace.getController().getResources().getString("VariablesTitle"));
+				add(workspace.getController().getResources().getString("UserCommandsTitle"));
+				add(workspace.getController().getResources().getString("SettingsTitle"));
+			}
+		};
+		subviews = new ArrayList<Node>() {
+			{
+				add(new CommandList(workspace, workspace.getController().getHistory()));
+				add(new VariableTable(workspace, workspace.getController().getVariables()));
+				add(new CommandList(workspace, workspace.getController().getUserDefinedCommands()));
+				add(new SettingsView(workspace));
+			}
+		};
 	}
 
 	private void setup() {
@@ -41,26 +77,19 @@ public class Panel extends Group {
 		scrollPane.setPrefViewportHeight(400);
 		scrollPane.getStyleClass().add("panel-scroll-pane");
 
-		VBox box = new VBox(16);
-		box.setPadding(new Insets(20, 20, 20, 20));
+		final Accordion accordion = new Accordion();
 
-		Label title = new Label(view.getController().getResources().getString("PanelTitle"));
-		title.setStyle("-fx-font-size: 28; -fx-font-weight: bold;");
+		List<TitledPane> titledPanes = new ArrayList<TitledPane>();
+		for (int i = 0; i < subviews.size(); i++) {
+			TitledPane pane = new TitledPane(subviewTitles.get(i), subviews.get(i));
+			titledPanes.add(pane);
+		}
+		accordion.getPanes().addAll(titledPanes);
+		accordion.setPrefWidth(300);
+		accordion.setExpandedPane(titledPanes.get(0));
+		scrollPane.setContent(accordion);
 
-		Node historyView = addLabelTo(new CommandList(view, view.getController().getHistory()),
-				view.getController().getResources().getString("HistoryTitle"));
-		Node variableView = addLabelTo(new VariableTable(view, view.getController().getVariables()),
-				view.getController().getResources().getString("VariablesTitle"));
-		Node commandView = addLabelTo(new CommandList(view, view.getController().getUserDefinedCommands()),
-				view.getController().getResources().getString("UserCommandsTitle"));
-
-		box.getChildren().addAll(title, makeSeparator(), historyView, makeSeparator(), variableView, makeSeparator(),
-				commandView, makeSeparator(), makeButtonBar());
-		box.setAlignment(Pos.CENTER);
-
-		scrollPane.setContent(box);
-
-		getChildren().add(scrollPane);
+		setCenter(accordion);
 
 	}
 
@@ -80,11 +109,10 @@ public class Panel extends Group {
 
 	private Node makeButtonBar() {
 		ButtonBar bar = new ButtonBar();
-		Button commandReferenceButton = makeButton(view.getController().getResources().getString("HelpButton"), e -> view.showHelp());
-		Button settingsButton = makeButton(view.getController().getResources().getString("SettingsButton"), e -> view.showSettings());
-		ButtonBar.setButtonData(commandReferenceButton, ButtonData.RIGHT);
+		Button settingsButton = makeButton(workspace.getController().getResources().getString("SettingsButton"),
+				e -> workspace.showSettings());
 		ButtonBar.setButtonData(settingsButton, ButtonData.LEFT);
-		bar.getButtons().addAll(commandReferenceButton, settingsButton);
+		bar.getButtons().addAll(settingsButton);
 		return bar;
 	}
 
