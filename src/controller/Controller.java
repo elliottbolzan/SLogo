@@ -3,7 +3,6 @@ package controller;
 import java.awt.Dimension;
 import java.util.ResourceBundle;
 
-import utils.BadInputException;
 import utils.Point;
 
 import javafx.collections.ObservableList;
@@ -13,6 +12,7 @@ import model.Variable;
 import view.Workspace;
 import view.ViewAPI;
 import view.visualization.Turtle;
+import view.visualization.WorkspaceBrowser;
 
 /**
  * @author Elliott Bolzan
@@ -27,10 +27,10 @@ public class Controller implements ViewAPI, ModelAPI {
 	/**
 	 * 
 	 */
-	public Controller() {
+	public Controller(WorkspaceBrowser browser) {
 		resources = ResourceBundle.getBundle("resources/UserInterface");
 		model = new Model(this);
-		workspace = new Workspace(this);
+		workspace = new Workspace(browser, this);
 	}
 	
 	public ResourceBundle getResources() {
@@ -87,7 +87,7 @@ public class Controller implements ViewAPI, ModelAPI {
 	}
 	
 	@Override
-	public void parse(String string) throws BadInputException {
+	public void parse(String string) {
 		model.parse(string);
 	}
 

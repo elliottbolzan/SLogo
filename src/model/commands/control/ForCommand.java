@@ -3,7 +3,6 @@ package model.commands.control;
 import model.Variable;
 import model.commands.Command;
 import model.parser.Argument;
-import utils.BadInputException;
 
 public class ForCommand extends Command {
 
@@ -13,7 +12,7 @@ public class ForCommand extends Command {
 	}
 
 	@Override
-	public Argument execute() throws BadInputException {
+	public Argument execute(){
 		Argument result = new Argument();
 		String name = getChildren().get(0).getChildren().get(0).evaluate().getString();
 		int start = (int) getChildren().get(0).getChildren().get(1).evaluate().getDouble();

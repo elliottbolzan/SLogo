@@ -11,8 +11,6 @@ import java.util.AbstractMap.SimpleEntry;
 import java.util.Map.Entry;
 import java.util.regex.Pattern;
 
-import utils.BadInputException;
-
 /**
  * @author Elliott Bolzan
  *

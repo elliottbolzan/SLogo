@@ -3,7 +3,6 @@ package model;
 import controller.Controller;
 import javafx.collections.ObservableList;
 import model.parser.TreeParser;
-import utils.BadInputException;
 
 public class Model implements ModelAPI {
 
@@ -15,7 +14,7 @@ public class Model implements ModelAPI {
 		parser = new TreeParser(controller);
 	}
 	
-	public void parse(String string) throws BadInputException {
+	public void parse(String string){
 		parser.parse(string);
 	}
 	

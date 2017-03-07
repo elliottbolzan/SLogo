@@ -13,7 +13,7 @@ public class RootNode extends Node {
 	public Argument evaluate() {
 		Argument result =  new Argument();
 		for (Node child: getChildren()) {
-			result = child.evaluate();
+			if(child != null) result = child.evaluate();
 		}
 		return result;
 	}
