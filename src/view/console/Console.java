@@ -1,32 +1,31 @@
 package view.console;
 
-import javafx.scene.Group;
 import javafx.scene.control.TextArea;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import view.View;
+import view.Workspace;
+import view.visualization.View;
 
 /**
  * @author Elliott Bolzan
  *
  */
-public class Console extends Group {
+public class Console extends View {
 		
-	private View view;
+	private Workspace workspace;
 
 	private TextArea textArea;
 	private String preamble;
-	
-	private int width = 400;
-	private int height = 400;
 	private int commandIndex = 0;
 		
 	/**
 	 * 
 	 */
-	public Console(View view) {
-		this.view = view;
-		preamble = view.getController().getResources().getString("Preamble");
+	public Console(Workspace workspace, int index) {
+		super(workspace.getPane(), index, false);
+		this.workspace = workspace;
+		setTitle(workspace.getController().getResources().getString("InterpreterTitle"));
+		preamble = workspace.getController().getResources().getString("Preamble");
 		createTextArea();
 	}
 
@@ -53,13 +52,11 @@ public class Console extends Group {
 
 	private void createTextArea() {
 		textArea = new TextArea();
-		textArea.setPrefWidth(width);
-		textArea.setPrefHeight(height);
 		textArea.setWrapText(true);
 		textArea.setOnMouseClicked(e -> textArea.positionCaret(textArea.getText().length()));
 		textArea.setOnKeyPressed(e -> handleKeyCode(e));
-		getChildren().add(textArea);
 		append(preamble);
+		setCenter(textArea);
 	}
 
 	private void handleKeyCode(KeyEvent event) {
@@ -98,16 +95,16 @@ public class Console extends Group {
 		String input = removeWhitespace(getCurrentCommand());
 		commandIndex = 0;
 			if (!(input.equals(""))) {
-				view.getController().parse(input);
+				workspace.getController().parse(input);
 			}
 			append("\n" + preamble);
 	}
 	
 	private void upPressed() {
-		if (commandIndex <= view.getController().getHistory().size() - 1) {
+		if (commandIndex <= workspace.getController().getHistory().size() - 1) {
 			appendCommand();
 		}
-		if (commandIndex < view.getController().getHistory().size() - 1) {
+		if (commandIndex < workspace.getController().getHistory().size() - 1) {
 			commandIndex++;
 		}
 	}
@@ -123,7 +120,7 @@ public class Console extends Group {
 	
 	private void appendCommand() {
 		clearCurrentCommand();
-		append(view.getController().getHistory().get(commandIndex));
+		append(workspace.getController().getHistory().get(commandIndex));
 	}
 	
 }

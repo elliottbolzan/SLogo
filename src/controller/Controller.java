@@ -6,11 +6,10 @@ import java.util.ResourceBundle;
 import utils.Point;
 
 import javafx.collections.ObservableList;
-import javafx.stage.Stage;
 import model.Model;
 import model.ModelAPI;
 import model.Variable;
-import view.View;
+import view.Workspace;
 import view.ViewAPI;
 import view.visualization.Turtle;
 
@@ -20,70 +19,70 @@ import view.visualization.Turtle;
  */
 public class Controller implements ViewAPI, ModelAPI {
 	
-	private View view;
+	private Workspace workspace;
 	private Model model;
 	private ResourceBundle resources; 
 
 	/**
 	 * 
 	 */
-	public Controller(Stage stage) {
+	public Controller() {
 		resources = ResourceBundle.getBundle("resources/UserInterface");
 		model = new Model(this);
-		view = new View(this, stage, "resources/style.css");
+		workspace = new Workspace(this);
 	}
 	
 	public ResourceBundle getResources() {
 		return resources;
 	}
 	
-	public View getView() {
-		return view;
+	public Workspace getView() {
+		return workspace;
 	}
 
 	@Override
 	public void print(String string) {
-		view.print(string);
+		workspace.print(string);
 	}
 
 	@Override
 	public void clearConsole() {
-		view.clearConsole();
+		workspace.clearConsole();
 	}
 
 	@Override
 	public void moveTo(Point point) {
-		view.moveTo(point);
+		workspace.moveTo(point);
 	}
 
 	@Override
 	public void turn(double degrees) {
-		view.turn(degrees);
+		workspace.turn(degrees);
 	}
 
 	@Override
 	public void setPenDown(boolean down) {
-		view.setPenDown(down);
+		workspace.setPenDown(down);
 	}
 
 	@Override
 	public void setTurtleVisible(boolean visible) {
-		view.setTurtleVisible(visible);	
+		workspace.setTurtleVisible(visible);	
 	}
 
 	@Override
 	public void clearDisplay() {
-		view.clearDisplay();
+		workspace.clearDisplay();
 	}
 
 	@Override
 	public Dimension getDisplaySize() {
-		return view.getDisplaySize();
+		return workspace.getDisplaySize();
 	}
 	
 	@Override
 	public Turtle getTurtle() {
-		return view.getTurtle();
+		return workspace.getTurtle();
 	}
 	
 	@Override
@@ -114,6 +113,11 @@ public class Controller implements ViewAPI, ModelAPI {
 	@Override
 	public String getLanguage() {
 		return model.getLanguage();
+	}
+
+	@Override
+	public void showMessage(String message) {
+		workspace.showMessage(message);
 	}
 
 }
