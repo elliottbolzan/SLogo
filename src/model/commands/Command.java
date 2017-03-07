@@ -6,7 +6,6 @@ import controller.Controller;
 import model.State;
 import model.parser.Argument;
 import model.parser.nodes.Node;
-import utils.BadInputException;
 
 public abstract class Command extends Node implements CommandInterface {
 
@@ -40,8 +39,8 @@ public abstract class Command extends Node implements CommandInterface {
 	public Argument evaluate() {
 		try {
 			return execute();
-		} catch (BadInputException e) {
-			e.printStackTrace();
+		} catch (Exception e) {
+			getController().getView().showMessage("Could not evaluate command.");;
 		}
 		return new Argument();
 	}

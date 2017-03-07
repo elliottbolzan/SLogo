@@ -2,7 +2,6 @@ package model.commands.control;
 
 import model.commands.Command;
 import model.parser.Argument;
-import utils.BadInputException;
 
 public class IfCommand extends Command {
 	
@@ -12,7 +11,7 @@ public class IfCommand extends Command {
 	}
 
 	@Override
-	public Argument execute() throws BadInputException {
+	public Argument execute(){
 		Argument result = new Argument();
 		if (getChildren().get(0).evaluate().getDouble() != 0) {
 			result = getChildren().get(1).evaluate();
