@@ -48,6 +48,7 @@ public class TurtleDisplay {
 		
 		myAnimation = new Timeline();
 		myAnimation.setCycleCount(Timeline.INDEFINITE);
+
 		isAnimated = true;
 	}
 

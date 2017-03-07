@@ -5,11 +5,11 @@ import java.util.HashMap;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import model.commands.control.UserCommand;
+import model.commands.control.MakeUserInstructionCommand;
 
 public class State {
 
-	private HashMap<String, UserCommand> cmdList;
+	private HashMap<String, MakeUserInstructionCommand> cmdList;
 
 	private ObservableList<Variable> variables;
 	private ObservableList<String> userDefinedCommandNames;
@@ -17,7 +17,7 @@ public class State {
 	public State() {
 		variables = FXCollections.observableArrayList(new ArrayList<Variable>());
 		userDefinedCommandNames = FXCollections.observableArrayList(new ArrayList<String>());
-		cmdList = new HashMap<String, UserCommand>();
+		cmdList = new HashMap<String, MakeUserInstructionCommand>();
 	}
 
 	public void setVariable(Variable var) {
@@ -28,7 +28,7 @@ public class State {
 		variables.add(var);
 	}
 
-	public void setCommand(UserCommand cmd) {
+	public void setCommand(MakeUserInstructionCommand cmd) {
 		userDefinedCommandNames.add(cmd.getName());
 		cmdList.put(cmd.getName(), cmd);
 	}
@@ -50,7 +50,7 @@ public class State {
 		return userDefinedCommandNames;
 	}
 	
-	public HashMap<String, UserCommand> getCmdList() {
+	public HashMap<String, MakeUserInstructionCommand> getCmdList() {
 		return cmdList;
 	}
 	
