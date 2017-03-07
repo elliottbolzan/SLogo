@@ -13,7 +13,7 @@ import model.StateStorage;
 import model.Variable;
 import model.commands.Command;
 import model.commands.control.MakeVariableCommand;
-import model.commands.control.UserCommand;
+import model.commands.control.MakeUserInstructionCommand;
 import utils.BadInputException;
 import model.parse.tokens.Identify;
 import model.parse.tokens.TokenType;
@@ -176,7 +176,7 @@ public class Parser implements ParserAPI {
 
 				try {
 
-					if (!(toExecute instanceof UserCommand)) {
+					if (!(toExecute instanceof MakeUserInstructionCommand)) {
 						newInstance = toExecute.getClass().newInstance();
 					}
 
@@ -204,7 +204,7 @@ public class Parser implements ParserAPI {
 					argumentStack.push(evaluation);
 					continue;
 				}
-				if (!(toExecute instanceof UserCommand)) {
+				if (!(toExecute instanceof MakeUserInstructionCommand)) {
 					controller.print(Double.toString(evaluation));
 				}
 				result = evaluation;
@@ -255,7 +255,7 @@ public class Parser implements ParserAPI {
 			i--;
 		}
 		Collections.reverse(variableNames);
-		UserCommand command = new UserCommand(text.pop(), variableNames, expression, stateStorage);
+		MakeUserInstructionCommand command = new MakeUserInstructionCommand(text.pop(), variableNames, expression, stateStorage);
 
 		return index;
 	}
