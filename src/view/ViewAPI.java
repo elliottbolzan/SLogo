@@ -30,4 +30,7 @@ public interface ViewAPI {
 	public void clearDisplay();
 	
 	public Dimension getDisplaySize();
+	
+	public void showMessage(String message);
+	
 }

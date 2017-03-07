@@ -21,12 +21,15 @@ import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
 
 /**
  * @author Jay Doherty
  *
  */
-public class TurtleDisplay {
+public class TurtleDisplay extends StackPane {
+	
+	private final static int SIZE = 450;
 
 	private Pane myDisplayArea;
 	private Dimension myDimensions;
@@ -37,8 +40,10 @@ public class TurtleDisplay {
 	private Timeline myAnimation;
 	private boolean isAnimated;
 
-	public TurtleDisplay(int width, int height) {
-		this.createDisplayArea(width, height);
+	public TurtleDisplay() {
+		setMinSize(300, 280);
+		this.createDisplayArea(SIZE, SIZE);
+		setPrefSize(SIZE, SIZE);
 		this.setBackgroundColor(Color.WHITE);
 		myTurtles = new HashMap<Integer, Turtle>();
 		
@@ -130,15 +135,7 @@ public class TurtleDisplay {
 	protected Group getView() {
 		return new Group(myDisplayArea);
 	}
-	
-	protected double getWidth() {
-		return myDisplayArea.getWidth();
-	}
 
-	protected double getHeight() {
-		return myDisplayArea.getHeight();
-	}
-	
 	protected void drawLine(Point start, Point finish, Color color, double width) {
 		Line line = new Line(start.getX(), start.getY(), finish.getX(), finish.getY());
 		line.setStroke(color);
@@ -148,7 +145,7 @@ public class TurtleDisplay {
 	
 	private void createDisplayArea(int width, int height) {
 		myDisplayArea = new Pane();
-		myDisplayArea.setPrefSize(width, height);
+		myDisplayArea.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
 		myDisplayArea.setScaleY(-1.0);
 		myDimensions = new Dimension(width, height);
 
@@ -156,6 +153,8 @@ public class TurtleDisplay {
 		clipBoundaries.widthProperty().bind(myDisplayArea.widthProperty());
 		clipBoundaries.heightProperty().bind(myDisplayArea.heightProperty());
 		myDisplayArea.setClip(clipBoundaries);
+		
+		getChildren().add(myDisplayArea);
 	}
 
 	private void addToDisplayArea(Node element) {

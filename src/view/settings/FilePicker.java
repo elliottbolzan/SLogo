@@ -17,7 +17,7 @@ public class FilePicker extends Group {
 	private Controller controller;
 	private TextField myTextField;
 
-	public FilePicker(Controller controller, Stage primaryStage, int width, String initialText,
+	public FilePicker(Controller controller, int width, String initialText,
 			String... allowedFileExtensions) {
 
 		this.controller = controller;
@@ -30,7 +30,7 @@ public class FilePicker extends Group {
 		HBox container = new HBox();
 
 		Button browseButton = new Button(controller.getResources().getString("BrowseButton"));
-		browseButton.setOnAction(e -> this.launchChooser(primaryStage, allowedFileExtensions));
+		browseButton.setOnAction(e -> this.launchChooser(allowedFileExtensions));
 
 		container.setPrefWidth(width);
 
@@ -42,12 +42,12 @@ public class FilePicker extends Group {
 		return myTextField;
 	}
 
-	private void launchChooser(Stage stage, String... extensions) {
+	private void launchChooser(String... extensions) {
 		FileChooser myChooser = new FileChooser();
 		myChooser.setInitialDirectory(new File(System.getProperty("user.dir")));
 		myChooser.getExtensionFilters()
 				.setAll(new ExtensionFilter(controller.getResources().getString("PictureFilesLabel"), extensions));
-		File dataFile = myChooser.showOpenDialog(stage);
+		File dataFile = myChooser.showOpenDialog(getScene().getWindow());
 		if (dataFile != null) {
 			try {
 				myTextField.setText(dataFile.toURI().toURL().toExternalForm());

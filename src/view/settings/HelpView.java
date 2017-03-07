@@ -3,7 +3,8 @@
  */
 package view.settings;
 
-import controller.Controller;
+import java.util.ResourceBundle;
+
 import javafx.scene.Scene;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
@@ -20,12 +21,12 @@ public class HelpView extends Stage {
 	/**
 	 * 
 	 */
-	public HelpView(Controller controller) {
+	public HelpView(ResourceBundle resources) {
 		WebView browser = new WebView();
 		WebEngine webEngine = browser.getEngine();
 		webEngine.load(getClass().getClassLoader().getResource(PATH_TO_HELP).toExternalForm());
 		Scene scene = new Scene(browser, 800, 600);
-		setTitle(controller.getResources().getString("HelpTitle"));
+		setTitle(resources.getString("HelpTitle"));
 		setScene(scene);
 	}
 
