@@ -1,6 +1,7 @@
 package view.visualization;
 
 import utils.Point;
+import view.Workspace;
 
 import java.awt.Dimension;
 import java.util.Collections;
@@ -31,6 +32,8 @@ public class TurtleDisplay extends StackPane {
 	
 	private final static int SIZE = 450;
 
+	private Workspace workspace;
+	
 	private Pane myDisplayArea;
 	private Dimension myDimensions;
 
@@ -40,7 +43,8 @@ public class TurtleDisplay extends StackPane {
 	private Timeline myAnimation;
 	private boolean isAnimated;
 
-	public TurtleDisplay() {
+	public TurtleDisplay(Workspace workspace) {
+		this.workspace = workspace;
 		setMinSize(300, 280);
 		this.createDisplayArea(SIZE, SIZE);
 		setPrefSize(SIZE, SIZE);
@@ -52,6 +56,10 @@ public class TurtleDisplay extends StackPane {
 		isAnimated = true;
 	}
 
+	protected Workspace getWorkspace() {
+		return workspace;
+	}
+	
 	public Dimension getDimensions() {
 		return myDimensions;
 	}

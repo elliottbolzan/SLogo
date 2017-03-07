@@ -12,6 +12,8 @@ import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
@@ -31,6 +33,7 @@ public class WorkspaceBrowser extends BorderPane {
 	private int workspaces = 0;
 	private ResourceBundle resources = ResourceBundle.getBundle("resources/UserInterface");
 	private String stylesheetPath = "resources/style.css";
+	private KeyHandler handler = new KeyHandler();
 
 	/**
 	 * 
@@ -50,9 +53,8 @@ public class WorkspaceBrowser extends BorderPane {
 				System.exit(0);
 			}
 		});
-		Scene scene = new Scene(this, 1000, 480);
-		scene.getStylesheets().add(stylesheetPath);
-		stage.setScene(scene);
+		
+		stage.setScene(createScene());
 		stage.show();
 
 		tabPane = new TabPane();
@@ -74,9 +76,17 @@ public class WorkspaceBrowser extends BorderPane {
 
 	}
 
+	private Scene createScene() {
+		Scene scene = new Scene(this, 1000, 480);
+		scene.getStylesheets().add(stylesheetPath);
+		scene.addEventFilter(MouseEvent.MOUSE_PRESSED, e -> handler.mouseClicked(e));
+		scene.addEventFilter(KeyEvent.KEY_PRESSED, e -> handler.keyPressed(e));
+		return scene;
+	}
+
 	private void newWorkspace() {
 		workspaces++;
-		Controller controller = new Controller();
+		Controller controller = new Controller(this);
 		Tab tab = new Tab();
 		tab.setText("Workspace " + String.valueOf(workspaces));
 		tab.setContent(controller.getView());
@@ -89,7 +99,7 @@ public class WorkspaceBrowser extends BorderPane {
 		if (workspaces > 1) {
 			workspaces--;
 		} else {
-			controller.showMessage("You must have one workspace open.");
+			controller.showMessage(resources.getString("OneTabRequirement"));
 			e.consume();
 		}
 	}
@@ -108,6 +118,14 @@ public class WorkspaceBrowser extends BorderPane {
 	private void showHelp() {
 		HelpView helpView = new HelpView(resources);
 		helpView.show();
+	}
+	
+	public void clickedTurtle(Turtle turtle) {
+		handler.setSelectedTurtle(turtle);
+	}
+	
+	public Turtle getSelectedTurtle() {
+		return handler.getSelectedTurtle();
 	}
 
 }
