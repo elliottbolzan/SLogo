@@ -41,10 +41,14 @@ public class TurtleDisplay {
 		this.createDisplayArea(width, height);
 		this.setBackgroundColor(Color.WHITE);
 		myTurtles = new HashMap<Integer, Turtle>();
+		
 		this.createTurtle(1);
 		this.createTurtleInfo();
 		myLineLength = 1.0;
-		isAnimated = false;
+		
+		myAnimation = new Timeline();
+		myAnimation.setCycleCount(Timeline.INDEFINITE);
+		isAnimated = true;
 	}
 
 	public Dimension getDimensions() {
@@ -113,7 +117,6 @@ public class TurtleDisplay {
 		} else {
 			turtle.setDestination(destination, myLineLength);
 			this.recalculateAnimationSpeed(id, destination);
-			myAnimation.play();
 		}
 
 		if (!isAnimated) {
@@ -191,11 +194,11 @@ public class TurtleDisplay {
 	}
 	
 	private void resetAnimation(double millisInterval) {
-		myAnimation = new Timeline();
+		myAnimation.stop();
 		myAnimation.getKeyFrames().clear();
-		myAnimation.setCycleCount(Timeline.INDEFINITE);
 		KeyFrame frame = new KeyFrame(Duration.millis(millisInterval), e -> this.stepAnimation());
 		myAnimation.getKeyFrames().add(frame);
+		myAnimation.play();
 	}
 
 	private void recalculateAnimationSpeed(int id, Point destination) {
