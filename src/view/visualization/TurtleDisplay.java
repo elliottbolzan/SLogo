@@ -1,6 +1,7 @@
 package view.visualization;
 
 import utils.Point;
+import view.Workspace;
 
 import java.awt.Dimension;
 import java.util.Collections;
@@ -31,6 +32,8 @@ public class TurtleDisplay extends StackPane {
 	
 	private final static int SIZE = 450;
 
+	private Workspace workspace;
+	
 	private Pane myDisplayArea;
 	private Dimension myDimensions;
 
@@ -40,18 +43,28 @@ public class TurtleDisplay extends StackPane {
 	private Timeline myAnimation;
 	private boolean isAnimated;
 
-	public TurtleDisplay() {
+	public TurtleDisplay(Workspace workspace) {
+		this.workspace = workspace;
 		setMinSize(300, 280);
 		this.createDisplayArea(SIZE, SIZE);
 		setPrefSize(SIZE, SIZE);
 		this.setBackgroundColor(Color.WHITE);
 		myTurtles = new HashMap<Integer, Turtle>();
+		
 		this.createTurtle(1);
 		this.createTurtleInfo();
 		myLineLength = 1.0;
+		
+		myAnimation = new Timeline();
+		myAnimation.setCycleCount(Timeline.INDEFINITE);
+
 		isAnimated = true;
 	}
 
+	protected Workspace getWorkspace() {
+		return workspace;
+	}
+	
 	public Dimension getDimensions() {
 		return myDimensions;
 	}
@@ -118,7 +131,6 @@ public class TurtleDisplay extends StackPane {
 		} else {
 			turtle.setDestination(destination, myLineLength);
 			this.recalculateAnimationSpeed(id, destination);
-			myAnimation.play();
 		}
 
 		if (!isAnimated) {
@@ -172,7 +184,7 @@ public class TurtleDisplay extends StackPane {
 	}
 	
 	private void createTurtleInfo() {
-		TurtleInfo turtleInfo = new TurtleInfo(this, 1); 	//TODO
+		TurtleInfo turtleInfo = new TurtleInfo(this.getTurtle(1)); 	//TODO
 		turtleInfo.getView().setScaleY(-1);
 		myDisplayArea.getChildren().add(turtleInfo.getView());
 	}
@@ -190,11 +202,11 @@ public class TurtleDisplay extends StackPane {
 	}
 	
 	private void resetAnimation(double millisInterval) {
-		myAnimation = new Timeline();
+		myAnimation.stop();
 		myAnimation.getKeyFrames().clear();
-		myAnimation.setCycleCount(Timeline.INDEFINITE);
 		KeyFrame frame = new KeyFrame(Duration.millis(millisInterval), e -> this.stepAnimation());
 		myAnimation.getKeyFrames().add(frame);
+		myAnimation.play();
 	}
 
 	private void recalculateAnimationSpeed(int id, Point destination) {

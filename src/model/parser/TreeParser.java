@@ -71,7 +71,7 @@ public class TreeParser implements ParserAPI {
 	}
 
 	@Override
-	public Node parse(String input){
+	public Node parse(String input) {
 		parseHistory.addStringToHistory(input);
 		input = handleComment(input);
 		Node root = parseInternal(input);
@@ -81,7 +81,7 @@ public class TreeParser implements ParserAPI {
 		return root;
 	}
 
-	public Node parseInternal(String input){
+	public Node parseInternal(String input) {
 		return createTree(input);
 	}
 
@@ -109,21 +109,22 @@ public class TreeParser implements ParserAPI {
 			} else if (token == Token.VARIABLE) {
 				child = new VariableNode(this, node, word.replaceAll(":", ""));
 			} else if (token == Token.COMMAND) {
-				try{
+				try {
 					child = commands.get(word);
 					// If child is null, your command is probably misnamed.
 					((Command) child).setup(controller, state);
 					for (int i = 0; i < ((Command) child).numParameters(); i++) {
 						input = createTree(new Input(child, input.getIndex(), input.getWords()));
 					}
-				}catch (Exception e){
-					controller.getView().showMessage("No such Command" + " " +  word);
+				} catch (Exception e) {
+					controller.getView().showMessage("No such Command" + " " + word);
 				}
 			} else if (token == Token.LIST_START) {
 				child = new ListNode(this, node, input);
 			}
 			// Work on comments.
-			// In UI, implement new Console behavior: don't strip newlines. Use newlines to parse comments.
+			// In UI, implement new Console behavior: don't strip newlines. Use
+			// newlines to parse comments.
 			node.addChild(child);
 			return new Input(child, input.getIndex(), input.getWords());
 		} catch (Exception e) {

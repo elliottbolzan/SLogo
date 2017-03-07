@@ -12,6 +12,7 @@ import model.Variable;
 import view.Workspace;
 import view.ViewAPI;
 import view.visualization.Turtle;
+import view.visualization.WorkspaceBrowser;
 
 /**
  * @author Elliott Bolzan
@@ -26,10 +27,10 @@ public class Controller implements ViewAPI, ModelAPI {
 	/**
 	 * 
 	 */
-	public Controller() {
+	public Controller(WorkspaceBrowser browser) {
 		resources = ResourceBundle.getBundle("resources/UserInterface");
 		model = new Model(this);
-		workspace = new Workspace(this);
+		workspace = new Workspace(browser, this);
 	}
 	
 	public ResourceBundle getResources() {

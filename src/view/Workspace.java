@@ -7,6 +7,7 @@ import view.console.Console;
 import view.panel.Panel;
 import view.visualization.Turtle;
 import view.visualization.TurtleDisplay;
+import view.visualization.WorkspaceBrowser;
 import controller.Controller;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -24,6 +25,7 @@ import javafx.scene.layout.BorderPane;
  */
 public class Workspace extends BorderPane implements ViewAPI {
 	
+	private WorkspaceBrowser browser;
 	private Controller controller;
 	private Console console;
 	private TurtleDisplay turtleDisplay;
@@ -35,7 +37,8 @@ public class Workspace extends BorderPane implements ViewAPI {
 	 * @param stage the program's primary window.
 	 * @return a View object.
 	 */
-	public Workspace(Controller controller) {
+	public Workspace(WorkspaceBrowser browser, Controller controller) {
+		this.browser = browser;
 		this.controller = controller;
 		setPadding(new Insets(4));
 		setup();
@@ -50,12 +53,16 @@ public class Workspace extends BorderPane implements ViewAPI {
 	            System.out.println("focus changed");
 	        }
 	    });
-		turtleDisplay = new TurtleDisplay();
+		turtleDisplay = new TurtleDisplay(this);
 		panel = new Panel(this, 1);
 		console.focus();
 		pane.getItems().addAll(console, turtleDisplay, panel);
 		pane.setDividerPositions(0.3, 0.75);
 		setCenter(pane);
+	}
+	
+	public WorkspaceBrowser getBrowser() {
+		return browser;
 	}
 	
 	public Console getConsole() {
