@@ -11,6 +11,10 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
 
+/**
+ * @author Jay Doherty
+ *
+ */
 public class Turtle {
 	private final static String BASIC_IMAGE = "view/visualization/turtle.png";
 	private ImageView myImageView;

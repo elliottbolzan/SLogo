@@ -56,6 +56,8 @@ public class Panel extends View {
 				add(workspace.getController().getResources().getString("VariablesTitle"));
 				add(workspace.getController().getResources().getString("UserCommandsTitle"));
 				add(workspace.getController().getResources().getString("SettingsTitle"));
+				add(workspace.getController().getResources().getString("ColorsTitle"));
+				add(workspace.getController().getResources().getString("ImagesTitle"));
 			}
 		};
 		subviews = new ArrayList<Node>() {
@@ -64,6 +66,8 @@ public class Panel extends View {
 				add(new VariableTable(workspace, workspace.getController().getVariables()));
 				add(new CommandList(workspace, workspace.getController().getUserDefinedCommands()));
 				add(new SettingsView(workspace));
+				add(new ColorTable());
+				add(new ImageTable());
 			}
 		};
 	}

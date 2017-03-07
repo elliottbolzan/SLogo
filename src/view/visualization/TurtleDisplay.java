@@ -176,7 +176,7 @@ public class TurtleDisplay extends StackPane {
 	}
 	
 	private void createTurtleInfo() {
-		TurtleInfo turtleInfo = new TurtleInfo(this, 1); 	//TODO
+		TurtleInfo turtleInfo = new TurtleInfo(this.getTurtle(1)); 	//TODO
 		turtleInfo.getView().setScaleY(-1);
 		myDisplayArea.getChildren().add(turtleInfo.getView());
 	}
