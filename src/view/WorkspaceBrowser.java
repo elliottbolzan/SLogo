@@ -1,8 +1,9 @@
-package view.visualization;
+package view;
 
 import java.util.ResourceBundle;
 
 import controller.Controller;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
@@ -18,7 +19,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
-import view.settings.HelpView;
+import view.visualization.KeyHandler;
 
 /**
  * @author Elliott Bolzan
@@ -40,6 +41,13 @@ public class WorkspaceBrowser extends BorderPane {
 		this.stage = stage;
 		setupStage();
 		newWorkspace();
+		Platform.runLater(new Runnable() {
+		    @Override
+		    public void run() {
+		    	Workspace workspace = (Workspace) tabPane.getSelectionModel().getSelectedItem().getContent();  
+		    	workspace.getShell().getTextArea().requestFocus();
+		    }   
+		});
 	}
 
 	private void setupStage() {

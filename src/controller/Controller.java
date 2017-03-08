@@ -10,9 +10,9 @@ import model.Model;
 import model.ModelAPI;
 import model.Variable;
 import view.Workspace;
+import view.WorkspaceBrowser;
 import view.ViewAPI;
 import view.visualization.Turtle;
-import view.visualization.WorkspaceBrowser;
 
 /**
  * @author Elliott Bolzan

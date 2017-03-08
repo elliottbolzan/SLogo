@@ -4,8 +4,8 @@ import javafx.scene.control.SplitPane;
 import javafx.scene.control.TextArea;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import view.View;
 import view.Workspace;
-import view.visualization.View;
 
 /**
  * @author Elliott Bolzan

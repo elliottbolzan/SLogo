@@ -41,9 +41,9 @@ public class CommandList extends BorderPane {
 			public void handle(MouseEvent event) {
 				String selected = list.getSelectionModel().getSelectedItem();
 				if (selected != null) {
-					workspace.getConsole().clearCurrentCommand();
-					workspace.getConsole().append(selected);
-					workspace.getConsole().focus();
+					workspace.getShell().clearCurrentCommand();
+					workspace.getShell().append(selected);
+					workspace.getShell().focus();
 				}
 			}
 		});

@@ -1,7 +1,7 @@
 /**
  * 
  */
-package view.settings;
+package view;
 
 import java.util.ResourceBundle;
 

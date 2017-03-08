@@ -5,7 +5,7 @@ package view.input;
 
 import javafx.scene.control.SplitPane;
 import javafx.scene.control.TextArea;
-import view.visualization.View;
+import view.View;
 
 /**
  * @author Elliott Bolzan

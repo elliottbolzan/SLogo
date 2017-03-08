@@ -9,15 +9,11 @@ import view.panel.Panel;
 import view.visualization.KeyHandler;
 import view.visualization.Turtle;
 import view.visualization.TurtleDisplay;
-import view.visualization.WorkspaceBrowser;
 import controller.Controller;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.geometry.Insets;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.SplitPane;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 
 /**
@@ -66,7 +62,7 @@ public class Workspace extends BorderPane implements ViewAPI {
 		return browser;
 	}
 	
-	public ShellView getConsole() {
+	public ShellView getShell() {
 		return inputContainer.getShellView();
 	}
 	

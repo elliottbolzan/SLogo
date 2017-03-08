@@ -5,8 +5,8 @@ package view.input;
 
 import javafx.geometry.Orientation;
 import javafx.scene.control.SplitPane;
+import view.View;
 import view.Workspace;
-import view.visualization.View;
 
 /**
  * @author Elliott Bolzan
