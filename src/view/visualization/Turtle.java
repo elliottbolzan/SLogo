@@ -5,11 +5,15 @@ import utils.Point;
 import java.util.LinkedList;
 import java.util.Queue;
 
+import javafx.animation.RotateTransition;
+import javafx.animation.SequentialTransition;
+import javafx.animation.Timeline;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
+import javafx.util.Duration;
 
 /**
  * @author Jay Doherty
@@ -133,8 +137,10 @@ public class Turtle {
 	}
 
 	protected void setRotation(double degrees) {
-		myRotationProperty.set(degrees);
-		myImageView.setRotate(degrees + 90);
+		myRotationProperty.set(degrees % 360);
+		RotateTransition rotate = new RotateTransition(Duration.millis(250));
+		rotate.setToAngle((degrees + 90) % 360);
+        new SequentialTransition(myImageView, rotate).play();
 	}
 	
 	protected void setDestination(Point destination, double speed) {
