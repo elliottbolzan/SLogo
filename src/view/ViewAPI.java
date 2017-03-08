@@ -2,6 +2,7 @@ package view;
 
 import java.awt.Dimension;
 
+import model.ActiveTurtles;
 import utils.Point;
 import view.visualization.Turtle;
 
@@ -15,7 +16,7 @@ public interface ViewAPI {
 	
 	public void clearConsole();
 		
-	public void moveTo(Point point);
+	//public void moveTo(Point point);
 	
 	public void turn(double degrees);
 	
@@ -23,12 +24,18 @@ public interface ViewAPI {
 	
 	public void setTurtleVisible(boolean visible);
 		
-	public Turtle getTurtle();
+	//public Turtle getTurtle();
 	
 	public void clearDisplay();
 	
 	public Dimension getDisplaySize();
 	
 	public void showMessage(String message);
+
+	void moveTo(int turtle, Point point);
+
+	ActiveTurtles getActiveTurtles();
+
+	Turtle getTurtle(int index);
 	
 }

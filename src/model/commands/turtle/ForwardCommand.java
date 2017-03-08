@@ -18,7 +18,7 @@ public class ForwardCommand extends TurtleCommand {
 	public Argument execute() {
 		Argument result = getParameter(0);
 		Point loc = endLocation(result.getDouble(), getController().getTurtle());
-		getController().moveTo(loc);
+		getController().moveTo(getController().getActiveTurtles().getTurtleList().get(0), loc);
 		return result;
 	}
 	

@@ -6,6 +6,7 @@ import java.util.ResourceBundle;
 import utils.Point;
 
 import javafx.collections.ObservableList;
+import model.ActiveTurtles;
 import model.Model;
 import model.ModelAPI;
 import model.Variable;
@@ -52,8 +53,8 @@ public class Controller implements ViewAPI, ModelAPI {
 	}
 
 	@Override
-	public void moveTo(Point point) {
-		workspace.moveTo(point);
+	public void moveTo(int turtle, Point point) {
+		workspace.moveTo(turtle, point);
 	}
 
 	@Override
@@ -82,8 +83,13 @@ public class Controller implements ViewAPI, ModelAPI {
 	}
 	
 	@Override
-	public Turtle getTurtle() {
-		return workspace.getTurtle();
+	public Turtle getTurtle(int index) {
+		return workspace.getTurtle(index);
+	}
+	
+	@Override
+	public ActiveTurtles getActiveTurtles() {
+		return workspace.getActiveTurtles();
 	}
 	
 	@Override

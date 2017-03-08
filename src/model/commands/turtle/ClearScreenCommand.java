@@ -13,7 +13,7 @@ public class ClearScreenCommand extends TurtleCommand {
 	@Override
 	public Argument execute() {
 		double distance = distance(getController().getTurtle().getDestination(), new Point(0, 0));
-		getController().moveTo(new Point(0, 0));
+		getController().moveTo(getController().getActiveTurtles().getTurtleList().get(0), new Point(0, 0));
 		getController().clearDisplay();
 		return new Argument(distance);
 	}

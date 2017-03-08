@@ -16,6 +16,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.SplitPane;
 import javafx.scene.layout.BorderPane;
+import model.ActiveTurtles;
 
 /**
  * @author Elliott Bolzan
@@ -31,6 +32,7 @@ public class Workspace extends BorderPane implements ViewAPI {
 	private TurtleDisplay turtleDisplay;
 	private Panel panel;
 	private SplitPane pane;
+	private ActiveTurtles turtles;
 
 	/**
 	 * Creates a View object.
@@ -54,6 +56,7 @@ public class Workspace extends BorderPane implements ViewAPI {
 	        }
 	    });
 		turtleDisplay = new TurtleDisplay(this);
+		turtles = new ActiveTurtles();
 		panel = new Panel(this, 1);
 		console.focus();
 		pane.getItems().addAll(console, turtleDisplay, panel);
@@ -93,9 +96,9 @@ public class Workspace extends BorderPane implements ViewAPI {
 	}
 
 	@Override
-	public void moveTo(Point point) {
+	public void moveTo(int turtle, Point point) {
 		//TODO require turtle id
-		turtleDisplay.moveTurtle(1, point);
+		turtleDisplay.moveTurtle(turtle, point);
 	}
 
 
@@ -133,9 +136,13 @@ public class Workspace extends BorderPane implements ViewAPI {
 
 	
 	@Override
-	public Turtle getTurtle() {
+	public Turtle getTurtle(int index) {
 		//TODO require turtle id
-		return turtleDisplay.getTurtle(1);
+		return turtleDisplay.getTurtle(index);
+	}
+	
+	public ActiveTurtles getActiveTurtles(){
+		return turtles;
 	}
 	
 	public void showMessage(String message) {

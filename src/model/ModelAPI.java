@@ -1,6 +1,7 @@
 package model;
 
 import javafx.collections.ObservableList;
+import view.visualization.Turtle;
 
 public interface ModelAPI {
 
@@ -15,5 +16,9 @@ public interface ModelAPI {
 	public void setLanguage(String language);
 	
 	public String getLanguage();
+
+	ActiveTurtles getActiveTurtles();
+
+	Turtle getTurtle(int index);
 
 }
