@@ -43,7 +43,7 @@ public class CommandList extends BorderPane {
 				if (selected != null) {
 					workspace.getShell().clearCurrentCommand();
 					workspace.getShell().append(selected);
-					workspace.getShell().focus();
+					workspace.getShell().getTextArea().requestFocus();
 				}
 			}
 		});

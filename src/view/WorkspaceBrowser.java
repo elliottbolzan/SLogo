@@ -19,7 +19,6 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
-import view.visualization.KeyHandler;
 
 /**
  * @author Elliott Bolzan
@@ -32,7 +31,6 @@ public class WorkspaceBrowser extends BorderPane {
 	private int workspaces = 0;
 	private ResourceBundle resources = ResourceBundle.getBundle("resources/UserInterface");
 	private String stylesheetPath = "resources/style.css";
-	private KeyHandler handler = new KeyHandler();
 
 	/**
 	 * 
@@ -44,8 +42,7 @@ public class WorkspaceBrowser extends BorderPane {
 		Platform.runLater(new Runnable() {
 		    @Override
 		    public void run() {
-		    	Workspace workspace = (Workspace) tabPane.getSelectionModel().getSelectedItem().getContent();  
-		    	workspace.getShell().getTextArea().requestFocus();
+		    	getCurrentWorkspace().getShell().getTextArea().requestFocus();
 		    }   
 		});
 	}
@@ -79,13 +76,21 @@ public class WorkspaceBrowser extends BorderPane {
 		AnchorPane.setBottomAnchor(tabPane, 1.0);
 
 		setCenter(anchor);
-
+		
 	}
 
 	private Scene createScene() {
 		Scene scene = new Scene(this, 1000, 480);
 		scene.getStylesheets().add(stylesheetPath);
 		return scene;
+	}
+	
+	private void hello() {
+		System.out.println("called");
+	}
+	
+	private Workspace getCurrentWorkspace() {
+    	return (Workspace) tabPane.getSelectionModel().getSelectedItem().getContent();  
 	}
 
 	private void newWorkspace() {

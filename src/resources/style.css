@@ -61,3 +61,7 @@
 .tab-button:hover, .minimize:hover {
     -fx-background-color: lightgray;
 }
+
+.split-pane > .split-pane-divider {  
+    -fx-padding: 0 2 0 2;  
+} 

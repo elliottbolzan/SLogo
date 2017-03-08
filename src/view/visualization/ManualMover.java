@@ -10,7 +10,7 @@ import javafx.scene.input.KeyEvent;
  * @author Elliott Bolzan
  *
  */
-public class KeyHandler {
+public class ManualMover {
 
 	private final static double INCREMENT = 10;
 

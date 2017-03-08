@@ -46,10 +46,6 @@ public class ShellView extends InputView {
 		getTextArea().positionCaret(getTextArea().getText().length());
 	}
 	
-	public void focus() {
-		getTextArea().requestFocus();
-	}
-	
 	private void createTextArea() {
 		getTextArea().setOnKeyPressed(e -> handleKeyCode(e));
 		getTextArea().setOnMouseClicked(e -> getTextArea().positionCaret(getTextArea().getText().length()));
