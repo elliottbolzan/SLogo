@@ -1,5 +1,6 @@
-package view.console;
+package view.input;
 
+import javafx.scene.control.SplitPane;
 import javafx.scene.control.TextArea;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -10,22 +11,21 @@ import view.visualization.View;
  * @author Elliott Bolzan
  *
  */
-public class Console extends View {
+public class ShellView extends InputView {
 		
 	private Workspace workspace;
-
-	private TextArea textArea;
 	private String preamble;
 	private int commandIndex = 0;
 		
 	/**
 	 * 
 	 */
-	public Console(Workspace workspace, int index) {
-		super(workspace.getPane(), index, false);
+	public ShellView(Workspace workspace, SplitPane pane, int index) {
+		super(pane, index, false, true);
 		this.workspace = workspace;
-		setTitle(workspace.getController().getResources().getString("InterpreterTitle"));
+		setTitle(workspace.getController().getResources().getString("ShellTitle"));
 		preamble = workspace.getController().getResources().getString("Preamble");
+		setMinHeight(0);
 		createTextArea();
 	}
 
@@ -34,29 +34,27 @@ public class Console extends View {
 	}
 	
 	public void append(String string) {
-		textArea.appendText(string);
+		getTextArea().appendText(string);
 	}
 	
 	public void clear() {
-		textArea.setText(preamble);
+		getTextArea().setText(preamble);
 	}
 	
 	public void clearCurrentCommand() {
-		textArea.setText(textArea.getText().substring(0, textArea.getText().lastIndexOf(getCurrentCommand())));
-		textArea.positionCaret(textArea.getText().length());
+		getTextArea().setText(getTextArea().getText().substring(0, getTextArea().getText().lastIndexOf(getCurrentCommand())));
+		getTextArea().positionCaret(getTextArea().getText().length());
 	}
 	
 	public void focus() {
-		textArea.requestFocus();
+		getTextArea().requestFocus();
 	}
-
+	
 	private void createTextArea() {
-		textArea = new TextArea();
-		textArea.setWrapText(true);
-		textArea.setOnMouseClicked(e -> textArea.positionCaret(textArea.getText().length()));
-		textArea.setOnKeyPressed(e -> handleKeyCode(e));
+		getTextArea().setOnKeyPressed(e -> handleKeyCode(e));
+		getTextArea().setOnMouseClicked(e -> getTextArea().positionCaret(getTextArea().getText().length()));
 		append(preamble);
-		setCenter(textArea);
+		setCenter(getTextArea());
 	}
 
 	private void handleKeyCode(KeyEvent event) {
@@ -69,22 +67,22 @@ public class Console extends View {
 			event.consume();
 		}
 		else if (event.getCode() == KeyCode.LEFT || event.getCode() == KeyCode.BACK_SPACE) {
-			int position = textArea.getText().lastIndexOf(preamble) + preamble.length();
-			if (textArea.getSelectedText().length() != 0 || position == textArea.getCaretPosition()) { 
+			int position = getTextArea().getText().lastIndexOf(preamble) + preamble.length();
+			if (getTextArea().getSelectedText().length() != 0 || position == getTextArea().getCaretPosition()) { 
 				event.consume();
 			}
 		}
 		else if (event.getCode() == KeyCode.ENTER) {
 			event.consume();
-			if (textArea.getSelectedText().length() == 0) {
+			if (getTextArea().getSelectedText().length() == 0) {
 				enterPressed();
 			}
 		}
 	}
 	
-	private String getCurrentCommand() {
-		int index = textArea.getText().lastIndexOf(preamble);
-		return textArea.getText(index + preamble.length(), textArea.getText().length());
+	protected String getCurrentCommand() {
+		int index = getTextArea().getText().lastIndexOf(preamble);
+		return getTextArea().getText(index + preamble.length(), getTextArea().getText().length());
 	}
 	
 	private String removeWhitespace(String string) {

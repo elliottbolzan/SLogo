@@ -7,16 +7,14 @@ import javafx.event.EventHandler;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Priority;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.BorderPane;
 import view.Workspace;
 
 /**
  * @author Elliott Bolzan
  *
  */
-public class CommandList extends VBox {
+public class CommandList extends BorderPane {
 
 	private Workspace workspace;
 	private ObservableList<String> data;
@@ -37,7 +35,7 @@ public class CommandList extends VBox {
 		list.getStyleClass().add("panel-list");
 		list.setPlaceholder(new Label(workspace.getController().getResources().getString("EmptyCommands")));
 		list.setEditable(false);
-		list.setPrefHeight(100);
+		list.prefHeightProperty().bind(heightProperty());
 		list.setOnMouseClicked(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
@@ -50,7 +48,7 @@ public class CommandList extends VBox {
 			}
 		});
 		listProperty.set(data);
-		getChildren().add(list);
+		setCenter(list);
 	}
 
 }
