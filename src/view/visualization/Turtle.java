@@ -8,8 +8,12 @@ import java.util.Queue;
 import javafx.animation.RotateTransition;
 import javafx.animation.SequentialTransition;
 import javafx.animation.Timeline;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.ReadOnlyBooleanProperty;
+import javafx.beans.property.ReadOnlyDoubleProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleDoubleProperty;
+import javafx.beans.property.StringProperty;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
@@ -60,7 +64,6 @@ public class Turtle {
 		myRotationProperty = new SimpleDoubleProperty();
 		this.setRotation(90.0);
 		isMovingProperty = new SimpleBooleanProperty(false);
-	
 	}
 
 	public int getID() {
@@ -91,20 +94,20 @@ public class Turtle {
 		return new Point(myXProperty.get(), myYProperty.get());
 	}
 	
-	protected SimpleDoubleProperty xProperty() {
-		return myXProperty;
+	public ReadOnlyBooleanProperty readOnlyPenDownProperty() {
+		return ReadOnlyBooleanProperty.readOnlyBooleanProperty(myPenDownProperty);
 	}
 	
-	protected SimpleDoubleProperty yProperty() {
-		return myYProperty;
+	public ReadOnlyDoubleProperty readOnlyXProperty() {
+		return ReadOnlyDoubleProperty.readOnlyDoubleProperty(myXProperty);
 	}
 	
-	protected SimpleDoubleProperty rotationProperty() {
-		return myRotationProperty;
+	public ReadOnlyDoubleProperty readOnlyYProperty() {
+		return ReadOnlyDoubleProperty.readOnlyDoubleProperty(myYProperty);
 	}
 	
-	protected SimpleBooleanProperty penDownProperty() {
-		return myPenDownProperty;
+	public ReadOnlyDoubleProperty readOnlyRotationProperty() {
+		return ReadOnlyDoubleProperty.readOnlyDoubleProperty(myRotationProperty);
 	}
 	
 	protected SimpleBooleanProperty isMovingProperty() {
