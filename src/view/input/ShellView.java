@@ -1,10 +1,8 @@
 package view.input;
 
 import javafx.scene.control.SplitPane;
-import javafx.scene.control.TextArea;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import view.View;
 import view.Workspace;
 
 /**
@@ -89,7 +87,7 @@ public class ShellView extends InputView {
 		String input = removeWhitespace(getCurrentCommand());
 		commandIndex = 0;
 			if (!(input.equals(""))) {
-				workspace.getController().parse(input);
+				workspace.getController().parse(input, true);
 			}
 			append("\n" + preamble);
 	}

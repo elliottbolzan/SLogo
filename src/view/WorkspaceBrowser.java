@@ -13,6 +13,7 @@ import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
@@ -40,14 +41,15 @@ public class WorkspaceBrowser extends BorderPane {
 		setupStage();
 		newWorkspace();
 		Platform.runLater(new Runnable() {
-		    @Override
-		    public void run() {
-		    	getCurrentWorkspace().getShell().getTextArea().requestFocus();
-		    }   
+			@Override
+			public void run() {
+				getCurrentWorkspace().getShell().getTextArea().requestFocus();
+			}
 		});
 	}
 
 	private void setupStage() {
+		
 		stage.setTitle(resources.getString("SLogoTitle"));
 		stage.setMinWidth(600);
 		stage.setMinHeight(300);
@@ -56,7 +58,7 @@ public class WorkspaceBrowser extends BorderPane {
 				System.exit(0);
 			}
 		});
-		
+
 		stage.setScene(createScene());
 		stage.show();
 
@@ -76,7 +78,22 @@ public class WorkspaceBrowser extends BorderPane {
 		AnchorPane.setBottomAnchor(tabPane, 1.0);
 
 		setCenter(anchor);
-		
+		detectArrowKeys();
+	}
+
+	private void detectArrowKeys() {
+		addEventFilter(KeyEvent.ANY, new EventHandler<KeyEvent>() {
+			@Override
+			public void handle(KeyEvent event) {
+				switch (event.getCode()) {
+				case UP:
+				case DOWN:
+				case LEFT:
+				case RIGHT:
+					getCurrentWorkspace().keyPressed(event);
+				}
+			}
+		});
 	}
 
 	private Scene createScene() {
@@ -84,13 +101,13 @@ public class WorkspaceBrowser extends BorderPane {
 		scene.getStylesheets().add(stylesheetPath);
 		return scene;
 	}
-	
+
 	private void hello() {
 		System.out.println("called");
 	}
-	
+
 	private Workspace getCurrentWorkspace() {
-    	return (Workspace) tabPane.getSelectionModel().getSelectedItem().getContent();  
+		return (Workspace) tabPane.getSelectionModel().getSelectedItem().getContent();
 	}
 
 	private void newWorkspace() {
