@@ -39,7 +39,7 @@ public class MakeUserInstructionCommand extends Command {
 			} 
 		}
 		try {
-			getController().parse(currentCommand);
+			getController().parse(currentCommand, false);
 			return new Argument(1);
 		}
 		catch (Exception e) {

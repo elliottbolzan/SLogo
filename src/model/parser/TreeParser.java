@@ -71,8 +71,10 @@ public class TreeParser implements ParserAPI {
 	}
 
 	@Override
-	public Node parse(String input) {
-		parseHistory.addStringToHistory(input);
+	public Node parse(String input, boolean addToHistory) {
+		if (addToHistory) {
+			parseHistory.addStringToHistory(input);
+		}
 		input = handleComment(input);
 		Node root = parseInternal(input);
 		printTree(root, "");

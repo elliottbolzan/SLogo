@@ -127,7 +127,7 @@ public class ScriptView extends InputView {
 	}
 
 	private void run() {
-		workspace.getController().parse(getCurrentCommand());
+		workspace.getController().parse(getCurrentCommand(), false);
 	}
 
 }

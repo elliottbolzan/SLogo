@@ -1,4 +1,4 @@
-package view.settings;
+package view.panel;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -24,6 +24,8 @@ import javafx.scene.paint.Color;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import view.Workspace;
+import view.components.ColorPicker;
+import view.components.FilePicker;
 import view.visualization.Turtle;
 import view.visualization.TurtleDisplay;
 
