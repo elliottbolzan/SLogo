@@ -1,10 +1,11 @@
 package model;
 
 import javafx.collections.ObservableList;
+import model.parser.nodes.Node;
 
 public interface ModelAPI {
 
-	public void parse(String string);
+	public Node parse(String input, boolean addToHistory);
 
 	public ObservableList<String> getHistory();
 

@@ -6,9 +6,8 @@ import java.util.List;
 import javafx.scene.Node;
 import javafx.scene.control.Accordion;
 import javafx.scene.control.TitledPane;
+import view.View;
 import view.Workspace;
-import view.settings.SettingsView;
-import view.visualization.View;
 
 /**
  * @author Elliott Bolzan

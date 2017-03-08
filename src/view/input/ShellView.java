@@ -1,11 +1,9 @@
 package view.input;
 
 import javafx.scene.control.SplitPane;
-import javafx.scene.control.TextArea;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import view.Workspace;
-import view.visualization.View;
 
 /**
  * @author Elliott Bolzan
@@ -44,10 +42,6 @@ public class ShellView extends InputView {
 	public void clearCurrentCommand() {
 		getTextArea().setText(getTextArea().getText().substring(0, getTextArea().getText().lastIndexOf(getCurrentCommand())));
 		getTextArea().positionCaret(getTextArea().getText().length());
-	}
-	
-	public void focus() {
-		getTextArea().requestFocus();
 	}
 	
 	private void createTextArea() {
@@ -93,7 +87,7 @@ public class ShellView extends InputView {
 		String input = removeWhitespace(getCurrentCommand());
 		commandIndex = 0;
 			if (!(input.equals(""))) {
-				workspace.getController().parse(input);
+				workspace.getController().parse(input, true);
 			}
 			append("\n" + preamble);
 	}
