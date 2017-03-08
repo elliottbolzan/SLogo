@@ -76,8 +76,9 @@ public class TreeParser implements ParserAPI {
 		parseHistory.addStringToHistory(input);
 		Node root = parseInternal(input);
 		printTree(root, "");
-		if (!(root.getChildren().get(0) instanceof CommentNode))
-			controller.print(String.valueOf(root.evaluate().getDouble()));
+		root.evaluate();
+		/*if (!(root.getChildren().get(0) instanceof CommentNode))
+			controller.print(String.valueOf(root.evaluate().getDouble()));*/
 		return root;
 	}
 

@@ -2,13 +2,13 @@ package view.panel;
 
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
-import javafx.scene.Group;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableColumn.CellEditEvent;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
+import javafx.scene.layout.BorderPane;
 import model.Variable;
 import view.Workspace;
 
@@ -16,7 +16,7 @@ import view.Workspace;
  * @author Elliott Bolzan
  *
  */
-public class VariableTable extends Group {
+public class VariableTable extends BorderPane {
 
 	private Workspace workspace;
 	private ObservableList<Variable> data;
@@ -38,6 +38,7 @@ public class VariableTable extends Group {
 		table.setEditable(true);
 		table.getStyleClass().add("panel-table");
 		table.setPlaceholder(new Label(workspace.getController().getResources().getString("EmptyVariables")));
+		table.prefHeightProperty().bind(heightProperty());
 
 		TableColumn<Variable, String> nameColumn = new TableColumn<Variable, String>("Name");
 		nameColumn.setCellValueFactory(new PropertyValueFactory<Variable, String>("name"));
@@ -64,7 +65,7 @@ public class VariableTable extends Group {
 		table.setItems(data);
 		table.getColumns().addAll(nameColumn, valueColumn);
 
-		getChildren().add(table);
+		setCenter(table);
 	}
 
 }

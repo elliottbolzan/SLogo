@@ -5,21 +5,18 @@ import utils.Point;
 import java.util.LinkedList;
 import java.util.Queue;
 
-import javafx.animation.ScaleTransition;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleDoubleProperty;
-import javafx.scene.effect.Glow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
-import javafx.util.Duration;
 
 /**
  * @author Jay Doherty
  *
  */
 public class Turtle {
-	private final static String BASIC_IMAGE = "view/visualization/turtle.png";
+	private final static String BASIC_IMAGE = "view/visualization/turtle_1.png";
 	private ImageView myImageView;
 
 	private TurtleDisplay myDisplay;

@@ -3,8 +3,10 @@ package view;
 import java.awt.Dimension;
 
 import utils.Point;
-import view.console.Console;
+import view.input.InputContainer;
+import view.input.ShellView;
 import view.panel.Panel;
+import view.visualization.KeyHandler;
 import view.visualization.Turtle;
 import view.visualization.TurtleDisplay;
 import view.visualization.WorkspaceBrowser;
@@ -15,6 +17,7 @@ import javafx.geometry.Insets;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.SplitPane;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 
 /**
@@ -27,10 +30,11 @@ public class Workspace extends BorderPane implements ViewAPI {
 	
 	private WorkspaceBrowser browser;
 	private Controller controller;
-	private Console console;
+	private InputContainer inputContainer;
 	private TurtleDisplay turtleDisplay;
 	private Panel panel;
 	private SplitPane pane;
+	//private KeyHandler handler;
 
 	/**
 	 * Creates a View object.
@@ -45,28 +49,25 @@ public class Workspace extends BorderPane implements ViewAPI {
 	}
 	
 	private void setup() {
+		//handler = new KeyHandler();
 		pane = new SplitPane();
-		console = new Console(this, 0);
-		console.focusedProperty().addListener(new ChangeListener<Boolean>(){
-	        @Override
-	        public void changed(ObservableValue<? extends Boolean> ov, Boolean t, Boolean t1) {
-	            System.out.println("focus changed");
-	        }
-	    });
+		//shellView = new ShellView(this, 0);
+		inputContainer = new InputContainer(this, 0);
 		turtleDisplay = new TurtleDisplay(this);
 		panel = new Panel(this, 1);
-		console.focus();
-		pane.getItems().addAll(console, turtleDisplay, panel);
+		//shellView.focus();
+		pane.getItems().addAll(inputContainer, turtleDisplay, panel);
 		pane.setDividerPositions(0.3, 0.75);
 		setCenter(pane);
+		//setOnKeyPressed(e -> keyPressed(e));
 	}
 	
 	public WorkspaceBrowser getBrowser() {
 		return browser;
 	}
 	
-	public Console getConsole() {
-		return console;
+	public ShellView getConsole() {
+		return inputContainer.getShellView();
 	}
 	
 	public Controller getController() {
@@ -83,13 +84,13 @@ public class Workspace extends BorderPane implements ViewAPI {
 	
 	@Override
 	public void print(String string) {
-		console.print(string);
+		inputContainer.getShellView().print(string);
 	}
 
 
 	@Override
 	public void clearConsole() {
-		console.clear();
+		inputContainer.getShellView().clear();
 	}
 
 	@Override
@@ -146,8 +147,12 @@ public class Workspace extends BorderPane implements ViewAPI {
 		alert.showAndWait();
 	}
 	
-	public void showSettings() {
-		/*SettingsView settings = new SettingsView(controller, turtleDisplay, stage);
-		settings.show();*/
-	}
+	/*private void keyPressed(KeyEvent e) {
+		String expression = handler.keyPressed(e);
+		System.out.println(expression);
+		if (!(expression.equals(""))) {
+			controller.parse(expression);
+		}
+	}*/
+	
 }

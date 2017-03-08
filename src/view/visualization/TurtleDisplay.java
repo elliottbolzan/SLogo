@@ -211,7 +211,7 @@ public class TurtleDisplay extends StackPane {
 
 	private void recalculateAnimationSpeed(int id, Point destination) {
 		double distance = this.distanceBetween(this.getTurtle(id).getCurrentLocation(), destination);
-		double animationTickInterval = 1000.0 / distance;
+		double animationTickInterval = 10.0 / distance;
 		this.resetAnimation(animationTickInterval);
 	}
 	

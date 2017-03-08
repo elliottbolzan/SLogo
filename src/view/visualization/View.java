@@ -17,24 +17,27 @@ import javafx.scene.layout.Priority;
 public class View extends BorderPane {
 
 	private Label title;
-	private SplitPane pane;
-	private int index;
-	private boolean collapseOnRight;
+	private SplitPane owner;
+	private int dividerIndex;
+	private boolean collapseRight;
+	private boolean showToolbar;
 
 	/**
 	 * 
 	 */
-	public View(SplitPane pane, int index, boolean collapseOnRight) {
-		this.pane = pane;
-		this.index = index;
-		this.collapseOnRight = collapseOnRight;
+	public View(SplitPane owner, int dividerIndex, boolean collapseRight, boolean showToolbar) {
+		this.owner = owner;
+		this.dividerIndex = dividerIndex;
+		this.collapseRight = collapseRight;
+		this.showToolbar =  showToolbar;
+		title = new Label("");
 		setMinSize(0, 280);
-		createToolbar();
+		if (showToolbar) {
+			createToolbar();
+		}
 	}
 
 	private void createToolbar() {
-
-		title = new Label("");
 		
 		HBox spacing = new HBox();
 		spacing.maxWidth(Double.MAX_VALUE);
@@ -63,7 +66,7 @@ public class View extends BorderPane {
 	}
 
 	public void minimize() {
-		pane.setDividerPosition(index, collapseOnRight ? 1 : 0);
+		owner.setDividerPosition(dividerIndex, collapseRight ? 1 : 0);
 	}
 
 }

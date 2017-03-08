@@ -13,6 +13,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.Border;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.BorderStroke;
 import javafx.scene.layout.BorderStrokeStyle;
 import javafx.scene.paint.Color;
@@ -21,7 +22,7 @@ import javafx.scene.paint.Color;
  * @author Jay Doherty
  *
  */
-public class ColorTable extends Group {
+public class ColorTable extends BorderPane {
 
 	private ObservableList<ColorElement> data;
 
@@ -44,6 +45,7 @@ public class ColorTable extends Group {
 		table.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 		table.setEditable(false);
 		table.getStyleClass().add("panel-table");
+		table.prefHeightProperty().bind(heightProperty());
 
 		TableColumn<ColorElement, Integer> indexColumn = new TableColumn<ColorElement, Integer>("Index");
 		indexColumn.setCellValueFactory(e -> e.getValue().indexProperty().asObject());
@@ -66,7 +68,7 @@ public class ColorTable extends Group {
 		table.setItems(data);
 		table.getColumns().addAll(indexColumn, colorColumn);
 
-		getChildren().add(table);
+		setCenter(table);
 	}
 	
 	private void makeDefaultColors() {
