@@ -12,7 +12,7 @@ public class LeftCommand extends TurtleCommand {
 	@Override
 	public Argument execute() {
 		Argument result = getParameter(0);
-		getController().turn(result.getDouble());
+		getController().getTurtleManager().turnTurtle(result.getDouble());
 		return result;
 	}
 }

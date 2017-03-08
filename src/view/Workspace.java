@@ -9,6 +9,7 @@ import view.panel.Panel;
 import view.visualization.KeyHandler;
 import view.visualization.Turtle;
 import view.visualization.TurtleDisplay;
+import view.visualization.TurtleManager;
 import controller.Controller;
 import javafx.geometry.Insets;
 import javafx.scene.control.Alert;
@@ -89,30 +90,6 @@ public class Workspace extends BorderPane implements ViewAPI {
 	}
 
 	@Override
-	public void moveTo(Point point) {
-		// TODO require turtle id
-		turtleDisplay.moveTurtle(1, point);
-	}
-
-	@Override
-	public void turn(double degrees) {
-		// TODO require turtle id
-		turtleDisplay.turnTurtle(1, degrees);
-	}
-
-	@Override
-	public void setPenDown(boolean down) {
-		// TODO require turtle id
-		turtleDisplay.setPenDown(1, down);
-	}
-
-	@Override
-	public void setTurtleVisible(boolean visible) {
-		// TODO require turtle id
-		turtleDisplay.setTurtleVisible(1, visible);
-	}
-
-	@Override
 	public void clearDisplay() {
 		turtleDisplay.clear();
 	}
@@ -120,12 +97,6 @@ public class Workspace extends BorderPane implements ViewAPI {
 	@Override
 	public Dimension getDisplaySize() {
 		return turtleDisplay.getDimensions();
-	}
-
-	@Override
-	public Turtle getTurtle() {
-		// TODO require turtle id
-		return turtleDisplay.getTurtle(1);
 	}
 
 	public void showMessage(String message) {
@@ -141,6 +112,11 @@ public class Workspace extends BorderPane implements ViewAPI {
 		if (!(expression.equals(""))) {
 			controller.parse(expression, false);
 		}
+	}
+
+	@Override
+	public TurtleManager getTurtleManager() {
+		return turtleDisplay.getTurtleManager();
 	}
 
 }

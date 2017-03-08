@@ -12,7 +12,7 @@ public class Commands {
 	private HashMap<String, String> commandNames = new HashMap<String, String>();
 	private ResourceBundle myResources;
 	private String packageRoot = "model.commands.";
-	private ArrayList<String> packages = new ArrayList<>(Arrays.asList("control", "logic", "math", "turtle"));
+	private ArrayList<String> packages = new ArrayList<>(Arrays.asList("control", "logic", "math", "turtle", "multiple", "display"));
 
 	public Commands() {
 		updateLanguage("English");

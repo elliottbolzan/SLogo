@@ -16,8 +16,6 @@ public class SetHeadingCommand extends TurtleCommand {
 
 	@Override
 	public Argument execute() {
-		double degrees = getParameter(0).getDouble() - this.getController().getTurtle().getRotation();
-		this.getController().turn(degrees);
-		return new Argument(degrees);
+		return new Argument(getController().getTurtleManager().setHeading(getParameter(0).getDouble()));
 	}
 }

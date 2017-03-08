@@ -109,15 +109,11 @@ public class SettingsView extends BorderPane {
 	}
 
 	private void setPenColor() {
-		for(Turtle t : turtleDisplay.getAllTurtles()) {
-			turtleDisplay.setPenColor(t.getID(), myPenPicker.getColor());
-		}
+		turtleDisplay.getTurtleManager().setPenColor(myPenPicker.getColor());
 	}
 
 	private void setTurtleImage() {
-		for(Turtle t : turtleDisplay.getAllTurtles()) {
-			turtleDisplay.setTurtleImage(t.getID(), myImagePicker.getTextField().getText());
-		}
+		turtleDisplay.getTurtleManager().setTurtleImage(myImagePicker.getTextField().getText());
 	}
 
 	private void setTurtleBackground() {

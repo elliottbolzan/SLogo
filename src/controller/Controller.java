@@ -14,6 +14,7 @@ import view.Workspace;
 import view.WorkspaceBrowser;
 import view.ViewAPI;
 import view.visualization.Turtle;
+import view.visualization.TurtleManager;
 
 /**
  * @author Elliott Bolzan
@@ -53,26 +54,6 @@ public class Controller implements ViewAPI, ModelAPI {
 	}
 
 	@Override
-	public void moveTo(Point point) {
-		workspace.moveTo(point);
-	}
-
-	@Override
-	public void turn(double degrees) {
-		workspace.turn(degrees);
-	}
-
-	@Override
-	public void setPenDown(boolean down) {
-		workspace.setPenDown(down);
-	}
-
-	@Override
-	public void setTurtleVisible(boolean visible) {
-		workspace.setTurtleVisible(visible);	
-	}
-
-	@Override
 	public void clearDisplay() {
 		workspace.clearDisplay();
 	}
@@ -83,8 +64,8 @@ public class Controller implements ViewAPI, ModelAPI {
 	}
 	
 	@Override
-	public Turtle getTurtle() {
-		return workspace.getTurtle();
+	public TurtleManager getTurtleManager() {
+		return workspace.getTurtleManager();
 	}
 	
 	@Override

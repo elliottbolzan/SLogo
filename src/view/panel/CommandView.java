@@ -14,7 +14,7 @@ import view.Workspace;
  * @author Elliott Bolzan
  *
  */
-public class CommandList extends BorderPane {
+public class CommandView extends BorderPane {
 
 	private Workspace workspace;
 	private ObservableList<String> data;
@@ -22,7 +22,7 @@ public class CommandList extends BorderPane {
 	/**
 	 * 
 	 */
-	public CommandList(Workspace workspace, ObservableList<String> data) {
+	public CommandView(Workspace workspace, ObservableList<String> data) {
 		this.workspace = workspace;
 		this.data = data;
 		setup();

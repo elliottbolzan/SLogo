@@ -38,6 +38,7 @@ public class Panel extends View {
 				add(workspace.getController().getResources().getString("VariablesTitle"));
 				add(workspace.getController().getResources().getString("UserCommandsTitle"));
 				add(workspace.getController().getResources().getString("SettingsTitle"));
+				add(workspace.getController().getResources().getString("ActiveTurtlesTitle"));
 				add(workspace.getController().getResources().getString("ColorsTitle"));
 				add(workspace.getController().getResources().getString("ImagesTitle"));
 			}
@@ -45,12 +46,13 @@ public class Panel extends View {
 		subviews = new ArrayList<Node>() {
 			private static final long serialVersionUID = 1L;
 			{
-				add(new CommandList(workspace, workspace.getController().getHistory()));
-				add(new VariableTable(workspace, workspace.getController().getVariables()));
-				add(new CommandList(workspace, workspace.getController().getUserDefinedCommands()));
+				add(new CommandView(workspace, workspace.getController().getHistory()));
+				add(new VariableView(workspace, workspace.getController().getVariables()));
+				add(new CommandView(workspace, workspace.getController().getUserDefinedCommands()));
 				add(new SettingsView(workspace));
-				add(new ColorTable());
-				add(new ImageTable());
+				add(new ActiveTurtlesView());
+				add(new ColorView());
+				add(new TurtleImageView());
 			}
 		};
 	}

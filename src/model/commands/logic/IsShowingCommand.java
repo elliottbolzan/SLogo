@@ -15,6 +15,6 @@ public class IsShowingCommand extends LogicCommand {
 
 	@Override
 	public Argument execute() {
-		return new Argument(super.booleanToInt(this.getController().getTurtle().isVisible()));
+		return new Argument(super.booleanToInt(this.getController().getTurtleManager().getCurrentTurtle().isVisible()));
 	}
 }

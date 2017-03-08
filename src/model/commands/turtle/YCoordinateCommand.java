@@ -16,6 +16,6 @@ public class YCoordinateCommand extends TurtleCommand {
 
 	@Override
 	public Argument execute() {
-		return new Argument(this.getController().getTurtle().getDestination().getY());
+		return new Argument(getController().getTurtleManager().getCurrentTurtle().getDestination().getY());
 	}
 }
