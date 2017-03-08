@@ -133,8 +133,8 @@ public class Turtle {
 	}
 
 	protected void setRotation(double degrees) {
-		myRotationProperty.set(degrees);
-		myImageView.setRotate(degrees + 90);
+		myRotationProperty.set(degrees % 360);
+		myImageView.setRotate((degrees + 90) % 360);
 	}
 	
 	protected void setDestination(Point destination, double speed) {
