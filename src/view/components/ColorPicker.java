@@ -1,4 +1,4 @@
-package view.settings;
+package view.components;
 
 import controller.Controller;
 import javafx.beans.property.SimpleDoubleProperty;
@@ -31,7 +31,7 @@ public class ColorPicker extends Group {
 		this.setup(width, applyAction);
 	}
 
-	protected Color getColor() {
+	public Color getColor() {
 		return new Color(myRed.get(), myGreen.get(), myBlue.get(), 1.0);
 	}
 	

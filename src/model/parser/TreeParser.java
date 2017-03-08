@@ -71,12 +71,15 @@ public class TreeParser implements ParserAPI {
 	}
 
 	@Override
-	public Node parse(String input) {
-		parseHistory.addStringToHistory(input);
+	public Node parse(String input, boolean addToHistory) {
+		if (addToHistory) {
+			parseHistory.addStringToHistory(input);
+		}
 		input = handleComment(input);
 		Node root = parseInternal(input);
 		printTree(root, "");
-		controller.print(String.valueOf(root.evaluate().getDouble()));
+		root.evaluate();
+		//controller.print(String.valueOf(root.evaluate().getDouble()));
 		parseHistory.addCommandToHistory(root);
 		return root;
 	}

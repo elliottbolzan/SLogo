@@ -3,6 +3,7 @@ package model;
 import controller.Controller;
 import javafx.collections.ObservableList;
 import model.parser.TreeParser;
+import model.parser.nodes.Node;
 
 public class Model implements ModelAPI {
 
@@ -14,8 +15,8 @@ public class Model implements ModelAPI {
 		parser = new TreeParser(controller);
 	}
 	
-	public void parse(String string){
-		parser.parse(string);
+	public Node parse(String string, boolean addToHistory) {
+		return parser.parse(string, addToHistory);
 	}
 	
 	public ObservableList<String> getHistory() {

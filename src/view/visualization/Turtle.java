@@ -5,20 +5,18 @@ import utils.Point;
 import java.util.LinkedList;
 import java.util.Queue;
 
-import javafx.animation.ScaleTransition;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
-import javafx.util.Duration;
 
 /**
  * @author Jay Doherty
  *
  */
 public class Turtle {
-	private final static String BASIC_IMAGE = "view/visualization/turtle.png";
+	private final static String BASIC_IMAGE = "view/visualization/turtle_1.png";
 	private ImageView myImageView;
 
 	private TurtleDisplay myDisplay;
@@ -58,9 +56,7 @@ public class Turtle {
 		myRotationProperty = new SimpleDoubleProperty();
 		this.setRotation(90.0);
 		isMovingProperty = new SimpleBooleanProperty(false);
-		
-		myImageView.setOnMouseClicked(e -> wasClicked());
-
+	
 	}
 
 	public int getID() {
@@ -113,14 +109,6 @@ public class Turtle {
 
 	protected ImageView getView() {
 		return myImageView;
-	}
-	
-	public double getWidth() {
-		return myImageView.getFitWidth();
-	}
-	
-	public double getHeight() {
-		return myImageView.getFitHeight();
 	}
 	
 	protected TurtleDisplay getDisplay() {
@@ -258,32 +246,6 @@ public class Turtle {
 		} else {
 			return Math.abs(distanceX / stepLength);
 		}
-	}
-	
-	private void wasClicked() {
-		if (!(this.equals(myDisplay.getWorkspace().getBrowser().getSelectedTurtle()))) {
-			grow();
-			myDisplay.getWorkspace().getBrowser().clickedTurtle(this);
-		}
-	}
-	
-	private void grow() {
-		//animate(myImageView.getScaleX() * 1.4, myImageView.getScaleY() * 1.4);
-	}
-	
-	protected void shrink() {
-		//animate(myImageView.getScaleX() / 1.4, myImageView.getScaleY() / 1.4);
-	}
-	
-	private void animate(double xScale, double yScale) {
-		ScaleTransition scaleTransition = new ScaleTransition();
-		scaleTransition.setDuration(Duration.millis(100));
-		scaleTransition.setNode(myImageView);
-		scaleTransition.setFromX(myImageView.getScaleX());
-        scaleTransition.setFromY(myImageView.getScaleY());
-        scaleTransition.setToX(xScale);
-        scaleTransition.setToY(yScale);
-        scaleTransition.playFromStart();
 	}
 
 }
