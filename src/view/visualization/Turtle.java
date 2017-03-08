@@ -89,10 +89,6 @@ public class Turtle {
 	public Color getPenColor() {
 		return myPenColor;
 	}
-
-	protected Point getCurrentLocation() {
-		return new Point(myXProperty.get(), myYProperty.get());
-	}
 	
 	public ReadOnlyBooleanProperty readOnlyPenDownProperty() {
 		return ReadOnlyBooleanProperty.readOnlyBooleanProperty(myPenDownProperty);
@@ -108,6 +104,10 @@ public class Turtle {
 	
 	public ReadOnlyDoubleProperty readOnlyRotationProperty() {
 		return ReadOnlyDoubleProperty.readOnlyDoubleProperty(myRotationProperty);
+	}
+	
+	protected Point getCurrentLocation() {
+		return new Point(myXProperty.get(), myYProperty.get());
 	}
 	
 	protected SimpleBooleanProperty isMovingProperty() {
@@ -135,7 +135,7 @@ public class Turtle {
 		myPenColor = color;
 	}
 
-	private void setPenWidth(double width) {
+	protected void setPenWidth(double width) {
 		myPenWidth = width;
 	}
 
