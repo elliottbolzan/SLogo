@@ -36,7 +36,7 @@ public class TurtlePanel {
 		return centered;
 	}
 	
-	public void trackTurtle(int id) {
+	private void trackTurtle(int id) {
 		if(myTurtleInfo != null) {
 			myPanel.getChildren().remove(myTurtleInfo.getView());
 		}
