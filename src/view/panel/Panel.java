@@ -9,7 +9,7 @@ import javafx.scene.control.TitledPane;
 import view.View;
 import view.Workspace;
 import view.components.TurtleButtons;
-import view.components.TurtleInfo;
+import view.visualization.TurtleInfo;
 
 /**
  * @author Elliott Bolzan

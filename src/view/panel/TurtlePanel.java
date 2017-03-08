@@ -1,47 +1,69 @@
 package view.panel;
 
 import controller.Controller;
+import javafx.beans.property.ReadOnlyDoubleProperty;
+import javafx.scene.control.ColorPicker;
+import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.SpinnerValueFactory;
+import javafx.scene.control.ScrollPane.ScrollBarPolicy;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import view.components.TurtleButtons;
-import view.components.TurtleInfo;
+import view.visualization.TurtleInfo;
 
 public class TurtlePanel {
 
 	private Controller myController;
 	
-	private VBox myPanel;
+	private BorderPane myPanel;
+	private VBox myContent;
+	
 	private TurtleInfo myTurtleInfo;
 	private TurtleButtons myTurtleButtons;
 	
 	public TurtlePanel(Controller control) {
+		myPanel = new BorderPane();
+		ScrollPane scrollPane = new ScrollPane();
+		scrollPane.setHbarPolicy(ScrollBarPolicy.NEVER);
+		scrollPane.setVbarPolicy(ScrollBarPolicy.ALWAYS);
+		scrollPane.prefViewportWidthProperty().bind(myPanel.widthProperty());
+		scrollPane.prefViewportHeightProperty().bind(myPanel.heightProperty());
+		scrollPane.prefHeightProperty().bind(myPanel.heightProperty());
+		scrollPane.getStyleClass().add("panel-scroll-pane");
+		
 		myController = control;
-		myPanel = new VBox();
+		myContent = new VBox();
 		
 		myTurtleButtons = new TurtleButtons(control);
 		myTurtleInfo = null;
 		
-		Spinner<Integer> turtlePicker = new Spinner<Integer>();
-		turtlePicker.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1, Integer.MAX_VALUE, 1));
-		turtlePicker.valueProperty().addListener(e -> this.trackTurtle(turtlePicker.getValue()));
+		HBox turtleID = new HBox(5);
+		Label idLabel = new Label("ID:");
+		Spinner<Integer> idPicker = new Spinner<Integer>();
+		idPicker.prefWidthProperty().bind(myContent.widthProperty().divide(2.0));
+		idPicker.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, Integer.MAX_VALUE, 0));
+		idPicker.valueProperty().addListener(e -> this.trackTurtle(idPicker.getValue()));
+		turtleID.getChildren().addAll(idLabel, idPicker);
 		
-		myPanel.getChildren().addAll(turtlePicker, myTurtleButtons.getView());
+		myContent.getChildren().addAll(turtleID, myTurtleButtons.getView());
+		
+		scrollPane.setContent(myContent);
+		myPanel.setCenter(scrollPane);
 	}
 	
 	public BorderPane getView() {
-		BorderPane centered = new BorderPane();
-		centered.setCenter(myPanel);
-		return centered;
+		return myPanel;
 	}
 	
 	private void trackTurtle(int id) {
 		if(myTurtleInfo != null) {
-			myPanel.getChildren().remove(myTurtleInfo.getView());
+			myContent.getChildren().remove(myTurtleInfo.getView());
 		}
 		//TODO: only re-add the panel if ID is valid
 		myTurtleInfo = new TurtleInfo(myController.getTurtle());
-		myPanel.getChildren().add(myTurtleInfo.getView());
+		myContent.getChildren().add(myTurtleInfo.getView());
 	}
 }
