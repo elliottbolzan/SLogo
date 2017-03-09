@@ -1,8 +1,6 @@
 package controller;
-
 import java.awt.Dimension;
 import java.util.ResourceBundle;
-
 import javafx.collections.ObservableList;
 import javafx.scene.paint.Color;
 import model.IndexedColor;
@@ -14,7 +12,6 @@ import view.Workspace;
 import view.WorkspaceBrowser;
 import view.ViewAPI;
 import view.visualization.TurtleManager;
-
 /**
  * @author Elliott Bolzan
  *
@@ -24,7 +21,6 @@ public class Controller implements ViewAPI, ModelAPI {
 	private Workspace workspace;
 	private Model model;
 	private ResourceBundle resources; 
-
 	/**
 	 * 
 	 */
@@ -41,17 +37,14 @@ public class Controller implements ViewAPI, ModelAPI {
 	public Workspace getView() {
 		return workspace;
 	}
-
 	@Override
 	public void print(String string) {
 		workspace.print(string);
 	}
-
 	@Override
 	public void clearConsole() {
 		workspace.clearConsole();
 	}
-
 	@Override
 	public void clearDisplay() {
 		workspace.clearDisplay();
@@ -66,17 +59,14 @@ public class Controller implements ViewAPI, ModelAPI {
 	public Node parse(String string, boolean addToHistory) {
 		return model.parse(string, addToHistory);
 	}
-
 	@Override
 	public ObservableList<String> getHistory() {
 		return model.getHistory();
 	}
-
 	@Override
 	public ObservableList<Variable> getVariables() {
 		return model.getVariables();
 	}
-
 	@Override
 	public ObservableList<String> getUserDefinedCommands() {
 		return model.getUserDefinedCommands();
@@ -96,7 +86,6 @@ public class Controller implements ViewAPI, ModelAPI {
 	public String getLanguage() {
 		return model.getLanguage();
 	}
-
 	@Override
 	public void showMessage(String message) {
 		workspace.showMessage(message);
