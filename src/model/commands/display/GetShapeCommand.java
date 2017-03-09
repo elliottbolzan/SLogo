@@ -15,7 +15,7 @@ public class GetShapeCommand extends TurtleCommand{
 
 	@Override
 	public Argument execute() {
-		return null;
+		return new Argument(getTurtle().getShapeIndex());
 	}
 	
 }
