@@ -10,6 +10,7 @@ import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Slider;
+import javafx.scene.image.Image;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
@@ -41,7 +42,7 @@ public class TurtleDisplay extends StackPane {
 	private boolean animationIsPlaying;
 	private SimpleDoubleProperty myAnimationSpeed;
 
-	public TurtleDisplay(Workspace workspace, int initialNumber, String turtleImagePath) {
+	public TurtleDisplay(Workspace workspace, int initialNumber, Image turtleImage) {
 		myLineLength = 1.0;
 		myAnimation = new Timeline();
 		myAnimation.setCycleCount(Timeline.INDEFINITE);
@@ -54,7 +55,7 @@ public class TurtleDisplay extends StackPane {
 		this.createToolBar(SIZE);
 		this.setBackgroundColor(Color.WHITE);
 
-		turtleManager = new TurtleManager(initialNumber, this, turtleImagePath);
+		turtleManager = new TurtleManager(initialNumber, this, turtleImage);
 
 		animationIsPlaying = true;
 	}

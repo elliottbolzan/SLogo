@@ -2,21 +2,12 @@ package model.commands.control;
 
 import java.util.ArrayList;
 
-import model.State;
 import model.commands.Command;
 import model.parser.Argument;
+import model.parser.nodes.ListNode;
+import model.parser.nodes.Node;
 
 public class MakeUserInstructionCommand extends Command {
-	
-	private String name;
-	private ArrayList<String> variableNames;
-	private String command;
-	private State storage;
-	
-	public MakeUserInstructionCommand(String name, ArrayList<String> variableNames, String command, State storage) {
-	}
-	
-	public MakeUserInstructionCommand() {}
 
 	@Override
 	public int numParameters() {
@@ -24,30 +15,17 @@ public class MakeUserInstructionCommand extends Command {
 	}
 
 	@Override
-	public Argument execute(){
-		String currentCommand = command;
-		
-		
-		
-		for (String variableName: variableNames) {
-			try {
-				currentCommand = currentCommand.replaceAll(variableName, getParameterList().get(variableNames.indexOf(variableName)).toString());
-			} catch (Exception e) {
-				getController().getView().showMessage("Variable was not instantiated: " + variableName);
-			} 
+	public Argument execute() {
+		String name = getParameter(0).getString();
+		ArrayList<String> variableNames = new ArrayList<String>();
+		for (Node variable : getChildren().get(1).getChildren()) {
+			if (variable != null) {
+				variableNames.add(":" + variable.evaluate().getString());
+			}
 		}
-		try {
-			getController().parse(currentCommand, false);
-			return new Argument(1);
-		}
-		catch (Exception e) {
-			getController().getView().showMessage(e.getMessage());
-			return new Argument(0);
-		}
+		String expression = ((ListNode) getChildren().get(2)).getExpression();
+		getState().setCommand(new UserCommand(name, variableNames, expression));
+		return new Argument(1);
 	}
 
-
-	public String getName() {
-		return name;
-	}
 }

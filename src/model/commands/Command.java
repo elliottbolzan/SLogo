@@ -10,23 +10,12 @@ import model.parser.nodes.Node;
 public abstract class Command extends Node implements CommandInterface {
 
 	private Controller myController;
-	private List<Argument> myParameters;
 	private State myState;
-	
-	public void initialize(List<Argument> params, Controller control, State state) {
-		myController = control;
-		myParameters = params;
-		myState = state;
-	}
 
 	protected Controller getController() {
 		return myController;
 	}
 
-	protected List<Argument> getParameterList() {
-		return myParameters;
-	}
-	
 	protected State getState() {
 		return myState;
 	}
