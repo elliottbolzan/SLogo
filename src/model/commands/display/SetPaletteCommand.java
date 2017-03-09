@@ -21,7 +21,7 @@ public class SetPaletteCommand extends TurtleCommand{
 		int g = (int)this.getParameter(2).getDouble();
 		int b = (int)this.getParameter(3).getDouble();
 		getController().getColorPalette().get(index-1).colorProperty().setValue(Color.rgb(r, g, b));
-		return null;
+		return new Argument(index);
 	}
 	
 }

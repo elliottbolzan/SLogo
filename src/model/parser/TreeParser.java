@@ -151,7 +151,9 @@ public class TreeParser implements ParserAPI {
 			} else if (token == Token.LIST_START) {
 				child = new ListNode(this, node, input);
 			}
-			node.addChild(child);
+			if(!(child instanceof MakeUserInstructionCommand)){
+				node.addChild(child);
+			}
 			return new Input(child, input.getIndex(), input.getWords());
 		} catch (Exception e) {
 			// Show exception.

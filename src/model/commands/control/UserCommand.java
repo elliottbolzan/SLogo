@@ -37,6 +37,9 @@ public class UserCommand extends Command {
 		int i = 0;
 		for (String variableName: variableNames) {
 			double realValue = getParameter(i).getDouble();
+			System.out.println(realValue);
+			System.out.println(variableName);
+			System.out.println("");
 			expression = expression.replaceAll(variableName, Double.toString(realValue));
 			i++;
 		}
@@ -46,5 +49,4 @@ public class UserCommand extends Command {
 	public String getName() {
 		return name;
 	}
-
 }

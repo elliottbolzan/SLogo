@@ -60,7 +60,7 @@ public class TurtleDisplay extends StackPane {
 
 		turtleManager = new TurtleManager(initialNumber, this, turtleImage);
 
-		animationIsPlaying = false;
+		animationIsPlaying = true;
 	}
 
 	protected Workspace getWorkspace() {

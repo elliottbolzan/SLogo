@@ -1,19 +1,14 @@
 package model.commands.control;
-
 import java.util.ArrayList;
-
 import model.commands.Command;
 import model.parser.Argument;
 import model.parser.nodes.ListNode;
 import model.parser.nodes.Node;
-
 public class MakeUserInstructionCommand extends Command {
-
 	@Override
 	public int numParameters() {
 		return 3;
 	}
-
 	@Override
 	public Argument execute() {
 		String name = getParameter(0).getString();
@@ -24,8 +19,9 @@ public class MakeUserInstructionCommand extends Command {
 			}
 		}
 		String expression = ((ListNode) getChildren().get(2)).getExpression();
-		getState().setCommand(new UserCommand(name, variableNames, expression));
+		
+		UserCommand complete = new UserCommand(name, variableNames, expression);
+		getState().setCommand(complete);
 		return new Argument(1);
 	}
-
 }
