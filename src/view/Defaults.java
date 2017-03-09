@@ -28,15 +28,15 @@ public class Defaults {
 		ResourceBundle resources = ResourceBundle.getBundle(path);
 		try {
 			backgroundColor = Color.valueOf(resources.getString("Color"));
-			numberOfTurtles = Integer.valueOf(resources.getString("TurtleNumber"));
+			numberOfTurtles = Integer.parseInt(resources.getString("TurtleNumber"));
 			language = resources.getString("Language");
 			scriptPath = resources.getString("File");
 			String turtlePath = resources.getString("TurtlePath").replaceAll("\\s+", "");
 			if (!(turtlePath.equals(""))) {
-				if (!(new File(turtlePath).exists())) {
+				if (!(new File(turtlePath.replaceAll("(file:)", "")).exists())) {
 					throw new Exception();
 				}
-				turtleImage = new Image("file:" + resources.getString("TurtlePath"));
+				turtleImage = new Image(resources.getString("TurtlePath"));
 			}
 		} catch (Exception e) {
 			workspace.showMessage(workspace.getController().getResources().getString("ConfigurationError"));
