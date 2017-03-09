@@ -11,10 +11,14 @@ public class ParseHistory {
 
 	private ObservableList<String> historyList;
 	private List<Node> commandList;
+	private ArrayList<String> userMadeCommandNames;
+	private ArrayList<Node> userMadeCommandNodes;
 	
 	public ParseHistory(){
 		historyList = FXCollections.observableList(new ArrayList<String>());
 		setCommandList(new ArrayList<Node>());
+		userMadeCommandNames = new ArrayList<String>();
+		userMadeCommandNodes = new ArrayList<Node>();
 	}
 
 	public ObservableList<String> getHistoryList() {
@@ -43,6 +47,34 @@ public class ParseHistory {
 	
 	public void addCommandToHistory(Node node){
 		commandList.add(0, node);
+	}
+
+	public String getUserMadeCommandName(int i) {
+		return userMadeCommandNames.get(i);
+	}
+
+	public void addUserMadeCommandName(String s) {
+		this.userMadeCommandNames.add(s);
+	}
+
+	public Node getUserMadeCommandNode(int i) {
+		return userMadeCommandNodes.get(i);
+	}
+
+	public void addUserMadeCommandNode(Node n) {
+		this.userMadeCommandNodes.add(n);
+	}
+	
+	public Node getCommand(String s){
+		if(userMadeCommandNames.contains(s)){
+			return userMadeCommandNodes.get(userMadeCommandNames.indexOf(s));
+		}
+		return null;
+	}
+	
+	public boolean isNewCommand(String s){
+		if(userMadeCommandNames.contains(s)) return true;
+		return false;
 	}
 	
 }

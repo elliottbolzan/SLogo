@@ -31,8 +31,8 @@ public class TreeParser implements ParserAPI {
 
 	public TreeParser(Controller controller) {
 		this.controller = controller;
-		commands = new Commands();
 		parseHistory = new ParseHistory();
+		commands = new Commands();
 		state = new State();
 	}
 
@@ -75,12 +75,13 @@ public class TreeParser implements ParserAPI {
 		return parseHistory.getHistoryList().get(0);
 	}
 
-	private void printTree(Node node, String spacing) {
-		System.out.println(spacing + node);
-		spacing += " ";
-		final String spaces = spacing;
-		node.getChildren().stream().filter(e -> e != null).forEach(e -> printTree(e, spaces));
-	}
+	// private void printTree(Node node, String spacing) {
+	// System.out.println(spacing + node);
+	// spacing += " ";
+	// final String spaces = spacing;
+	// node.getChildren().stream().filter(e -> e != null).forEach(e ->
+	// printTree(e, spaces));
+	// }
 
 	@Override
 	public Node parse(String input, boolean addToHistory) {
@@ -89,7 +90,6 @@ public class TreeParser implements ParserAPI {
 		}
 		input = handleComment(input);
 		Node root = parseInternal(input);
-		printTree(root, "");
 		root.evaluate();
 		// controller.print(String.valueOf(evaluation.getDouble()));
 		parseHistory.addCommandToHistory(root);
@@ -97,12 +97,13 @@ public class TreeParser implements ParserAPI {
 	}
 
 	public Node parseInternal(String input) {
-		return createTree(input);
+		return startTree(input);
 	}
 
-	private Node createTree(String string) {
+	private Node startTree(String string) {
 		ArrayList<String> words = new ArrayList<String>();
 		words = new ArrayList<String>(Arrays.asList(string.split("\\s+")));
+
 		Node node = new RootNode(this, null);
 		Input input = new Input(node, 0, words);
 		while (input.getIndex() < input.getWords().size() && input != null) {
@@ -114,7 +115,6 @@ public class TreeParser implements ParserAPI {
 
 	private Input createTree(Input input) {
 		String word = input.getWords().get(input.getIndex());
-		//System.out.println(word);
 		try {
 			Token token = Tokenize.determineType(word);
 			Node node = input.getNode();
@@ -128,21 +128,26 @@ public class TreeParser implements ParserAPI {
 				child = new VariableNode(this, node, word.replaceAll(":", ""));
 			} else if (token == Token.COMMAND) {
 				try {
-					child = commands.get(word);
-					if (child == null) {
-						child = state.getCommand(word);
-						child.setParser(this);
-					}
-					((Command) child).setup(controller, state);
-					for (int i = 0; i < ((Command) child).numParameters(); i++) {
-						input = createTree(new Input(child, input.getIndex(), input.getWords()));
-					}
-					if (child instanceof MakeUserInstructionCommand) {
-						child.evaluate();
+					if (parseHistory.isNewCommand(word)) {
+						child = parseHistory.getCommand(word);
+					} else {
+						child = commands.get(word);
+						if (child == null) {
+							child = state.getCommand(word);
+							child.setParser(this);
+						}
+						((Command) child).setup(controller, state);
+						for (int i = 0; i < ((Command) child).numParameters(); i++) {
+							input = createTree(new Input(child, input.getIndex(), input.getWords()));
+						}
+						if (child instanceof MakeUserInstructionCommand) {
+							child.evaluate();
+						}
 					}
 				} catch (Exception e) {
 					child = new ConstantNode(this, node, word);
-					//controller.getView().showMessage("No such command:" + " " + word + ".");
+					// controller.getView().showMessage("No such command:" + " "
+					// + word + ".");
 				}
 			} else if (token == Token.LIST_START) {
 				child = new ListNode(this, node, input);
@@ -158,17 +163,13 @@ public class TreeParser implements ParserAPI {
 	private String handleComment(String s) {
 		ArrayList<String> commentFinder = new ArrayList<>(Arrays.asList(s.split("\\n")));
 		StringBuilder sb = new StringBuilder();
-		commentFinder.stream().filter(e -> e.trim().charAt(0) != '#').forEach(e -> sb.append(e + " "));
+		commentFinder.stream().filter(e -> !e.equals("")).filter(e -> e.trim().charAt(0) != '#')
+				.forEach(e -> sb.append(e + " "));
 		String result = sb.toString();
-		/*String result = "";
-		for (String line: s.split("\n")) {
-			if (!(line.contains("#"))) {
-				result += line + " ";
-			}
-		}*/
 		if (result.contains("#"))
 			controller.getView().showMessage("Proper comment must have its own line and begin with #.");
-		return result.trim();
+		result.replace(",", "");
+		return result;
 	}
 
 }
