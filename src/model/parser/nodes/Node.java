@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import model.parser.Argument;
 import model.parser.TreeParser;
 
-
 public abstract class Node {
 	
 	private ArrayList<Node> children;
@@ -24,6 +23,10 @@ public abstract class Node {
 	
 	public TreeParser getParser() {
 		return parser;
+	}
+	
+	public void setParser(TreeParser parser) {
+		this.parser = parser;
 	}
 	
 	public void addChild(Node node) {

@@ -6,13 +6,13 @@ import model.parser.tokenize.Token;
 import model.parser.tokenize.Tokenize;
 
 public class ListNode extends Node {
+	
 	private String newExpression;
 	
 	public ListNode(TreeParser parser, Node parent, Input input) {
 		super(parser, parent);
 		int openBrackets = 0;
 		newExpression = "";
-		System.out.println(input.getWords());
 		while (openBrackets >= 0) {
 			String word = input.getWords().get(input.getIndex());
 			Token token = Tokenize.determineType(word);

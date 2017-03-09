@@ -48,8 +48,8 @@ public class Turtle {
 	private int myShapeIndex;
 	private int myColorIndex;
 
-	public Turtle(TurtleDisplay home, int ID, String imagePath) {
-		myImageView = new ImageView(new Image(getClass().getClassLoader().getResourceAsStream(imagePath)));
+	public Turtle(TurtleDisplay home, int ID, Image image) {
+		myImageView = new ImageView(image);
 		myFutureDestinations = new LinkedList<Point>();
 		
 		myDisplay = home;

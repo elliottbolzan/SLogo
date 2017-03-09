@@ -60,7 +60,7 @@ public class SettingsView extends BorderPane {
 		box.setPadding(new Insets(5));
 		box.prefWidthProperty().bind(widthProperty());
 
-		myImagePicker = new FilePicker(controller, 200, workspace.getDefaults().getTurtlePath(), new File(System.getProperty("user.dir") + "/src/resources/images"), "*.png", "*.jpg", "*.gif");
+		myImagePicker = new FilePicker(controller, 200, "turtle_1.png", new File(System.getProperty("user.dir") + "/src/resources/images"), "*.png", "*.jpg", "*.gif");
 		myImagePicker.getTextField().textProperty().addListener(e -> this.setTurtleImage());
 		VBox imagePickerBox = addLabelTo(myImagePicker, controller.getResources().getString("DefaultTurtleImageString"));
 		
