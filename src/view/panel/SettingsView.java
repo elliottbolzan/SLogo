@@ -4,13 +4,13 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 
 import controller.Controller;
 import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.Node;
-import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.ColorPicker;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
@@ -18,15 +18,10 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Separator;
 import javafx.scene.control.ScrollPane.ScrollBarPolicy;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import javafx.stage.Modality;
-import javafx.stage.Stage;
 import view.Workspace;
 import view.components.FilePicker;
-import view.visualization.Turtle;
 import view.visualization.TurtleDisplay;
 
 public class SettingsView extends BorderPane {
@@ -36,7 +31,6 @@ public class SettingsView extends BorderPane {
 	private TurtleDisplay turtleDisplay;
 	private ComboBox<String> myLanguagePicker;
 	private ColorPicker myBackgroundPicker;
-	private ColorPicker myPenPicker;
 	private FilePicker myImagePicker;
 	
 	private static final String PATH_TO_LANGUAGES = "src/resources/languages";
@@ -76,8 +70,11 @@ public class SettingsView extends BorderPane {
 		myBackgroundPicker = new ColorPicker();
 		myBackgroundPicker.setOnAction(e -> this.setTurtleBackground(myBackgroundPicker.getValue()));
 		VBox backgroundPickerBox = addLabelTo(myBackgroundPicker, controller.getResources().getString("BackgroundPickerLabel"));
+		
+		Button saveButton = new Button(controller.getResources().getString("SaveSettingsButton"));
+		saveButton.setOnAction(e -> save());
 
-		box.getChildren().addAll(languagePickerBox, new Separator(), imagePickerBox, new Separator(), backgroundPickerBox);
+		box.getChildren().addAll(languagePickerBox, new Separator(), imagePickerBox, new Separator(), backgroundPickerBox, new Separator(), saveButton);
 		
 		scrollPane.setContent(box);
 		scrollPane.prefHeightProperty().bind(heightProperty());
@@ -119,4 +116,9 @@ public class SettingsView extends BorderPane {
 		result.getChildren().addAll(label, node);
 		return result;
 	}
+	
+	private void save() {
+		// like default background, starting image list, starting number of turtles, starting file to load, command language, etc.)
+	}
+	
 }
