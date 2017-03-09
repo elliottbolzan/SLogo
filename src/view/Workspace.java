@@ -52,12 +52,16 @@ public class Workspace extends BorderPane implements ViewAPI {
 		controller.setLanguage(defaults.getLanguage());
 		inputContainer = new InputContainer(this, 0);
 		inputContainer.getScriptView().readFileIn(defaults.getScriptPath());
-		turtleDisplay = new TurtleDisplay(this, defaults.getNumberOfTurtles());
+		turtleDisplay = new TurtleDisplay(this, defaults.getNumberOfTurtles(), defaults.getTurtlePath());
 		turtleDisplay.setBackgroundColor(defaults.getBackgroundColor());
 		panel = new Panel(this, 1);
 		pane.getItems().addAll(inputContainer, turtleDisplay, panel);
 		pane.setDividerPositions(0.3, 0.75);
 		setCenter(pane);
+	}
+	
+	public Defaults getDefaults() {
+		return defaults;
 	}
 
 	public WorkspaceBrowser getBrowser() {

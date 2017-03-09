@@ -11,7 +11,6 @@ import java.util.Map;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.paint.Color;
-import utils.Point;
 
 /**
  * @author Elliott Bolzan
@@ -28,13 +27,15 @@ public class TurtleManager {
 	private TurtleDisplay display;
 	private int initialTurtles;
 	private Turtle currentTurtle;
+	private String turtleImagePath;
 
 	/**
 	 * 
 	 */
-	public TurtleManager(int initialTurtles, TurtleDisplay display) {
+	public TurtleManager(int initialTurtles, TurtleDisplay display, String turtleImagePath) {
 		this.initialTurtles = initialTurtles;
 		this.display = display;
+		this.turtleImagePath = turtleImagePath;
 		clear();
 	}
 	
@@ -90,7 +91,7 @@ public class TurtleManager {
 				turtle.activeProperty().set(false);
 			}
 		} else {
-			Turtle turtle = new Turtle(display, ID);
+			Turtle turtle = new Turtle(display, ID, turtleImagePath);
 			turtles.put(ID, turtle);
 			activeTurtles.add(turtle);
 			turtle.activeProperty().set(true);

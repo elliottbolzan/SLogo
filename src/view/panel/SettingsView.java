@@ -4,7 +4,6 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 
 import controller.Controller;
@@ -16,6 +15,8 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Separator;
+import javafx.scene.control.Spinner;
+import javafx.scene.control.SpinnerValueFactory;
 import javafx.scene.control.ScrollPane.ScrollBarPolicy;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
@@ -30,8 +31,10 @@ public class SettingsView extends BorderPane {
 	private Controller controller;
 	private TurtleDisplay turtleDisplay;
 	private ComboBox<String> myLanguagePicker;
+	private Spinner<Integer> myTurtleNumberPicker;
 	private ColorPicker myBackgroundPicker;
 	private FilePicker myImagePicker;
+	private FilePicker myScriptPicker;
 	
 	private static final String PATH_TO_LANGUAGES = "src/resources/languages";
 
@@ -57,24 +60,33 @@ public class SettingsView extends BorderPane {
 		box.setPadding(new Insets(5));
 		box.prefWidthProperty().bind(widthProperty());
 
-		myImagePicker = new FilePicker(controller, 200, controller.getResources().getString("ImagePickerFieldString"), new File(System.getProperty("user.dir") + "/src/resources/images"), "*.png", "*.jpg", "*.gif");
+		myImagePicker = new FilePicker(controller, 200, workspace.getDefaults().getTurtlePath(), new File(System.getProperty("user.dir") + "/src/resources/images"), "*.png", "*.jpg", "*.gif");
 		myImagePicker.getTextField().textProperty().addListener(e -> this.setTurtleImage());
-		VBox imagePickerBox = addLabelTo(myImagePicker, controller.getResources().getString("TurtlePickerLabel"));
+		VBox imagePickerBox = addLabelTo(myImagePicker, controller.getResources().getString("DefaultTurtleImageString"));
 		
 		myLanguagePicker = new ComboBox<String>();
 		myLanguagePicker.getItems().addAll(getLanguages());
 		myLanguagePicker.setOnAction(e -> setLanguage());
 		myLanguagePicker.setValue(getLanguage());
 		VBox languagePickerBox = addLabelTo(myLanguagePicker, controller.getResources().getString("LanguagePickerLabel"));
+		
+		myTurtleNumberPicker = new Spinner<Integer>();
+		myTurtleNumberPicker.prefWidthProperty().bind(widthProperty().divide(2.0));
+		myTurtleNumberPicker.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1, Integer.MAX_VALUE, workspace.getDefaults().getNumberOfTurtles()));
+		VBox turtlePickerBox = addLabelTo(myTurtleNumberPicker, controller.getResources().getString("TurtleNumberLabel"));
 
 		myBackgroundPicker = new ColorPicker();
 		myBackgroundPicker.setOnAction(e -> this.setTurtleBackground(myBackgroundPicker.getValue()));
+		myBackgroundPicker.setValue(workspace.getDefaults().getBackgroundColor());
 		VBox backgroundPickerBox = addLabelTo(myBackgroundPicker, controller.getResources().getString("BackgroundPickerLabel"));
+		
+		myScriptPicker = new FilePicker(controller, 200, workspace.getDefaults().getScriptPath(), new File(System.getProperty("user.dir") + "/data/examples"), "*.txt", "*.logo");
+		VBox scriptPickerBox = addLabelTo(myScriptPicker, controller.getResources().getString("DefaultScriptString"));
 		
 		Button saveButton = new Button(controller.getResources().getString("SaveSettingsButton"));
 		saveButton.setOnAction(e -> save());
 
-		box.getChildren().addAll(languagePickerBox, new Separator(), imagePickerBox, new Separator(), backgroundPickerBox, new Separator(), saveButton);
+		box.getChildren().addAll(languagePickerBox, new Separator(), turtlePickerBox, new Separator(), imagePickerBox, new Separator(), backgroundPickerBox, new Separator(), scriptPickerBox, new Separator(), saveButton);
 		
 		scrollPane.setContent(box);
 		scrollPane.prefHeightProperty().bind(heightProperty());
@@ -118,9 +130,12 @@ public class SettingsView extends BorderPane {
 	}
 	
 	private void save() {
+		// TO WRITE. SEE WORKSPACESETTINGS FOR FORMAT
 		String backgroundColor = turtleDisplay.getBackgroundColor().toString();
-		// add starting number of turtles
-		// starting file to load
+		String numberOfTurtles = String.valueOf(myTurtleNumberPicker.getValue());
+		String defaultScript = myScriptPicker.getTextField().getText();
+		String defaultTurtle = myImagePicker.getTextField().getText();
+		// GET THE REAL, FULL PATHS - not just the last part, for the previous two lines!
 		String language = getLanguage();
 	}
 	

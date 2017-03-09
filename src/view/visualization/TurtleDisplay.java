@@ -41,7 +41,7 @@ public class TurtleDisplay extends StackPane {
 	private boolean animationIsPlaying;
 	private SimpleDoubleProperty myAnimationSpeed;
 
-	public TurtleDisplay(Workspace workspace, int initialNumber) {
+	public TurtleDisplay(Workspace workspace, int initialNumber, String turtleImagePath) {
 		myLineLength = 1.0;
 		myAnimation = new Timeline();
 		myAnimation.setCycleCount(Timeline.INDEFINITE);
@@ -54,11 +54,11 @@ public class TurtleDisplay extends StackPane {
 		this.createToolBar(SIZE);
 		this.setBackgroundColor(Color.WHITE);
 
-		turtleManager = new TurtleManager(initialNumber, this);
+		turtleManager = new TurtleManager(initialNumber, this, turtleImagePath);
 
 		animationIsPlaying = true;
 	}
-	
+
 	protected Workspace getWorkspace() {
 		return myWorkspace;
 	}
@@ -96,7 +96,7 @@ public class TurtleDisplay extends StackPane {
 		} else {
 			turtle.setDestination(destination, myLineLength);
 		}
-		
+
 		if (myAnimationSpeed.get() == mySpeedSlider.getMax()) {
 			while (turtle.isMovingProperty().get()) {
 				turtle.updateMovement();
@@ -143,8 +143,8 @@ public class TurtleDisplay extends StackPane {
 		stopButton.setOnAction(e -> this.stopAnimation());
 		Button stepButton = new Button("Step");
 		stepButton.setOnAction(e -> this.singleStepCommand());
-		
-		myToolBar.getChildren().addAll(playButton,stopButton,stepButton, mySpeedSlider);
+
+		myToolBar.getChildren().addAll(playButton, stopButton, stepButton, mySpeedSlider);
 		myToolBar.setPrefWidth(width);
 		myToolBar.translateYProperty().bind(myDisplayArea.heightProperty().subtract(playButton.heightProperty()));
 		this.getChildren().add(myToolBar);
@@ -173,25 +173,25 @@ public class TurtleDisplay extends StackPane {
 		myAnimation.getKeyFrames().clear();
 		KeyFrame frame = new KeyFrame(Duration.millis(millisInterval), e -> this.stepAnimation());
 		myAnimation.getKeyFrames().add(frame);
-		if(animationWasGoing) {
+		if (animationWasGoing) {
 			myAnimation.play();
 		}
 	}
-	
+
 	protected boolean animationIsPlaying() {
 		return animationIsPlaying;
 	}
-	
+
 	protected void stopAnimation() {
 		animationIsPlaying = false;
 		myAnimation.stop();
 	}
-	
+
 	private void playAnimation() {
 		animationIsPlaying = true;
 		myAnimation.play();
 	}
-	
+
 	private void singleStepCommand() {
 		animationIsPlaying = false;
 		myAnimation.play();
