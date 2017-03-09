@@ -26,6 +26,7 @@ public class Workspace extends BorderPane implements ViewAPI {
 
 	private WorkspaceBrowser browser;
 	private Controller controller;
+	private Defaults defaults;
 	private InputContainer inputContainer;
 	private TurtleDisplay turtleDisplay;
 	private Panel panel;
@@ -47,12 +48,15 @@ public class Workspace extends BorderPane implements ViewAPI {
 
 	private void setup() {
 		pane = new SplitPane();
+		defaults = new Defaults("resources/WorkspaceSettings");
+		controller.setLanguage(defaults.getLanguage());
 		inputContainer = new InputContainer(this, 0);
-		turtleDisplay = new TurtleDisplay(this);
+		inputContainer.getScriptView().readFileIn(defaults.getScriptPath());
+		turtleDisplay = new TurtleDisplay(this, defaults.getNumberOfTurtles());
+		turtleDisplay.setBackgroundColor(defaults.getBackgroundColor());
 		panel = new Panel(this, 1);
 		pane.getItems().addAll(inputContainer, turtleDisplay, panel);
 		pane.setDividerPositions(0.3, 0.75);
-		loadPreferences();
 		setCenter(pane);
 	}
 
@@ -102,19 +106,6 @@ public class Workspace extends BorderPane implements ViewAPI {
 		alert.setHeaderText(controller.getResources().getString("ErrorHeader"));
 		alert.setContentText(message);
 		alert.showAndWait();
-	}
-
-	private void loadPreferences() {
-		ResourceBundle resources = ResourceBundle.getBundle("resources/WorkspaceSettings");
-		try {
-			Color color = Color.valueOf(resources.getString("Color"));
-			int turtleNumber = Integer.valueOf(resources.getString("TurtleNumber"));
-			String language = resources.getString("Language");
-			String defaultScript = resources.getString("File");
-			inputContainer.getScriptView().readFileIn(defaultScript);
-		} catch (Exception e) {
-			System.out.println(e.getMessage());
-		}
 	}
 
 	@Override

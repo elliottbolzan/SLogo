@@ -3,8 +3,6 @@ package view.visualization;
 import utils.Point;
 import view.Workspace;
 
-import java.awt.Dimension;
-
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.beans.property.SimpleDoubleProperty;
@@ -43,7 +41,7 @@ public class TurtleDisplay extends StackPane {
 	private boolean animationIsPlaying;
 	private SimpleDoubleProperty myAnimationSpeed;
 
-	public TurtleDisplay(Workspace workspace) {
+	public TurtleDisplay(Workspace workspace, int initialNumber) {
 		myLineLength = 1.0;
 		myAnimation = new Timeline();
 		myAnimation.setCycleCount(Timeline.INDEFINITE);
@@ -56,7 +54,7 @@ public class TurtleDisplay extends StackPane {
 		this.createToolBar(SIZE);
 		this.setBackgroundColor(Color.WHITE);
 
-		turtleManager = new TurtleManager(1, this);
+		turtleManager = new TurtleManager(initialNumber, this);
 
 		animationIsPlaying = true;
 	}

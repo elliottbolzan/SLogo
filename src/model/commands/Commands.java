@@ -24,6 +24,7 @@ public class Commands {
 	}
 	
 	public void setCommandNames() {
+		commandNames = new HashMap<String, String>();
 		Enumeration<String> iter = myResources.getKeys();
 		while (iter.hasMoreElements()) {
 			addCommand(iter.nextElement());

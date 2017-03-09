@@ -95,7 +95,6 @@ public class ScriptView extends InputView {
 	}
 	
 	public void readFileIn(String path) {
-		System.out.println(path);
 		try {
 			FileReader fileReader = new FileReader(path);
 			BufferedReader bufferedReader = new BufferedReader(fileReader);
