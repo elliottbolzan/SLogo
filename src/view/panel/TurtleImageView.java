@@ -25,7 +25,7 @@ public class TurtleImageView extends BorderPane {
 	/**
 	 * 
 	 */
-	public TurtleImageView(ObservableList<IndexedImage> data) {
+	protected TurtleImageView(ObservableList<IndexedImage> data) {
 		this.data = data;
 		this.setup();
 	}

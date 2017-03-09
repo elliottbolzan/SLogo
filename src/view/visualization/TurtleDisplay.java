@@ -60,7 +60,7 @@ public class TurtleDisplay extends StackPane {
 
 		turtleManager = new TurtleManager(initialNumber, this, turtleImage);
 
-		animationIsPlaying = false;
+		animationIsPlaying = true;
 	}
 
 	protected Workspace getWorkspace() {
@@ -94,7 +94,7 @@ public class TurtleDisplay extends StackPane {
 	 * 
 	 * @param point
 	 */
-	public void moveTurtle(Turtle turtle, Point destination) {
+	protected void moveTurtle(Turtle turtle, Point destination) {
 		if (turtle.isMovingProperty().get()) {
 			turtle.addFutureDestination(destination);
 		} else {

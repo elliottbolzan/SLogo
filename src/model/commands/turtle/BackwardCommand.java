@@ -5,12 +5,12 @@ import model.parser.Argument;
 public class BackwardCommand extends RepeatableTurtleCommand {
 	
 	@Override
-	public int numParameters() {
+	protected int internalNumParameters() {
 		return 1;
 	}
 
 	@Override
-	public Argument innerExecute() {
+	protected Argument innerExecute() {
 		Argument result = getParameter(0);
 		getTurtle().moveTo(endLocation(-result.getDouble(), getTurtle()));
 		return result;

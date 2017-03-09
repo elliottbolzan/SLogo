@@ -24,7 +24,7 @@ public class ColorView extends BorderPane {
 	/**
 	 * 
 	 */
-	public ColorView(ObservableList<IndexedColor> data) {
+	protected ColorView(ObservableList<IndexedColor> data) {
 		this.data = data;
 		this.setup();
 	}

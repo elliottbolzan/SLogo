@@ -9,20 +9,18 @@ import model.parser.TreeParser;
 public abstract class Node {
 	
 	private List<Node> children;
-	private Node parent;
 	private TreeParser parser;
 
 	public Node(TreeParser parser, Node parent) {
 		children = new ArrayList<Node>();
-		this.parent = parent;
 		this.parser = parser;
 	}
 	
-	public Node() {
+	protected Node() {
 		this(null, null);
 	}
 	
-	public TreeParser getParser() {
+	protected TreeParser getParser() {
 		return parser;
 	}
 	
@@ -34,19 +32,11 @@ public abstract class Node {
 		children.add(node);
 	}
 	
-	public void setParent(Node parent) {
-		this.parent = parent;
-	}
-	
-	public Node getParent(){
-		return this.parent;
-	}
-	
 	public List<Node> getChildren() {
 		return children;
 	}
 	
-	public Argument getParameter(int k) {
+	protected Argument getParameter(int k) {
 		return children.get(k).evaluate();
 	}
 	

@@ -5,11 +5,11 @@ import utils.Point;
 
 public class ClearScreenCommand extends RepeatableTurtleCommand {
 	@Override
-	public int numParameters() {
+	protected int internalNumParameters() {
 		return 0;
 	}
 	@Override
-	public Argument innerExecute() {
+	protected Argument innerExecute() {
 		double distance = distance(getTurtle().getDestination(), new Point(0, 0));
 		getTurtle().moveTo(new Point(0, 0));
 		getController().clearDisplay();
