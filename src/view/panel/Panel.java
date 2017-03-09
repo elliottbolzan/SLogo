@@ -18,6 +18,8 @@ public class Panel extends View {
 	private Workspace workspace;
 	private List<Node> subviews;
 	private List<String> subviewTitles;
+	
+	private TurtleImageView turtleImageView;
 
 	/**
 	 * 
@@ -29,7 +31,7 @@ public class Panel extends View {
 		createSubviews();
 		setup();
 	}
-
+	
 	private void createSubviews() {
 		subviewTitles = new ArrayList<String>() {
 			private static final long serialVersionUID = 1L;
@@ -40,17 +42,19 @@ public class Panel extends View {
 				add(workspace.getController().getResources().getString("SettingsTitle"));
 				add(workspace.getController().getResources().getString("ColorsTitle"));
 				add(workspace.getController().getResources().getString("ImagesTitle"));
+				add(workspace.getController().getResources().getString("TurtleSettingsTitle"));
 			}
 		};
 		subviews = new ArrayList<Node>() {
 			private static final long serialVersionUID = 1L;
 			{
-				add(new CommandList(workspace, workspace.getController().getHistory()));
-				add(new VariableTable(workspace, workspace.getController().getVariables()));
-				add(new CommandList(workspace, workspace.getController().getUserDefinedCommands()));
+				add(new CommandView(workspace, workspace.getController().getHistory()));
+				add(new VariableView(workspace, workspace.getController().getVariables()));
+				add(new CommandView(workspace, workspace.getController().getUserDefinedCommands()));
 				add(new SettingsView(workspace));
-				add(new ColorTable());
-				add(new ImageTable());
+				add(new ColorView(workspace.getController().getColorPalette()));
+				add(new TurtleImageView(workspace.getController().getImagePalette()));
+				add(new TurtleSettingsView(workspace.getController()).getView());
 			}
 		};
 	}
@@ -71,5 +75,4 @@ public class Panel extends View {
 		setCenter(accordion);
 
 	}
-
 }

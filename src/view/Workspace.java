@@ -1,21 +1,20 @@
 package view;
 
-import java.awt.Dimension;
-
-import utils.Point;
 import view.input.InputContainer;
 import view.input.ShellView;
 import view.panel.Panel;
-import view.visualization.KeyHandler;
-import view.visualization.Turtle;
 import view.visualization.TurtleDisplay;
+import view.visualization.TurtleManager;
+
+import java.util.ResourceBundle;
+
 import controller.Controller;
 import javafx.geometry.Insets;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.SplitPane;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.paint.Color;
 
 /**
  * @author Elliott Bolzan
@@ -24,14 +23,14 @@ import javafx.scene.layout.BorderPane;
  *         initializes and controls the user interface.
  */
 public class Workspace extends BorderPane implements ViewAPI {
-
+	
 	private WorkspaceBrowser browser;
 	private Controller controller;
+	private Defaults defaults;
 	private InputContainer inputContainer;
 	private TurtleDisplay turtleDisplay;
 	private Panel panel;
 	private SplitPane pane;
-	private KeyHandler handler;
 
 	/**
 	 * Creates a View object.
@@ -48,14 +47,21 @@ public class Workspace extends BorderPane implements ViewAPI {
 	}
 
 	private void setup() {
-		handler = new KeyHandler();
 		pane = new SplitPane();
+		defaults = new Defaults(this, "resources/WorkspaceSettings");
+		controller.setLanguage(defaults.getLanguage());
 		inputContainer = new InputContainer(this, 0);
-		turtleDisplay = new TurtleDisplay(this);
+		inputContainer.getScriptView().readFileIn(defaults.getScriptPath());
+		turtleDisplay = new TurtleDisplay(this, defaults.getNumberOfTurtles(), defaults.getTurtleImage());
+		turtleDisplay.setBackgroundColor(defaults.getBackgroundColor());
 		panel = new Panel(this, 1);
 		pane.getItems().addAll(inputContainer, turtleDisplay, panel);
 		pane.setDividerPositions(0.3, 0.75);
 		setCenter(pane);
+	}
+	
+	public Defaults getDefaults() {
+		return defaults;
 	}
 
 	public WorkspaceBrowser getBrowser() {
@@ -89,43 +95,13 @@ public class Workspace extends BorderPane implements ViewAPI {
 	}
 
 	@Override
-	public void moveTo(Point point) {
-		// TODO require turtle id
-		turtleDisplay.moveTurtle(1, point);
-	}
-
-	@Override
-	public void turn(double degrees) {
-		// TODO require turtle id
-		turtleDisplay.turnTurtle(1, degrees);
-	}
-
-	@Override
-	public void setPenDown(boolean down) {
-		// TODO require turtle id
-		turtleDisplay.setPenDown(1, down);
-	}
-
-	@Override
-	public void setTurtleVisible(boolean visible) {
-		// TODO require turtle id
-		turtleDisplay.setTurtleVisible(1, visible);
-	}
-
-	@Override
 	public void clearDisplay() {
 		turtleDisplay.clear();
 	}
 
 	@Override
-	public Dimension getDisplaySize() {
-		return turtleDisplay.getDimensions();
-	}
-
-	@Override
-	public Turtle getTurtle() {
-		// TODO require turtle id
-		return turtleDisplay.getTurtle(1);
+	public TurtleManager getTurtleManager() {
+		return turtleDisplay.getTurtleManager();
 	}
 
 	public void showMessage(String message) {
@@ -136,11 +112,9 @@ public class Workspace extends BorderPane implements ViewAPI {
 		alert.showAndWait();
 	}
 
-	public void keyPressed(KeyEvent e) {
-		String expression = handler.keyPressed(e);
-		if (!(expression.equals(""))) {
-			controller.parse(expression, false);
-		}
+	@Override
+	public void setBackgroundColor(Color color) {
+		turtleDisplay.setBackgroundColor(color);
 	}
 
 }

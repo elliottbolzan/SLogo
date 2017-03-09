@@ -1,11 +1,10 @@
 package model.commands.display;
 
-import javafx.scene.paint.Color;
 import model.commands.turtle.TurtleCommand;
 import model.parser.Argument;
 
-public class SetPenColorCommand extends TurtleCommand{
-	public SetPenColorCommand(){
+public class SetShapeCommand extends TurtleCommand{
+	public SetShapeCommand(){
 		super();
 	}
 
@@ -17,10 +16,9 @@ public class SetPenColorCommand extends TurtleCommand{
 	@Override
 	public Argument execute() {
 		int index = (int)this.getParameter(0).getDouble();
-		Color c = getController().getColorPalette().get(index-1).colorProperty().get();
-		getController().getTurtleManager().setTurtlePenColor(c);;
+		String path = getController().getImagePalette().get(index-1).pathProperty().get();
+		getController().getTurtleManager().setTurtleImage(path);
 		
 		return new Argument(index);
 	}
-	
 }

@@ -5,16 +5,18 @@ import java.util.Arrays;
 
 import controller.Controller;
 import javafx.collections.ObservableList;
+import model.IndexedColor;
+import model.IndexedImage;
 import model.State;
 import model.Variable;
 import model.commands.Command;
 import model.commands.Commands;
 import model.commands.control.MakeUserInstructionCommand;
 import model.parser.nodes.ConstantNode;
+import model.parser.nodes.GroupNode;
 import model.parser.nodes.ListNode;
 import model.parser.nodes.Node;
 import model.parser.nodes.RootNode;
-import model.parser.nodes.UserCommandNode;
 import model.parser.nodes.VariableNode;
 import model.parser.tokenize.Token;
 import model.parser.tokenize.Tokenize;
@@ -30,7 +32,7 @@ public class TreeParser implements ParserAPI {
 	public TreeParser(Controller controller) {
 		this.controller = controller;
 		parseHistory = new ParseHistory();
-		commands = new Commands(parseHistory);
+		commands = new Commands();
 		state = new State();
 	}
 
@@ -55,6 +57,14 @@ public class TreeParser implements ParserAPI {
 		return state.getUserDefinedCommands();
 	}
 
+	public ObservableList<IndexedColor> getColorPalette() {
+		return state.getColorPalette();
+	}
+
+	public ObservableList<IndexedImage> getImagePalette() {
+		return state.getImagePalette();
+	}
+
 	@Override
 	public ObservableList<String> getHistory() {
 		return parseHistory.getHistoryList();
@@ -65,12 +75,12 @@ public class TreeParser implements ParserAPI {
 		return parseHistory.getHistoryList().get(0);
 	}
 
-	private void printTree(Node node, String spacing) {
-		System.out.println(spacing + node);
-		spacing += " ";
-		final String spaces = spacing;
-		node.getChildren().stream().filter(e -> e != null).forEach(e -> printTree(e, spaces));
-	}
+//	private void printTree(Node node, String spacing) {
+//		System.out.println(spacing + node);
+//		spacing += " ";
+//		final String spaces = spacing;
+//		node.getChildren().stream().filter(e -> e != null).forEach(e -> printTree(e, spaces));
+//	}
 
 	@Override
 	public Node parse(String input, boolean addToHistory) {
@@ -80,8 +90,7 @@ public class TreeParser implements ParserAPI {
 		input = handleComment(input);
 		Node root = parseInternal(input);
 		root.evaluate();
-		printTree(root, "");
-		//controller.print(String.valueOf(root.evaluate().getDouble()));
+		// controller.print(String.valueOf(evaluation.getDouble()));
 		parseHistory.addCommandToHistory(root);
 		return root;
 	}
@@ -110,13 +119,9 @@ public class TreeParser implements ParserAPI {
 			Node node = input.getNode();
 			Node child = null;
 			input.addToIndex(1);
-			if (node instanceof MakeUserInstructionCommand) {
-				parseHistory.addUserMadeCommandName(word);
-				child = new UserCommandNode();
-				node.addChild(child);
-				parseHistory.addUserMadeCommandNode(child);
-			}
-			if (token == Token.CONSTANT) {
+			if (token == Token.GROUP_START) {
+				child = new GroupNode(this, node, input, commands);
+			} else if (token == Token.CONSTANT) {
 				child = new ConstantNode(this, node, Double.parseDouble(word));
 			} else if (token == Token.VARIABLE) {
 				child = new VariableNode(this, node, word.replaceAll(":", ""));
@@ -126,24 +131,25 @@ public class TreeParser implements ParserAPI {
 					child = parseHistory.getCommand(word);
 				}else{ 
 					child = commands.get(word);
-				}
-					// If child is null, your command is probably misnamed.
+					if (child == null) {
+						child = state.getCommand(word);
+						child.setParser(this);
+					}
 					((Command) child).setup(controller, state);
 					for (int i = 0; i < ((Command) child).numParameters(); i++) {
 						input = createTree(new Input(child, input.getIndex(), input.getWords()));
 					}
-				} catch (Exception e) {
-					// Put smart error here.
-					// System.out.println("print 3");
-					if (child == null || !parseHistory.isNewCommand(word))
-						controller.getView().showMessage("Error executing command" + " " + word);
+					if (child instanceof MakeUserInstructionCommand) {
+						child.evaluate();
+					}
+				}
+				}catch (Exception e) {
+					child = new ConstantNode(this, node, word);
+					//controller.getView().showMessage("No such command:" + " " + word + ".");
 				}
 			} else if (token == Token.LIST_START) {
 				child = new ListNode(this, node, input);
 			}
-			// Work on comments.
-			// In UI, implement new Console behavior: don't strip newlines. Use
-			// newlines to parse comments.
 			node.addChild(child);
 			return new Input(child, input.getIndex(), input.getWords());
 		} catch (Exception e) {
@@ -152,30 +158,16 @@ public class TreeParser implements ParserAPI {
 		return null;
 	}
 
-	// private void handleMakeUserInstructionCommand(List<String> list) {
-	// StringBuilder sb = new StringBuilder();
-	// list.stream().filter(e -> !(e.contains("[") ||
-	// e.contains("]"))).forEach(e -> sb.append(e + " "));
-	// String[] noTo = sb.toString().split("to");
-	// String newCommand = noTo[1].trim().split("\\s+")[0];
-	// //System.out.println(noTo[1].split("\\s+"));
-	// StringBuilder ssb = new StringBuilder();
-	// for(int i = 2; i< noTo[1].split("\\s+").length; i++){
-	// ssb.append(noTo[1].split("\\s+")[i] + " ");
-	// }
-	// //System.out.println(ssb.toString());
-	// }
-
 	 private String handleComment(String s){
-	 ArrayList<String> commentFinder = new
-	 ArrayList<>(Arrays.asList(s.split("\\n")));
-	 StringBuilder sb = new StringBuilder();
-	 commentFinder.stream().filter(e -> !e.equals("")).filter(e ->
-	 e.trim().charAt(0) != '#').forEach(e -> sb.append(e + " "));
-	 String result = sb.toString();
-	 if(result.contains("#")) controller.getView().showMessage("Proper comment must have its own line and begin with #.");
-	 result.replace(",", "");
-	 return result;
-	 }
+		 ArrayList<String> commentFinder = new
+		 ArrayList<>(Arrays.asList(s.split("\\n")));
+		 StringBuilder sb = new StringBuilder();
+		 commentFinder.stream().filter(e -> !e.equals("")).filter(e ->
+		 e.trim().charAt(0) != '#').forEach(e -> sb.append(e + " "));
+		 String result = sb.toString();
+		 if(result.contains("#")) controller.getView().showMessage("Proper comment must have its own line and begin with #.");
+		 result.replace(",", "");
+		 return result;
+		 }
 
 }

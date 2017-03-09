@@ -4,10 +4,6 @@ import model.parser.Argument;
 
 public class XCoordinateCommand extends TurtleCommand {
 
-	public XCoordinateCommand() {
-		super();
-	}
-	
 	@Override
 	public int numParameters() {
 		return 0;
@@ -15,6 +11,6 @@ public class XCoordinateCommand extends TurtleCommand {
 
 	@Override
 	public Argument execute() {
-		return new Argument(this.getController().getTurtle().getDestination().getX());
+		return new Argument(getTurtle().getDestination().getX());
 	}
 }

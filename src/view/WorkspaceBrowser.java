@@ -65,8 +65,8 @@ public class WorkspaceBrowser extends BorderPane {
 		tabPane = new TabPane();
 
 		HBox hbox = new HBox();
-		hbox.getChildren().addAll(createTabButton("view/visualization/new.png", e -> newWorkspace()),
-				createTabButton("view/visualization/help.png", e -> showHelp()));
+		hbox.getChildren().addAll(createTabButton("resources/images/new.png", e -> newWorkspace()),
+				createTabButton("resources/images/help.png", e -> showHelp()));
 
 		AnchorPane anchor = new AnchorPane();
 		anchor.getChildren().addAll(tabPane, hbox);
@@ -78,32 +78,12 @@ public class WorkspaceBrowser extends BorderPane {
 		AnchorPane.setBottomAnchor(tabPane, 1.0);
 
 		setCenter(anchor);
-		detectArrowKeys();
-	}
-
-	private void detectArrowKeys() {
-		addEventFilter(KeyEvent.ANY, new EventHandler<KeyEvent>() {
-			@Override
-			public void handle(KeyEvent event) {
-				switch (event.getCode()) {
-				case UP:
-				case DOWN:
-				case LEFT:
-				case RIGHT:
-					getCurrentWorkspace().keyPressed(event);
-				}
-			}
-		});
 	}
 
 	private Scene createScene() {
 		Scene scene = new Scene(this, 1000, 480);
 		scene.getStylesheets().add(stylesheetPath);
 		return scene;
-	}
-
-	private void hello() {
-		System.out.println("called");
 	}
 
 	private Workspace getCurrentWorkspace() {

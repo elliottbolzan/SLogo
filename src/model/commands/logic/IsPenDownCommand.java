@@ -3,10 +3,6 @@ package model.commands.logic;
 import model.parser.Argument;
 
 public class IsPenDownCommand extends LogicCommand {
-
-	public IsPenDownCommand() {
-		super();
-	}
 	
 	@Override
 	public int numParameters() {
@@ -15,6 +11,6 @@ public class IsPenDownCommand extends LogicCommand {
 
 	@Override
 	public Argument execute() {
-		return new Argument(super.booleanToInt(this.getController().getTurtle().isPenDown()));
+		return new Argument(super.booleanToInt(this.getController().getTurtleManager().getCurrentTurtle().isPenDown()));
 	}
 }

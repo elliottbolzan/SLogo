@@ -25,6 +25,8 @@ public class Tokenize {
 	private static String COMMAND_MATCH = "Command";
 	private static String LIST_START_MATCH = "ListStart";
 	private static String LIST_END_MATCH = "ListEnd";
+	private static String GROUP_START_MATCH = "GroupStart";
+	private static String GROUP_END_MATCH = "GroupEnd";
 
 	public static Token determineType(String token) {
 		if (checkArgument(token).equals(COMMENT_MATCH)) {
@@ -44,6 +46,12 @@ public class Tokenize {
 		}
 		else if (checkArgument(token).equals(LIST_END_MATCH)) {
 			return Token.LIST_END;
+		}
+		else if (checkArgument(token).equals(GROUP_START_MATCH)) {
+			return Token.GROUP_START;
+		}
+		else if (checkArgument(token).equals(GROUP_END_MATCH)) {
+			return Token.GROUP_END;
 		}
 		return Token.COMMENT;
 	}
@@ -72,5 +80,4 @@ public class Tokenize {
 		}
 		return symbols;
 	}
-
 }

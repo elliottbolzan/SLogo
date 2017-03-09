@@ -10,14 +10,14 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
-import javafx.stage.Stage;
 
 public class FilePicker extends Group {
 
 	private Controller controller;
 	private TextField myTextField;
+	private String myURL = "";
 
-	public FilePicker(Controller controller, int width, String initialText,
+	public FilePicker(Controller controller, int width, String initialText, File directory,
 			String... allowedFileExtensions) {
 
 		this.controller = controller;
@@ -30,7 +30,7 @@ public class FilePicker extends Group {
 		HBox container = new HBox();
 
 		Button browseButton = new Button(controller.getResources().getString("BrowseButton"));
-		browseButton.setOnAction(e -> this.launchChooser(allowedFileExtensions));
+		browseButton.setOnAction(e -> this.launchChooser(directory, allowedFileExtensions));
 
 		container.setPrefWidth(width);
 
@@ -38,19 +38,24 @@ public class FilePicker extends Group {
 		this.getChildren().add(container);
 	}
 
+	public String getURL() {
+		return myURL;
+	}
+	
 	public TextField getTextField() {
 		return myTextField;
 	}
 
-	private void launchChooser(String... extensions) {
+	private void launchChooser(File directory, String... extensions) {
 		FileChooser myChooser = new FileChooser();
-		myChooser.setInitialDirectory(new File(System.getProperty("user.dir")));
+		myChooser.setInitialDirectory(directory);
 		myChooser.getExtensionFilters()
 				.setAll(new ExtensionFilter(controller.getResources().getString("PictureFilesLabel"), extensions));
 		File dataFile = myChooser.showOpenDialog(getScene().getWindow());
 		if (dataFile != null) {
 			try {
-				myTextField.setText(dataFile.toURI().toURL().toExternalForm());
+				myURL = dataFile.toURI().toURL().toExternalForm();
+				myTextField.setText(myURL.substring(myURL.lastIndexOf("/") + 1));
 			} catch (MalformedURLException e) {
 				// Don't use file
 			}

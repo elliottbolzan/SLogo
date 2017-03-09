@@ -1,9 +1,8 @@
 package model.commands.turtle;
 
 import model.parser.Argument;
-import utils.Point;
 
-public class BackwardCommand extends TurtleCommand {
+public class BackwardCommand extends RepeatableTurtleCommand {
 	
 	@Override
 	public int numParameters() {
@@ -11,10 +10,9 @@ public class BackwardCommand extends TurtleCommand {
 	}
 
 	@Override
-	public Argument execute() {
+	public Argument innerExecute() {
 		Argument result = getParameter(0);
-		Point loc = endLocation(-result.getDouble(), getController().getTurtle());
-		getController().moveTo(loc);
+		getTurtle().moveTo(endLocation(-result.getDouble(), getTurtle()));
 		return result;
 	}
 }

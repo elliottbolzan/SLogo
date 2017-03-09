@@ -3,11 +3,7 @@ package model.commands.turtle;
 import model.parser.Argument;
 import utils.Point;
 
-public class HomeCommand extends TurtleCommand {
-
-	public HomeCommand() {
-		super();
-	}
+public class HomeCommand extends RepeatableTurtleCommand {
 
 	@Override
 	public int numParameters() {
@@ -15,9 +11,9 @@ public class HomeCommand extends TurtleCommand {
 	}
 
 	@Override
-	public Argument execute() {
-		Argument dist = new Argument(distance(new double[]{0, 0}, getController().getTurtle()));
-		getController().moveTo(new Point(0, 0));
-		return dist;
+	public Argument innerExecute() {
+		Argument distance = new Argument(distance(new Point(0, 0), getTurtle().getDestination()));
+		getTurtle().moveTo(new Point(0, 0));
+		return distance;
 	}
 }

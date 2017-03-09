@@ -2,20 +2,16 @@ package model.commands.turtle;
 
 import model.parser.Argument;
 
-public class PenUpCommand extends TurtleCommand {
+public class PenUpCommand extends RepeatableTurtleCommand {
 
-	public PenUpCommand() {
-		super();
-	}
-	
 	@Override
 	public int numParameters() {
 		return 0;
 	}
 
 	@Override
-	public Argument execute() {
-		this.getController().setPenDown(false);
+	public Argument innerExecute() {
+		getTurtle().setPenDown(false);
 		return new Argument(0);
 	}
 }

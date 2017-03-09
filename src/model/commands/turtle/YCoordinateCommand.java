@@ -3,11 +3,6 @@ package model.commands.turtle;
 import model.parser.Argument;
 
 public class YCoordinateCommand extends TurtleCommand {
-
-	public YCoordinateCommand() {
-		super();
-	}
-	
 	
 	@Override
 	public int numParameters() {
@@ -16,6 +11,6 @@ public class YCoordinateCommand extends TurtleCommand {
 
 	@Override
 	public Argument execute() {
-		return new Argument(this.getController().getTurtle().getDestination().getY());
+		return new Argument(getTurtle().getDestination().getY());
 	}
 }
