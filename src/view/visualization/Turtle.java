@@ -7,13 +7,10 @@ import java.util.Queue;
 
 import javafx.animation.RotateTransition;
 import javafx.animation.SequentialTransition;
-import javafx.animation.Timeline;
-import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.ReadOnlyBooleanProperty;
 import javafx.beans.property.ReadOnlyDoubleProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleDoubleProperty;
-import javafx.beans.property.StringProperty;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
@@ -24,11 +21,11 @@ import javafx.util.Duration;
  *
  */
 public class Turtle {
+	
 	private final static String BASIC_IMAGE = "view/visualization/turtle_1.png";
 	private ImageView myImageView;
 
 	private TurtleDisplay myDisplay;
-	private int myID;
 
 	private SimpleDoubleProperty myXProperty;
 	private SimpleDoubleProperty myYProperty;
@@ -43,14 +40,16 @@ public class Turtle {
 	private SimpleBooleanProperty isMovingProperty;
 	private int myStepsRemaining;
 	private Point myStepSize;
+	
+	private int myID;
 
-	public Turtle(int id, TurtleDisplay home) {
+	public Turtle(TurtleDisplay home, int ID) {
 		
 		myImageView = new ImageView(new Image(getClass().getClassLoader().getResourceAsStream(BASIC_IMAGE)));
 		myFutureDestinations = new LinkedList<Point>();
 		
 		myDisplay = home;
-		myID = id;
+		myID = ID;
 
 		myPenDownProperty = new SimpleBooleanProperty(true);
 		myPenColor = Color.BLACK;
@@ -65,7 +64,11 @@ public class Turtle {
 		this.setRotation(90.0);
 		isMovingProperty = new SimpleBooleanProperty(false);
 	}
-
+	
+	public void turn(double degrees) {
+		setRotation(getRotation() + degrees);
+	}
+	
 	public int getID() {
 		return myID;
 	}

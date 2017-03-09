@@ -2,8 +2,7 @@ package view;
 
 import java.awt.Dimension;
 
-import utils.Point;
-import view.visualization.Turtle;
+import view.visualization.TurtleManager;
 
 /**
  * @author Elliott Bolzan
@@ -11,23 +10,15 @@ import view.visualization.Turtle;
  */
 public interface ViewAPI {
 	
-	public void print(String string);
-	
 	public void clearConsole();
-		
-	public void moveTo(Point point);
-	
-	public void turn(double degrees);
-	
-	public void setPenDown(boolean down);
-	
-	public void setTurtleVisible(boolean visible);
-		
-	public Turtle getTurtle();
 	
 	public void clearDisplay();
-	
+		
 	public Dimension getDisplaySize();
+
+	public TurtleManager getTurtleManager();
+	
+	public void print(String string);
 	
 	public void showMessage(String message);
 	

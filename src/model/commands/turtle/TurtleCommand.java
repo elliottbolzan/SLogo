@@ -14,7 +14,6 @@ public abstract class TurtleCommand extends Command {
     	double rad = Math.toRadians(t.getRotation());
         double x = (Math.cos(rad) * parameters);
         double y = (Math.sin(rad) * parameters);
-
         return new Point(t.getDestination().getX() + x, t.getDestination().getY() + y);
     }
     

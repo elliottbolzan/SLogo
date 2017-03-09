@@ -22,14 +22,14 @@ import javafx.scene.paint.Color;
  * @author Jay Doherty
  *
  */
-public class ImageTable extends BorderPane {
+public class TurtleImageView extends BorderPane {
 
 	private ObservableList<ImageElement> data;
 
 	/**
 	 * 
 	 */
-	public ImageTable() {
+	public TurtleImageView() {
 		this.data = FXCollections.observableArrayList(new ArrayList<ImageElement>());
 		this.setup();
 		this.makeDefaultImages();

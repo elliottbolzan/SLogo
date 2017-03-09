@@ -6,7 +6,6 @@ import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.scene.Group;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -22,14 +21,14 @@ import javafx.scene.paint.Color;
  * @author Jay Doherty
  *
  */
-public class ColorTable extends BorderPane {
+public class ColorView extends BorderPane {
 
 	private ObservableList<ColorElement> data;
 
 	/**
 	 * 
 	 */
-	public ColorTable() {
+	public ColorView() {
 		this.data = FXCollections.observableArrayList(new ArrayList<ColorElement>());
 		this.setup();
 		this.makeDefaultColors();

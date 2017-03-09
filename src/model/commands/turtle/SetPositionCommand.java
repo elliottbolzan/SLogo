@@ -14,9 +14,9 @@ public class SetPositionCommand extends TurtleCommand {
 	public Argument execute() {
 		Argument xCoordinate = getParameter(0);
 		Argument yCoordinate = getParameter(1);
-		double distance = distance(new double[] {xCoordinate.getDouble(), yCoordinate.getDouble()}, getController().getTurtle());
+		double distance = distance(new double[] {xCoordinate.getDouble(), yCoordinate.getDouble()}, getController().getTurtleManager().getCurrentTurtle());
 		Point loc = new Point(xCoordinate.getDouble(), yCoordinate.getDouble());
-		getController().moveTo(loc);
+		getController().getTurtleManager().moveTo(loc);
 		return new Argument(distance);
 	}
 }
