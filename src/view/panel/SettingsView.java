@@ -1,6 +1,5 @@
 package view.panel;
 
-import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -42,7 +41,7 @@ public class SettingsView extends BorderPane {
 	
 	private static final String PATH_TO_LANGUAGES = "src/resources/languages";
 
-	public SettingsView(Workspace workspace) {
+	protected SettingsView(Workspace workspace) {
 		this.workspace = workspace;
 		controller = workspace.getController();
 		turtleDisplay = workspace.getDisplay();

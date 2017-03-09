@@ -21,7 +21,7 @@ public class HelpView extends Stage {
 	/**
 	 * 
 	 */
-	public HelpView(ResourceBundle resources) {
+	protected HelpView(ResourceBundle resources) {
 		WebView browser = new WebView();
 		WebEngine webEngine = browser.getEngine();
 		webEngine.load(getClass().getClassLoader().getResource(PATH_TO_HELP).toExternalForm());

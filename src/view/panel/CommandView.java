@@ -22,7 +22,7 @@ public class CommandView extends BorderPane {
 	/**
 	 * 
 	 */
-	public CommandView(Workspace workspace, ObservableList<String> data) {
+	protected CommandView(Workspace workspace, ObservableList<String> data) {
 		this.workspace = workspace;
 		this.data = data;
 		setup();

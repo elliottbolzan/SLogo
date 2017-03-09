@@ -83,7 +83,7 @@ public class TurtleManager {
 		}
 	}
 
-	public void setTurtleActive(int ID, boolean active) {
+	private void setTurtleActive(int ID, boolean active) {
 		if (turtles.containsKey(ID)) {
 			Turtle turtle = turtles.get(ID);
 			if (active && !(activeTurtles.contains(turtle))) {

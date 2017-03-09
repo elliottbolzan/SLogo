@@ -6,8 +6,6 @@ import view.panel.Panel;
 import view.visualization.TurtleDisplay;
 import view.visualization.TurtleManager;
 
-import java.util.ResourceBundle;
-
 import controller.Controller;
 import javafx.geometry.Insets;
 import javafx.scene.control.Alert;

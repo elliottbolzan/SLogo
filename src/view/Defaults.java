@@ -14,17 +14,18 @@ import javafx.scene.paint.Color;
  *
  */
 public class Defaults {
-	
+
 	private Color backgroundColor = Color.WHITE;
 	private int numberOfTurtles = 1;
 	private String language = "English";
 	private String scriptPath = "";
-	private Image turtleImage = new Image(getClass().getClassLoader().getResourceAsStream("resources/images/turtle_1.png"));
+	private Image turtleImage = new Image(
+			getClass().getClassLoader().getResourceAsStream("resources/images/turtle_1.png"));
 
 	/**
 	 * 
 	 */
-	public Defaults(Workspace workspace, String path) {
+	protected Defaults(Workspace workspace, String path) {
 		ResourceBundle resources = ResourceBundle.getBundle(path);
 		try {
 			backgroundColor = Color.valueOf(resources.getString("Color"));
@@ -58,7 +59,7 @@ public class Defaults {
 	public String getScriptPath() {
 		return scriptPath;
 	}
-	
+
 	public Image getTurtleImage() {
 		return turtleImage;
 	}

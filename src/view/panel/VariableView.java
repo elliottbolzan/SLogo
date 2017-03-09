@@ -24,7 +24,7 @@ public class VariableView extends BorderPane {
 	/**
 	 * 
 	 */
-	public VariableView(Workspace workspace, ObservableList<Variable> data) {
+	protected VariableView(Workspace workspace, ObservableList<Variable> data) {
 		this.workspace = workspace;
 		this.data = data;
 		setup();
