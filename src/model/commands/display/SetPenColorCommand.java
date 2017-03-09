@@ -17,9 +17,8 @@ public class SetPenColorCommand extends TurtleCommand{
 	@Override
 	public Argument execute() {
 		int index = (int)this.getParameter(0).getDouble();
-		Color c = getController().getColorPalette().get(index-1).colorProperty().get();
-		getController().getTurtleManager().setTurtlePenColor(c);;
-		
+		Color color = getController().getColorPalette().get(index-1).colorProperty().get();
+		getController().getTurtleManager().setTurtlePenColor(index, color);
 		return new Argument(index);
 	}
 	

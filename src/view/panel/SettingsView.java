@@ -1,6 +1,10 @@
 package view.panel;
 
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.Writer;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -115,7 +119,7 @@ public class SettingsView extends BorderPane {
 	}
 
 	private void setTurtleImage() {
-		workspace.getTurtleManager().setTurtleImage(myImagePicker.getURL());
+		workspace.getTurtleManager().setTurtleImage(1, myImagePicker.getURL());
 	}
 
 	private void setTurtleBackground(Color color) {
@@ -130,13 +134,31 @@ public class SettingsView extends BorderPane {
 	}
 	
 	private void save() {
-		// TO WRITE. SEE WORKSPACESETTINGS FOR FORMAT
 		String backgroundColor = turtleDisplay.getBackgroundColor().toString();
 		String numberOfTurtles = String.valueOf(myTurtleNumberPicker.getValue());
-		String defaultScript = myScriptPicker.getTextField().getText();
-		String defaultTurtle = myImagePicker.getTextField().getText();
-		// GET THE REAL, FULL PATHS - not just the last part, for the previous two lines!
+		String defaultScript = myScriptPicker.getURL().replaceAll("(file:)", "");
+		String defaultTurtle = myImagePicker.getURL();
 		String language = getLanguage();
+		
+		Writer writer = null;
+    	try  {
+    		writer = new FileWriter(new File(System.getProperty("user.dir") + "/src/resources/WorkspaceSettings.properties"));
+    		writer.write(formatAsProperties(backgroundColor, numberOfTurtles, language, defaultScript, defaultTurtle));
+    		writer.flush();
+    		writer.close();
+    	} catch(IOException e) {
+    		throw new RuntimeException(e);
+    	} 
+	}
+	
+	private String formatAsProperties(String backgroundColor, String numberOfTurtles, String language, String defaultScript, String defaultTurtle) {
+		String result = "";
+		result += String.format("Color = %s\n", backgroundColor);
+		result += String.format("TurtleNumber = %s\n", numberOfTurtles);
+		result += String.format("Language = %s\n", language);
+		result += String.format("File = %s\n", defaultScript);
+		result += String.format("TurtlePath = %s\n", defaultTurtle);
+		return result;
 	}
 	
 }

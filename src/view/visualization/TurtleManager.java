@@ -133,16 +133,18 @@ public class TurtleManager {
 		});
 	}
 	
-	public void setTurtleImage(String URL) {
+	public void setTurtleImage(int imageIndex, String URL) {
 		applyToTurtles(turtle -> {
 			turtle.setImage(URL);
+			turtle.setShapeIndex(imageIndex);
 			return 0;
 		});
 	}
 	
-	public void setTurtlePenColor(Color c) {
+	public void setTurtlePenColor(int colorIndex, Color color) {
 		applyToTurtles(turtle -> {
-			turtle.setPenColor(c);
+			turtle.setPenColor(color);
+			turtle.setColorIndex(colorIndex);
 			return 0;
 		});
 	}
