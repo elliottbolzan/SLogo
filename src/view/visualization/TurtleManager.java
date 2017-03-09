@@ -6,6 +6,7 @@ package view.visualization;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -36,7 +37,15 @@ public class TurtleManager {
 		this.display = display;
 		clear();
 	}
-
+	
+	public ObservableList<Turtle> getActiveTurtles() {
+		return activeTurtles;
+	}
+	
+	public Map<Integer, Turtle> getAllTurtles() {
+		return turtles;
+	}
+	
 	private double applyToTurtles(Runnable runnable) {
 		double result = 0;
 		for (Turtle turtle : activeTurtles) {
@@ -68,13 +77,16 @@ public class TurtleManager {
 			Turtle turtle = turtles.get(ID);
 			if (active && !(activeTurtles.contains(turtle))) {
 				activeTurtles.add(turtle);
+				turtle.activeProperty().set(true);
 			} else if (!active && activeTurtles.contains(turtle)) {
 				activeTurtles.remove(turtle);
+				turtle.activeProperty().set(false);
 			}
 		} else {
 			Turtle turtle = new Turtle(display, ID);
 			turtles.put(ID, turtle);
 			activeTurtles.add(turtle);
+			turtle.activeProperty().set(true);
 			addTurtle(turtle);
 		}
 	}

@@ -3,8 +3,6 @@ package controller;
 import java.awt.Dimension;
 import java.util.ResourceBundle;
 
-import utils.Point;
-
 import javafx.collections.ObservableList;
 import model.Model;
 import model.ModelAPI;
@@ -13,7 +11,6 @@ import model.parser.nodes.Node;
 import view.Workspace;
 import view.WorkspaceBrowser;
 import view.ViewAPI;
-import view.visualization.Turtle;
 import view.visualization.TurtleManager;
 
 /**

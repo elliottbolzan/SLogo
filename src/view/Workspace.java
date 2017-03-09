@@ -6,7 +6,6 @@ import utils.Point;
 import view.input.InputContainer;
 import view.input.ShellView;
 import view.panel.Panel;
-import view.visualization.KeyHandler;
 import view.visualization.Turtle;
 import view.visualization.TurtleDisplay;
 import view.visualization.TurtleManager;
@@ -32,7 +31,6 @@ public class Workspace extends BorderPane implements ViewAPI {
 	private TurtleDisplay turtleDisplay;
 	private Panel panel;
 	private SplitPane pane;
-	private KeyHandler handler;
 
 	/**
 	 * Creates a View object.
@@ -49,7 +47,6 @@ public class Workspace extends BorderPane implements ViewAPI {
 	}
 
 	private void setup() {
-		handler = new KeyHandler();
 		pane = new SplitPane();
 		inputContainer = new InputContainer(this, 0);
 		turtleDisplay = new TurtleDisplay(this);
@@ -105,13 +102,6 @@ public class Workspace extends BorderPane implements ViewAPI {
 		alert.setHeaderText(controller.getResources().getString("ErrorHeader"));
 		alert.setContentText(message);
 		alert.showAndWait();
-	}
-
-	public void keyPressed(KeyEvent e) {
-		String expression = handler.keyPressed(e);
-		if (!(expression.equals(""))) {
-			controller.parse(expression, false);
-		}
 	}
 
 	@Override
