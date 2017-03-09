@@ -1,4 +1,6 @@
 package model.parser.nodes;
+import java.util.stream.Stream;
+
 import model.parser.Argument;
 import model.parser.Input;
 import model.parser.TreeParser;
@@ -11,7 +13,7 @@ public class ListNode extends Node {
 		super(parser, parent);
 		int openBrackets = 0;
 		String newExpression = "";
-		System.out.println(input.getWords());
+		//System.out.println(input.getWords().toString());
 		while (openBrackets >= 0) {
 			String word = input.getWords().get(input.getIndex());
 			Token token = Tokenize.determineType(word);

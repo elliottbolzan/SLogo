@@ -2,6 +2,7 @@ package model.parser;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import controller.Controller;
 import javafx.collections.ObservableList;
@@ -9,6 +10,7 @@ import model.State;
 import model.Variable;
 import model.commands.Command;
 import model.commands.Commands;
+import model.commands.control.MakeUserInstructionCommand;
 import model.parser.nodes.ConstantNode;
 import model.parser.nodes.ListNode;
 import model.parser.nodes.Node;
@@ -27,8 +29,8 @@ public class TreeParser implements ParserAPI {
 
 	public TreeParser(Controller controller) {
 		this.controller = controller;
-		commands = new Commands();
 		parseHistory = new ParseHistory();
+		commands = new Commands(parseHistory);
 		state = new State();
 	}
 
@@ -114,13 +116,15 @@ public class TreeParser implements ParserAPI {
 			} else if (token == Token.COMMAND) {
 				try {
 					child = commands.get(word);
+					if(child == null) child = parseHistory.getCommand(word);
+					if(child instanceof MakeUserInstructionCommand) handleMakeUserInstructionCommand(input.getWords());
 					// If child is null, your command is probably misnamed.
 					((Command) child).setup(controller, state);
 					for (int i = 0; i < ((Command) child).numParameters(); i++) {
 						input = createTree(new Input(child, input.getIndex(), input.getWords()));
 					}
 				} catch (Exception e) {
-					controller.getView().showMessage("No such Command" + " " + word);
+					if(child == null) controller.getView().showMessage("Error executing command" + " " + word);
 				}
 			} else if (token == Token.LIST_START) {
 				child = new ListNode(this, node, input);
@@ -136,6 +140,21 @@ public class TreeParser implements ParserAPI {
 		return null;
 	}
 	
+	private void handleMakeUserInstructionCommand(List<String> list) {
+		StringBuilder sb = new StringBuilder();
+		list.stream().filter(e -> !(e.contains("[") || e.contains("]"))).forEach(e -> sb.append(e + " "));
+		String[] noTo = sb.toString().split("to");
+		String newCommand = noTo[1].trim().split("\\s+")[0];
+		System.out.println(noTo[1].split("\\s+"));
+		StringBuilder ssb = new StringBuilder();
+		for(int i = 2; i< noTo[1].split("\\s+").length; i++){
+			ssb.append(noTo[1].split("\\s+")[i] + " ");
+		}
+		System.out.println(ssb.toString());
+		parseHistory.addUserMadeCommandName(newCommand);
+		parseHistory.addUserMadeCommandNode(parseInternal(ssb.toString()));
+	}
+
 	private String handleComment(String s){
 		ArrayList<String> commentFinder = new ArrayList<>(Arrays.asList(s.split("\\n")));
 		StringBuilder sb = new StringBuilder();
