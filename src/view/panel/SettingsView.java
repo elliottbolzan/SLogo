@@ -79,7 +79,6 @@ public class SettingsView extends BorderPane {
 
 		box.getChildren().addAll(languagePickerBox, new Separator(), imagePickerBox, new Separator(), backgroundPickerBox);
 		
-		
 		scrollPane.setContent(box);
 		scrollPane.prefHeightProperty().bind(heightProperty());
 

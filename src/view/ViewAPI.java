@@ -14,8 +14,6 @@ public interface ViewAPI {
 	
 	public void clearDisplay();
 		
-	public Dimension getDisplaySize();
-
 	public TurtleManager getTurtleManager();
 	
 	public void print(String string);

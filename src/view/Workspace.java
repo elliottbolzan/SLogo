@@ -91,11 +91,6 @@ public class Workspace extends BorderPane implements ViewAPI {
 		turtleDisplay.clear();
 	}
 
-	@Override
-	public Dimension getDisplaySize() {
-		return turtleDisplay.getDimensions();
-	}
-
 	public void showMessage(String message) {
 		Alert alert = new Alert(AlertType.ERROR);
 		alert.setTitle(controller.getResources().getString("ErrorTitle"));

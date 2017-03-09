@@ -54,11 +54,6 @@ public class Controller implements ViewAPI, ModelAPI {
 	public void clearDisplay() {
 		workspace.clearDisplay();
 	}
-
-	@Override
-	public Dimension getDisplaySize() {
-		return workspace.getDisplaySize();
-	}
 	
 	@Override
 	public TurtleManager getTurtleManager() {
