@@ -23,7 +23,7 @@ import javafx.util.Duration;
  */
 public class Turtle {
 	
-	private final static String BASIC_IMAGE = "view/visualization/turtle_1.png";
+	private final static String BASIC_IMAGE = "resources/images/turtle_1.png";
 	private ImageView myImageView;
 
 	private TurtleDisplay myDisplay;

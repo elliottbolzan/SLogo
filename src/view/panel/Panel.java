@@ -8,8 +8,6 @@ import javafx.scene.control.Accordion;
 import javafx.scene.control.TitledPane;
 import view.View;
 import view.Workspace;
-import view.components.TurtleButtons;
-import view.visualization.TurtleInfo;
 
 /**
  * @author Elliott Bolzan

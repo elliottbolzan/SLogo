@@ -74,11 +74,11 @@ public class TurtleImageView extends BorderPane {
 	}
 
 	private void makeDefaultImages() {
-		data.add(new ImageElement(1, "view/visualization/turtle_1.png"));
-		data.add(new ImageElement(2, "view/visualization/turtle_2.png"));
-		data.add(new ImageElement(3, "view/visualization/turtle_3.png"));
-		data.add(new ImageElement(4, "view/visualization/turtle_4.png"));
-		data.add(new ImageElement(5, "view/visualization/turtle_5.png"));
+		data.add(new ImageElement(1, "resources/images/turtle_1.png"));
+		data.add(new ImageElement(2, "resources/images/turtle_2.png"));
+		data.add(new ImageElement(3, "resources/images/turtle_3.png"));
+		data.add(new ImageElement(4, "resources/images/turtle_4.png"));
+		data.add(new ImageElement(5, "resources/images/turtle_5.png"));
 	}
 
 	protected class ImageElement {

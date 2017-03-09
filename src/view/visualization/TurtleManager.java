@@ -66,9 +66,7 @@ public class TurtleManager {
 			setTurtleActive(ID, true);
 		}
 		for (Integer ID : turtles.keySet()) {
-			if (!(indices.contains(ID))) {
-				setTurtleActive(ID, false);
-			}
+			setTurtleActive(ID, indices.contains(ID));
 		}
 	}
 
@@ -76,10 +74,8 @@ public class TurtleManager {
 		if (turtles.containsKey(ID)) {
 			Turtle turtle = turtles.get(ID);
 			if (active && !(activeTurtles.contains(turtle))) {
-				activeTurtles.add(turtle);
 				turtle.activeProperty().set(true);
 			} else if (!active && activeTurtles.contains(turtle)) {
-				activeTurtles.remove(turtle);
 				turtle.activeProperty().set(false);
 			}
 		} else {
@@ -87,6 +83,7 @@ public class TurtleManager {
 			turtles.put(ID, turtle);
 			activeTurtles.add(turtle);
 			turtle.activeProperty().set(true);
+			turtle.activeProperty().addListener(e -> this.onTurtleActivityModified(turtle));
 			addTurtle(turtle);
 		}
 	}
@@ -190,5 +187,12 @@ public class TurtleManager {
 		double y = (Math.sin(rad) * value);
 		return new Point(turtle.getDestination().getX() + x, turtle.getDestination().getY() + y);
 	}
-
+	
+	private void onTurtleActivityModified(Turtle turtle) {
+		if(!turtle.activeProperty().get()) {
+			activeTurtles.remove(turtle);
+		} else {
+			activeTurtles.add(turtle);
+		}
+	}
 }

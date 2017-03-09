@@ -43,7 +43,7 @@ public class View extends BorderPane {
 		spacing.maxWidth(Double.MAX_VALUE);
 		HBox.setHgrow(spacing, Priority.ALWAYS);
 
-		Button minimizeButton = makeMinimizeButton("view/visualization/minimize.png");
+		Button minimizeButton = makeMinimizeButton("resources/images/minimize.png");
 
 		ToolBar toolBar = new ToolBar();
 		toolBar.getItems().addAll(title, spacing, minimizeButton);
