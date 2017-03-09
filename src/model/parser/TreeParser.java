@@ -2,7 +2,6 @@ package model.parser;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
 import controller.Controller;
 import javafx.collections.ObservableList;
@@ -15,6 +14,7 @@ import model.parser.nodes.ConstantNode;
 import model.parser.nodes.ListNode;
 import model.parser.nodes.Node;
 import model.parser.nodes.RootNode;
+import model.parser.nodes.UserCommandNode;
 import model.parser.nodes.VariableNode;
 import model.parser.tokenize.Token;
 import model.parser.tokenize.Tokenize;
@@ -79,20 +79,21 @@ public class TreeParser implements ParserAPI {
 		}
 		input = handleComment(input);
 		Node root = parseInternal(input);
-		printTree(root, "");
 		root.evaluate();
+		printTree(root, "");
 		//controller.print(String.valueOf(root.evaluate().getDouble()));
 		parseHistory.addCommandToHistory(root);
 		return root;
 	}
 
 	public Node parseInternal(String input) {
-		return createTree(input);
+		return startTree(input);
 	}
 
-	private Node createTree(String string) {
+	private Node startTree(String string) {
 		ArrayList<String> words = new ArrayList<String>();
 		words = new ArrayList<String>(Arrays.asList(string.split("\\s+")));
+		
 		Node node = new RootNode(this, null);
 		Input input = new Input(node, 0, words);
 		while (input.getIndex() < input.getWords().size() && input != null) {
@@ -109,22 +110,33 @@ public class TreeParser implements ParserAPI {
 			Node node = input.getNode();
 			Node child = null;
 			input.addToIndex(1);
+			if (node instanceof MakeUserInstructionCommand) {
+				parseHistory.addUserMadeCommandName(word);
+				child = new UserCommandNode();
+				node.addChild(child);
+				parseHistory.addUserMadeCommandNode(child);
+			}
 			if (token == Token.CONSTANT) {
 				child = new ConstantNode(this, node, Double.parseDouble(word));
 			} else if (token == Token.VARIABLE) {
 				child = new VariableNode(this, node, word.replaceAll(":", ""));
 			} else if (token == Token.COMMAND) {
-				try {
+				try{
+				if (parseHistory.isNewCommand(word)) {
+					child = parseHistory.getCommand(word);
+				}else{ 
 					child = commands.get(word);
-					if(child == null) child = parseHistory.getCommand(word);
-					if(child instanceof MakeUserInstructionCommand) handleMakeUserInstructionCommand(input.getWords());
+				}
 					// If child is null, your command is probably misnamed.
 					((Command) child).setup(controller, state);
 					for (int i = 0; i < ((Command) child).numParameters(); i++) {
 						input = createTree(new Input(child, input.getIndex(), input.getWords()));
 					}
 				} catch (Exception e) {
-					if(child == null) controller.getView().showMessage("Error executing command" + " " + word);
+					// Put smart error here.
+					// System.out.println("print 3");
+					if (child == null || !parseHistory.isNewCommand(word))
+						controller.getView().showMessage("Error executing command" + " " + word);
 				}
 			} else if (token == Token.LIST_START) {
 				child = new ListNode(this, node, input);
@@ -139,30 +151,31 @@ public class TreeParser implements ParserAPI {
 		}
 		return null;
 	}
-	
-	private void handleMakeUserInstructionCommand(List<String> list) {
-		StringBuilder sb = new StringBuilder();
-		list.stream().filter(e -> !(e.contains("[") || e.contains("]"))).forEach(e -> sb.append(e + " "));
-		String[] noTo = sb.toString().split("to");
-		String newCommand = noTo[1].trim().split("\\s+")[0];
-		System.out.println(noTo[1].split("\\s+"));
-		StringBuilder ssb = new StringBuilder();
-		for(int i = 2; i< noTo[1].split("\\s+").length; i++){
-			ssb.append(noTo[1].split("\\s+")[i] + " ");
-		}
-		System.out.println(ssb.toString());
-		parseHistory.addUserMadeCommandName(newCommand);
-		parseHistory.addUserMadeCommandNode(parseInternal(ssb.toString()));
-	}
 
-	private String handleComment(String s){
-		ArrayList<String> commentFinder = new ArrayList<>(Arrays.asList(s.split("\\n")));
-		StringBuilder sb = new StringBuilder();
-		commentFinder.stream().filter(e -> !e.equals("")).filter(e -> e.trim().charAt(0) != '#').forEach(e -> sb.append(e + " "));
-		String result = sb.toString();
-		if(result.contains("#")) controller.getView().showMessage("Proper comment must have its own line and begin with #.");
-		result.replace(",", "");
-		return result;
-	}
+	// private void handleMakeUserInstructionCommand(List<String> list) {
+	// StringBuilder sb = new StringBuilder();
+	// list.stream().filter(e -> !(e.contains("[") ||
+	// e.contains("]"))).forEach(e -> sb.append(e + " "));
+	// String[] noTo = sb.toString().split("to");
+	// String newCommand = noTo[1].trim().split("\\s+")[0];
+	// //System.out.println(noTo[1].split("\\s+"));
+	// StringBuilder ssb = new StringBuilder();
+	// for(int i = 2; i< noTo[1].split("\\s+").length; i++){
+	// ssb.append(noTo[1].split("\\s+")[i] + " ");
+	// }
+	// //System.out.println(ssb.toString());
+	// }
+
+	 private String handleComment(String s){
+	 ArrayList<String> commentFinder = new
+	 ArrayList<>(Arrays.asList(s.split("\\n")));
+	 StringBuilder sb = new StringBuilder();
+	 commentFinder.stream().filter(e -> !e.equals("")).filter(e ->
+	 e.trim().charAt(0) != '#').forEach(e -> sb.append(e + " "));
+	 String result = sb.toString();
+	 if(result.contains("#")) controller.getView().showMessage("Proper comment must have its own line and begin with #.");
+	 result.replace(",", "");
+	 return result;
+	 }
 
 }

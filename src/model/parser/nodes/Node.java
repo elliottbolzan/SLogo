@@ -34,6 +34,10 @@ public abstract class Node {
 		this.parent = parent;
 	}
 	
+	public Node getParent(){
+		return this.parent;
+	}
+	
 	public ArrayList<Node> getChildren() {
 		return children;
 	}

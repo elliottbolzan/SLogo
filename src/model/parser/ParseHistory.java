@@ -66,8 +66,15 @@ public class ParseHistory {
 	}
 	
 	public Node getCommand(String s){
-		if(userMadeCommandNames.contains(s)) return userMadeCommandNodes.get(userMadeCommandNames.indexOf(s));
+		if(userMadeCommandNames.contains(s)){
+			return userMadeCommandNodes.get(userMadeCommandNames.indexOf(s));
+		}
 		return null;
+	}
+	
+	public boolean isNewCommand(String s){
+		if(userMadeCommandNames.contains(s)) return true;
+		return false;
 	}
 	
 }
