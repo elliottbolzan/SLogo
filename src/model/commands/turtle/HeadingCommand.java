@@ -6,7 +6,7 @@ public class HeadingCommand extends TurtleCommand {
 	
 	@Override
 	public int numParameters() {
-		return 1;
+		return 0;
 	}
 
 	@Override

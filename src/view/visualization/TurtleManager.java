@@ -85,6 +85,7 @@ public class TurtleManager {
 
 	private void addTurtle(Turtle turtle) {
 		display.addToDisplayArea(turtle.getView());
+		currentTurtle = turtle;
 	}
 
 	protected void clear() {
