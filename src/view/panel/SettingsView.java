@@ -103,9 +103,7 @@ public class SettingsView extends BorderPane {
 		List<File> options = Arrays.asList(new File(PATH_TO_LANGUAGES).listFiles());
 		Collections.sort(options);
 		for (File file : options) {
-			if (!(file.getName().contains("Syntax"))) {
-				result.add(file.getName().split("\\.")[0]);
-			}
+			result.add(file.getName().split("\\.")[0]);
 		}
 		return result;
 	}

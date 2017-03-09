@@ -2,6 +2,7 @@ package model;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -11,7 +12,7 @@ import model.commands.control.UserCommand;
 
 public class State {
 
-	private HashMap<String, UserCommand> commands;
+	private Map<String, UserCommand> commands;
 
 	private ObservableList<Variable> variables;
 	private ObservableList<String> userDefinedCommandNames;
@@ -66,7 +67,7 @@ public class State {
 		return userDefinedCommandNames;
 	}
 
-	public HashMap<String, UserCommand> getCmdList() {
+	public Map<String, UserCommand> getCmdList() {
 		return commands;
 	}
 
