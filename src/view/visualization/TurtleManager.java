@@ -10,8 +10,6 @@ import java.util.Map;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.scene.paint.Color;
-import model.parser.nodes.Node;
 import utils.Point;
 
 /**
@@ -124,11 +122,11 @@ public class TurtleManager {
 		});
 	}
 	
-	private Point endLocation(double value, Turtle turtle) {
-		double rad = Math.toRadians(turtle.getRotation());
-		double x = (Math.cos(rad) * value);
-		double y = (Math.sin(rad) * value);
-		return new Point(turtle.getDestination().getX() + x, turtle.getDestination().getY() + y);
+	public void setTurtleImage(String URL) {
+		applyToTurtles(turtle -> {
+			turtle.setImage(URL);
+			return 0;
+		});
 	}
 	
 	private void onTurtleActivityModified(Turtle turtle) {

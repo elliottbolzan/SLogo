@@ -96,26 +96,6 @@ public class TurtleDisplay extends StackPane {
 		myDisplayArea.setBackground(background);
 	}
 
-	public void setPenDown(boolean down) {
-		turtleManager.setPenDown(down);
-	}
-
-	public void setPenColor(Color color) {
-		turtleManager.setPenColor(color);
-	}
-
-	public void setTurtleVisible(boolean visible) {
-		turtleManager.setTurtleVisible(visible);
-	}
-
-	public void setTurtleImage(String url) {
-		turtleManager.setTurtleImage(url);
-	}
-
-	public void turnTurtle(double degrees) {
-		turtleManager.turnTurtle(degrees);
-	}
-
 	/**
 	 * This method sets the destination of the turtle to a point, unless the
 	 * turtle is already moving in which case it gets queued for later
