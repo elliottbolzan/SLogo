@@ -46,7 +46,7 @@ public class TurtleSettingsView {
 		idPicker.valueProperty().addListener(e -> this.trackTurtle(idPicker.getValue()));
 		turtleID.getChildren().addAll(idLabel, idPicker);
 
-		myContent.getChildren().addAll(turtleID, myTurtleButtons.getView());
+		myContent.getChildren().addAll(myTurtleButtons.getView(), turtleID);
 
 		scrollPane.setContent(myContent);
 		myPanel.setCenter(scrollPane);
@@ -60,8 +60,9 @@ public class TurtleSettingsView {
 		if (myTurtleInfo != null) {
 			myContent.getChildren().remove(myTurtleInfo.getView());
 		}
-		// TODO: only re-add the panel if ID is valid
-		myTurtleInfo = new TurtleInfo(myController.getTurtleManager().getCurrentTurtle());
-		myContent.getChildren().add(myTurtleInfo.getView());
+		if(myController.getTurtleManager().getAllTurtles().keySet().contains(id)) {
+			myTurtleInfo = new TurtleInfo(myController.getTurtleManager().getAllTurtles().get(id));
+			myContent.getChildren().add(myTurtleInfo.getView());
+		}
 	}
 }

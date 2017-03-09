@@ -65,8 +65,8 @@ public class WorkspaceBrowser extends BorderPane {
 		tabPane = new TabPane();
 
 		HBox hbox = new HBox();
-		hbox.getChildren().addAll(createTabButton("view/visualization/new.png", e -> newWorkspace()),
-				createTabButton("view/visualization/help.png", e -> showHelp()));
+		hbox.getChildren().addAll(createTabButton("resources/images/new.png", e -> newWorkspace()),
+				createTabButton("resources/images/help.png", e -> showHelp()));
 
 		AnchorPane anchor = new AnchorPane();
 		anchor.getChildren().addAll(tabPane, hbox);
