@@ -33,6 +33,11 @@ public class Model implements ModelAPI {
 		return parser.getColorPalette();
 	}
 	
+	@Override 
+	public ObservableList<IndexedImage> getImagePalette() {
+		return parser.getImagePalette();
+	}
+	
 	public void setLanguage(String language) {
 		parser.setLanguage(language);
 	}

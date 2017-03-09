@@ -1,10 +1,5 @@
 package view.panel;
 
-import java.util.ArrayList;
-
-import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.property.SimpleObjectProperty;
-import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
@@ -32,14 +27,6 @@ public class ColorView extends BorderPane {
 	public ColorView(ObservableList<IndexedColor> data) {
 		this.data = data;
 		this.setup();
-	}
-
-	public Color getColorAtIndex(int index) {
-		return data.get(index - 1).colorProperty().getValue();
-	}
-	
-	public void setColorAtIndex(int index, Color color) {
-		data.set(index - 1, new IndexedColor(index, color));
 	}
 	
 	private void setup() {

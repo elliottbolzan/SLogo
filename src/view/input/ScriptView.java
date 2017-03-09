@@ -89,18 +89,22 @@ public class ScriptView extends InputView {
 		chooser.getExtensionFilters().setAll(new ExtensionFilter("Logo Files", "*.logo", "*.txt"));
 		File dataFile = chooser.showOpenDialog(getScene().getWindow());
 		if (dataFile != null) {
-			try {
-				clear();
-				FileReader fileReader = new FileReader(dataFile.toPath().toString());
-				BufferedReader bufferedReader = new BufferedReader(fileReader);
-				String line = "";
-				while ((line = bufferedReader.readLine()) != null) {
-					getTextArea().appendText(line + "\n");
-				}
-				bufferedReader.close();
-			} catch (Exception e) {
-				// Don't use file
+			clear();
+			readFileIn(dataFile.toPath().toString());
+		}
+	}
+	
+	public void readFileIn(String path) {
+		try {
+			FileReader fileReader = new FileReader(path);
+			BufferedReader bufferedReader = new BufferedReader(fileReader);
+			String line = "";
+			while ((line = bufferedReader.readLine()) != null) {
+				getTextArea().appendText(line + "\n");
 			}
+			bufferedReader.close();
+		} catch (Exception e) {
+			// Don't use file
 		}
 	}
 

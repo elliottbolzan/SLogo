@@ -6,6 +6,7 @@ import java.util.Arrays;
 import controller.Controller;
 import javafx.collections.ObservableList;
 import model.IndexedColor;
+import model.IndexedImage;
 import model.State;
 import model.Variable;
 import model.commands.Command;
@@ -57,6 +58,10 @@ public class TreeParser implements ParserAPI {
 
 	public ObservableList<IndexedColor> getColorPalette() {
 		return state.getColorPalette();
+	}
+	
+	public ObservableList<IndexedImage> getImagePalette() {
+		return state.getImagePalette();
 	}
 	
 	@Override
