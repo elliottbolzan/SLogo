@@ -7,6 +7,7 @@ import java.util.Queue;
 
 import javafx.animation.RotateTransition;
 import javafx.animation.SequentialTransition;
+import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.ReadOnlyBooleanProperty;
 import javafx.beans.property.ReadOnlyDoubleProperty;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -42,6 +43,7 @@ public class Turtle {
 	private Point myStepSize;
 	
 	private int myID;
+	private SimpleBooleanProperty isActiveProperty;
 
 	public Turtle(TurtleDisplay home, int ID) {
 		
@@ -63,6 +65,7 @@ public class Turtle {
 		myRotationProperty = new SimpleDoubleProperty();
 		this.setRotation(90.0);
 		isMovingProperty = new SimpleBooleanProperty(false);
+		isActiveProperty = new SimpleBooleanProperty(true);
 	}
 	
 	public void turn(double degrees) {
@@ -91,6 +94,10 @@ public class Turtle {
 	
 	public Color getPenColor() {
 		return myPenColor;
+	}
+	
+	public BooleanProperty activeProperty() {
+		return isActiveProperty;
 	}
 	
 	public ReadOnlyBooleanProperty readOnlyPenDownProperty() {
