@@ -6,7 +6,6 @@ import java.util.List;
 import javafx.scene.Node;
 import javafx.scene.control.Accordion;
 import javafx.scene.control.TitledPane;
-import javafx.scene.paint.Color;
 import view.View;
 import view.Workspace;
 

@@ -118,7 +118,10 @@ public class SettingsView extends BorderPane {
 	}
 	
 	private void save() {
-		// like default background, starting image list, starting number of turtles, starting file to load, command language, etc.)
+		String backgroundColor = turtleDisplay.getBackgroundColor().toString();
+		// add starting number of turtles
+		// starting file to load
+		String language = getLanguage();
 	}
 	
 }
