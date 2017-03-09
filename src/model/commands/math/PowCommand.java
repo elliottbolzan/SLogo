@@ -5,17 +5,13 @@ import model.parser.Argument;
 
 public class PowCommand extends Command {
 	
-	public PowCommand() {
-		super();
-	}
-	
 	@Override
-	public int numParameters() {
+	protected int internalNumParameters() {
 		return 2;
 	}
 
 	@Override
-	public Argument execute() {
+	protected Argument execute() {
 		return new Argument(Math.pow(getParameter(0).getDouble(), getParameter(1).getDouble()));
 	}
 }

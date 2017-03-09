@@ -5,12 +5,12 @@ import model.parser.Argument;
 public class ShowTurtleCommand extends RepeatableTurtleCommand {
 
 	@Override
-	public int numParameters() {
+	protected int internalNumParameters() {
 		return 0;
 	}
 
 	@Override
-	public Argument innerExecute() {
+	protected Argument innerExecute() {
 		getTurtle().setVisible(true);
 		return new Argument(1);
 	}

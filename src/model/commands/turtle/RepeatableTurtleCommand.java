@@ -13,7 +13,7 @@ import view.visualization.TurtleManager;
 public abstract class RepeatableTurtleCommand extends TurtleCommand {
 	
 	@Override
-	public Argument execute() {
+	protected Argument execute() {
 		Argument result = new Argument();
 		TurtleManager manager = getController().getTurtleManager();
 		for (int i = 0; i < manager.getActiveTurtles().size(); i++) {
@@ -23,6 +23,6 @@ public abstract class RepeatableTurtleCommand extends TurtleCommand {
 		return result;
 	}
 
-    public abstract Argument innerExecute();
+    protected abstract Argument innerExecute();
 
 }

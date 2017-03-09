@@ -3,26 +3,20 @@ package model.commands.multiple;
 import java.util.ArrayList;
 import java.util.List;
 
-import javafx.application.Platform;
 import model.commands.Command;
 import model.parser.Argument;
 import model.parser.nodes.Node;
 import view.visualization.Turtle;
 
-
 public class AskCommand extends Command{
-	
-	public AskCommand(){
-		super();
-	}
 
 	@Override
-	public int numParameters() {
+	protected int internalNumParameters() {
 		return 2;
 	}
 
 	@Override
-	public Argument execute() {
+	protected Argument execute() {
 		Argument result = new Argument();
 		
 		//store current active turtles

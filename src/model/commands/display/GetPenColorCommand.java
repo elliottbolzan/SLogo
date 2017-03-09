@@ -3,18 +3,15 @@ package model.commands.display;
 import model.commands.turtle.TurtleCommand;
 import model.parser.Argument;
 
-public class GetPenColorCommand extends TurtleCommand{
-	public GetPenColorCommand(){
-		super();
-	}
+public class GetPenColorCommand extends TurtleCommand {
 
 	@Override
-	public int numParameters() {
+	protected int internalNumParameters() {
 		return 0;
 	}
 
 	@Override
-	public Argument execute() {	
+	protected Argument execute() {
 		return null;
 	}
 }

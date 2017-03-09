@@ -7,12 +7,12 @@ import model.parser.Argument;
 public class ForCommand extends Command {
 
 	@Override
-	public int numParameters() {
+	protected int internalNumParameters() {
 		return 2;
 	}
 
 	@Override
-	public Argument execute(){
+	protected Argument execute(){
 		Argument result = new Argument();
 		String name = getChildren().get(0).getChildren().get(0).evaluate().getString();
 		int start = (int) getChildren().get(0).getChildren().get(1).evaluate().getDouble();

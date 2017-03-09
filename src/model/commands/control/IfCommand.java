@@ -6,12 +6,12 @@ import model.parser.Argument;
 public class IfCommand extends Command {
 	
 	@Override
-	public int numParameters() {
+	protected int internalNumParameters() {
 		return 2;
 	}
 
 	@Override
-	public Argument execute(){
+	protected Argument execute(){
 		Argument result = new Argument();
 		if (getChildren().get(0).evaluate().getDouble() != 0) {
 			result = getChildren().get(1).evaluate();

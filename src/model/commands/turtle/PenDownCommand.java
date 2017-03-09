@@ -5,12 +5,12 @@ import model.parser.Argument;
 public class PenDownCommand extends RepeatableTurtleCommand {
 
 	@Override
-	public int numParameters() {
+	protected int internalNumParameters() {
 		return 0;
 	}
 
 	@Override
-	public Argument innerExecute() {
+	protected Argument innerExecute() {
 		getTurtle().setPenDown(true);
 		return new Argument(1);
 	}

@@ -5,12 +5,12 @@ import model.parser.Argument;
 public class XCoordinateCommand extends TurtleCommand {
 
 	@Override
-	public int numParameters() {
+	protected int internalNumParameters() {
 		return 0;
 	}
 
 	@Override
-	public Argument execute() {
+	protected Argument execute() {
 		return new Argument(getTurtle().getDestination().getX());
 	}
 }

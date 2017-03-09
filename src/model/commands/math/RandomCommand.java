@@ -7,12 +7,12 @@ import model.parser.Argument;
 public class RandomCommand extends Command {
 	
 	@Override
-	public int numParameters() {
+	protected int internalNumParameters() {
 		return 1;
 	}
 
 	@Override
-	public Argument execute() {
+	protected Argument execute() {
 		return new Argument(new Random().nextInt((int) getParameter(0).getDouble()));
 	}
 }
