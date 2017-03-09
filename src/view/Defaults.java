@@ -17,6 +17,7 @@ public class Defaults {
 	private int numberOfTurtles = 1;
 	private String language = "English";
 	private String scriptPath = "";
+	private String turtlePath = "resources/images/turtle_1.png";
 
 	/**
 	 * 
@@ -28,8 +29,10 @@ public class Defaults {
 			numberOfTurtles = Integer.valueOf(resources.getString("TurtleNumber"));
 			language = resources.getString("Language");
 			scriptPath = resources.getString("File");
+			//turtlePath = resources.getString("TurtlePath");
 		} catch (Exception e) {
 			// show error
+			// check for valid paths
 			System.out.println(e.getMessage());
 		}
 	}
@@ -48,6 +51,10 @@ public class Defaults {
 
 	public String getScriptPath() {
 		return scriptPath;
+	}
+	
+	public String getTurtlePath() {
+		return turtlePath;
 	}
 
 }
