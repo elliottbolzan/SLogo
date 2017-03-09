@@ -12,6 +12,7 @@ public class GetPenColorCommand extends TurtleCommand {
 
 	@Override
 	protected Argument execute() {
-		return null;
+		return new Argument(getTurtle().getPenColorIndex());
 	}
+	
 }
