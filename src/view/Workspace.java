@@ -1,21 +1,20 @@
 package view;
 
-import java.awt.Dimension;
-
-import utils.Point;
 import view.input.InputContainer;
 import view.input.ShellView;
 import view.panel.Panel;
-import view.visualization.Turtle;
 import view.visualization.TurtleDisplay;
 import view.visualization.TurtleManager;
+
+import java.util.ResourceBundle;
+
 import controller.Controller;
 import javafx.geometry.Insets;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.SplitPane;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.paint.Color;
 
 /**
  * @author Elliott Bolzan
@@ -53,6 +52,7 @@ public class Workspace extends BorderPane implements ViewAPI {
 		panel = new Panel(this, 1);
 		pane.getItems().addAll(inputContainer, turtleDisplay, panel);
 		pane.setDividerPositions(0.3, 0.75);
+		loadPreferences();
 		setCenter(pane);
 	}
 
@@ -91,6 +91,11 @@ public class Workspace extends BorderPane implements ViewAPI {
 		turtleDisplay.clear();
 	}
 
+	@Override
+	public TurtleManager getTurtleManager() {
+		return turtleDisplay.getTurtleManager();
+	}
+
 	public void showMessage(String message) {
 		Alert alert = new Alert(AlertType.ERROR);
 		alert.setTitle(controller.getResources().getString("ErrorTitle"));
@@ -99,9 +104,17 @@ public class Workspace extends BorderPane implements ViewAPI {
 		alert.showAndWait();
 	}
 
-	@Override
-	public TurtleManager getTurtleManager() {
-		return turtleDisplay.getTurtleManager();
+	private void loadPreferences() {
+		ResourceBundle resources = ResourceBundle.getBundle("resources/WorkspaceSettings");
+		try {
+			Color color = Color.valueOf(resources.getString("Color"));
+			int turtleNumber = Integer.valueOf(resources.getString("TurtleNumber"));
+			String language = resources.getString("Language");
+			String defaultScript = resources.getString("File");
+			inputContainer.getScriptView().readFileIn(defaultScript);
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
 	}
 
 }
