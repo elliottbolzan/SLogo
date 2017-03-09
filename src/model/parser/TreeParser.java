@@ -157,15 +157,15 @@ public class TreeParser implements ParserAPI {
 
 	private String handleComment(String s) {
 		ArrayList<String> commentFinder = new ArrayList<>(Arrays.asList(s.split("\\n")));
-		//StringBuilder sb = new StringBuilder();
-		//commentFinder.stream().filter(e -> e.trim().charAt(0) != '#').forEach(e -> sb.append(e + " "));
-		//String result = sb.toString();
-		String result = "";
+		StringBuilder sb = new StringBuilder();
+		commentFinder.stream().filter(e -> e.trim().charAt(0) != '#').forEach(e -> sb.append(e + " "));
+		String result = sb.toString();
+		/*String result = "";
 		for (String line: s.split("\n")) {
 			if (!(line.contains("#"))) {
 				result += line + " ";
 			}
-		}
+		}*/
 		if (result.contains("#"))
 			controller.getView().showMessage("Proper comment must have its own line and begin with #.");
 		return result.trim();

@@ -41,12 +41,16 @@ public class TurtleDisplay extends StackPane {
 	private Timeline myAnimation;
 	private boolean animationIsPlaying;
 	private SimpleDoubleProperty myAnimationSpeed;
+	
+	private History history;
 
 	public TurtleDisplay(Workspace workspace, int initialNumber, Image turtleImage) {
 		myLineLength = 1.0;
 		myAnimation = new Timeline();
 		myAnimation.setCycleCount(Timeline.INDEFINITE);
 		myWorkspace = workspace;
+		
+		history = new History();
 
 		this.setMinSize(300, 280);
 		this.setPrefSize(SIZE, SIZE);
@@ -106,6 +110,7 @@ public class TurtleDisplay extends StackPane {
 	}
 
 	protected void drawLine(Point start, Point finish, Color color, double width) {
+		history.add(myDisplayArea);
 		Line line = new Line(start.getX(), start.getY(), finish.getX(), finish.getY());
 		line.setStroke(color);
 		line.setStrokeWidth(width);
@@ -138,6 +143,9 @@ public class TurtleDisplay extends StackPane {
 		mySpeedSlider.valueProperty().addListener(e -> this.resetAnimation(myAnimationSpeed.get()));
 		this.resetAnimation(myAnimationSpeed.get());
 
+		Button undoButton = new Button("Undo");
+		undoButton.setOnAction(e -> this.undo());
+		
 		Button playButton = new Button("Play");
 		playButton.setOnAction(e -> this.playAnimation());
 		Button stopButton = new Button("Stop");
@@ -145,7 +153,7 @@ public class TurtleDisplay extends StackPane {
 		Button stepButton = new Button("Step");
 		stepButton.setOnAction(e -> this.singleStepCommand());
 
-		myToolBar.getChildren().addAll(playButton, stopButton, stepButton, mySpeedSlider);
+		myToolBar.getChildren().addAll(undoButton, playButton, stopButton, stepButton, mySpeedSlider);
 		myToolBar.setPrefWidth(width);
 		myToolBar.translateYProperty().bind(myDisplayArea.heightProperty().subtract(playButton.heightProperty()));
 		this.getChildren().add(myToolBar);
@@ -197,4 +205,9 @@ public class TurtleDisplay extends StackPane {
 		animationIsPlaying = false;
 		myAnimation.play();
 	}
+	
+	private void undo() {
+		myDisplayArea = history.returnToPrevious();
+	}
+	
 }
