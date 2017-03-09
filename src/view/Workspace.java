@@ -117,4 +117,8 @@ public class Workspace extends BorderPane implements ViewAPI {
 		}
 	}
 
+	@Override
+	public void setBackgroundColorAtIndex(int index) {
+		turtleDisplay.setBackgroundColor(panel.getColorAtIndex(index));
+	}
 }
