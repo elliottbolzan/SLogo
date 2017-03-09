@@ -14,6 +14,8 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.SplitPane;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.paint.Color;
+
 /**
  * @author Elliott Bolzan
  *
@@ -89,7 +91,7 @@ public class Workspace extends BorderPane implements ViewAPI {
 	}
 
 	@Override
-	public void setBackgroundColorAtIndex(int index) {
-		turtleDisplay.setBackgroundColor(panel.getColorAtIndex(index));
+	public void setBackgroundColor(Color color) {
+		turtleDisplay.setBackgroundColor(color);
 	}
 }

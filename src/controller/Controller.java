@@ -2,6 +2,8 @@ package controller;
 import java.awt.Dimension;
 import java.util.ResourceBundle;
 import javafx.collections.ObservableList;
+import javafx.scene.paint.Color;
+import model.IndexedColor;
 import model.Model;
 import model.ModelAPI;
 import model.Variable;
@@ -70,6 +72,11 @@ public class Controller implements ViewAPI, ModelAPI {
 		return model.getUserDefinedCommands();
 	}
 	
+	@Override 
+	public ObservableList<IndexedColor> getColorPalette() {
+		return model.getColorPalette();
+	}
+	
 	@Override
 	public void setLanguage(String language) {
 		model.setLanguage(language);
@@ -85,7 +92,7 @@ public class Controller implements ViewAPI, ModelAPI {
 	}
 
 	@Override
-	public void setBackgroundColorAtIndex(int index) {
-		workspace.setBackgroundColorAtIndex(index);
+	public void setBackgroundColor(Color color) {
+		workspace.setBackgroundColor(color);
 	}
 }

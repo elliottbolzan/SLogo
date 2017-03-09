@@ -16,7 +16,7 @@ public class SetBackgroundCommand extends TurtleCommand{
 	@Override
 	public Argument execute() {
 		int index = (int)this.getParameter(0).getDouble();
-		getController().setBackgroundColorAtIndex(index);
+		getController().setBackgroundColor(getController().getColorPalette().get(index-1).colorProperty().get());
 		return new Argument(index);
 	}
 	

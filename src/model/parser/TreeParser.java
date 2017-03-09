@@ -5,6 +5,7 @@ import java.util.Arrays;
 
 import controller.Controller;
 import javafx.collections.ObservableList;
+import model.IndexedColor;
 import model.State;
 import model.Variable;
 import model.commands.Command;
@@ -54,6 +55,10 @@ public class TreeParser implements ParserAPI {
 		return state.getUserDefinedCommands();
 	}
 
+	public ObservableList<IndexedColor> getColorPalette() {
+		return state.getColorPalette();
+	}
+	
 	@Override
 	public ObservableList<String> getHistory() {
 		return parseHistory.getHistoryList();
