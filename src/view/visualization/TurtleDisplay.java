@@ -39,14 +39,14 @@ public class TurtleDisplay extends StackPane {
 	private Workspace myWorkspace;
 
 	private Pane myDisplayArea;
-	private HBox myToolBar;
+	private Slider mySpeedSlider;
 	private Dimension myDimensions;
 
 	private TurtleManager turtleManager;
 	private double myLineLength;
 
 	private Timeline myAnimation;
-	private boolean isAnimated;
+	//private boolean isAnimated;
 	private SimpleDoubleProperty myAnimationSpeed;
 
 	public TurtleDisplay(Workspace workspace) {
@@ -66,7 +66,7 @@ public class TurtleDisplay extends StackPane {
 
 		turtleManager = new TurtleManager(1, this);
 
-		isAnimated = true;
+		//isAnimated = true;
 	}
 
 	protected Workspace getWorkspace() {
@@ -130,7 +130,8 @@ public class TurtleDisplay extends StackPane {
 		} else {
 			turtle.setDestination(destination, myLineLength);
 		}
-		if (!isAnimated) {
+		
+		if (myAnimationSpeed.get() == mySpeedSlider.getMax()) {
 			while (turtle.isMovingProperty().get()) {
 				turtle.updateMovement();
 			}
@@ -159,21 +160,21 @@ public class TurtleDisplay extends StackPane {
 	}
 
 	private void createToolBar(int width) {
-		myToolBar = new HBox();
+		HBox myToolBar = new HBox();
 		myToolBar.setPrefWidth(width);
 		myAnimationSpeed = new SimpleDoubleProperty();
 
-		Slider speedSlide = new Slider(0, 1, 0.2);
-		speedSlide.setPrefWidth(width / 2);
-		speedSlide.setShowTickMarks(true);
-		speedSlide.setShowTickLabels(true);
-		speedSlide.setMajorTickUnit(0.25);
+		mySpeedSlider = new Slider(0, 1, 0.2);
+		mySpeedSlider.setPrefWidth(width / 2);
+		mySpeedSlider.setShowTickMarks(true);
+		mySpeedSlider.setShowTickLabels(true);
+		mySpeedSlider.setMajorTickUnit(0.25);
 
-		myAnimationSpeed.bind(speedSlide.valueProperty());
-		speedSlide.valueProperty().addListener(e -> this.resetAnimation(myAnimationSpeed.get()));
+		myAnimationSpeed.bind(mySpeedSlider.valueProperty());
+		mySpeedSlider.valueProperty().addListener(e -> this.resetAnimation(myAnimationSpeed.get()));
 		this.resetAnimation(myAnimationSpeed.get());
 
-		myToolBar.getChildren().add(speedSlide);
+		myToolBar.getChildren().add(mySpeedSlider);
 		this.getChildren().add(myToolBar);
 	}
 
