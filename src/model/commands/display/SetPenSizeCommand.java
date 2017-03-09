@@ -15,7 +15,10 @@ public class SetPenSizeCommand extends TurtleCommand{
 
 	@Override
 	public Argument execute() {
-		return null;
+		int width = (int)this.getParameter(0).getDouble();
+		getController().getTurtleManager().setTurtlePenSize(width);
+		
+		return new Argument(width);
 	}
 	
 }
