@@ -12,6 +12,6 @@ public class SineCommand extends Command {
 
 	@Override
 	public Argument execute() {
-		return new Argument(Math.sin(Math.toRadians(getParameter(0).getDouble())));
+		return new Argument(Math.sin((Math.toRadians(getParameter(0).getDouble()))));
 	}
 }

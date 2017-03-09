@@ -3,9 +3,9 @@ package model.commands.math;
 import model.commands.Command;
 import model.parser.Argument;
 
-public class PowCommand extends Command {
+public class PowerCommand extends Command {
 	
-	public PowCommand() {
+	public PowerCommand() {
 		super();
 	}
 	
