@@ -11,16 +11,20 @@ import java.util.Map;
 
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.beans.property.SimpleDoubleProperty;
 import javafx.geometry.Insets;
 import javafx.scene.Group;
 import javafx.scene.Node;
+import javafx.scene.control.Slider;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
 import javafx.scene.paint.Color;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.CornerRadii;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 
@@ -32,9 +36,10 @@ public class TurtleDisplay extends StackPane {
 	
 	private final static int SIZE = 450;
 
-	private Workspace workspace;
+	private Workspace myWorkspace;
 	
 	private Pane myDisplayArea;
+	private HBox myToolBar;
 	private Dimension myDimensions;
 
 	private Map<Integer, Turtle> myTurtles;
@@ -42,27 +47,29 @@ public class TurtleDisplay extends StackPane {
 
 	private Timeline myAnimation;
 	private boolean isAnimated;
+	private SimpleDoubleProperty myAnimationSpeed;
 
 	public TurtleDisplay(Workspace workspace) {
-		this.workspace = workspace;
-		setMinSize(300, 280);
-		this.createDisplayArea(SIZE, SIZE);
-		setPrefSize(SIZE, SIZE);
-		this.setBackgroundColor(Color.WHITE);
 		myTurtles = new HashMap<Integer, Turtle>();
-		
-		this.createTurtle(1);
-		this.createTurtleInfo();
 		myLineLength = 1.0;
-		
 		myAnimation = new Timeline();
 		myAnimation.setCycleCount(Timeline.INDEFINITE);
+		
+		myWorkspace = workspace;
+		
+		this.setMinSize(300, 280);
+		this.setPrefSize(SIZE, SIZE);
+		
+		this.createDisplayArea(SIZE, SIZE);
+		this.createToolBar(SIZE);
+		this.setBackgroundColor(Color.WHITE);
+		this.createTurtle(1);
 
 		isAnimated = true;
 	}
 
 	protected Workspace getWorkspace() {
-		return workspace;
+		return myWorkspace;
 	}
 	
 	public Dimension getDimensions() {
@@ -72,7 +79,6 @@ public class TurtleDisplay extends StackPane {
 	public void clear() {
 		myDisplayArea.getChildren().clear();
 		this.createTurtle(1);
-		this.createTurtleInfo();
 	}
 	
 	public Color getBackgroundColor() {
@@ -113,7 +119,6 @@ public class TurtleDisplay extends StackPane {
 	}
 
 	public void turnTurtle(int id, double degrees) {
-		//TODO do animation
 		this.getTurtle(id).setRotation(this.getTurtle(id).getRotation() + degrees);
 	}
 	
@@ -130,7 +135,6 @@ public class TurtleDisplay extends StackPane {
 			turtle.addFutureDestination(destination);
 		} else {
 			turtle.setDestination(destination, myLineLength);
-			this.recalculateAnimationSpeed(id, destination);
 		}
 
 		if (!isAnimated) {
@@ -138,10 +142,6 @@ public class TurtleDisplay extends StackPane {
 				turtle.updateMovement();
 			}
 		}
-	}
-
-	protected Group getView() {
-		return new Group(myDisplayArea);
 	}
 
 	protected void drawLine(Point start, Point finish, Color color, double width) {
@@ -162,7 +162,32 @@ public class TurtleDisplay extends StackPane {
 		clipBoundaries.heightProperty().bind(myDisplayArea.heightProperty());
 		myDisplayArea.setClip(clipBoundaries);
 		
-		getChildren().add(myDisplayArea);
+		this.getChildren().add(myDisplayArea);
+	}
+	
+	private void createToolBar(int width) {
+		myToolBar = new HBox();
+		myToolBar.setPrefWidth(width);
+		myAnimationSpeed = new SimpleDoubleProperty();
+		
+		Slider speedSlide = new Slider(0,1,0.2);
+		speedSlide.setPrefWidth(width/2);
+		speedSlide.setShowTickMarks(true);
+		speedSlide.setShowTickLabels(true);
+		speedSlide.setMajorTickUnit(0.25);
+		
+		myAnimationSpeed.bind(speedSlide.valueProperty());
+		speedSlide.valueProperty().addListener(e -> this.resetAnimation(myAnimationSpeed.get()));	
+		this.resetAnimation(myAnimationSpeed.get());
+		
+		myToolBar.getChildren().add(speedSlide);
+		this.getChildren().add(myToolBar);
+	}
+
+	private void createTurtle(int id) {
+		Turtle turtle = new Turtle(id, this);
+		myTurtles.put(id, turtle);
+		this.addToDisplayArea(turtle.getView());
 	}
 
 	private void addToDisplayArea(Node element) {
@@ -176,19 +201,7 @@ public class TurtleDisplay extends StackPane {
 		});
 		myDisplayArea.getChildren().add(element);
 	}
-
-	private void createTurtle(int id) {
-		Turtle turtle = new Turtle(id, this);
-		myTurtles.put(id, turtle);
-		this.addToDisplayArea(turtle.getView());
-	}
 	
-	private void createTurtleInfo() {
-		TurtleInfo turtleInfo = new TurtleInfo(this.getTurtle(1)); 	//TODO
-		turtleInfo.getView().setScaleY(-1);
-		myDisplayArea.getChildren().add(turtleInfo.getView());
-	}
-
 	private void stepAnimation() {
 		for(Turtle turtle : myTurtles.values()) {
 			if (turtle.isMovingProperty().get()) {
@@ -201,23 +214,12 @@ public class TurtleDisplay extends StackPane {
 		}
 	}
 	
-	private void resetAnimation(double millisInterval) {
+	private void resetAnimation(double speed) {
+		double millisInterval = 1.0/(0.01 + 4*speed*speed);
 		myAnimation.stop();
 		myAnimation.getKeyFrames().clear();
 		KeyFrame frame = new KeyFrame(Duration.millis(millisInterval), e -> this.stepAnimation());
 		myAnimation.getKeyFrames().add(frame);
 		myAnimation.play();
-	}
-
-	private void recalculateAnimationSpeed(int id, Point destination) {
-		double distance = this.distanceBetween(this.getTurtle(id).getCurrentLocation(), destination);
-		double animationTickInterval = 1000.0 / distance;
-		this.resetAnimation(animationTickInterval);
-	}
-	
-	private double distanceBetween(Point a, Point b) {
-		double distanceX = a.getX() - b.getX();
-		double distanceY = a.getY() - b.getY();
-		return Math.sqrt(distanceX * distanceX + distanceY * distanceY);
 	}
 }

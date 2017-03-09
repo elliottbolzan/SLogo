@@ -1,4 +1,4 @@
-package view.settings;
+package view.panel;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -13,16 +13,23 @@ import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Separator;
+import javafx.scene.control.ScrollPane.ScrollBarPolicy;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import view.Workspace;
+import view.components.ColorPicker;
+import view.components.FilePicker;
 import view.visualization.Turtle;
 import view.visualization.TurtleDisplay;
 
-public class SettingsView extends VBox {
+public class SettingsView extends BorderPane {
 
 	private Workspace workspace;
 	private Controller controller;
@@ -35,7 +42,6 @@ public class SettingsView extends VBox {
 	private static final String PATH_TO_LANGUAGES = "src/resources/languages";
 
 	public SettingsView(Workspace workspace) {
-		super(16);
 		this.workspace = workspace;
 		controller = workspace.getController();
 		turtleDisplay = workspace.getDisplay();
@@ -43,9 +49,19 @@ public class SettingsView extends VBox {
 	}
 
 	private void setup() {
+		
+		ScrollPane scrollPane = new ScrollPane();
+		scrollPane.setHbarPolicy(ScrollBarPolicy.NEVER);
+		scrollPane.setVbarPolicy(ScrollBarPolicy.ALWAYS);
+		
+		scrollPane.prefViewportWidthProperty().bind(widthProperty());
+		scrollPane.prefViewportHeightProperty().bind(heightProperty());
+		
+		scrollPane.getStyleClass().add("panel-scroll-pane");
 
-		setAlignment(Pos.TOP_CENTER);
-		setPadding(new Insets(20, 20, 20, 20));
+		VBox box = new VBox(8);
+		box.setPadding(new Insets(5));
+		box.prefWidthProperty().bind(widthProperty());
 
 		myImagePicker = new FilePicker(controller, 200, controller.getResources().getString("ImagePickerFieldString"), "*.png", "*.jpg", "*.gif");
 		myImagePicker.getTextField().textProperty().addListener(e -> this.setTurtleImage());
@@ -63,8 +79,13 @@ public class SettingsView extends VBox {
 		myPenPicker = new ColorPicker(controller, Color.BLACK, (e -> this.setPenColor()));
 		VBox penPickerBox = addLabelTo(myPenPicker, controller.getResources().getString("PenPickerLabel"));
 
-		getChildren().addAll(languagePickerBox, new Separator(), imagePickerBox, new Separator(), backgroundPickerBox, new Separator(), penPickerBox);
+		box.getChildren().addAll(languagePickerBox, new Separator(), imagePickerBox, new Separator(), backgroundPickerBox, new Separator(), penPickerBox);
 		
+		
+		scrollPane.setContent(box);
+		scrollPane.prefHeightProperty().bind(heightProperty());
+
+		setCenter(scrollPane);
 	}
 
 	private List<String> getLanguages() {
@@ -107,7 +128,6 @@ public class SettingsView extends VBox {
 		VBox result = new VBox(8);
 		Label label = new Label(string);
 		result.getChildren().addAll(label, node);
-		result.setAlignment(Pos.CENTER);
 		return result;
 	}
 }

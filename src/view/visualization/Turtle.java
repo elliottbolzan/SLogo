@@ -5,7 +5,9 @@ import utils.Point;
 import java.util.LinkedList;
 import java.util.Queue;
 
-import javafx.animation.ScaleTransition;
+import javafx.animation.RotateTransition;
+import javafx.animation.SequentialTransition;
+import javafx.animation.Timeline;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.scene.image.Image;
@@ -18,7 +20,7 @@ import javafx.util.Duration;
  *
  */
 public class Turtle {
-	private final static String BASIC_IMAGE = "view/visualization/turtle.png";
+	private final static String BASIC_IMAGE = "view/visualization/turtle_1.png";
 	private ImageView myImageView;
 
 	private TurtleDisplay myDisplay;
@@ -58,9 +60,7 @@ public class Turtle {
 		myRotationProperty = new SimpleDoubleProperty();
 		this.setRotation(90.0);
 		isMovingProperty = new SimpleBooleanProperty(false);
-		
-		myImageView.setOnMouseClicked(e -> wasClicked());
-
+	
 	}
 
 	public int getID() {
@@ -115,14 +115,6 @@ public class Turtle {
 		return myImageView;
 	}
 	
-	public double getWidth() {
-		return myImageView.getFitWidth();
-	}
-	
-	public double getHeight() {
-		return myImageView.getFitHeight();
-	}
-	
 	protected TurtleDisplay getDisplay() {
 		return myDisplay;
 	}
@@ -145,8 +137,10 @@ public class Turtle {
 	}
 
 	protected void setRotation(double degrees) {
-		myRotationProperty.set(degrees);
-		myImageView.setRotate(degrees + 90);
+		myRotationProperty.set(degrees % 360);
+		RotateTransition rotate = new RotateTransition(Duration.millis(250));
+		rotate.setToAngle((degrees + 90) % 360);
+        new SequentialTransition(myImageView, rotate).play();
 	}
 	
 	protected void setDestination(Point destination, double speed) {
@@ -258,32 +252,6 @@ public class Turtle {
 		} else {
 			return Math.abs(distanceX / stepLength);
 		}
-	}
-	
-	private void wasClicked() {
-		if (!(this.equals(myDisplay.getWorkspace().getBrowser().getSelectedTurtle()))) {
-			grow();
-			myDisplay.getWorkspace().getBrowser().clickedTurtle(this);
-		}
-	}
-	
-	private void grow() {
-		//animate(myImageView.getScaleX() * 1.4, myImageView.getScaleY() * 1.4);
-	}
-	
-	protected void shrink() {
-		//animate(myImageView.getScaleX() / 1.4, myImageView.getScaleY() / 1.4);
-	}
-	
-	private void animate(double xScale, double yScale) {
-		ScaleTransition scaleTransition = new ScaleTransition();
-		scaleTransition.setDuration(Duration.millis(100));
-		scaleTransition.setNode(myImageView);
-		scaleTransition.setFromX(myImageView.getScaleX());
-        scaleTransition.setFromY(myImageView.getScaleY());
-        scaleTransition.setToX(xScale);
-        scaleTransition.setToY(yScale);
-        scaleTransition.playFromStart();
 	}
 
 }

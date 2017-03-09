@@ -1,8 +1,9 @@
-package view.visualization;
+package view;
 
 import java.util.ResourceBundle;
 
 import controller.Controller;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
@@ -13,14 +14,12 @@ import javafx.scene.control.TabPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
-import view.settings.HelpView;
 
 /**
  * @author Elliott Bolzan
@@ -33,7 +32,6 @@ public class WorkspaceBrowser extends BorderPane {
 	private int workspaces = 0;
 	private ResourceBundle resources = ResourceBundle.getBundle("resources/UserInterface");
 	private String stylesheetPath = "resources/style.css";
-	private KeyHandler handler = new KeyHandler();
 
 	/**
 	 * 
@@ -42,9 +40,16 @@ public class WorkspaceBrowser extends BorderPane {
 		this.stage = stage;
 		setupStage();
 		newWorkspace();
+		Platform.runLater(new Runnable() {
+			@Override
+			public void run() {
+				getCurrentWorkspace().getShell().getTextArea().requestFocus();
+			}
+		});
 	}
 
 	private void setupStage() {
+		
 		stage.setTitle(resources.getString("SLogoTitle"));
 		stage.setMinWidth(600);
 		stage.setMinHeight(300);
@@ -53,7 +58,7 @@ public class WorkspaceBrowser extends BorderPane {
 				System.exit(0);
 			}
 		});
-		
+
 		stage.setScene(createScene());
 		stage.show();
 
@@ -73,15 +78,36 @@ public class WorkspaceBrowser extends BorderPane {
 		AnchorPane.setBottomAnchor(tabPane, 1.0);
 
 		setCenter(anchor);
+		detectArrowKeys();
+	}
 
+	private void detectArrowKeys() {
+		addEventFilter(KeyEvent.ANY, new EventHandler<KeyEvent>() {
+			@Override
+			public void handle(KeyEvent event) {
+				switch (event.getCode()) {
+				case UP:
+				case DOWN:
+				case LEFT:
+				case RIGHT:
+					getCurrentWorkspace().keyPressed(event);
+				}
+			}
+		});
 	}
 
 	private Scene createScene() {
 		Scene scene = new Scene(this, 1000, 480);
 		scene.getStylesheets().add(stylesheetPath);
-		scene.addEventFilter(MouseEvent.MOUSE_PRESSED, e -> handler.mouseClicked(e));
-		scene.addEventFilter(KeyEvent.KEY_PRESSED, e -> handler.keyPressed(e));
 		return scene;
+	}
+
+	private void hello() {
+		System.out.println("called");
+	}
+
+	private Workspace getCurrentWorkspace() {
+		return (Workspace) tabPane.getSelectionModel().getSelectedItem().getContent();
 	}
 
 	private void newWorkspace() {
@@ -118,14 +144,6 @@ public class WorkspaceBrowser extends BorderPane {
 	private void showHelp() {
 		HelpView helpView = new HelpView(resources);
 		helpView.show();
-	}
-	
-	public void clickedTurtle(Turtle turtle) {
-		handler.setSelectedTurtle(turtle);
-	}
-	
-	public Turtle getSelectedTurtle() {
-		return handler.getSelectedTurtle();
 	}
 
 }

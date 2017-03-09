@@ -10,10 +10,11 @@ import model.ActiveTurtles;
 import model.Model;
 import model.ModelAPI;
 import model.Variable;
+import model.parser.nodes.Node;
 import view.Workspace;
+import view.WorkspaceBrowser;
 import view.ViewAPI;
 import view.visualization.Turtle;
-import view.visualization.WorkspaceBrowser;
 
 /**
  * @author Elliott Bolzan
@@ -93,8 +94,8 @@ public class Controller implements ViewAPI, ModelAPI {
 	}
 	
 	@Override
-	public void parse(String string) {
-		model.parse(string);
+	public Node parse(String string, boolean addToHistory) {
+		return model.parse(string, addToHistory);
 	}
 
 	@Override
