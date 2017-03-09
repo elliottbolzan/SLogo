@@ -1,7 +1,5 @@
 package view;
-
 import java.awt.Dimension;
-
 import utils.Point;
 import view.input.InputContainer;
 import view.input.ShellView;
@@ -25,14 +23,12 @@ import javafx.scene.paint.Color;
  *         initializes and controls the user interface.
  */
 public class Workspace extends BorderPane implements ViewAPI {
-
 	private WorkspaceBrowser browser;
 	private Controller controller;
 	private InputContainer inputContainer;
 	private TurtleDisplay turtleDisplay;
 	private Panel panel;
 	private SplitPane pane;
-
 	/**
 	 * Creates a View object.
 	 * 
@@ -46,7 +42,6 @@ public class Workspace extends BorderPane implements ViewAPI {
 		setPadding(new Insets(4));
 		setup();
 	}
-
 	private void setup() {
 		pane = new SplitPane();
 		inputContainer = new InputContainer(this, 0);
@@ -56,42 +51,33 @@ public class Workspace extends BorderPane implements ViewAPI {
 		pane.setDividerPositions(0.3, 0.75);
 		setCenter(pane);
 	}
-
 	public WorkspaceBrowser getBrowser() {
 		return browser;
 	}
-
 	public ShellView getShell() {
 		return inputContainer.getShellView();
 	}
-
 	public Controller getController() {
 		return controller;
 	}
-
 	public SplitPane getPane() {
 		return pane;
 	}
-
 	public TurtleDisplay getDisplay() {
 		return turtleDisplay;
 	}
-
 	@Override
 	public void print(String string) {
 		inputContainer.getShellView().print(string);
 	}
-
 	@Override
 	public void clearConsole() {
 		inputContainer.getShellView().clear();
 	}
-
 	@Override
 	public void clearDisplay() {
 		turtleDisplay.clear();
 	}
-
 	public void showMessage(String message) {
 		Alert alert = new Alert(AlertType.ERROR);
 		alert.setTitle(controller.getResources().getString("ErrorTitle"));
@@ -99,7 +85,6 @@ public class Workspace extends BorderPane implements ViewAPI {
 		alert.setContentText(message);
 		alert.showAndWait();
 	}
-
 	@Override
 	public TurtleManager getTurtleManager() {
 		return turtleDisplay.getTurtleManager();

@@ -98,6 +98,11 @@ public class TurtleManager {
 		}
 	}
 
+	
+	public HashMap<Integer,Turtle> getTurtles(){
+		return turtles;
+	}
+
 	private void addTurtle(Turtle turtle) {
 		display.addToDisplayArea(turtle.getView());
 		currentTurtle = turtle;

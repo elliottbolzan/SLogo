@@ -1,8 +1,6 @@
 package view;
-
 import javafx.scene.paint.Color;
 import view.visualization.TurtleManager;
-
 /**
  * @author Elliott Bolzan
  *
