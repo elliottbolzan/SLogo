@@ -110,6 +110,9 @@ public class TurtleManager {
 			} else {
 				if (turtle.hasAnotherDestination()) {
 					display.moveTurtle(turtle, turtle.pollFutureDestination());
+					if(!display.animationIsPlaying()) {
+						display.stopAnimation();
+					}
 				}
 			}
 			return 0;
