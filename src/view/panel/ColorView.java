@@ -28,14 +28,6 @@ public class ColorView extends BorderPane {
 		this.data = data;
 		this.setup();
 	}
-
-	public Color getColorAtIndex(int index) {
-		return data.get(index - 1).colorProperty().getValue();
-	}
-	
-	public void setColorAtIndex(int index, Color color) {
-		data.set(index - 1, new IndexedColor(index, color));
-	}
 	
 	private void setup() {
 		TableView<IndexedColor> table = new TableView<IndexedColor>();

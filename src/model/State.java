@@ -15,15 +15,18 @@ public class State {
 	private ObservableList<Variable> variables;
 	private ObservableList<String> userDefinedCommandNames;
 	private ObservableList<IndexedColor> colors;
+	private ObservableList<IndexedImage> images;
 	
 
 	public State() {
 		variables = FXCollections.observableArrayList(new ArrayList<Variable>());
 		userDefinedCommandNames = FXCollections.observableArrayList(new ArrayList<String>());
 		colors = FXCollections.observableArrayList(new ArrayList<IndexedColor>());
+		images = FXCollections.observableArrayList(new ArrayList<IndexedImage>());
 		cmdList = new HashMap<String, MakeUserInstructionCommand>();
 		
 		makeDefaultColors();
+		makeDefaultImages();
 	}
 
 	public void setVariable(Variable var) {
@@ -87,5 +90,17 @@ public class State {
 		colors.add(new IndexedColor(8, Color.WHITE));
 		colors.add(new IndexedColor(9, Color.GOLD));
 		colors.add(new IndexedColor(10, Color.SILVER));
+	}
+	
+	public ObservableList<IndexedImage> getImagePalette() {
+		return images;
+	}
+	
+	private void makeDefaultImages() {
+		images.add(new IndexedImage(1, "resources/images/turtle_1.png"));
+		images.add(new IndexedImage(2, "resources/images/turtle_2.png"));
+		images.add(new IndexedImage(3, "resources/images/turtle_3.png"));
+		images.add(new IndexedImage(4, "resources/images/turtle_4.png"));
+		images.add(new IndexedImage(5, "resources/images/turtle_5.png"));
 	}
 }
