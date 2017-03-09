@@ -1,6 +1,7 @@
 package view.panel;
 
 import controller.Controller;
+import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Spinner;
@@ -45,6 +46,7 @@ public class TurtleSettingsView {
 		idPicker.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, Integer.MAX_VALUE, 0));
 		idPicker.valueProperty().addListener(e -> this.trackTurtle(idPicker.getValue()));
 		turtleID.getChildren().addAll(idLabel, idPicker);
+		turtleID.setAlignment(Pos.CENTER_LEFT);
 
 		myContent.getChildren().addAll(myTurtleButtons.getView(), turtleID);
 

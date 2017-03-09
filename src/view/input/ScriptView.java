@@ -15,7 +15,6 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
-import javafx.scene.control.ButtonBar;
 import javafx.scene.control.SplitPane;
 import javafx.scene.control.TextInputDialog;
 import javafx.scene.layout.HBox;
@@ -51,10 +50,10 @@ public class ScriptView extends InputView {
 
 	private Node createButtonBar() {
 		HBox box = new HBox();
-		Button loadButton = makeButton("Load", e -> load());
-		Button saveButton = makeButton("Save", e -> save());
-		Button clearButton = makeButton("Clear", e -> clear());
-		Button runButton = makeButton("Run", e -> run());
+		Button loadButton = makeButton(workspace.getController().getResources().getString("LoadTitle"), e -> load());
+		Button saveButton = makeButton(workspace.getController().getResources().getString("SaveTitle"), e -> save());
+		Button clearButton = makeButton(workspace.getController().getResources().getString("ClearTitle"), e -> clear());
+		Button runButton = makeButton(workspace.getController().getResources().getString("RunTitle"), e -> run());
 		HBox.setHgrow(loadButton, Priority.ALWAYS);
 		HBox.setHgrow(saveButton, Priority.ALWAYS);
 		HBox.setHgrow(clearButton, Priority.ALWAYS);
