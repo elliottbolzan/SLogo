@@ -8,8 +8,6 @@ import javafx.scene.control.Accordion;
 import javafx.scene.control.TitledPane;
 import view.View;
 import view.Workspace;
-import view.components.TurtleButtons;
-import view.visualization.TurtleInfo;
 
 /**
  * @author Elliott Bolzan
@@ -42,7 +40,7 @@ public class Panel extends View {
 				add(workspace.getController().getResources().getString("SettingsTitle"));
 				add(workspace.getController().getResources().getString("ColorsTitle"));
 				add(workspace.getController().getResources().getString("ImagesTitle"));
-				add(workspace.getController().getResources().getString("TurtleTitle"));
+				add(workspace.getController().getResources().getString("TurtleSettingsTitle"));
 			}
 		};
 		subviews = new ArrayList<Node>() {
@@ -54,7 +52,7 @@ public class Panel extends View {
 				add(new SettingsView(workspace));
 				add(new ColorView());
 				add(new TurtleImageView());
-				add(new TurtlePanel(workspace.getController()).getView());
+				add(new TurtleSettingsView(workspace.getController()).getView());
 			}
 		};
 	}

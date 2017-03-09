@@ -7,10 +7,13 @@ import java.util.Queue;
 
 import javafx.animation.RotateTransition;
 import javafx.animation.SequentialTransition;
+import javafx.beans.binding.Bindings;
+import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.ReadOnlyBooleanProperty;
 import javafx.beans.property.ReadOnlyDoubleProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleDoubleProperty;
+import javafx.scene.effect.ColorAdjust;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
@@ -22,7 +25,7 @@ import javafx.util.Duration;
  */
 public class Turtle {
 	
-	private final static String BASIC_IMAGE = "view/visualization/turtle_1.png";
+	private final static String BASIC_IMAGE = "resources/images/turtle_1.png";
 	private ImageView myImageView;
 
 	private TurtleDisplay myDisplay;
@@ -42,9 +45,9 @@ public class Turtle {
 	private Point myStepSize;
 	
 	private int myID;
+	private SimpleBooleanProperty isActiveProperty;
 
 	public Turtle(TurtleDisplay home, int ID) {
-		
 		myImageView = new ImageView(new Image(getClass().getClassLoader().getResourceAsStream(BASIC_IMAGE)));
 		myFutureDestinations = new LinkedList<Point>();
 		
@@ -63,10 +66,9 @@ public class Turtle {
 		myRotationProperty = new SimpleDoubleProperty();
 		this.setRotation(90.0);
 		isMovingProperty = new SimpleBooleanProperty(false);
-	}
-	
-	public void turn(double degrees) {
-		setRotation(getRotation() + degrees);
+		isActiveProperty = new SimpleBooleanProperty(true);
+		
+		myImageView.opacityProperty().bind(Bindings.when(isActiveProperty).then(1.0).otherwise(0.3));
 	}
 	
 	public int getID() {
@@ -91,6 +93,10 @@ public class Turtle {
 	
 	public Color getPenColor() {
 		return myPenColor;
+	}
+	
+	public BooleanProperty activeProperty() {
+		return isActiveProperty;
 	}
 	
 	public ReadOnlyBooleanProperty readOnlyPenDownProperty() {
@@ -125,21 +131,25 @@ public class Turtle {
 		return myDisplay;
 	}
 	
-	protected void setImage(String url) {
+	public void setImage(String url) {
 		myImageView.setImage(new Image(url));
 		this.centerImage();
 	}
 
-	protected void setPenDown(boolean down) {
+	public void setPenDown(boolean down) {
 		myPenDownProperty.set(down);
 	}
 
-	protected void setPenColor(Color color) {
+	public void setPenColor(Color color) {
 		myPenColor = color;
 	}
 
-	protected void setPenWidth(double width) {
+	public void setPenWidth(double width) {
 		myPenWidth = width;
+	}
+	
+	public void setVisible(boolean visible) {
+		getView().setVisible(visible);
 	}
 
 	protected void setRotation(double degrees) {
@@ -189,6 +199,14 @@ public class Turtle {
 		myXProperty.set(point.getX());
 		myYProperty.set(point.getY());
 		this.centerImage();
+	}
+	
+	public void turn(double degrees) {
+		setRotation(getRotation() + degrees);
+	}
+	
+	public void moveTo(Point point) {
+		myDisplay.moveTurtle(this, point);
 	}
 
 	private void centerImage() {

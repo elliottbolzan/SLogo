@@ -6,10 +6,10 @@ package view.visualization;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.scene.paint.Color;
 import utils.Point;
 
 /**
@@ -36,11 +36,30 @@ public class TurtleManager {
 		this.display = display;
 		clear();
 	}
+	
+	public ObservableList<Turtle> getActiveTurtles() {
+		return activeTurtles;
+	}
+	
+	public Map<Integer, Turtle> getAllTurtles() {
+		return turtles;
+	}
+	
+	public Turtle getCurrentTurtle() {
+		return currentTurtle;
+	}
+	
+	public void setCurrentTurtle(Turtle turtle) {
+		currentTurtle = turtle;
+	}
 
+	public Turtle getTurtleByID(int ID) {
+		return turtles.get(ID);
+	}
+	
 	private double applyToTurtles(Runnable runnable) {
 		double result = 0;
 		for (Turtle turtle : activeTurtles) {
-			currentTurtle = turtle;
 			result = runnable.run(turtle);
 		}
 		return result;
@@ -57,9 +76,7 @@ public class TurtleManager {
 			setTurtleActive(ID, true);
 		}
 		for (Integer ID : turtles.keySet()) {
-			if (!(indices.contains(ID))) {
-				setTurtleActive(ID, false);
-			}
+			setTurtleActive(ID, indices.contains(ID));
 		}
 	}
 
@@ -67,28 +84,23 @@ public class TurtleManager {
 		if (turtles.containsKey(ID)) {
 			Turtle turtle = turtles.get(ID);
 			if (active && !(activeTurtles.contains(turtle))) {
-				activeTurtles.add(turtle);
+				turtle.activeProperty().set(true);
 			} else if (!active && activeTurtles.contains(turtle)) {
-				activeTurtles.remove(turtle);
+				turtle.activeProperty().set(false);
 			}
 		} else {
 			Turtle turtle = new Turtle(display, ID);
 			turtles.put(ID, turtle);
 			activeTurtles.add(turtle);
+			turtle.activeProperty().set(true);
+			turtle.activeProperty().addListener(e -> this.onTurtleActivityModified(turtle));
 			addTurtle(turtle);
 		}
 	}
-	
-	public ObservableList<Turtle> getActiveTurtles(){
-		return activeTurtles;
-	}
+
 	
 	public HashMap<Integer,Turtle> getTurtles(){
 		return turtles;
-	}
-
-	public Turtle getCurrentTurtle() {
-		return currentTurtle;
 	}
 
 	private void addTurtle(Turtle turtle) {
@@ -109,82 +121,27 @@ public class TurtleManager {
 			} else {
 				if (turtle.hasAnotherDestination()) {
 					display.moveTurtle(turtle, turtle.pollFutureDestination());
+					if(!display.animationIsPlaying()) {
+						display.stopAnimation();
+					}
 				}
 			}
 			return 0;
 		});
 	}
-
-	public void setPenDown(boolean down) {
+	
+	public void setTurtleImage(String URL) {
 		applyToTurtles(turtle -> {
-			turtle.setPenDown(down);
+			turtle.setImage(URL);
 			return 0;
-		});
-	}
-
-	public void setPenColor(Color color) {
-		applyToTurtles(turtle -> {
-			turtle.setPenColor(color);
-			return 0;
-		});
-	}
-
-	public void setTurtleVisible(boolean visible) {
-		applyToTurtles(turtle -> {
-			turtle.getView().setVisible(visible);
-			return 0;
-		});
-	}
-
-	public void setTurtleImage(String url) {
-		applyToTurtles(turtle -> {
-			turtle.setImage(url);
-			return 0;
-		});
-	}
-
-	public void turnTurtle(double degrees) {
-		applyToTurtles(turtle -> {
-			turtle.setRotation(turtle.getRotation() + degrees);
-			return 0;
-		});
-	}
-
-	public void verticalMove(double amount) {
-		applyToTurtles(turtle -> {
-			display.moveTurtle(turtle, endLocation(amount, turtle));
-			return 0;
-		});
-	}
-
-	public void moveTo(Point point) {
-		applyToTurtles(turtle -> {
-			display.moveTurtle(turtle, point);
-			return 0;
-		});
-	}
-
-	public double setHeading(double degrees) {
-		return applyToTurtles(turtle -> {
-			double result = degrees - turtle.getRotation();
-			turtle.turn(degrees - turtle.getRotation());
-			return result;
 		});
 	}
 	
-	public double towards(double input) {
-		return applyToTurtles(turtle -> {
-			double result = Math.toDegrees(input) - turtle.getRotation();
-			turtle.turn(result);
-			return result;
-		});
+	private void onTurtleActivityModified(Turtle turtle) {
+		if(!turtle.activeProperty().get()) {
+			activeTurtles.remove(turtle);
+		} else {
+			activeTurtles.add(turtle);
+		}
 	}
-
-	private Point endLocation(double value, Turtle turtle) {
-		double rad = Math.toRadians(turtle.getRotation());
-		double x = (Math.cos(rad) * value);
-		double y = (Math.sin(rad) * value);
-		return new Point(turtle.getDestination().getX() + x, turtle.getDestination().getY() + y);
-	}
-
 }

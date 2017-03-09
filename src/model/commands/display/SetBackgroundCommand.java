@@ -15,7 +15,7 @@ public class SetBackgroundCommand extends TurtleCommand{
 
 	@Override
 	public Argument execute() {
-		return null;
+		return getController().;
 	}
 	
 }

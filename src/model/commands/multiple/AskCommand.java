@@ -42,7 +42,7 @@ public class AskCommand extends Command{
 		
 		result = getParameter(1);
 		
-        //getController().getTurtleManager().setActiveTurtles(ids);		
+        getController().getTurtleManager().setActiveTurtles(ids);		
 		return result;
 	}
 	

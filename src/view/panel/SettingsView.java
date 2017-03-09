@@ -63,7 +63,7 @@ public class SettingsView extends BorderPane {
 		box.setPadding(new Insets(5));
 		box.prefWidthProperty().bind(widthProperty());
 
-		myImagePicker = new FilePicker(controller, 200, controller.getResources().getString("ImagePickerFieldString"), "*.png", "*.jpg", "*.gif");
+		myImagePicker = new FilePicker(controller, 200, controller.getResources().getString("ImagePickerFieldString"), new File(System.getProperty("user.dir") + "/src/resources/images"), "*.png", "*.jpg", "*.gif");
 		myImagePicker.getTextField().textProperty().addListener(e -> this.setTurtleImage());
 		VBox imagePickerBox = addLabelTo(myImagePicker, controller.getResources().getString("TurtlePickerLabel"));
 		
@@ -77,12 +77,7 @@ public class SettingsView extends BorderPane {
 		myBackgroundPicker.setOnAction(e -> this.setTurtleBackground(myBackgroundPicker.getValue()));
 		VBox backgroundPickerBox = addLabelTo(myBackgroundPicker, controller.getResources().getString("BackgroundPickerLabel"));
 
-		myPenPicker = new ColorPicker();
-		myPenPicker.setOnAction(e -> setPenColor());
-		VBox penPickerBox = addLabelTo(myPenPicker, controller.getResources().getString("PenPickerLabel"));
-
-		box.getChildren().addAll(languagePickerBox, new Separator(), imagePickerBox, new Separator(), backgroundPickerBox, new Separator(), penPickerBox);
-		
+		box.getChildren().addAll(languagePickerBox, new Separator(), imagePickerBox, new Separator(), backgroundPickerBox);
 		
 		scrollPane.setContent(box);
 		scrollPane.prefHeightProperty().bind(heightProperty());
@@ -110,12 +105,8 @@ public class SettingsView extends BorderPane {
 		controller.setLanguage(myLanguagePicker.getValue());
 	}
 
-	private void setPenColor() {
-		turtleDisplay.getTurtleManager().setPenColor(myPenPicker.getValue());
-	}
-
 	private void setTurtleImage() {
-		turtleDisplay.getTurtleManager().setTurtleImage(myImagePicker.getTextField().getText());
+		workspace.getTurtleManager().setTurtleImage(myImagePicker.getURL());
 	}
 
 	private void setTurtleBackground(Color color) {

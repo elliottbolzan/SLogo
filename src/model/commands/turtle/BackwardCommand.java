@@ -2,7 +2,7 @@ package model.commands.turtle;
 
 import model.parser.Argument;
 
-public class BackwardCommand extends TurtleCommand {
+public class BackwardCommand extends RepeatableTurtleCommand {
 	
 	@Override
 	public int numParameters() {
@@ -10,9 +10,9 @@ public class BackwardCommand extends TurtleCommand {
 	}
 
 	@Override
-	public Argument execute() {
+	public Argument innerExecute() {
 		Argument result = getParameter(0);
-		getController().getTurtleManager().verticalMove(-result.getDouble());
+		getTurtle().moveTo(endLocation(-result.getDouble(), getTurtle()));
 		return result;
 	}
 }

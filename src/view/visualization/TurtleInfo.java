@@ -3,6 +3,7 @@ package view.visualization;
 import javafx.geometry.Insets;
 import javafx.scene.Group;
 import javafx.scene.Node;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.ColorPicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.Separator;
@@ -25,7 +26,6 @@ public class TurtleInfo {
 		SimpleDoubleLabel rotateLabel = new SimpleDoubleLabel("Heading: ", turtle.readOnlyRotationProperty());
 		SimpleBooleanLabel penLabel = new SimpleBooleanLabel("Pen down: ", turtle.readOnlyPenDownProperty(), "down", "up");
 		
-		
 		ColorPicker penPicker = new ColorPicker();
 		penPicker.setOnAction(e -> turtle.setPenColor(penPicker.getValue()));
 		HBox penPickerBox = addLabel(penPicker, "Pen Color:");
@@ -35,7 +35,11 @@ public class TurtleInfo {
 		fontPicker.prefWidthProperty().bind(turtleInfoGraphic.widthProperty().divide(3.0));
 		HBox fontPickerBox = addLabel(fontPicker, "Line Thickness:");
 		
-		turtleInfoGraphic.getChildren().addAll(xLabel.getView(), yLabel.getView(), rotateLabel.getView(), penLabel.getView(), 
+		CheckBox activeSelect = new CheckBox();
+		activeSelect.selectedProperty().bindBidirectional(turtle.activeProperty());
+		HBox activeSelectBox = addLabel(activeSelect, "Active");
+		
+		turtleInfoGraphic.getChildren().addAll(activeSelectBox, new Separator(), xLabel.getView(), yLabel.getView(), rotateLabel.getView(), penLabel.getView(), 
 											   new Separator(), penPickerBox, new Separator(), fontPickerBox);
 	}
 	

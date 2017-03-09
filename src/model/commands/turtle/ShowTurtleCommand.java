@@ -2,20 +2,16 @@ package model.commands.turtle;
 
 import model.parser.Argument;
 
-public class ShowTurtleCommand extends TurtleCommand {
+public class ShowTurtleCommand extends RepeatableTurtleCommand {
 
-	public ShowTurtleCommand() {
-		super();
-	}
-	
 	@Override
 	public int numParameters() {
 		return 0;
 	}
 
 	@Override
-	public Argument execute() {
-		getController().getTurtleManager().setTurtleVisible(true);
+	public Argument innerExecute() {
+		getTurtle().setVisible(true);
 		return new Argument(1);
 	}
 }
