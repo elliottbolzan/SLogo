@@ -3,9 +3,9 @@ package model.commands.math;
 import model.commands.Command;
 import model.parser.Argument;
 
-public class CosCommand extends Command {
+public class CosineCommand extends Command {
 	
-	public CosCommand() {
+	public CosineCommand() {
 		super();
 	}
 	
@@ -16,6 +16,6 @@ public class CosCommand extends Command {
 
 	@Override
 	public Argument execute() {
-		return new Argument(Math.cos(this.getParameter(0).getDouble()));
+		return new Argument(Math.cos(Math.toRadians(this.getParameter(0).getDouble())));
 	}
 }

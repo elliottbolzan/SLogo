@@ -3,19 +3,19 @@ package model.commands.math;
 import model.commands.Command;
 import model.parser.Argument;
 
-public class PowCommand extends Command {
+public class NaturalLogCommand extends Command {
 	
-	public PowCommand() {
+	public NaturalLogCommand() {
 		super();
 	}
 	
 	@Override
 	public int numParameters() {
-		return 2;
+		return 1;
 	}
 
 	@Override
 	public Argument execute() {
-		return new Argument(Math.pow(getParameter(0).getDouble(), getParameter(1).getDouble()));
+		return new Argument(Math.log(getParameter(0).getDouble()));
 	}
 }

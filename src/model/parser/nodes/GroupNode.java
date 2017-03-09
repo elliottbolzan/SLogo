@@ -9,18 +9,21 @@ import model.parser.tokenize.Tokenize;
 
 public class GroupNode extends Node {
 	private String newExpression;
-	private int sum;
 	private int numParam;
 	
 	public GroupNode(TreeParser parser, Node parent, Input input, Commands commands) {
 		super(parser, parent);
 		
 		String cmd = input.getWords().get(input.getIndex());
+		if(cmd.equals("")){
+			input.addToIndex(1);
+			input.getWords().get(input.getIndex());
+		}
+		System.out.println(cmd);
 		input.addToIndex(1);
 		Command child = commands.get(cmd);
 		numParam = child.numParameters();
 		
-		System.out.println(input.getWords());
 		int openParantheses = 0;
 		while(openParantheses >= 0){
 			String word = input.getWords().get(input.getIndex());

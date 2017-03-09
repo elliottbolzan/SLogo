@@ -3,9 +3,9 @@ package model.commands.math;
 import model.commands.Command;
 import model.parser.Argument;
 
-public class LogCommand extends Command {
+public class TangentCommand extends Command {
 	
-	public LogCommand() {
+	public TangentCommand() {
 		super();
 	}
 	
@@ -16,6 +16,6 @@ public class LogCommand extends Command {
 
 	@Override
 	public Argument execute() {
-		return new Argument(Math.log(getParameter(0).getDouble()));
+		return new Argument(Math.tan(getParameter(0).getDouble()));
 	}
 }
