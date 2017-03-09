@@ -77,11 +77,7 @@ public class SettingsView extends BorderPane {
 		myBackgroundPicker.setOnAction(e -> this.setTurtleBackground(myBackgroundPicker.getValue()));
 		VBox backgroundPickerBox = addLabelTo(myBackgroundPicker, controller.getResources().getString("BackgroundPickerLabel"));
 
-		myPenPicker = new ColorPicker();
-		myPenPicker.setOnAction(e -> setPenColor());
-		VBox penPickerBox = addLabelTo(myPenPicker, controller.getResources().getString("PenPickerLabel"));
-
-		box.getChildren().addAll(languagePickerBox, new Separator(), imagePickerBox, new Separator(), backgroundPickerBox, new Separator(), penPickerBox);
+		box.getChildren().addAll(languagePickerBox, new Separator(), imagePickerBox, new Separator(), backgroundPickerBox);
 		
 		
 		scrollPane.setContent(box);
@@ -110,12 +106,8 @@ public class SettingsView extends BorderPane {
 		controller.setLanguage(myLanguagePicker.getValue());
 	}
 
-	private void setPenColor() {
-		turtleDisplay.getTurtleManager().setPenColor(myPenPicker.getValue());
-	}
-
 	private void setTurtleImage() {
-		turtleDisplay.getTurtleManager().setTurtleImage(myImagePicker.getURL());
+		workspace.getTurtleManager().setTurtleImage(myImagePicker.getURL());
 	}
 
 	private void setTurtleBackground(Color color) {

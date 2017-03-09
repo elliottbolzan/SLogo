@@ -10,7 +10,6 @@ import java.util.Map;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.scene.paint.Color;
 import utils.Point;
 
 /**
@@ -46,10 +45,21 @@ public class TurtleManager {
 		return turtles;
 	}
 	
+	public Turtle getCurrentTurtle() {
+		return currentTurtle;
+	}
+	
+	public void setCurrentTurtle(Turtle turtle) {
+		currentTurtle = turtle;
+	}
+
+	public Turtle getTurtleByID(int ID) {
+		return turtles.get(ID);
+	}
+	
 	private double applyToTurtles(Runnable runnable) {
 		double result = 0;
 		for (Turtle turtle : activeTurtles) {
-			currentTurtle = turtle;
 			result = runnable.run(turtle);
 		}
 		return result;
@@ -88,10 +98,6 @@ public class TurtleManager {
 		}
 	}
 
-	public Turtle getCurrentTurtle() {
-		return currentTurtle;
-	}
-
 	private void addTurtle(Turtle turtle) {
 		display.addToDisplayArea(turtle.getView());
 		currentTurtle = turtle;
@@ -115,77 +121,12 @@ public class TurtleManager {
 			return 0;
 		});
 	}
-
-	public void setPenDown(boolean down) {
-		applyToTurtles(turtle -> {
-			turtle.setPenDown(down);
-			return 0;
-		});
-	}
-
-	public void setPenColor(Color color) {
-		applyToTurtles(turtle -> {
-			turtle.setPenColor(color);
-			return 0;
-		});
-	}
-
-	public void setTurtleVisible(boolean visible) {
-		applyToTurtles(turtle -> {
-			turtle.getView().setVisible(visible);
-			return 0;
-		});
-	}
-
-	public void setTurtleImage(String url) {
-		applyToTurtles(turtle -> {
-			turtle.setImage(url);
-			return 0;
-		});
-	}
-
-	public void turnTurtle(double degrees) {
-		applyToTurtles(turtle -> {
-			turtle.setRotation(turtle.getRotation() + degrees);
-			return 0;
-		});
-	}
-
-	public void verticalMove(double amount) {
-		applyToTurtles(turtle -> {
-			display.moveTurtle(turtle, endLocation(amount, turtle));
-			return 0;
-		});
-	}
-
-	public void moveTo(Point point) {
-		applyToTurtles(turtle -> {
-			display.moveTurtle(turtle, point);
-			return 0;
-		});
-	}
-
-	public double setHeading(double degrees) {
-		return applyToTurtles(turtle -> {
-			double result = degrees - turtle.getRotation();
-			turtle.turn(degrees - turtle.getRotation());
-			return result;
-		});
-	}
 	
-	public double towards(double input) {
-		return applyToTurtles(turtle -> {
-			double result = Math.toDegrees(input) - turtle.getRotation();
-			turtle.turn(result);
-			return result;
+	public void setTurtleImage(String URL) {
+		applyToTurtles(turtle -> {
+			turtle.setImage(URL);
+			return 0;
 		});
-	}
-
-	private Point endLocation(double value, Turtle turtle) {
-		double rad = Math.toRadians(turtle.getRotation());
-		double x = (Math.cos(rad) * value);
-		double y = (Math.sin(rad) * value);
-		return new Point(turtle.getDestination().getX() + x, turtle.getDestination().getY() + y);
 	}
 	
 	private void onTurtleActivityModified(Turtle turtle) {
