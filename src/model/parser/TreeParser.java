@@ -103,7 +103,6 @@ public class TreeParser implements ParserAPI {
 	private Node startTree(String string) {
 		ArrayList<String> words = new ArrayList<String>();
 		words = new ArrayList<String>(Arrays.asList(string.split("\\s+")));
-
 		Node node = new RootNode(this, null);
 		Input input = new Input(node, 0, words);
 		while (input.getIndex() < input.getWords().size() && input != null) {
@@ -116,7 +115,7 @@ public class TreeParser implements ParserAPI {
 	private Input createTree(Input input) {
 		String word = input.getWords().get(input.getIndex());
 		try {
-			Token token = Tokenize.determineType(word);
+			Token token = new Tokenize().typeOf(word);
 			Node node = input.getNode();
 			Node child = null;
 			input.addToIndex(1);
@@ -155,7 +154,7 @@ public class TreeParser implements ParserAPI {
 			node.addChild(child);
 			return new Input(child, input.getIndex(), input.getWords());
 		} catch (Exception e) {
-			e.printStackTrace();
+			// Show exception.
 		}
 		return null;
 	}

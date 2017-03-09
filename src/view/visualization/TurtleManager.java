@@ -23,7 +23,7 @@ public class TurtleManager {
 		public double run(Turtle turtle);
 	}
 
-	private HashMap<Integer, Turtle> turtles;
+	private Map<Integer, Turtle> turtles;
 	private ObservableList<Turtle> activeTurtles;
 	private TurtleDisplay display;
 	private int initialTurtles;
@@ -101,8 +101,7 @@ public class TurtleManager {
 		}
 	}
 
-	
-	public HashMap<Integer,Turtle> getTurtles(){
+	public Map<Integer,Turtle> getTurtles(){
 		return turtles;
 	}
 

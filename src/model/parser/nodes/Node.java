@@ -1,13 +1,14 @@
 package model.parser.nodes;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import model.parser.Argument;
 import model.parser.TreeParser;
 
 public abstract class Node {
 	
-	private ArrayList<Node> children;
+	private List<Node> children;
 	private Node parent;
 	private TreeParser parser;
 
@@ -41,7 +42,7 @@ public abstract class Node {
 		return this.parent;
 	}
 	
-	public ArrayList<Node> getChildren() {
+	public List<Node> getChildren() {
 		return children;
 	}
 	
