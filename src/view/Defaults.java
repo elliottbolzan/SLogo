@@ -3,8 +3,10 @@
  */
 package view;
 
+import java.io.File;
 import java.util.ResourceBundle;
 
+import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 
 /**
@@ -17,20 +19,27 @@ public class Defaults {
 	private int numberOfTurtles = 1;
 	private String language = "English";
 	private String scriptPath = "";
+	private Image turtleImage = new Image(getClass().getClassLoader().getResourceAsStream("resources/images/turtle_1.png"));
 
 	/**
 	 * 
 	 */
-	public Defaults(String path) {
+	public Defaults(Workspace workspace, String path) {
 		ResourceBundle resources = ResourceBundle.getBundle(path);
 		try {
 			backgroundColor = Color.valueOf(resources.getString("Color"));
 			numberOfTurtles = Integer.valueOf(resources.getString("TurtleNumber"));
 			language = resources.getString("Language");
 			scriptPath = resources.getString("File");
+			String turtlePath = resources.getString("TurtlePath").replaceAll("\\s+", "");
+			if (!(turtlePath.equals(""))) {
+				if (!(new File(turtlePath).exists())) {
+					throw new Exception();
+				}
+				turtleImage = new Image("file:" + resources.getString("TurtlePath"));
+			}
 		} catch (Exception e) {
-			// show error
-			System.out.println(e.getMessage());
+			workspace.showMessage(workspace.getController().getResources().getString("ConfigurationError"));
 		}
 	}
 
@@ -48,6 +57,10 @@ public class Defaults {
 
 	public String getScriptPath() {
 		return scriptPath;
+	}
+	
+	public Image getTurtleImage() {
+		return turtleImage;
 	}
 
 }

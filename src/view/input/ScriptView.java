@@ -85,7 +85,7 @@ public class ScriptView extends InputView {
 
 	private void load() {
 		FileChooser chooser = new FileChooser();
-		chooser.setInitialDirectory(new File(System.getProperty("user.dir")));
+		chooser.setInitialDirectory(new File(System.getProperty("user.dir") + "/data/examples"));
 		chooser.getExtensionFilters().setAll(new ExtensionFilter("Logo Files", "*.logo", "*.txt"));
 		File dataFile = chooser.showOpenDialog(getScene().getWindow());
 		if (dataFile != null) {
@@ -111,7 +111,7 @@ public class ScriptView extends InputView {
 	private void save() {
 		DirectoryChooser chooser = new DirectoryChooser();
 		chooser.setTitle("Output Folder");
-		chooser.setInitialDirectory(new File(System.getProperty("user.dir")));
+		chooser.setInitialDirectory(new File(System.getProperty("user.dir") + "/data/examples"));
 		File selectedDirectory = chooser.showDialog(getScene().getWindow());
 		TextInputDialog dialog = new TextInputDialog("script.logo");
 		dialog.setTitle("File Name");

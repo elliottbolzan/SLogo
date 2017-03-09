@@ -1,6 +1,5 @@
 package view;
 
-import utils.Point;
 import view.input.InputContainer;
 import view.input.ShellView;
 import view.panel.Panel;
@@ -24,6 +23,7 @@ import javafx.scene.paint.Color;
  *         initializes and controls the user interface.
  */
 public class Workspace extends BorderPane implements ViewAPI {
+	
 	private WorkspaceBrowser browser;
 	private Controller controller;
 	private Defaults defaults;
@@ -48,16 +48,20 @@ public class Workspace extends BorderPane implements ViewAPI {
 
 	private void setup() {
 		pane = new SplitPane();
-		defaults = new Defaults("resources/WorkspaceSettings");
+		defaults = new Defaults(this, "resources/WorkspaceSettings");
 		controller.setLanguage(defaults.getLanguage());
 		inputContainer = new InputContainer(this, 0);
 		inputContainer.getScriptView().readFileIn(defaults.getScriptPath());
-		turtleDisplay = new TurtleDisplay(this, defaults.getNumberOfTurtles());
+		turtleDisplay = new TurtleDisplay(this, defaults.getNumberOfTurtles(), defaults.getTurtleImage());
 		turtleDisplay.setBackgroundColor(defaults.getBackgroundColor());
 		panel = new Panel(this, 1);
 		pane.getItems().addAll(inputContainer, turtleDisplay, panel);
 		pane.setDividerPositions(0.3, 0.75);
 		setCenter(pane);
+	}
+	
+	public Defaults getDefaults() {
+		return defaults;
 	}
 
 	public WorkspaceBrowser getBrowser() {

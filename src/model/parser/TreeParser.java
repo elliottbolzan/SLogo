@@ -11,6 +11,7 @@ import model.State;
 import model.Variable;
 import model.commands.Command;
 import model.commands.Commands;
+import model.commands.control.MakeUserInstructionCommand;
 import model.parser.nodes.ConstantNode;
 import model.parser.nodes.GroupNode;
 import model.parser.nodes.ListNode;
@@ -30,8 +31,8 @@ public class TreeParser implements ParserAPI {
 
 	public TreeParser(Controller controller) {
 		this.controller = controller;
-		commands = new Commands();
 		parseHistory = new ParseHistory();
+		commands = new Commands();
 		state = new State();
 	}
 
@@ -59,11 +60,11 @@ public class TreeParser implements ParserAPI {
 	public ObservableList<IndexedColor> getColorPalette() {
 		return state.getColorPalette();
 	}
-	
+
 	public ObservableList<IndexedImage> getImagePalette() {
 		return state.getImagePalette();
 	}
-	
+
 	@Override
 	public ObservableList<String> getHistory() {
 		return parseHistory.getHistoryList();
@@ -74,12 +75,12 @@ public class TreeParser implements ParserAPI {
 		return parseHistory.getHistoryList().get(0);
 	}
 
-	private void printTree(Node node, String spacing) {
-		System.out.println(spacing + node);
-		spacing += " ";
-		final String spaces = spacing;
-		node.getChildren().stream().filter(e -> e != null).forEach(e -> printTree(e, spaces));
-	}
+//	private void printTree(Node node, String spacing) {
+//		System.out.println(spacing + node);
+//		spacing += " ";
+//		final String spaces = spacing;
+//		node.getChildren().stream().filter(e -> e != null).forEach(e -> printTree(e, spaces));
+//	}
 
 	@Override
 	public Node parse(String input, boolean addToHistory) {
@@ -88,20 +89,20 @@ public class TreeParser implements ParserAPI {
 		}
 		input = handleComment(input);
 		Node root = parseInternal(input);
-		printTree(root, "");
 		root.evaluate();
-		//controller.print(String.valueOf(evaluation.getDouble()));
+		// controller.print(String.valueOf(evaluation.getDouble()));
 		parseHistory.addCommandToHistory(root);
 		return root;
 	}
 
 	public Node parseInternal(String input) {
-		return createTree(input);
+		return startTree(input);
 	}
 
-	private Node createTree(String string) {
+	private Node startTree(String string) {
 		ArrayList<String> words = new ArrayList<String>();
 		words = new ArrayList<String>(Arrays.asList(string.split("\\s+")));
+		
 		Node node = new RootNode(this, null);
 		Input input = new Input(node, 0, words);
 		while (input.getIndex() < input.getWords().size() && input != null) {
@@ -118,31 +119,37 @@ public class TreeParser implements ParserAPI {
 			Node node = input.getNode();
 			Node child = null;
 			input.addToIndex(1);
-			if(token == Token.GROUP_START){
+			if (token == Token.GROUP_START) {
 				child = new GroupNode(this, node, input, commands);
-			}
-			else if (token == Token.CONSTANT) {
+			} else if (token == Token.CONSTANT) {
 				child = new ConstantNode(this, node, Double.parseDouble(word));
 			} else if (token == Token.VARIABLE) {
 				child = new VariableNode(this, node, word.replaceAll(":", ""));
 			} else if (token == Token.COMMAND) {
-				try {
+				try{
+				if (parseHistory.isNewCommand(word)) {
+					child = parseHistory.getCommand(word);
+				}else{ 
 					child = commands.get(word);
-					// If child is null, your command is probably misnamed.
+					if (child == null) {
+						child = state.getCommand(word);
+						child.setParser(this);
+					}
 					((Command) child).setup(controller, state);
 					for (int i = 0; i < ((Command) child).numParameters(); i++) {
 						input = createTree(new Input(child, input.getIndex(), input.getWords()));
 					}
-				} catch (Exception e) {
-					controller.getView().showMessage("No such Command" + " " + word);
+					if (child instanceof MakeUserInstructionCommand) {
+						child.evaluate();
+					}
+				}
+				}catch (Exception e) {
+					child = new ConstantNode(this, node, word);
+					//controller.getView().showMessage("No such command:" + " " + word + ".");
 				}
 			} else if (token == Token.LIST_START) {
 				child = new ListNode(this, node, input);
 			}
-			
-			// Work on comments.
-			// In UI, implement new Console behavior: don't strip newlines. Use
-			// newlines to parse comments.
 			node.addChild(child);
 			return new Input(child, input.getIndex(), input.getWords());
 		} catch (Exception e) {
@@ -150,14 +157,17 @@ public class TreeParser implements ParserAPI {
 		}
 		return null;
 	}
-	
-	private String handleComment(String s){
-		ArrayList<String> commentFinder = new ArrayList<>(Arrays.asList(s.split("\\n")));
-		StringBuilder sb = new StringBuilder();
-		commentFinder.stream().filter(e -> e.trim().charAt(0) != '#').forEach(e -> sb.append(e + " "));
-		String result = sb.toString();
-		if(result.contains("#")) controller.getView().showMessage("Proper comment must have its own line and begin with #.");
-		return result;
-	}
+
+	 private String handleComment(String s){
+		 ArrayList<String> commentFinder = new
+		 ArrayList<>(Arrays.asList(s.split("\\n")));
+		 StringBuilder sb = new StringBuilder();
+		 commentFinder.stream().filter(e -> !e.equals("")).filter(e ->
+		 e.trim().charAt(0) != '#').forEach(e -> sb.append(e + " "));
+		 String result = sb.toString();
+		 if(result.contains("#")) controller.getView().showMessage("Proper comment must have its own line and begin with #.");
+		 result.replace(",", "");
+		 return result;
+		 }
 
 }

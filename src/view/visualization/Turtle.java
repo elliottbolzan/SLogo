@@ -13,7 +13,6 @@ import javafx.beans.property.ReadOnlyBooleanProperty;
 import javafx.beans.property.ReadOnlyDoubleProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleDoubleProperty;
-import javafx.scene.effect.ColorAdjust;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
@@ -24,8 +23,7 @@ import javafx.util.Duration;
  *
  */
 public class Turtle {
-	
-	private final static String BASIC_IMAGE = "resources/images/turtle_1.png";
+		
 	private ImageView myImageView;
 
 	private TurtleDisplay myDisplay;
@@ -50,8 +48,8 @@ public class Turtle {
 	private int myShapeIndex;
 	private int myColorIndex;
 
-	public Turtle(TurtleDisplay home, int ID) {
-		myImageView = new ImageView(new Image(getClass().getClassLoader().getResourceAsStream(BASIC_IMAGE)));
+	public Turtle(TurtleDisplay home, int ID, Image image) {
+		myImageView = new ImageView(image);
 		myFutureDestinations = new LinkedList<Point>();
 		
 		myDisplay = home;

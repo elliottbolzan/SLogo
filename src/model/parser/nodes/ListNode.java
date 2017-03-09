@@ -1,4 +1,6 @@
 package model.parser.nodes;
+import java.util.stream.Stream;
+
 import model.parser.Argument;
 import model.parser.Input;
 import model.parser.TreeParser;
@@ -6,13 +8,13 @@ import model.parser.tokenize.Token;
 import model.parser.tokenize.Tokenize;
 
 public class ListNode extends Node {
+	
 	private String newExpression;
 	
 	public ListNode(TreeParser parser, Node parent, Input input) {
 		super(parser, parent);
 		int openBrackets = 0;
 		newExpression = "";
-		System.out.println(input.getWords());
 		while (openBrackets >= 0) {
 			String word = input.getWords().get(input.getIndex());
 			Token token = Tokenize.determineType(word);
@@ -38,7 +40,9 @@ public class ListNode extends Node {
 	public Argument evaluate() {
 		Argument result = new Argument();
 		for (Node child: getChildren()) {
-			result = child.evaluate();
+			if(child != null){
+				result = child.evaluate();
+			}
 		}
 		return result;
 	}
