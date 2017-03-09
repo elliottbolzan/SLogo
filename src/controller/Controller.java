@@ -95,4 +95,8 @@ public class Controller implements ViewAPI, ModelAPI {
 		workspace.showMessage(message);
 	}
 
+	@Override
+	public void setBackgroundColorAtIndex(int index) {
+		workspace.setBackgroundColorAtIndex(index);
+	}
 }
