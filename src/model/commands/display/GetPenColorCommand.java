@@ -14,8 +14,7 @@ public class GetPenColorCommand extends TurtleCommand{
 	}
 
 	@Override
-	public Argument execute() {
+	public Argument execute() {	
 		return null;
 	}
-	
 }

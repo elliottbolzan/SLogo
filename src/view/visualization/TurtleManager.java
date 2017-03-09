@@ -10,6 +10,7 @@ import java.util.Map;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.scene.paint.Color;
 
 /**
  * @author Elliott Bolzan
@@ -134,6 +135,20 @@ public class TurtleManager {
 	public void setTurtleImage(String URL) {
 		applyToTurtles(turtle -> {
 			turtle.setImage(URL);
+			return 0;
+		});
+	}
+	
+	public void setTurtlePenColor(Color c) {
+		applyToTurtles(turtle -> {
+			turtle.setPenColor(c);
+			return 0;
+		});
+	}
+	
+	public void setTurtlePenSize(double width) {
+		applyToTurtles(turtle -> {
+			turtle.setPenWidth(width);
 			return 0;
 		});
 	}

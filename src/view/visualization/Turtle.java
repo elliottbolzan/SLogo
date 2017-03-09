@@ -44,6 +44,9 @@ public class Turtle {
 	
 	private int myID;
 	private SimpleBooleanProperty isActiveProperty;
+	
+	private int myShapeIndex;
+	private int myColorIndex;
 
 	public Turtle(TurtleDisplay home, int ID, String imagePath) {
 		myImageView = new ImageView(new Image(getClass().getClassLoader().getResourceAsStream(imagePath)));
@@ -67,6 +70,9 @@ public class Turtle {
 		isActiveProperty = new SimpleBooleanProperty(true);
 		
 		myImageView.opacityProperty().bind(Bindings.when(isActiveProperty).then(1.0).otherwise(0.3));
+	
+		myColorIndex = 1;
+		myShapeIndex = 1;
 	}
 	
 	public int getID() {
@@ -91,6 +97,14 @@ public class Turtle {
 	
 	public Color getPenColor() {
 		return myPenColor;
+	}
+	
+	public int getPenColorIndex() {
+		return myColorIndex;
+	}
+	
+	public int getshapeIndex() {
+		return myShapeIndex;
 	}
 	
 	public BooleanProperty activeProperty() {
@@ -128,12 +142,20 @@ public class Turtle {
 	protected TurtleDisplay getDisplay() {
 		return myDisplay;
 	}
-	
+		
 	public void setImage(String url) {
 		myImageView.setImage(new Image(url));
 		this.centerImage();
 	}
 
+	public void setShapeIndex(int index) {
+		myShapeIndex = index;
+	}
+	
+	public void setColorIndex(int index) {
+		myColorIndex = index;
+	}
+	
 	public void setPenDown(boolean down) {
 		myPenDownProperty.set(down);
 	}

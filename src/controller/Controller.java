@@ -4,6 +4,7 @@ import java.util.ResourceBundle;
 import javafx.collections.ObservableList;
 import javafx.scene.paint.Color;
 import model.IndexedColor;
+import model.IndexedImage;
 import model.Model;
 import model.ModelAPI;
 import model.Variable;
@@ -75,6 +76,11 @@ public class Controller implements ViewAPI, ModelAPI {
 	@Override 
 	public ObservableList<IndexedColor> getColorPalette() {
 		return model.getColorPalette();
+	}
+	
+	@Override 
+	public ObservableList<IndexedImage> getImagePalette() {
+		return model.getImagePalette();
 	}
 	
 	@Override
