@@ -1,8 +1,14 @@
 package model.commands.multiple;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import javafx.application.Platform;
 import model.commands.Command;
 import model.parser.Argument;
-import model.parser.nodes.ListNode;
+import model.parser.nodes.Node;
+import view.visualization.Turtle;
+
 
 public class AskCommand extends Command{
 	
@@ -12,24 +18,31 @@ public class AskCommand extends Command{
 
 	@Override
 	public int numParameters() {
-		return 1;
+		return 2;
 	}
 
 	@Override
 	public Argument execute() {
 		Argument result = new Argument();
-		result = getParameter(0);
 		
-		ListNode temp = (ListNode) getChildren().get(0);
-		String expression = temp.getExpression();
-		String[] split = expression.split("\\s+");
-		Integer[] addTurtles = new Integer[split.length];
-		for(int i=0; i<split.length; i++){
-			addTurtles[i] = Integer.parseInt(split[i]);
+		//store current active turtles
+		List<Integer> ids = new ArrayList<Integer>();
+		for(Turtle t: getController().getTurtleManager().getActiveTurtles()){
+			ids.add(t.getID());
+			System.out.println(t.getID());
 		}
-		getController().getActiveTurtles().setTurtles(addTurtles);
 		
-		System.out.println(result.getDouble());
+		//make list of turtles to become active
+		List<Integer> turtles = new ArrayList<Integer>();
+		for(Node child : getChildren().get(0).getChildren()){
+			int num = (int) child.evaluate().getDouble();
+			turtles.add(num);
+		}
+		getController().getTurtleManager().setActiveTurtles(turtles);
+		
+		result = getParameter(1);
+		
+        //getController().getTurtleManager().setActiveTurtles(ids);		
 		return result;
 	}
 	

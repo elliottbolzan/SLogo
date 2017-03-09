@@ -16,7 +16,7 @@ import view.Workspace;
  * @author Elliott Bolzan
  *
  */
-public class VariableTable extends BorderPane {
+public class VariableView extends BorderPane {
 
 	private Workspace workspace;
 	private ObservableList<Variable> data;
@@ -24,7 +24,7 @@ public class VariableTable extends BorderPane {
 	/**
 	 * 
 	 */
-	public VariableTable(Workspace workspace, ObservableList<Variable> data) {
+	public VariableView(Workspace workspace, ObservableList<Variable> data) {
 		this.workspace = workspace;
 		this.data = data;
 		setup();

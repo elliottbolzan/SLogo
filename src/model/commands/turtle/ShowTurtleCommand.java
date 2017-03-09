@@ -15,7 +15,7 @@ public class ShowTurtleCommand extends TurtleCommand {
 
 	@Override
 	public Argument execute() {
-		this.getController().setTurtleVisible(true);
+		getController().getTurtleManager().setTurtleVisible(true);
 		return new Argument(1);
 	}
 }

@@ -1,8 +1,5 @@
 package model.commands.turtle;
-
 import model.parser.Argument;
-import utils.Point;
-
 public class ForwardCommand extends TurtleCommand {
 	
 	public ForwardCommand() {
@@ -13,12 +10,10 @@ public class ForwardCommand extends TurtleCommand {
 	public int numParameters() {
 		return 1;
 	}
-
 	@Override
 	public Argument execute() {
 		Argument result = getParameter(0);
-		Point loc = endLocation(result.getDouble(), getController().getTurtle());
-		getController().moveTo(getController().getActiveTurtles().getTurtleList().get(0), loc);
+		getController().getTurtleManager().verticalMove(result.getDouble());
 		return result;
 	}
 	

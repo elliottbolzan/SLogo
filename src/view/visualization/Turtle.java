@@ -7,7 +7,8 @@ import java.util.Queue;
 
 import javafx.animation.RotateTransition;
 import javafx.animation.SequentialTransition;
-import javafx.animation.Timeline;
+import javafx.beans.property.ReadOnlyBooleanProperty;
+import javafx.beans.property.ReadOnlyDoubleProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.scene.image.Image;
@@ -20,11 +21,11 @@ import javafx.util.Duration;
  *
  */
 public class Turtle {
+	
 	private final static String BASIC_IMAGE = "view/visualization/turtle_1.png";
 	private ImageView myImageView;
 
 	private TurtleDisplay myDisplay;
-	private int myID;
 
 	private SimpleDoubleProperty myXProperty;
 	private SimpleDoubleProperty myYProperty;
@@ -39,14 +40,16 @@ public class Turtle {
 	private SimpleBooleanProperty isMovingProperty;
 	private int myStepsRemaining;
 	private Point myStepSize;
+	
+	private int myID;
 
-	public Turtle(int id, TurtleDisplay home) {
+	public Turtle(TurtleDisplay home, int ID) {
 		
 		myImageView = new ImageView(new Image(getClass().getClassLoader().getResourceAsStream(BASIC_IMAGE)));
 		myFutureDestinations = new LinkedList<Point>();
 		
 		myDisplay = home;
-		myID = id;
+		myID = ID;
 
 		myPenDownProperty = new SimpleBooleanProperty(true);
 		myPenColor = Color.BLACK;
@@ -60,9 +63,12 @@ public class Turtle {
 		myRotationProperty = new SimpleDoubleProperty();
 		this.setRotation(90.0);
 		isMovingProperty = new SimpleBooleanProperty(false);
-	
 	}
-
+	
+	public void turn(double degrees) {
+		setRotation(getRotation() + degrees);
+	}
+	
 	public int getID() {
 		return myID;
 	}
@@ -86,25 +92,25 @@ public class Turtle {
 	public Color getPenColor() {
 		return myPenColor;
 	}
-
+	
+	public ReadOnlyBooleanProperty readOnlyPenDownProperty() {
+		return ReadOnlyBooleanProperty.readOnlyBooleanProperty(myPenDownProperty);
+	}
+	
+	public ReadOnlyDoubleProperty readOnlyXProperty() {
+		return ReadOnlyDoubleProperty.readOnlyDoubleProperty(myXProperty);
+	}
+	
+	public ReadOnlyDoubleProperty readOnlyYProperty() {
+		return ReadOnlyDoubleProperty.readOnlyDoubleProperty(myYProperty);
+	}
+	
+	public ReadOnlyDoubleProperty readOnlyRotationProperty() {
+		return ReadOnlyDoubleProperty.readOnlyDoubleProperty(myRotationProperty);
+	}
+	
 	protected Point getCurrentLocation() {
 		return new Point(myXProperty.get(), myYProperty.get());
-	}
-	
-	protected SimpleDoubleProperty xProperty() {
-		return myXProperty;
-	}
-	
-	protected SimpleDoubleProperty yProperty() {
-		return myYProperty;
-	}
-	
-	protected SimpleDoubleProperty rotationProperty() {
-		return myRotationProperty;
-	}
-	
-	protected SimpleBooleanProperty penDownProperty() {
-		return myPenDownProperty;
 	}
 	
 	protected SimpleBooleanProperty isMovingProperty() {
@@ -132,7 +138,7 @@ public class Turtle {
 		myPenColor = color;
 	}
 
-	private void setPenWidth(double width) {
+	protected void setPenWidth(double width) {
 		myPenWidth = width;
 	}
 

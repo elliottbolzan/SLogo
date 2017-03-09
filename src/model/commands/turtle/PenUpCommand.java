@@ -15,7 +15,7 @@ public class PenUpCommand extends TurtleCommand {
 
 	@Override
 	public Argument execute() {
-		this.getController().setPenDown(false);
+		getController().getTurtleManager().setPenDown(false);
 		return new Argument(0);
 	}
 }

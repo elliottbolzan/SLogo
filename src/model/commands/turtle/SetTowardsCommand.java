@@ -1,12 +1,9 @@
 package model.commands.turtle;
 
 import model.parser.Argument;
+import view.visualization.Turtle;
 
 public class SetTowardsCommand extends TurtleCommand {
-
-	public SetTowardsCommand() {
-		super();
-	}
 	
 	@Override
 	public int numParameters() {
@@ -15,12 +12,9 @@ public class SetTowardsCommand extends TurtleCommand {
 
 	@Override
 	public Argument execute() {
-		double xdiff = getParameter(0).getDouble() - this.getController().getTurtle().getDestination().getX();
-		double ydiff = getParameter(1).getDouble() - this.getController().getTurtle().getDestination().getY();
-		double tempd = Math.atan2(ydiff, xdiff);
-		 
-		double degrees = (Math.toDegrees(tempd) - this.getController().getTurtle().getRotation());
-		this.getController().turn(degrees);
-		return new Argument(degrees);
+		Turtle turtle = getController().getTurtleManager().getCurrentTurtle();
+		double xdiff = getParameter(0).getDouble() - turtle.getDestination().getX();
+		double ydiff = getParameter(1).getDouble() - turtle.getDestination().getY();
+		return new Argument(getController().getTurtleManager().towards(Math.atan2(ydiff, xdiff)));
 	}
 }

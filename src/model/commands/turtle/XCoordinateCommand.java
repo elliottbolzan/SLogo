@@ -15,6 +15,6 @@ public class XCoordinateCommand extends TurtleCommand {
 
 	@Override
 	public Argument execute() {
-		return new Argument(this.getController().getTurtle().getDestination().getX());
+		return new Argument(getController().getTurtleManager().getCurrentTurtle().getDestination().getX());
 	}
 }
