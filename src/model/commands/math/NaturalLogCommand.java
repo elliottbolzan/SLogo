@@ -3,9 +3,9 @@ package model.commands.math;
 import model.commands.Command;
 import model.parser.Argument;
 
-public class LogCommand extends Command {
+public class NaturalLogCommand extends Command {
 	
-	public LogCommand() {
+	public NaturalLogCommand() {
 		super();
 	}
 	

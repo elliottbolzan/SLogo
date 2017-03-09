@@ -3,9 +3,9 @@ package model.commands.math;
 import model.commands.Command;
 import model.parser.Argument;
 
-public class CosCommand extends Command {
+public class TangentCommand extends Command {
 	
-	public CosCommand() {
+	public TangentCommand() {
 		super();
 	}
 	
@@ -16,6 +16,6 @@ public class CosCommand extends Command {
 
 	@Override
 	public Argument execute() {
-		return new Argument(Math.cos(this.getParameter(0).getDouble()));
+		return new Argument(Math.tan(getParameter(0).getDouble()));
 	}
 }
