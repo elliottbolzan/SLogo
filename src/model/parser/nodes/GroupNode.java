@@ -27,7 +27,7 @@ public class GroupNode extends Node {
 		int openParantheses = 0;
 		while(openParantheses >= 0){
 			String word = input.getWords().get(input.getIndex());
-			Token token = Tokenize.determineType(word);
+			Token token = new Tokenize().typeOf(word);
 				
 			if(token == Token.GROUP_START){
 				openParantheses++;

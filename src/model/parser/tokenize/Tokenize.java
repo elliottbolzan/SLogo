@@ -17,7 +17,7 @@ import java.util.regex.Pattern;
  */
 public class Tokenize {
 
-	private static String syntaxPath = "resources/languages/Syntax";
+	private static String syntaxPath = "resources/Syntax";
 
 	private static String COMMENT_MATCH = "Comment";
 	private static String CONSTANT_MATCH = "Constant";
@@ -28,39 +28,32 @@ public class Tokenize {
 	private static String GROUP_START_MATCH = "GroupStart";
 	private static String GROUP_END_MATCH = "GroupEnd";
 
-	public static Token determineType(String token) {
+	public Token typeOf(String token) {
 		if (checkArgument(token).equals(COMMENT_MATCH)) {
 			return Token.COMMENT;
-		}
-		else if (checkArgument(token).equals(CONSTANT_MATCH)) {
+		} else if (checkArgument(token).equals(CONSTANT_MATCH)) {
 			return Token.CONSTANT;
-		}
-		else if (checkArgument(token).equals(VARIABLE_MATCH)) {
+		} else if (checkArgument(token).equals(VARIABLE_MATCH)) {
 			return Token.VARIABLE;
-		}
-		else if (checkArgument(token).equals(COMMAND_MATCH)) {
+		} else if (checkArgument(token).equals(COMMAND_MATCH)) {
 			return Token.COMMAND;
-		}
-		else if (checkArgument(token).equals(LIST_START_MATCH)) {
+		} else if (checkArgument(token).equals(LIST_START_MATCH)) {
 			return Token.LIST_START;
-		}
-		else if (checkArgument(token).equals(LIST_END_MATCH)) {
+		} else if (checkArgument(token).equals(LIST_END_MATCH)) {
 			return Token.LIST_END;
-		}
-		else if (checkArgument(token).equals(GROUP_START_MATCH)) {
+		} else if (checkArgument(token).equals(GROUP_START_MATCH)) {
 			return Token.GROUP_START;
-		}
-		else if (checkArgument(token).equals(GROUP_END_MATCH)) {
+		} else if (checkArgument(token).equals(GROUP_END_MATCH)) {
 			return Token.GROUP_END;
 		}
 		return Token.COMMENT;
 	}
 
-	private static boolean match(String text, Pattern regex) {
+	private boolean match(String text, Pattern regex) {
 		return regex.matcher(text).matches();
 	}
 
-	private static String checkArgument(String text) {
+	private String checkArgument(String text) {
 		for (Entry<String, Pattern> e : createPatternMap()) {
 			if (match(text, e.getValue())) {
 				return e.getKey();
@@ -69,7 +62,7 @@ public class Tokenize {
 		return "";
 	}
 
-	private static List<Entry<String, Pattern>> createPatternMap() {
+	private List<Entry<String, Pattern>> createPatternMap() {
 		ResourceBundle resources = ResourceBundle.getBundle(syntaxPath);
 		Enumeration<String> iter = resources.getKeys();
 		List<Entry<String, Pattern>> symbols = new ArrayList<Entry<String, Pattern>>();
@@ -80,4 +73,5 @@ public class Tokenize {
 		}
 		return symbols;
 	}
+
 }

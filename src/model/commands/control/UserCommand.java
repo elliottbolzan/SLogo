@@ -3,7 +3,7 @@
  */
 package model.commands.control;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import model.commands.Command;
 import model.parser.Argument;
@@ -15,13 +15,13 @@ import model.parser.Argument;
 public class UserCommand extends Command {
 	
 	private String name;
-	private ArrayList<String> variableNames;
+	private List<String> variableNames;
 	private String expression;
 
 	/**
 	 * 
 	 */
-	public UserCommand(String name, ArrayList<String> variableNames, String expression) {
+	public UserCommand(String name, List<String> variableNames, String expression) {
 		this.name = name;
 		this.variableNames = variableNames;
 		this.expression = expression;

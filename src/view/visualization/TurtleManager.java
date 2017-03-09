@@ -23,7 +23,7 @@ public class TurtleManager {
 		public double run(Turtle turtle);
 	}
 
-	private HashMap<Integer, Turtle> turtles;
+	private Map<Integer, Turtle> turtles;
 	private ObservableList<Turtle> activeTurtles;
 	private TurtleDisplay display;
 	private int initialTurtles;
@@ -101,8 +101,7 @@ public class TurtleManager {
 		}
 	}
 
-	
-	public HashMap<Integer,Turtle> getTurtles(){
+	public Map<Integer,Turtle> getTurtles(){
 		return turtles;
 	}
 
@@ -133,16 +132,18 @@ public class TurtleManager {
 		});
 	}
 	
-	public void setTurtleImage(String URL) {
+	public void setTurtleImage(int imageIndex, String URL) {
 		applyToTurtles(turtle -> {
 			turtle.setImage(URL);
+			turtle.setShapeIndex(imageIndex);
 			return 0;
 		});
 	}
 	
-	public void setTurtlePenColor(Color c) {
+	public void setTurtlePenColor(int colorIndex, Color color) {
 		applyToTurtles(turtle -> {
-			turtle.setPenColor(c);
+			turtle.setPenColor(color);
+			turtle.setColorIndex(colorIndex);
 			return 0;
 		});
 	}
