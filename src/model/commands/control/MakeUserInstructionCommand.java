@@ -14,23 +14,21 @@ public class MakeUserInstructionCommand extends Command {
 	private State storage;
 	
 	public MakeUserInstructionCommand(String name, ArrayList<String> variableNames, String command, State storage) {
-		this.name = name;
-		this.variableNames = variableNames;
-		this.command = command.trim();
-		this.storage = storage;
-		this.storage.setCommand(this);
 	}
 	
 	public MakeUserInstructionCommand() {}
 
 	@Override
 	public int numParameters() {
-		return variableNames.size();
+		return 3;
 	}
 
 	@Override
 	public Argument execute(){
 		String currentCommand = command;
+		
+		
+		
 		for (String variableName: variableNames) {
 			try {
 				currentCommand = currentCommand.replaceAll(variableName, getParameterList().get(variableNames.indexOf(variableName)).toString());

@@ -5,11 +5,13 @@ import java.util.Arrays;
 
 import controller.Controller;
 import javafx.collections.ObservableList;
+import model.IndexedColor;
 import model.State;
 import model.Variable;
 import model.commands.Command;
 import model.commands.Commands;
 import model.parser.nodes.ConstantNode;
+import model.parser.nodes.GroupNode;
 import model.parser.nodes.ListNode;
 import model.parser.nodes.Node;
 import model.parser.nodes.RootNode;
@@ -53,6 +55,10 @@ public class TreeParser implements ParserAPI {
 		return state.getUserDefinedCommands();
 	}
 
+	public ObservableList<IndexedColor> getColorPalette() {
+		return state.getColorPalette();
+	}
+	
 	@Override
 	public ObservableList<String> getHistory() {
 		return parseHistory.getHistoryList();
@@ -107,7 +113,10 @@ public class TreeParser implements ParserAPI {
 			Node node = input.getNode();
 			Node child = null;
 			input.addToIndex(1);
-			if (token == Token.CONSTANT) {
+			if(token == Token.GROUP_START){
+				child = new GroupNode(this, node, input, commands);
+			}
+			else if (token == Token.CONSTANT) {
 				child = new ConstantNode(this, node, Double.parseDouble(word));
 			} else if (token == Token.VARIABLE) {
 				child = new VariableNode(this, node, word.replaceAll(":", ""));
@@ -125,6 +134,7 @@ public class TreeParser implements ParserAPI {
 			} else if (token == Token.LIST_START) {
 				child = new ListNode(this, node, input);
 			}
+			
 			// Work on comments.
 			// In UI, implement new Console behavior: don't strip newlines. Use
 			// newlines to parse comments.

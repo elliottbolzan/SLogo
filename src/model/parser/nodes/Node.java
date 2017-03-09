@@ -43,5 +43,5 @@ public abstract class Node {
 	}
 	
 	public abstract Argument evaluate();
-
+	
 }

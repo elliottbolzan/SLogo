@@ -5,6 +5,7 @@ import java.util.HashMap;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.scene.paint.Color;
 import model.commands.control.MakeUserInstructionCommand;
 
 public class State {
@@ -13,11 +14,16 @@ public class State {
 
 	private ObservableList<Variable> variables;
 	private ObservableList<String> userDefinedCommandNames;
+	private ObservableList<IndexedColor> colors;
+	
 
 	public State() {
 		variables = FXCollections.observableArrayList(new ArrayList<Variable>());
 		userDefinedCommandNames = FXCollections.observableArrayList(new ArrayList<String>());
+		colors = FXCollections.observableArrayList(new ArrayList<IndexedColor>());
 		cmdList = new HashMap<String, MakeUserInstructionCommand>();
+		
+		makeDefaultColors();
 	}
 
 	public void setVariable(Variable var) {
@@ -66,4 +72,20 @@ public class State {
 		return index;
 	}
 	
+	public ObservableList<IndexedColor> getColorPalette() {
+		return colors;
+	}
+	
+	private void makeDefaultColors() {
+		colors.add(new IndexedColor(1, Color.RED));
+		colors.add(new IndexedColor(2, Color.ORANGE));
+		colors.add(new IndexedColor(3, Color.YELLOW));
+		colors.add(new IndexedColor(4, Color.GREEN));
+		colors.add(new IndexedColor(5, Color.BLUE));
+		colors.add(new IndexedColor(6, Color.PURPLE));
+		colors.add(new IndexedColor(7, Color.BLACK));
+		colors.add(new IndexedColor(8, Color.WHITE));
+		colors.add(new IndexedColor(9, Color.GOLD));
+		colors.add(new IndexedColor(10, Color.SILVER));
+	}
 }

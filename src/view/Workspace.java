@@ -1,5 +1,6 @@
 package view;
 
+import utils.Point;
 import view.input.InputContainer;
 import view.input.ShellView;
 import view.panel.Panel;
@@ -23,7 +24,6 @@ import javafx.scene.paint.Color;
  *         initializes and controls the user interface.
  */
 public class Workspace extends BorderPane implements ViewAPI {
-
 	private WorkspaceBrowser browser;
 	private Controller controller;
 	private Defaults defaults;
@@ -109,7 +109,8 @@ public class Workspace extends BorderPane implements ViewAPI {
 	}
 
 	@Override
-	public void setBackgroundColorAtIndex(int index) {
-		turtleDisplay.setBackgroundColor(panel.getColorAtIndex(index));
+	public void setBackgroundColor(Color color) {
+		turtleDisplay.setBackgroundColor(color);
 	}
+
 }

@@ -6,7 +6,6 @@ import java.util.List;
 import javafx.scene.Node;
 import javafx.scene.control.Accordion;
 import javafx.scene.control.TitledPane;
-import javafx.scene.paint.Color;
 import view.View;
 import view.Workspace;
 
@@ -20,7 +19,6 @@ public class Panel extends View {
 	private List<Node> subviews;
 	private List<String> subviewTitles;
 	
-	private ColorView colorView;
 	private TurtleImageView turtleImageView;
 
 	/**
@@ -29,15 +27,10 @@ public class Panel extends View {
 	public Panel(Workspace workspace, int index) {
 		super(workspace.getPane(), index, true, true);
 		this.workspace = workspace;
-		colorView = new ColorView();
 		turtleImageView = new TurtleImageView();
 		setTitle(workspace.getController().getResources().getString("PanelTitle"));
 		createSubviews();
 		setup();
-	}
-
-	public Color getColorAtIndex(int index) {
-		return colorView.getColorAtIndex(index);
 	}
 	
 	private void createSubviews() {
@@ -60,7 +53,7 @@ public class Panel extends View {
 				add(new VariableView(workspace, workspace.getController().getVariables()));
 				add(new CommandView(workspace, workspace.getController().getUserDefinedCommands()));
 				add(new SettingsView(workspace));
-				add(colorView);
+				add(new ColorView(workspace.getController().getColorPalette()));
 				add(turtleImageView);
 				add(new TurtleSettingsView(workspace.getController()).getView());
 			}
