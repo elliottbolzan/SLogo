@@ -1,7 +1,6 @@
 package view;
 
-import java.awt.Dimension;
-
+import javafx.scene.paint.Color;
 import view.visualization.TurtleManager;
 
 /**
@@ -20,5 +19,5 @@ public interface ViewAPI {
 	
 	public void showMessage(String message);
 	
-	public void setBackgroundColorAtIndex(int index);
+	public void setBackgroundColor(Color color);
 }

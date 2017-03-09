@@ -33,6 +33,11 @@ public class Model implements ModelAPI {
 		return parser.getUserDefinedCommands();
 	}
 	
+	@Override 
+	public ObservableList<IndexedColor> getColorPalette() {
+		return parser.getColorPalette();
+	}
+	
 	public void setLanguage(String language) {
 		parser.setLanguage(language);
 	}

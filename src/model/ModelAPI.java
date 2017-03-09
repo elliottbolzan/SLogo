@@ -13,6 +13,8 @@ public interface ModelAPI {
 
 	public ObservableList<String> getUserDefinedCommands();
 
+	public ObservableList<IndexedColor> getColorPalette();
+	
 	public void setLanguage(String language);
 	
 	public String getLanguage();
