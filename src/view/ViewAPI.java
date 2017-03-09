@@ -22,4 +22,6 @@ public interface ViewAPI {
 	
 	public void showMessage(String message);
 	
+	//public void move(Turtle turtle, Point point);
+	
 }

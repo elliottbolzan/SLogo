@@ -2,7 +2,7 @@ package model.commands.turtle;
 
 import model.parser.Argument;
 
-public class RightCommand extends TurtleCommand {
+public class RightCommand extends RepeatableTurtleCommand {
 
 	@Override
 	public int numParameters() {
@@ -10,9 +10,9 @@ public class RightCommand extends TurtleCommand {
 	}
 	
 	@Override
-	public Argument execute() {
+	public Argument innerExecute() {
 		Argument result = getParameter(0);
-		getController().getTurtleManager().turnTurtle(-result.getDouble());
+		getTurtle().turn(-result.getDouble());
 		return result;
 	}
 }
