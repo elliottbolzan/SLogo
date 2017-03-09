@@ -2,7 +2,7 @@ package model.commands.turtle;
 
 import model.parser.Argument;
 
-public class PenDownCommand extends TurtleCommand {
+public class PenDownCommand extends RepeatableTurtleCommand {
 
 	@Override
 	public int numParameters() {
@@ -10,8 +10,8 @@ public class PenDownCommand extends TurtleCommand {
 	}
 
 	@Override
-	public Argument execute() {
-		getController().getTurtleManager().setPenDown(true);
+	public Argument innerExecute() {
+		getTurtle().setPenDown(true);
 		return new Argument(1);
 	}
 }

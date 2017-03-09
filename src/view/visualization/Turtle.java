@@ -71,10 +71,6 @@ public class Turtle {
 		myImageView.opacityProperty().bind(Bindings.when(isActiveProperty).then(1.0).otherwise(0.3));
 	}
 	
-	public void turn(double degrees) {
-		setRotation(getRotation() + degrees);
-	}
-	
 	public int getID() {
 		return myID;
 	}
@@ -135,21 +131,25 @@ public class Turtle {
 		return myDisplay;
 	}
 	
-	protected void setImage(String url) {
+	public void setImage(String url) {
 		myImageView.setImage(new Image(url));
 		this.centerImage();
 	}
 
-	protected void setPenDown(boolean down) {
+	public void setPenDown(boolean down) {
 		myPenDownProperty.set(down);
 	}
 
-	protected void setPenColor(Color color) {
+	public void setPenColor(Color color) {
 		myPenColor = color;
 	}
 
-	protected void setPenWidth(double width) {
+	public void setPenWidth(double width) {
 		myPenWidth = width;
+	}
+	
+	public void setVisible(boolean visible) {
+		getView().setVisible(visible);
 	}
 
 	protected void setRotation(double degrees) {
@@ -199,6 +199,14 @@ public class Turtle {
 		myXProperty.set(point.getX());
 		myYProperty.set(point.getY());
 		this.centerImage();
+	}
+	
+	public void turn(double degrees) {
+		setRotation(getRotation() + degrees);
+	}
+	
+	public void moveTo(Point point) {
+		myDisplay.moveTurtle(this, point);
 	}
 
 	private void centerImage() {

@@ -1,9 +1,8 @@
 package model.commands.turtle;
 
 import model.parser.Argument;
-import view.visualization.Turtle;
 
-public class SetTowardsCommand extends TurtleCommand {
+public class SetTowardsCommand extends RepeatableTurtleCommand {
 	
 	@Override
 	public int numParameters() {
@@ -11,10 +10,11 @@ public class SetTowardsCommand extends TurtleCommand {
 	}
 
 	@Override
-	public Argument execute() {
-		Turtle turtle = getController().getTurtleManager().getCurrentTurtle();
-		double xdiff = getParameter(0).getDouble() - turtle.getDestination().getX();
-		double ydiff = getParameter(1).getDouble() - turtle.getDestination().getY();
-		return new Argument(getController().getTurtleManager().towards(Math.atan2(ydiff, xdiff)));
+	public Argument innerExecute() {
+		double xdiff = getParameter(0).getDouble() - getTurtle().getDestination().getX();
+		double ydiff = getParameter(1).getDouble() - getTurtle().getDestination().getY();
+		double degrees = Math.toDegrees(Math.atan2(ydiff, xdiff)) - getTurtle().getRotation();
+		getTurtle().turn(degrees);
+		return new Argument(degrees);
 	}
 }
