@@ -30,8 +30,6 @@ public class State {
 	}
 	
 	public Command getCommand(String name) {
-		System.out.println("getting: " + name);
-		System.out.println(commands);
 		if (commands.containsKey(name)) {
 			return commands.get(name);
 		}
@@ -39,10 +37,8 @@ public class State {
 	}
 
 	public void setCommand(UserCommand command) {
-		System.out.println("setting command");
 		userDefinedCommandNames.add(command.getName());
 		commands.put(command.getName(), command);
-		System.out.println(commands);
 	}
 	
 	public void setVariable(Variable var) {

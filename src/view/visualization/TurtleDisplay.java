@@ -7,8 +7,10 @@ import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
 import javafx.scene.image.Image;
 import javafx.scene.shape.Line;
@@ -20,6 +22,7 @@ import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.StackPane;
 
 /**
@@ -42,16 +45,12 @@ public class TurtleDisplay extends StackPane {
 	private boolean animationIsPlaying;
 	private SimpleDoubleProperty myAnimationSpeed;
 	
-	private History history;
-
 	public TurtleDisplay(Workspace workspace, int initialNumber, Image turtleImage) {
 		myLineLength = 1.0;
 		myAnimation = new Timeline();
 		myAnimation.setCycleCount(Timeline.INDEFINITE);
 		myWorkspace = workspace;
-		
-		history = new History();
-
+	
 		this.setMinSize(300, 280);
 		this.setPrefSize(SIZE, SIZE);
 
@@ -110,7 +109,6 @@ public class TurtleDisplay extends StackPane {
 	}
 
 	protected void drawLine(Point start, Point finish, Color color, double width) {
-		history.add(myDisplayArea);
 		Line line = new Line(start.getX(), start.getY(), finish.getX(), finish.getY());
 		line.setStroke(color);
 		line.setStrokeWidth(width);
@@ -131,34 +129,47 @@ public class TurtleDisplay extends StackPane {
 	}
 
 	private void createToolBar(int width) {
-		HBox myToolBar = new HBox(5);
+		
+		HBox myToolBar = new HBox();
 		myAnimationSpeed = new SimpleDoubleProperty();
 
 		mySpeedSlider = new Slider(0, 1, 0.2);
-		mySpeedSlider.setPrefWidth(width / 2);
-		mySpeedSlider.setShowTickMarks(true);
+		mySpeedSlider.setPrefWidth(width / 4);
+		mySpeedSlider.setShowTickMarks(false);
 		mySpeedSlider.setMajorTickUnit(0.25);
 
 		myAnimationSpeed.bind(mySpeedSlider.valueProperty());
 		mySpeedSlider.valueProperty().addListener(e -> this.resetAnimation(myAnimationSpeed.get()));
 		this.resetAnimation(myAnimationSpeed.get());
 
-		Button undoButton = new Button("Undo");
-		undoButton.setOnAction(e -> this.undo());
-		
 		Button playButton = new Button("Play");
 		playButton.setOnAction(e -> this.playAnimation());
 		Button stopButton = new Button("Stop");
 		stopButton.setOnAction(e -> this.stopAnimation());
 		Button stepButton = new Button("Step");
 		stepButton.setOnAction(e -> this.singleStepCommand());
+		
+		Label speedLabel = new Label("Speed:");
+		speedLabel.setTextFill(Color.BLACK);
+		speedLabel.setPadding(new Insets(0, 0, 0, 5));
+		
+		HBox.setHgrow(playButton, Priority.ALWAYS);
+		HBox.setHgrow(stopButton, Priority.ALWAYS);
+		HBox.setHgrow(stepButton, Priority.ALWAYS);
+		HBox.setHgrow(mySpeedSlider, Priority.ALWAYS);
+		playButton.setMaxWidth(Double.MAX_VALUE);
+		stopButton.setMaxWidth(Double.MAX_VALUE);
+		stepButton.setMaxWidth(Double.MAX_VALUE);
+		mySpeedSlider.setMaxWidth(Double.MAX_VALUE);
 
-		myToolBar.getChildren().addAll(undoButton, playButton, stopButton, stepButton, mySpeedSlider);
-		myToolBar.setPrefWidth(width);
+		myToolBar.getChildren().addAll(playButton, stopButton, stepButton, speedLabel, mySpeedSlider);
+		myToolBar.setPrefWidth(width / 2);
+		myToolBar.setAlignment(Pos.BASELINE_CENTER);
 		myToolBar.translateYProperty().bind(myDisplayArea.heightProperty().subtract(playButton.heightProperty()));
+		
 		this.getChildren().add(myToolBar);
 	}
-
+	
 	protected void addToDisplayArea(Node element) {
 		element.setLayoutX(myDisplayArea.getWidth() / 2.0);
 		element.setLayoutY(myDisplayArea.getHeight() / 2.0);
@@ -204,10 +215,6 @@ public class TurtleDisplay extends StackPane {
 	private void singleStepCommand() {
 		animationIsPlaying = false;
 		myAnimation.play();
-	}
-	
-	private void undo() {
-		myDisplayArea = history.returnToPrevious();
 	}
 	
 }

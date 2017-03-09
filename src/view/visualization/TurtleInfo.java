@@ -24,7 +24,7 @@ public class TurtleInfo {
 		SimpleDoubleLabel xLabel = new SimpleDoubleLabel("X: ", turtle.readOnlyXProperty());
 		SimpleDoubleLabel yLabel = new SimpleDoubleLabel("Y: ", turtle.readOnlyYProperty());
 		SimpleDoubleLabel rotateLabel = new SimpleDoubleLabel("Heading: ", turtle.readOnlyRotationProperty());
-		SimpleBooleanLabel penLabel = new SimpleBooleanLabel("Pen down: ", turtle.readOnlyPenDownProperty(), "down", "up");
+		SimpleBooleanLabel penLabel = new SimpleBooleanLabel("Pen: ", turtle.readOnlyPenDownProperty(), "down", "up");
 		
 		ColorPicker penPicker = new ColorPicker();
 		penPicker.setOnAction(e -> turtle.setPenColor(penPicker.getValue()));
