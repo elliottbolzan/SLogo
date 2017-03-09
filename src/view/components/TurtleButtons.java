@@ -1,8 +1,8 @@
 package view.components;
 
 import controller.Controller;
+import javafx.geometry.Insets;
 import javafx.scene.control.Button;
-import javafx.scene.input.KeyCode;
 import javafx.scene.layout.HBox;
 
 /**
@@ -34,6 +34,7 @@ public class TurtleButtons {
 		backButton.setOnAction(e -> this.handle(ButtonType.BACK));
 		
 		myBar.getChildren().addAll(leftButton, forwardButton, backButton, rightButton);
+		myBar.setPadding(new Insets(0, 0, 10, 0));
 	}
 	
 	public HBox getView() {

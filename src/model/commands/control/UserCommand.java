@@ -5,7 +5,6 @@ package model.commands.control;
 
 import java.util.ArrayList;
 
-import model.State;
 import model.commands.Command;
 import model.parser.Argument;
 
@@ -35,16 +34,12 @@ public class UserCommand extends Command {
 
 	@Override
 	public Argument execute() {
-		if (name.equals("pinwheel")) {
-			System.out.println("HERE");
-		}
 		int i = 0;
 		for (String variableName: variableNames) {
 			double realValue = getParameter(i).getDouble();
 			expression = expression.replaceAll(variableName, Double.toString(realValue));
 			i++;
 		}
-		System.out.println(expression);
 		return getParser().parseInternal(expression.trim()).evaluate();
 	}
 	

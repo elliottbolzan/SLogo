@@ -103,7 +103,7 @@ public class Turtle {
 		return myColorIndex;
 	}
 	
-	public int getshapeIndex() {
+	public int getShapeIndex() {
 		return myShapeIndex;
 	}
 	
