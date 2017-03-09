@@ -16,6 +16,6 @@ public class CosineCommand extends Command {
 
 	@Override
 	public Argument execute() {
-		return new Argument(Math.cos(this.getParameter(0).getDouble()));
+		return new Argument(Math.cos(Math.toRadians(this.getParameter(0).getDouble())));
 	}
 }
