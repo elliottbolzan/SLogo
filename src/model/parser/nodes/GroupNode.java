@@ -7,8 +7,10 @@ import model.parser.Input;
 import model.parser.TreeParser;
 import model.parser.tokenize.Token;
 import model.parser.tokenize.Tokenize;
+
 public class GroupNode extends Node {
 	private String newExpression = "";
+	
 	public GroupNode(TreeParser parser, Node parent, Input input, Commands commands) {
 		super(parser, parent);
 		String commandName = input.getWords().get(input.getIndex());

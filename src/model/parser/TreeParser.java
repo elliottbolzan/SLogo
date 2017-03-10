@@ -126,7 +126,7 @@ public class TreeParser {
 				} catch (Exception e) {
 					child = new ConstantNode(this, node, word);
 					if(!prevCmdTo){
-						controller.getView().showMessage(String.format("No such command: %s.",word));
+						controller.getView().showMessage(String.format(controller.getResources().getString("CommandDoesNotExit"),word));
 					}
 					else prevCmdTo = false;
 				}
@@ -139,7 +139,7 @@ public class TreeParser {
 			}
 			return new Input(child, input.getIndex(), input.getWords());
 		} catch (Exception e) {
-			controller.getView().showMessage("Invalid input.");
+			controller.getView().showMessage(controller.getResources().getString("InvalidInput"));
 		}
 		return null;
 	}
@@ -150,7 +150,7 @@ public class TreeParser {
 		.forEach(e -> sb.append(e + " "));
 		String result = sb.toString();
 		if (result.contains("#"))
-			controller.getView().showMessage("Proper comment must have its own line and begin with #.");
+			controller.getView().showMessage(controller.getResources().getString("CommentError"));
 		result.replace(",", "");
 		return result;
 	}
