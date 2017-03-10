@@ -18,16 +18,15 @@ import model.parser.nodes.RootNode;
 import model.parser.nodes.VariableNode;
 import model.parser.tokenize.Token;
 import model.parser.tokenize.Tokenize;
-
 public class TreeParser {
-	
+
 	private String language = "English";
 	private Controller controller;
 	private Commands commands;
 	private ParseHistory parseHistory;
 	private State state;
 	private boolean prevCmdTo;
-	
+
 	public TreeParser(Controller controller) {
 		this.controller = controller;
 		parseHistory = new ParseHistory();
@@ -35,44 +34,44 @@ public class TreeParser {
 		state = new State();
 		prevCmdTo = false;
 	}
-	
+
 	public void setLanguage(String language) {
 		this.language = language;
 		commands.updateLanguage(language);
 	}
-	
+
 	public String getLanguage() {
 		return language;
 	}
-	
+
 	public State getState() {
 		return state;
 	}
-	
+
 	public ObservableList<Variable> getVariables() {
 		return state.getVariables();
 	}
-	
+
 	public ObservableList<String> getUserDefinedCommands() {
 		return state.getUserDefinedCommands();
 	}
-	
+
 	public ObservableList<IndexedColor> getColorPalette() {
 		return state.getColorPalette();
 	}
-	
+
 	public ObservableList<IndexedImage> getImagePalette() {
 		return state.getImagePalette();
 	}
-	
+
 	public ObservableList<String> getHistory() {
 		return parseHistory.getHistoryList();
 	}
-	
+
 	public String getPreviousCommand(int k) {
 		return parseHistory.getHistoryList().get(0);
 	}
-	
+
 	private void printTree(Node node, String spacing) {
 		System.out.println(spacing + node);
 		spacing += " ";
@@ -80,7 +79,7 @@ public class TreeParser {
 		node.getChildren().stream().filter(e -> e != null).forEach(e ->
 		printTree(e, spaces));
 	}
-	
+
 	public Node parse(String input, boolean addToHistory) {
 		if (addToHistory) {
 			parseHistory.addStringToHistory(input);
@@ -91,11 +90,11 @@ public class TreeParser {
 		printTree(root, " ");
 		return root;
 	}
-	
+
 	public Node parseInternal(String input) {
 		return startTree(input);
 	}
-	
+
 	private Node startTree(String string) {
 		ArrayList<String> words = new ArrayList<String>();
 		words = new ArrayList<String>(Arrays.asList(string.split("\\s+")));
@@ -107,7 +106,7 @@ public class TreeParser {
 		}
 		return input.getNode();
 	}
-	
+
 	private Input createTree(Input input) {
 		String word = input.getWords().get(input.getIndex());
 		try {
@@ -130,13 +129,11 @@ public class TreeParser {
 						child.setParser(this);
 					}
 					((Command) child).setup(controller, state);
-					boolean toCommand = child instanceof MakeUserInstructionCommand;
-					if(toCommand) prevCmdTo = true;
-					else prevCmdTo = false;
+					prevCmdTo = child instanceof MakeUserInstructionCommand;
 					for (int i = 0; i < ((Command) child).numParameters(); i++) {
 						input = createTree(new Input(child, input.getIndex(), input.getWords()));
 					}
-					if (toCommand) child.evaluate();
+					if (child instanceof MakeUserInstructionCommand) child.evaluate();
 				} catch (Exception e) {
 					child = new ConstantNode(this, node, word);
 					if(!prevCmdTo){
@@ -154,21 +151,18 @@ public class TreeParser {
 		}
 		return null;
 	}
-	
+
 	private void checkUserMadeCommands(String word){
 		if(controller.getUserDefinedCommands().contains(word)){
 			controller.getView().showMessage(String.format(controller.getResources().getString("UserMadeCmdError"),word));	
 		}
 		else{
-			try{
-				Node child = commands.get(word);
-				((Command) child).setup(controller, state);
+			if(commands.get(word) != null){
 				controller.getView().showMessage(String.format(controller.getResources().getString("PreCmdExists"),word));
 			}
-			catch (Exception e){}
 		}
 	}
-	
+
 	private void handleCmdError(String word){
 		try{
 			if(!controller.getUserDefinedCommands().contains(word)){
@@ -181,7 +175,7 @@ public class TreeParser {
 			controller.getView().showMessage(String.format(controller.getResources().getString("CommandDoesNotExist"),word));
 		}
 	}
-	
+
 	private String handleComment(String s) {
 		ArrayList<String> commentFinder = new ArrayList<>(Arrays.asList(s.split("\\n")));
 		StringBuilder sb = new StringBuilder();
