@@ -63,8 +63,9 @@ public class VariableView extends BorderPane {
 		valueColumn.setEditable(true);
 
 		table.setItems(data);
-		table.getColumns().addAll(nameColumn, valueColumn);
-
+		table.getColumns().add(nameColumn);
+		table.getColumns().add(valueColumn);
+		
 		setCenter(table);
 	}
 

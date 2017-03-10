@@ -41,9 +41,9 @@ public class TurtleImageView extends BorderPane {
 		TableColumn<IndexedImage, Integer> indexColumn = new TableColumn<IndexedImage, Integer>("Index");
 		indexColumn.setCellValueFactory(e -> e.getValue().indexProperty().asObject());
 
-		TableColumn<IndexedImage, String> colorColumn = new TableColumn<IndexedImage, String>("Image");
-		colorColumn.setCellValueFactory(e -> e.getValue().pathProperty());
-		colorColumn.setCellFactory(column -> {
+		TableColumn<IndexedImage, String> imageColumn = new TableColumn<IndexedImage, String>("Image");
+		imageColumn.setCellValueFactory(e -> e.getValue().pathProperty());
+		imageColumn.setCellFactory(column -> {
 			return new TableCell<IndexedImage, String>() {
 				@Override
 				protected void updateItem(String item, boolean empty) {
@@ -59,7 +59,8 @@ public class TurtleImageView extends BorderPane {
 		});
 
 		table.setItems(data);
-		table.getColumns().addAll(indexColumn, colorColumn);
+		table.getColumns().add(indexColumn);
+		table.getColumns().add(imageColumn);
 
 		setCenter(table);
 	}

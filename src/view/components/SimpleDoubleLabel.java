@@ -1,8 +1,6 @@
 package view.components;
 
-import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.ReadOnlyDoubleProperty;
-import javafx.beans.property.SimpleDoubleProperty;
 import javafx.scene.control.Label;
 
 /**
