@@ -9,6 +9,7 @@ Slogo
 **Total Hours**:
 
 - Elliott Bolzan: 70 hours.
+- Alex Zapata: 45 hours.
 
 ### Team Roles
 ##### Front-End
@@ -17,9 +18,9 @@ Slogo
 - Jay Doherty: Main responsibilities were handling the turtle display and animation for the front end, including providing the turtle interface to the back-end. Also helped implement the side panels for images, colors, and turtle information. Also assisted with turtle and display-related commands in the back-end.
 
 ##### Back-End
-Dennis Ling:
+- Dennis Ling:
 
-Alex Zapata:
+- Alex Zapata: Wrote the original parser, and control commands, which was later switched to a Tree implementation. Main responsibilities included extending/re-factoring the parser and some of the commands in back-end while deciding the areas in which error-checking needed to be done. Further was tasked with implementing user made commands in the back-end with the Tree structure. For this, I created the UserCommand node and its basic usage within the parser (refined by team-mates).
 
 ### Program Files
 * `Main.java`: contains main() and is used to start the program.
@@ -35,5 +36,8 @@ Alex Zapata:
 
 * Elliott Bolzan: this project was a stimulating challenge. Its modularity helped me better understand how to divide up the user interface - both visually and in terms of code. I also found the process of implementing the parser using recursion to be an interesting challenge. Overall, I preferred this project to CellSociety and Breakout: it felt like we were tasked with creating a complete, usable program, while the previous projects felt more gimmicky.
 * 
+
+* Alex Zapata: this project was very interesting, but also very stressing. The interestingness of this project is in the fact that it is our first real chunk of code that really feels like a solidified product. Further, the challenges associated with understanding user-input made us focus on UI. The stressing component of this project was that, because of circumstances outside of this class both academic and personal and the ludicrous amount of time that such a project calls for, I was not able to put in as much time as some of my team-mates which effected my own personal production. Altogether a good experience in which I learned a lot and genuinely enjoyed the final product.
+*
 
 
