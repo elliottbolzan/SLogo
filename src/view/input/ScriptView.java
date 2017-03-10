@@ -11,18 +11,15 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Optional;
 
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.scene.Node;
-import javafx.scene.control.Button;
 import javafx.scene.control.SplitPane;
 import javafx.scene.control.TextInputDialog;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Priority;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
-import javafx.stage.FileChooser.ExtensionFilter;
+import utils.Direction;
 import view.Workspace;
+import view.components.Factory;
 
 /**
  * @author Elliott Bolzan
@@ -31,45 +28,31 @@ import view.Workspace;
 public class ScriptView extends InputView {
 
 	private Workspace workspace;
+	private String defaultPath;
+	private Factory factory;
 
 	/**
 	 * 
 	 */
 	public ScriptView(Workspace workspace, SplitPane pane, int index) {
-		super(pane, index, true, true);
+		super(pane, index, Direction.BACK, true);
 		this.workspace = workspace;
-		setTitle(workspace.getController().getResources().getString("ScriptTitle"));
 		setup();
 	}
 
 	private void setup() {
-		setBottom(createButtonBar());
+		factory = new Factory(workspace.getController().getResources());
+		setTitle(workspace.getController().getResources().getString("ScriptTitle"));
 		setCenter(getTextArea());
+		setBottom(createButtonBar());
 		setMinHeight(0);
+		defaultPath = System.getProperty("user.dir")
+				+ workspace.getController().getResources().getString("ExamplesPath");
 	}
 
 	private Node createButtonBar() {
-		HBox box = new HBox();
-		Button loadButton = makeButton(workspace.getController().getResources().getString("LoadTitle"), e -> load());
-		Button saveButton = makeButton(workspace.getController().getResources().getString("SaveTitle"), e -> save());
-		Button clearButton = makeButton(workspace.getController().getResources().getString("ClearTitle"), e -> clear());
-		Button runButton = makeButton(workspace.getController().getResources().getString("RunTitle"), e -> run());
-		HBox.setHgrow(loadButton, Priority.ALWAYS);
-		HBox.setHgrow(saveButton, Priority.ALWAYS);
-		HBox.setHgrow(clearButton, Priority.ALWAYS);
-		HBox.setHgrow(runButton, Priority.ALWAYS);
-		loadButton.setMaxWidth(Double.MAX_VALUE);
-		saveButton.setMaxWidth(Double.MAX_VALUE);
-		clearButton.setMaxWidth(Double.MAX_VALUE);
-		runButton.setMaxWidth(Double.MAX_VALUE);
-		box.getChildren().addAll(loadButton, saveButton, clearButton, runButton);
-		return box;
-	}
-
-	private Button makeButton(String title, EventHandler<ActionEvent> handler) {
-		Button button = new Button(title);
-		button.setOnAction(handler);
-		return button;
+		return new HBox(factory.makeButton("LoadTitle", e -> load(), true), factory.makeButton("SaveTitle", e -> save(), true),
+				factory.makeButton("ClearTitle", e -> clear(), true), factory.makeButton("RunTitle", e -> run(), true));
 	}
 
 	@Override
@@ -83,40 +66,38 @@ public class ScriptView extends InputView {
 	}
 
 	private void load() {
-		FileChooser chooser = new FileChooser();
-		chooser.setInitialDirectory(new File(System.getProperty("user.dir") + "/data/examples"));
-		chooser.getExtensionFilters().setAll(new ExtensionFilter("Logo Files", "*.logo", "*.txt"));
+		FileChooser chooser = factory.makeFileChooser(defaultPath, "Logo Files", "*.logo", "*.txt");
 		File dataFile = chooser.showOpenDialog(getScene().getWindow());
 		if (dataFile != null) {
 			clear();
 			readFileIn(dataFile.toPath().toString());
 		}
 	}
-	
+
 	public void readFileIn(String path) {
-		try {
-			FileReader fileReader = new FileReader(path);
-			BufferedReader bufferedReader = new BufferedReader(fileReader);
-			String line = "";
-			while ((line = bufferedReader.readLine()) != null) {
-				getTextArea().appendText(line + "\n");
+		if (!(path.equals(""))) {
+			try {
+				BufferedReader bufferedReader = new BufferedReader(new FileReader(path));
+				String line = "";
+				while ((line = bufferedReader.readLine()) != null) {
+					getTextArea().appendText(line + "\n");
+				}
+				bufferedReader.close();
+			} catch (Exception e) {
+				workspace.showMessage(workspace.getController().getResources().getString("FileNotRead"));
 			}
-			bufferedReader.close();
-		} catch (Exception e) {
-			// Don't use file
 		}
 	}
 
 	private void save() {
-		DirectoryChooser chooser = new DirectoryChooser();
-		chooser.setTitle("Output Folder");
-		chooser.setInitialDirectory(new File(System.getProperty("user.dir") + "/data/examples"));
+		DirectoryChooser chooser = factory.makeDirectoryChooser(defaultPath, "OutputFolderTitle");
 		File selectedDirectory = chooser.showDialog(getScene().getWindow());
-		TextInputDialog dialog = new TextInputDialog("script.logo");
-		dialog.setTitle("File Name");
-		dialog.setHeaderText("Enter your file name below.");
-		dialog.setContentText("Please enter your output file's name:");
-		Optional<String> result = dialog.showAndWait();
+		TextInputDialog dialog = factory.makeTextInputDialog("SaveFileTitleString", "SaveFileHeaderString",
+				"SaveFileContentString", "SaveFilePlaceholderString");
+		handleDialogResult(selectedDirectory, dialog.showAndWait());
+	}
+	
+	private void handleDialogResult(File selectedDirectory, Optional<String> result) {
 		if (result.isPresent()) {
 			try {
 				File file = new File(selectedDirectory + "/" + result.get());
@@ -124,7 +105,7 @@ public class ScriptView extends InputView {
 				out.write(getCurrentCommand());
 				out.close();
 			} catch (IOException e) {
-
+				workspace.showMessage(workspace.getController().getResources().getString("FileSaveFail"));
 			}
 		}
 	}

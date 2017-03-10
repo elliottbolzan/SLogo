@@ -168,11 +168,6 @@ public class Turtle {
 			isMovingProperty.set(false);
 		}
 	}
-
-	private void setRotation(double degrees) {
-		myCompass.setHeading(degrees % 360);
-		myTurtleGraphic.setRotation(degrees);
-	}
 	
 	private void setLocation(Point point) {
 		myCompass.setX(point.getX());
@@ -198,6 +193,11 @@ public class Turtle {
 		this.setLocation(step);
 	}
 
+	private void setRotation(double degrees) {
+		myCompass.setHeading(degrees % 360);
+		myTurtleGraphic.setRotation(degrees);
+	}
+	
 	private boolean areInSameQuadrant(Point a, Point b) {
 		return (a.getX() * b.getX() >= 0) && (a.getY() * b.getY() >= 0);
 	}

@@ -53,5 +53,4 @@ public class UserCommand extends Command {
 	protected String getName() {
 		return name;
 	}
-
 }

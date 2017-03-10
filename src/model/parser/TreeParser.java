@@ -1,8 +1,6 @@
 package model.parser;
-
 import java.util.ArrayList;
 import java.util.Arrays;
-
 import controller.Controller;
 import javafx.collections.ObservableList;
 import model.IndexedColor;
@@ -22,65 +20,67 @@ import model.parser.tokenize.Token;
 import model.parser.tokenize.Tokenize;
 
 public class TreeParser {
-
+	
 	private String language = "English";
 	private Controller controller;
 	private Commands commands;
 	private ParseHistory parseHistory;
 	private State state;
-
+	private boolean prevCmdTo;
+	
 	public TreeParser(Controller controller) {
 		this.controller = controller;
 		parseHistory = new ParseHistory();
 		commands = new Commands();
 		state = new State();
+		prevCmdTo = false;
 	}
-
+	
 	public void setLanguage(String language) {
 		this.language = language;
 		commands.updateLanguage(language);
 	}
-
+	
 	public String getLanguage() {
 		return language;
 	}
-
+	
 	public State getState() {
 		return state;
 	}
-
+	
 	public ObservableList<Variable> getVariables() {
 		return state.getVariables();
 	}
-
+	
 	public ObservableList<String> getUserDefinedCommands() {
 		return state.getUserDefinedCommands();
 	}
-
+	
 	public ObservableList<IndexedColor> getColorPalette() {
 		return state.getColorPalette();
 	}
-
+	
 	public ObservableList<IndexedImage> getImagePalette() {
 		return state.getImagePalette();
 	}
-
+	
 	public ObservableList<String> getHistory() {
 		return parseHistory.getHistoryList();
 	}
-
+	
 	public String getPreviousCommand(int k) {
 		return parseHistory.getHistoryList().get(0);
 	}
-
-	// private void printTree(Node node, String spacing) {
-	// System.out.println(spacing + node);
-	// spacing += " ";
-	// final String spaces = spacing;
-	// node.getChildren().stream().filter(e -> e != null).forEach(e ->
-	// printTree(e, spaces));
-	// }
-
+	
+//	private void printTree(Node node, String spacing) {
+//		System.out.println(spacing + node);
+//		spacing += " ";
+//		final String spaces = spacing;
+//		node.getChildren().stream().filter(e -> e != null).forEach(e ->
+//		printTree(e, spaces));
+//	}
+	
 	public Node parse(String input, boolean addToHistory) {
 		if (addToHistory) {
 			parseHistory.addStringToHistory(input);
@@ -88,14 +88,13 @@ public class TreeParser {
 		input = handleComment(input);
 		Node root = parseInternal(input);
 		root.evaluate();
-		// controller.print(String.valueOf(evaluation.getDouble()));
 		return root;
 	}
-
+	
 	public Node parseInternal(String input) {
 		return startTree(input);
 	}
-
+	
 	private Node startTree(String string) {
 		ArrayList<String> words = new ArrayList<String>();
 		words = new ArrayList<String>(Arrays.asList(string.split("\\s+")));
@@ -107,7 +106,7 @@ public class TreeParser {
 		}
 		return input.getNode();
 	}
-
+	
 	private Input createTree(Input input) {
 		String word = input.getWords().get(input.getIndex());
 		try {
@@ -115,6 +114,7 @@ public class TreeParser {
 			Node node = input.getNode();
 			Node child = null;
 			input.addToIndex(1);
+			checkUserMadeCommands(word);
 			if (token == Token.GROUP_START) {
 				child = new GroupNode(this, node, input, commands);
 			} else if (token == Token.CONSTANT) {
@@ -129,39 +129,45 @@ public class TreeParser {
 						child.setParser(this);
 					}
 					((Command) child).setup(controller, state);
+					boolean toCommand = child instanceof MakeUserInstructionCommand;
+					if(toCommand) prevCmdTo = true;
 					for (int i = 0; i < ((Command) child).numParameters(); i++) {
 						input = createTree(new Input(child, input.getIndex(), input.getWords()));
 					}
-					if (child instanceof MakeUserInstructionCommand) {
-						child.evaluate();
-						return new Input(child, input.getIndex(), input.getWords());
-					}
+					if (toCommand) child.evaluate();
 				} catch (Exception e) {
 					child = new ConstantNode(this, node, word);
-					// controller.getView().showMessage("No such command:" + " "
-					// + word + ".");
+					if(!prevCmdTo){
+						controller.getView().showMessage(String.format(controller.getResources().getString("CommandDoesNotExist"),word));
+					}
+					else prevCmdTo = false;
 				}
 			} else if (token == Token.LIST_START) {
 				child = new ListNode(this, node, input);
 			}
-			node.addChild(child);
+			if(!(child instanceof MakeUserInstructionCommand))	node.addChild(child);
 			return new Input(child, input.getIndex(), input.getWords());
 		} catch (Exception e) {
-			// Show exception.
+			controller.getView().showMessage(controller.getResources().getString("InvalidInput"));
 		}
 		return null;
 	}
-
+	
+	private void checkUserMadeCommands(String word){
+		if(controller.getUserDefinedCommands().contains(word) && prevCmdTo){
+			controller.getView().showMessage((controller.getResources().getString("UserMadeCmdError")));
+		}
+	}
+	
 	private String handleComment(String s) {
 		ArrayList<String> commentFinder = new ArrayList<>(Arrays.asList(s.split("\\n")));
 		StringBuilder sb = new StringBuilder();
 		commentFinder.stream().filter(e -> !e.equals("")).filter(e -> e.trim().charAt(0) != '#')
-				.forEach(e -> sb.append(e + " "));
+		.forEach(e -> sb.append(e + " "));
 		String result = sb.toString();
 		if (result.contains("#"))
-			controller.getView().showMessage("Proper comment must have its own line and begin with #.");
+			controller.getView().showMessage(controller.getResources().getString("CommentError"));
 		result.replace(",", "");
 		return result;
 	}
-
 }

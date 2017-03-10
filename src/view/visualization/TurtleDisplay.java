@@ -42,7 +42,7 @@ public class TurtleDisplay extends StackPane {
 	private boolean animationIsPlaying;
 	private SimpleDoubleProperty myAnimationSpeed;
 	
-	public TurtleDisplay(Workspace workspace, int initialNumber, Image turtleImage) {
+	public TurtleDisplay(Workspace workspace, int initialNumber, Image turtleImage, Color backgroundColor) {
 		myLineLength = 1.0;
 		myAnimation = new Timeline();
 		myAnimation.setCycleCount(Timeline.INDEFINITE);
@@ -53,7 +53,7 @@ public class TurtleDisplay extends StackPane {
 
 		this.createDisplayArea(SIZE, SIZE);
 		this.createToolBar(SIZE);
-		this.setBackgroundColor(Color.WHITE);
+		this.setBackgroundColor(backgroundColor);
 
 		turtleManager = new TurtleManager(initialNumber, this, turtleImage);
 

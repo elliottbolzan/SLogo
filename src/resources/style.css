@@ -8,50 +8,30 @@
 
 .text-area {
 	-fx-font-family: Courier;
-	-fx-font-size: 18;
+	-fx-font-size: 16;
     -fx-background-insets: 0;
-    -fx-background-color: transparent, white, transparent, white;
+    -fx-background-color: transparent;
 }
 
 .text-area .content {
-    -fx-background-color: transparent, white, transparent, white;
+    -fx-background-color: white;
+    -fx-padding: 10px;
 }
 
 .text-area:focused .content {
-    -fx-background-color: transparent, white, transparent, white;
+    -fx-background-color: white;
 }
 
 .text-area:focused {
-    -fx-highlight-fill: #7ecfff;
-}
-
-.text-area .content {
-    -fx-padding: 10px;
-    -fx-text-fill: gray;
-    -fx-highlight-fill: #7ecfff;
+    -fx-highlight-fill: #2C3E50;
 }
 
 .panel-scroll-pane {
     -fx-background-insets: 0;
 	-fx-background-color:transparent;
-	-fx-border-color: transparent lightgray transparent transparent;
-	-fx-border-width: 1;
 }
 
-.panel-list, .panel-table {
-	-fx-background-insets: 0;
-	-fx-border-color: lightgray;
-	-fx-border-width: 1;
-}
-
-.minimize {
-    -fx-border-color: transparent;
-    -fx-border-width: 0;
-    -fx-background-radius: 0;
-    -fx-background-color: transparent;
-}
-
-.tab-button {
+.minimize, .tab-button {
     -fx-border-color: transparent;
     -fx-border-width: 0;
     -fx-background-radius: 0;
