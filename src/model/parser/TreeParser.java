@@ -73,13 +73,13 @@ public class TreeParser {
 		return parseHistory.getHistoryList().get(0);
 	}
 	
-//	private void printTree(Node node, String spacing) {
-//		System.out.println(spacing + node);
-//		spacing += " ";
-//		final String spaces = spacing;
-//		node.getChildren().stream().filter(e -> e != null).forEach(e ->
-//		printTree(e, spaces));
-//	}
+	private void printTree(Node node, String spacing) {
+		System.out.println(spacing + node);
+		spacing += " ";
+		final String spaces = spacing;
+		node.getChildren().stream().filter(e -> e != null).forEach(e ->
+		printTree(e, spaces));
+	}
 	
 	public Node parse(String input, boolean addToHistory) {
 		if (addToHistory) {
@@ -88,6 +88,7 @@ public class TreeParser {
 		input = handleComment(input);
 		Node root = parseInternal(input);
 		root.evaluate();
+		printTree(root, " ");
 		return root;
 	}
 	
@@ -114,7 +115,7 @@ public class TreeParser {
 			Node node = input.getNode();
 			Node child = null;
 			input.addToIndex(1);
-			checkUserMadeCommands(word);
+			if (prevCmdTo) checkUserMadeCommands(word);
 			if (token == Token.GROUP_START) {
 				child = new GroupNode(this, node, input, commands);
 			} else if (token == Token.CONSTANT) {
@@ -131,6 +132,7 @@ public class TreeParser {
 					((Command) child).setup(controller, state);
 					boolean toCommand = child instanceof MakeUserInstructionCommand;
 					if(toCommand) prevCmdTo = true;
+					else prevCmdTo = false;
 					for (int i = 0; i < ((Command) child).numParameters(); i++) {
 						input = createTree(new Input(child, input.getIndex(), input.getWords()));
 					}
@@ -138,7 +140,7 @@ public class TreeParser {
 				} catch (Exception e) {
 					child = new ConstantNode(this, node, word);
 					if(!prevCmdTo){
-						controller.getView().showMessage(String.format(controller.getResources().getString("CommandDoesNotExist"),word));
+						handleCmdError(word);
 					}
 					else prevCmdTo = false;
 				}
@@ -154,8 +156,29 @@ public class TreeParser {
 	}
 	
 	private void checkUserMadeCommands(String word){
-		if(controller.getUserDefinedCommands().contains(word) && prevCmdTo){
-			controller.getView().showMessage((controller.getResources().getString("UserMadeCmdError")));
+		if(controller.getUserDefinedCommands().contains(word)){
+			controller.getView().showMessage(String.format(controller.getResources().getString("UserMadeCmdError"),word));	
+		}
+		else{
+			try{
+				Node child = commands.get(word);
+				((Command) child).setup(controller, state);
+				controller.getView().showMessage(String.format(controller.getResources().getString("PreCmdExists"),word));
+			}
+			catch (Exception e){}
+		}
+	}
+	
+	private void handleCmdError(String word){
+		try{
+			if(!controller.getUserDefinedCommands().contains(word)){
+				Node child = commands.get(word);
+				((Command) child).setup(controller, state);
+			}
+			controller.getView().showMessage(controller.getResources().getString("InvalidArguments"));
+		}
+		catch (Exception e){
+			controller.getView().showMessage(String.format(controller.getResources().getString("CommandDoesNotExist"),word));
 		}
 	}
 	
