@@ -18,7 +18,7 @@ import javafx.scene.image.Image;
 public class TurtleManager {
 
 	public interface Runnable {
-		public double run(Turtle turtle);
+		public void run(Turtle turtle);
 	}
 
 	private Map<Integer, Turtle> turtles;
@@ -37,33 +37,31 @@ public class TurtleManager {
 		this.turtleImage = turtleImage;
 		clear();
 	}
-	
+
 	public ObservableList<Turtle> getActiveTurtles() {
 		return activeTurtles;
 	}
-	
+
 	public Map<Integer, Turtle> getAllTurtles() {
 		return turtles;
 	}
 	
+	public Turtle getTurtleByID(int ID) {
+		return turtles.get(ID);
+	}
+
 	public Turtle getCurrentTurtle() {
 		return currentTurtle;
 	}
-	
+
 	public void setCurrentTurtle(Turtle turtle) {
 		currentTurtle = turtle;
 	}
 
-	public Turtle getTurtleByID(int ID) {
-		return turtles.get(ID);
-	}
-	
-	private double applyToTurtles(Runnable runnable) {
-		double result = 0;
+	private void applyToTurtles(Runnable runnable) {
 		for (Turtle turtle : activeTurtles) {
-			result = runnable.run(turtle);
+			runnable.run(turtle);
 		}
-		return result;
 	}
 
 	private void createInitialTurtles() {
@@ -90,17 +88,17 @@ public class TurtleManager {
 				turtle.activeProperty().set(false);
 			}
 		} else {
-			Turtle turtle = new Turtle(display, ID, turtleImage);
-			turtles.put(ID, turtle);
-			activeTurtles.add(turtle);
-			turtle.activeProperty().set(true);
-			turtle.activeProperty().addListener(e -> this.onTurtleActivityModified(turtle));
-			addTurtle(turtle);
+			createTurtle(ID);
 		}
 	}
-
-	public Map<Integer,Turtle> getTurtles(){
-		return turtles;
+	
+	private void createTurtle(int ID) {
+		Turtle turtle = new Turtle(display, ID, turtleImage);
+		turtles.put(ID, turtle);
+		activeTurtles.add(turtle);
+		turtle.activeProperty().set(true);
+		turtle.activeProperty().addListener(e -> this.onTurtleActivityModified(turtle));
+		addTurtle(turtle);
 	}
 
 	private void addTurtle(Turtle turtle) {
@@ -119,27 +117,25 @@ public class TurtleManager {
 			if (turtle.isMovingProperty().get()) {
 				turtle.updateMovement();
 			} else {
-				if (turtle.hasAnotherDestination()) {
-					display.moveTurtle(turtle, turtle.pollFutureDestination());
-					if(!display.animationIsPlaying()) {
+				if (turtle.getSchedule().hasAnotherDestination()) {
+					display.moveTurtle(turtle, turtle.getSchedule().pollFutureDestination());
+					if (!display.animationIsPlaying()) {
 						display.stopAnimation();
 					}
 				}
 			}
-			return 0;
 		});
 	}
-	
+
 	public void setTurtleImage(int imageIndex, String URL) {
 		applyToTurtles(turtle -> {
 			turtle.setImage(URL);
 			turtle.setShapeIndex(imageIndex);
-			return 0;
 		});
 	}
-	
+
 	private void onTurtleActivityModified(Turtle turtle) {
-		if(!turtle.activeProperty().get()) {
+		if (!turtle.activeProperty().get()) {
 			activeTurtles.remove(turtle);
 		} else {
 			activeTurtles.add(turtle);

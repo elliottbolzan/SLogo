@@ -6,14 +6,16 @@ import java.util.List;
 import javafx.scene.Node;
 import javafx.scene.control.Accordion;
 import javafx.scene.control.TitledPane;
-import view.View;
+import utils.Direction;
+import view.CollapsibleView;
 import view.Workspace;
+import view.components.Factory;
 
 /**
  * @author Elliott Bolzan
  *
  */
-public class Panel extends View {
+public class Panel extends CollapsibleView {
 
 	private Workspace workspace;
 	private List<Node> subviews;
@@ -23,9 +25,8 @@ public class Panel extends View {
 	 * 
 	 */
 	public Panel(Workspace workspace, int index) {
-		super(workspace.getPane(), index, true, true);
+		super(workspace.getPane(), index, Direction.RIGHT, true);
 		this.workspace = workspace;
-		setTitle(workspace.getController().getResources().getString("PanelTitle"));
 		createSubviews();
 		setup();
 	}
@@ -58,19 +59,8 @@ public class Panel extends View {
 	}
 
 	private void setup() {
-
-		final Accordion accordion = new Accordion();
-		
-		List<TitledPane> titledPanes = new ArrayList<TitledPane>();
-		for (int i = 0; i < subviews.size(); i++) {
-			TitledPane pane = new TitledPane(subviewTitles.get(i), subviews.get(i));
-			titledPanes.add(pane);
-		}
-		accordion.getPanes().addAll(titledPanes);
-		accordion.setPrefWidth(300);
-		accordion.setExpandedPane(titledPanes.get(0));
-
-		setCenter(accordion);
-
+		setTitle(workspace.getController().getResources().getString("PanelTitle"));
+		Factory factory = new Factory(workspace.getController().getResources());
+		setCenter(factory.makeAccordion(subviews, subviewTitles));
 	}
 }

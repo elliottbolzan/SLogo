@@ -2,7 +2,6 @@ package view.visualization;
 
 import utils.Point;
 import view.Workspace;
-
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.beans.property.SimpleDoubleProperty;
@@ -13,7 +12,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
 import javafx.scene.image.Image;
-import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
 import javafx.scene.paint.Color;
@@ -30,7 +28,6 @@ import javafx.scene.layout.StackPane;
  *
  */
 public class TurtleDisplay extends StackPane {
-
 	private final static int SIZE = 450;
 
 	private Workspace myWorkspace;
@@ -45,7 +42,7 @@ public class TurtleDisplay extends StackPane {
 	private boolean animationIsPlaying;
 	private SimpleDoubleProperty myAnimationSpeed;
 	
-	public TurtleDisplay(Workspace workspace, int initialNumber, Image turtleImage) {
+	public TurtleDisplay(Workspace workspace, int initialNumber, Image turtleImage, Color backgroundColor) {
 		myLineLength = 1.0;
 		myAnimation = new Timeline();
 		myAnimation.setCycleCount(Timeline.INDEFINITE);
@@ -56,7 +53,7 @@ public class TurtleDisplay extends StackPane {
 
 		this.createDisplayArea(SIZE, SIZE);
 		this.createToolBar(SIZE);
-		this.setBackgroundColor(Color.WHITE);
+		this.setBackgroundColor(backgroundColor);
 
 		turtleManager = new TurtleManager(initialNumber, this, turtleImage);
 
@@ -96,7 +93,7 @@ public class TurtleDisplay extends StackPane {
 	 */
 	protected void moveTurtle(Turtle turtle, Point destination) {
 		if (turtle.isMovingProperty().get()) {
-			turtle.addFutureDestination(destination);
+			turtle.getSchedule().addFutureDestination(destination);
 		} else {
 			turtle.setDestination(destination, myLineLength);
 		}
@@ -108,13 +105,49 @@ public class TurtleDisplay extends StackPane {
 		}
 	}
 
-	protected void drawLine(Point start, Point finish, Color color, double width) {
-		Line line = new Line(start.getX(), start.getY(), finish.getX(), finish.getY());
-		line.setStroke(color);
-		line.setStrokeWidth(width);
-		this.addToDisplayArea(line);
+	protected boolean isInBounds(Point point) {
+		return (point.getX() >= (-myDisplayArea.getWidth() / 2.0) && point.getX() <= (myDisplayArea.getWidth() / 2.0)
+				&& point.getY() >= (-myDisplayArea.getHeight() / 2.0) && point.getY() <= (myDisplayArea.getHeight() / 2.0));
+	}
+	
+	protected Point wrapIntoView(Point point) {
+		double adjustedX = point.getX();
+		double adjustedY = point.getY();
+		if (myDisplayArea.getWidth() > 0 && myDisplayArea.getHeight() > 0) {
+			double leftBoundary = -myDisplayArea.getWidth() / 2.0;
+			double rightBoundary = myDisplayArea.getWidth() / 2.0;
+			double lowerBoundary = -myDisplayArea.getHeight() / 2.0;
+			double upperBoundary = myDisplayArea.getHeight() / 2.0;
+
+			while (adjustedX >= rightBoundary) {
+				adjustedX -= myDisplayArea.getWidth();
+			}
+			while (adjustedX < leftBoundary) {
+				adjustedX += myDisplayArea.getWidth();
+			}
+			while (adjustedY >= upperBoundary) {
+				adjustedY -= myDisplayArea.getHeight();
+			}
+			while (adjustedY < lowerBoundary) {
+				adjustedY += myDisplayArea.getHeight();
+			}
+		}
+		return new Point(adjustedX, adjustedY);
+	}
+	
+	protected void addToDisplayArea(Node element) {
+		element.setLayoutX(myDisplayArea.getWidth() / 2.0);
+		element.setLayoutY(myDisplayArea.getHeight() / 2.0);
+		myDisplayArea.widthProperty().addListener(e -> {
+			element.setLayoutX(myDisplayArea.getWidth() / 2.0);
+		});
+		myDisplayArea.heightProperty().addListener(e -> {
+			element.setLayoutY(myDisplayArea.getHeight() / 2.0);
+		});
+		myDisplayArea.getChildren().add(element);
 	}
 
+	
 	private void createDisplayArea(int width, int height) {
 		myDisplayArea = new Pane();
 		myDisplayArea.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
@@ -129,7 +162,6 @@ public class TurtleDisplay extends StackPane {
 	}
 
 	private void createToolBar(int width) {
-		
 		HBox myToolBar = new HBox();
 		myAnimationSpeed = new SimpleDoubleProperty();
 
@@ -141,13 +173,14 @@ public class TurtleDisplay extends StackPane {
 		myAnimationSpeed.bind(mySpeedSlider.valueProperty());
 		mySpeedSlider.valueProperty().addListener(e -> this.resetAnimation(myAnimationSpeed.get()));
 		this.resetAnimation(myAnimationSpeed.get());
+		myAnimation.play();
 
 		Button playButton = new Button("Play");
 		playButton.setOnAction(e -> this.playAnimation());
 		Button stopButton = new Button("Stop");
 		stopButton.setOnAction(e -> this.stopAnimation());
 		Button stepButton = new Button("Step");
-		stepButton.setOnAction(e -> this.singleStepCommand());
+		stepButton.setOnAction(e -> this.playSingleAnimation());
 		
 		Label speedLabel = new Label("Speed:");
 		speedLabel.setTextFill(Color.BLACK);
@@ -170,28 +203,12 @@ public class TurtleDisplay extends StackPane {
 		this.getChildren().add(myToolBar);
 	}
 	
-	protected void addToDisplayArea(Node element) {
-		element.setLayoutX(myDisplayArea.getWidth() / 2.0);
-		element.setLayoutY(myDisplayArea.getHeight() / 2.0);
-		myDisplayArea.widthProperty().addListener(e -> {
-			element.setLayoutX(myDisplayArea.getWidth() / 2.0);
-		});
-		myDisplayArea.heightProperty().addListener(e -> {
-			element.setLayoutY(myDisplayArea.getHeight() / 2.0);
-		});
-		myDisplayArea.getChildren().add(element);
-	}
-
-	private void stepAnimation() {
-		turtleManager.stepTurtles();
-	}
-
 	private void resetAnimation(double speed) {
 		double millisInterval = 1.0 / (0.01 + 4 * speed * speed);
-		boolean animationWasGoing = myAnimation.getRate() > 0;
+		boolean animationWasGoing = myAnimation.getCurrentRate() > 0;
 		myAnimation.stop();
 		myAnimation.getKeyFrames().clear();
-		KeyFrame frame = new KeyFrame(Duration.millis(millisInterval), e -> this.stepAnimation());
+		KeyFrame frame = new KeyFrame(Duration.millis(millisInterval), e -> this.stepTurtles());
 		myAnimation.getKeyFrames().add(frame);
 		if (animationWasGoing) {
 			myAnimation.play();
@@ -207,14 +224,17 @@ public class TurtleDisplay extends StackPane {
 		myAnimation.stop();
 	}
 
+	private void stepTurtles() {
+		turtleManager.stepTurtles();
+	}
+	
 	private void playAnimation() {
 		animationIsPlaying = true;
 		myAnimation.play();
 	}
 
-	private void singleStepCommand() {
+	private void playSingleAnimation() {
 		animationIsPlaying = false;
 		myAnimation.play();
 	}
-	
 }

@@ -13,7 +13,7 @@ public interface ViewAPI {
 		
 	public TurtleManager getTurtleManager();
 	
-	public void print(String string);
+	public void printToConsole(String string);
 	
 	public void showMessage(String message);
 	
