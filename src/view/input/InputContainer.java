@@ -5,14 +5,15 @@ package view.input;
 
 import javafx.geometry.Orientation;
 import javafx.scene.control.SplitPane;
-import view.View;
+import utils.Direction;
+import view.CollapsibleView;
 import view.Workspace;
 
 /**
  * @author Elliott Bolzan
  *
  */
-public class InputContainer extends View {
+public class InputContainer extends CollapsibleView {
 	
 	private Workspace workspace;
 	private ShellView shellView;
@@ -24,13 +25,13 @@ public class InputContainer extends View {
 	 * @param collapseOnRight
 	 */
 	public InputContainer(Workspace workspace, int index) {
-		super(workspace.getPane(), index, false, false);
+		super(workspace.getPane(), index, Direction.BACK, false);
 		this.workspace = workspace;
-		setTitle(workspace.getController().getResources().getString("InputTitle"));
 		setup();
 	}
 	
 	private void setup() {
+		setTitle(workspace.getController().getResources().getString("InputTitle"));
 		SplitPane pane = new SplitPane();
 		pane.setOrientation(Orientation.VERTICAL);
 		shellView = new ShellView(workspace, pane, 0);

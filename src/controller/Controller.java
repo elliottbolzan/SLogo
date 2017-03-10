@@ -23,13 +23,14 @@ public class Controller implements ViewAPI, ModelAPI {
 	private Workspace workspace;
 	private Model model;
 	private ResourceBundle resources; 
+	
 	/**
 	 * 
 	 */
 	public Controller(WorkspaceBrowser browser) {
 		resources = ResourceBundle.getBundle("resources/UserInterface");
 		model = new Model(this);
-		workspace = new Workspace(browser, this);
+		workspace = new Workspace(this);
 	}
 	
 	public ResourceBundle getResources() {
@@ -39,9 +40,10 @@ public class Controller implements ViewAPI, ModelAPI {
 	public Workspace getView() {
 		return workspace;
 	}
+	
 	@Override
-	public void print(String string) {
-		workspace.print(string);
+	public void printToConsole(String string) {
+		workspace.printToConsole(string);
 	}
 	@Override
 	public void clearConsole() {
@@ -61,14 +63,17 @@ public class Controller implements ViewAPI, ModelAPI {
 	public Node parse(String string, boolean addToHistory) {
 		return model.parse(string, addToHistory);
 	}
+	
 	@Override
 	public ObservableList<String> getHistory() {
 		return model.getHistory();
 	}
+	
 	@Override
 	public ObservableList<Variable> getVariables() {
 		return model.getVariables();
 	}
+	
 	@Override
 	public ObservableList<String> getUserDefinedCommands() {
 		return model.getUserDefinedCommands();
@@ -93,6 +98,7 @@ public class Controller implements ViewAPI, ModelAPI {
 	public String getLanguage() {
 		return model.getLanguage();
 	}
+	
 	@Override
 	public void showMessage(String message) {
 		workspace.showMessage(message);
@@ -102,4 +108,5 @@ public class Controller implements ViewAPI, ModelAPI {
 	public void setBackgroundColor(Color color) {
 		workspace.setBackgroundColor(color);
 	}
+	
 }

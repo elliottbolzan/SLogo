@@ -21,27 +21,48 @@ public class Defaults {
 	private String scriptPath = "";
 	private Image turtleImage = new Image(
 			getClass().getClassLoader().getResourceAsStream("resources/images/turtle_1.png"));
+	private ResourceBundle configurationResources;
 
 	/**
 	 * 
 	 */
 	protected Defaults(Workspace workspace, String path) {
-		ResourceBundle resources = ResourceBundle.getBundle(path);
+		configurationResources = ResourceBundle.getBundle(path);
 		try {
-			backgroundColor = Color.valueOf(resources.getString("Color"));
-			numberOfTurtles = Integer.parseInt(resources.getString("TurtleNumber"));
-			language = resources.getString("Language");
-			scriptPath = resources.getString("File");
-			String turtlePath = resources.getString("TurtlePath").replaceAll("\\s+", "");
-			if (!(turtlePath.equals(""))) {
-				if (!(new File(turtlePath.replaceAll("(file:)", "")).exists())) {
-					throw new Exception();
-				}
-				turtleImage = new Image(resources.getString("TurtlePath"));
-			}
+			readBackgroundColor();
+			readNumberOfTurtles();
+			readLanguage();
+			readScriptPath();
+			readTurtlePath();
 		} catch (Exception e) {
 			workspace.showMessage(workspace.getController().getResources().getString("ConfigurationError"));
 		}
+	}
+
+	private void readTurtlePath() throws Exception {
+		String turtlePath = configurationResources.getString("TurtlePath").replaceAll("\\s+", "");
+		if (!(turtlePath.equals(""))) {
+			if (!(new File(turtlePath.replaceAll("(file:)", "")).exists())) {
+				throw new Exception();
+			}
+			turtleImage = new Image(configurationResources.getString("TurtlePath"));
+		}
+	}
+
+	private void readScriptPath() {
+		scriptPath = configurationResources.getString("File");
+	}
+
+	private void readLanguage() {
+		language = configurationResources.getString("Language");
+	}
+
+	private void readNumberOfTurtles() {
+		numberOfTurtles = Integer.parseInt(configurationResources.getString("TurtleNumber"));
+	}
+
+	private void readBackgroundColor() {
+		backgroundColor = Color.valueOf(configurationResources.getString("Color"));
 	}
 
 	public Color getBackgroundColor() {
