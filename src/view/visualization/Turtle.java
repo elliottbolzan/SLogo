@@ -1,187 +1,155 @@
 package view.visualization;
 
 import utils.Point;
-
-import java.util.LinkedList;
-import java.util.Queue;
-
-import javafx.animation.RotateTransition;
-import javafx.animation.SequentialTransition;
-import javafx.beans.binding.Bindings;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.ReadOnlyBooleanProperty;
 import javafx.beans.property.ReadOnlyDoubleProperty;
 import javafx.beans.property.SimpleBooleanProperty;
-import javafx.beans.property.SimpleDoubleProperty;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
-import javafx.util.Duration;
 
 /**
  * @author Jay Doherty
  *
  */
 public class Turtle {
-	private ImageView myImageView;
-
 	private TurtleDisplay myDisplay;
+	private int myID;
+	private SimpleBooleanProperty isActiveProperty;
 
-	private SimpleDoubleProperty myXProperty;
-	private SimpleDoubleProperty myYProperty;
-	private Point myDestination;
-	private SimpleDoubleProperty myRotationProperty;
-	private Queue<Point> myFutureDestinations;
-
-	private SimpleBooleanProperty myPenDownProperty;
-	private Color myPenColor;
-	private double myPenWidth;
+	private Graphic myTurtleGraphic;
+	private Pen myPen;
+	private Compass myCompass;
+	private Schedule mySchedule;
 
 	private SimpleBooleanProperty isMovingProperty;
 	private int myStepsRemaining;
 	private Point myStepSize;
 
-	private int myID;
-	private SimpleBooleanProperty isActiveProperty;
-
-	private int myShapeIndex;
-	private int myColorIndex;
-
 	protected Turtle(TurtleDisplay home, int ID, Image image) {
-		myImageView = new ImageView(image);
-		myFutureDestinations = new LinkedList<Point>();
-
 		myDisplay = home;
 		myID = ID;
-
-		myPenDownProperty = new SimpleBooleanProperty(true);
-		myPenColor = Color.BLACK;
-		myPenWidth = 1.0;
-
-		myXProperty = new SimpleDoubleProperty();
-		myYProperty = new SimpleDoubleProperty();
-		this.setLocation(new Point(0, 0));
-		myDestination = new Point(0, 0);
-
-		myRotationProperty = new SimpleDoubleProperty();
-		this.setRotation(90.0);
-		isMovingProperty = new SimpleBooleanProperty(false);
 		isActiveProperty = new SimpleBooleanProperty(true);
-
-		myImageView.opacityProperty().bind(Bindings.when(isActiveProperty).then(1.0).otherwise(0.3));
-
-		myColorIndex = 1;
-		myShapeIndex = 1;
+		
+		myTurtleGraphic = new Graphic(myDisplay, image, 1);
+		myTurtleGraphic.bindOpacityTo(isActiveProperty);
+		
+		myPen = new Pen(myDisplay, true, Color.BLACK, 1, 1.0);
+		myCompass = new Compass();
+		mySchedule = new Schedule();
+		
+		isMovingProperty = new SimpleBooleanProperty(false);
+		
+		this.setLocation(new Point(0, 0));
+		this.setRotation(90.0);
 	}
 
 	public int getID() {
 		return myID;
 	}
 
+	public void moveTo(Point point) {
+		myDisplay.moveTurtle(this, point);
+	}
+	
+	public void turn(double degrees) {
+		this.setRotation(myCompass.getHeading() + degrees);
+	}
+
 	public Point getDestination() {
-		return myDestination;
+		return mySchedule.getDestination();
 	}
 
 	public double getRotation() {
-		return myRotationProperty.get();
+		return myCompass.getHeading();
 	}
 
 	public boolean isPenDown() {
-		return myPenDownProperty.get();
+		return myPen.isDown();
 	}
-
-	public boolean isVisible() {
-		return myImageView.isVisible();
+	
+	public void setPenDown(boolean down) {
+		myPen.setDown(down);
 	}
 
 	public Color getPenColor() {
-		return myPenColor;
+		return myPen.getColor();
 	}
-
-	public int getPenColorIndex() {
-		return myColorIndex;
-	}
-
-	public int getShapeIndex() {
-		return myShapeIndex;
-	}
-
-	public BooleanProperty activeProperty() {
-		return isActiveProperty;
-	}
-
-	protected ReadOnlyBooleanProperty readOnlyPenDownProperty() {
-		return ReadOnlyBooleanProperty.readOnlyBooleanProperty(myPenDownProperty);
-	}
-
-	protected ReadOnlyDoubleProperty readOnlyXProperty() {
-		return ReadOnlyDoubleProperty.readOnlyDoubleProperty(myXProperty);
-	}
-
-	protected ReadOnlyDoubleProperty readOnlyYProperty() {
-		return ReadOnlyDoubleProperty.readOnlyDoubleProperty(myYProperty);
-	}
-
-	protected ReadOnlyDoubleProperty readOnlyRotationProperty() {
-		return ReadOnlyDoubleProperty.readOnlyDoubleProperty(myRotationProperty);
-	}
-
-	protected Point getCurrentLocation() {
-		return new Point(myXProperty.get(), myYProperty.get());
-	}
-
-	protected SimpleBooleanProperty isMovingProperty() {
-		return isMovingProperty;
-	}
-
-	protected ImageView getView() {
-		return myImageView;
-	}
-
-	protected TurtleDisplay getDisplay() {
-		return myDisplay;
-	}
-
-	public void setImage(String url) {
-		myImageView.setImage(new Image(url));
-		this.centerImage();
-	}
-
-	public void setShapeIndex(int index) {
-		myShapeIndex = index;
-	}
-
-	public void setColorIndex(int index) {
-		myColorIndex = index;
-	}
-
-	public void setPenDown(boolean down) {
-		myPenDownProperty.set(down);
-	}
-
+	
 	public void setPenColor(Color color) {
-		myPenColor = color;
+		myPen.setColor(color);
+	}
+	
+	public int getPenColorIndex() {
+		return myPen.getColorIndex();
+	}
+	
+	public void setColorIndex(int index) {
+		myPen.setColorIndex(index);
 	}
 
 	public void setPenWidth(double width) {
-		myPenWidth = width;
+		myPen.setThickness(width);
 	}
-
+	
+	public boolean isVisible() {
+		return myTurtleGraphic.isVisible();
+	}
+	
 	public void setVisible(boolean visible) {
-		getView().setVisible(visible);
+		myTurtleGraphic.setVisible(visible);
+	}
+	
+	public void setImage(String url) {
+		myTurtleGraphic.setImage(url);
+		myTurtleGraphic.setCenter(myCompass.getLocation());
 	}
 
-	protected void setRotation(double degrees) {
-		myRotationProperty.set(degrees % 360);
-		RotateTransition rotate = new RotateTransition(Duration.millis(250));
-		rotate.setToAngle((degrees + 90) % 360);
-		new SequentialTransition(myImageView, rotate).play();
+	public int getShapeIndex() {
+		return myTurtleGraphic.getIndex();
+	}
+	
+	public void setShapeIndex(int index) {
+		myTurtleGraphic.setIndex(index);;
 	}
 
+	protected ImageView getView() {
+		return myTurtleGraphic.getView();
+	}
+	
+	protected BooleanProperty activeProperty() {
+		return isActiveProperty;
+	}
+	
+	protected BooleanProperty isMovingProperty() {
+		return isMovingProperty;
+	}
+
+	protected ReadOnlyBooleanProperty readOnlyPenDownProperty() {
+		return myPen.readOnlyIsDownProperty();
+	}
+
+	protected ReadOnlyDoubleProperty readOnlyXProperty() {
+		return myCompass.readOnlyXProperty();
+	}
+
+	protected ReadOnlyDoubleProperty readOnlyYProperty() {
+		return myCompass.readOnlyYProperty();
+	}
+
+	protected ReadOnlyDoubleProperty readOnlyRotationProperty() {
+		return myCompass.readOnlyRotationProperty();
+	}
+
+	protected Schedule getSchedule() {
+		return mySchedule;
+	}
+	
 	protected void setDestination(Point destination, double speed) {
 		isMovingProperty.set(true);
-		double distX = destination.getX() - myXProperty.get();
-		double distY = destination.getY() - myYProperty.get();
+		double distX = destination.getX() - myCompass.getX();
+		double distY = destination.getY() - myCompass.getY();
 		double stepsToDestination = getNumStepsAlongPath(distX, distY, speed);
 
 		myStepsRemaining = (int) (stepsToDestination);
@@ -189,7 +157,7 @@ public class Turtle {
 		double myStepSizeY = distY / stepsToDestination;
 		myStepSize = new Point(myStepSizeX, myStepSizeY);
 
-		myDestination = destination;
+		mySchedule.setDestination(destination);
 	}
 
 	protected void updateMovement() {
@@ -201,91 +169,36 @@ public class Turtle {
 		}
 	}
 
-	protected void addFutureDestination(Point destination) {
-		myFutureDestinations.add(destination);
-		myDestination = destination;
+	private void setRotation(double degrees) {
+		myCompass.setHeading(degrees % 360);
+		myTurtleGraphic.setRotation(degrees);
 	}
-
-	protected boolean hasAnotherDestination() {
-		return !myFutureDestinations.isEmpty();
-	}
-
-	protected Point pollFutureDestination() {
-		return myFutureDestinations.poll();
-	}
-
+	
 	private void setLocation(Point point) {
-		myXProperty.set(point.getX());
-		myYProperty.set(point.getY());
-		this.centerImage();
+		myCompass.setX(point.getX());
+		myCompass.setY(point.getY());
+		myTurtleGraphic.setCenter(point);
 	}
-
-	public void turn(double degrees) {
-		setRotation(getRotation() + degrees);
-	}
-
-	public void moveTo(Point point) {
-		myDisplay.moveTurtle(this, point);
-	}
-
-	private void centerImage() {
-		Point adjusted = new Point(myXProperty.get(), myYProperty.get());
-		if (!isInBounds(adjusted)) {
-			adjusted = wrap(adjusted);
-		}
-		myImageView.setX(adjusted.getX() - myImageView.getBoundsInLocal().getWidth() / 2.0);
-		myImageView.setY(adjusted.getY() - myImageView.getBoundsInLocal().getHeight() / 2.0);
-	}
-
+	
 	private void stepTowardsDestination() {
-		Point step = new Point(myXProperty.get() + myStepSize.getX(), myYProperty.get() + myStepSize.getY());
+		Point step = new Point(myCompass.getX() + myStepSize.getX(), myCompass.getY() + myStepSize.getY());
 
-		if (myPenDownProperty.get()) {
-			Point adjustedLoc = new Point(myXProperty.get(), myYProperty.get());
+		if (myPen.isDown()) {
+			Point adjustedLoc = myCompass.getLocation();
 			Point adjustedStep = step;
-			if (!isInBounds(adjustedLoc) && !isInBounds(adjustedStep)) {
-				adjustedLoc = wrap(adjustedLoc);
-				adjustedStep = wrap(adjustedStep);
+			if (!myDisplay.isInBounds(adjustedLoc) && !myDisplay.isInBounds(adjustedStep)) {
+				adjustedLoc = myDisplay.wrapIntoView(adjustedLoc);
+				adjustedStep = myDisplay.wrapIntoView(adjustedStep);
 			}
-			if (areAdjacentPoints(adjustedLoc, adjustedStep)) {
-				myDisplay.drawLine(adjustedLoc, adjustedStep, myPenColor, myPenWidth);
+			if (areInSameQuadrant(adjustedLoc, adjustedStep)) {
+				myPen.drawLine(adjustedLoc, adjustedStep);
 			}
 		}
 
 		this.setLocation(step);
 	}
 
-	private boolean isInBounds(Point point) {
-		return (point.getX() >= (-myDisplay.getWidth() / 2.0) && point.getX() <= (myDisplay.getWidth() / 2.0)
-				&& point.getY() >= (-myDisplay.getHeight() / 2.0) && point.getY() <= (myDisplay.getHeight() / 2.0));
-	}
-
-	private Point wrap(Point point) {
-		double adjustedX = point.getX();
-		double adjustedY = point.getY();
-		if (myDisplay.getWidth() > 0 && myDisplay.getHeight() > 0) {
-			double leftBoundary = -myDisplay.getWidth() / 2.0;
-			double rightBoundary = myDisplay.getWidth() / 2.0;
-			double lowerBoundary = -myDisplay.getHeight() / 2.0;
-			double upperBoundary = myDisplay.getHeight() / 2.0;
-
-			while (adjustedX >= rightBoundary) {
-				adjustedX -= myDisplay.getWidth();
-			}
-			while (adjustedX < leftBoundary) {
-				adjustedX += myDisplay.getWidth();
-			}
-			while (adjustedY >= upperBoundary) {
-				adjustedY -= myDisplay.getHeight();
-			}
-			while (adjustedY < lowerBoundary) {
-				adjustedY += myDisplay.getHeight();
-			}
-		}
-		return new Point(adjustedX, adjustedY);
-	}
-
-	private boolean areAdjacentPoints(Point a, Point b) {
+	private boolean areInSameQuadrant(Point a, Point b) {
 		return (a.getX() * b.getX() >= 0) && (a.getY() * b.getY() >= 0);
 	}
 
@@ -296,5 +209,4 @@ public class Turtle {
 			return Math.abs(distanceX / stepLength);
 		}
 	}
-
 }

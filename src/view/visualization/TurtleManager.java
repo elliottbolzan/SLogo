@@ -119,8 +119,8 @@ public class TurtleManager {
 			if (turtle.isMovingProperty().get()) {
 				turtle.updateMovement();
 			} else {
-				if (turtle.hasAnotherDestination()) {
-					display.moveTurtle(turtle, turtle.pollFutureDestination());
+				if (turtle.getSchedule().hasAnotherDestination()) {
+					display.moveTurtle(turtle, turtle.getSchedule().pollFutureDestination());
 					if(!display.animationIsPlaying()) {
 						display.stopAnimation();
 					}
