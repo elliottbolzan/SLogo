@@ -5,17 +5,13 @@ import model.parser.Argument;
 
 public class NaturalLogCommand extends Command {
 	
-	public NaturalLogCommand() {
-		super();
-	}
-	
 	@Override
-	public int numParameters() {
+	protected int internalNumParameters() {
 		return 1;
 	}
 
 	@Override
-	public Argument execute() {
+	protected Argument execute() {
 		return new Argument(Math.log(getParameter(0).getDouble()));
 	}
 }

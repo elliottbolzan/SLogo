@@ -21,7 +21,7 @@ import model.parser.nodes.VariableNode;
 import model.parser.tokenize.Token;
 import model.parser.tokenize.Tokenize;
 
-public class TreeParser implements ParserAPI {
+public class TreeParser {
 
 	private String language = "English";
 	private Controller controller;
@@ -65,12 +65,10 @@ public class TreeParser implements ParserAPI {
 		return state.getImagePalette();
 	}
 
-	@Override
 	public ObservableList<String> getHistory() {
 		return parseHistory.getHistoryList();
 	}
 
-	@Override
 	public String getPreviousCommand(int k) {
 		return parseHistory.getHistoryList().get(0);
 	}
@@ -83,7 +81,6 @@ public class TreeParser implements ParserAPI {
 	// printTree(e, spaces));
 	// }
 
-	@Override
 	public Node parse(String input, boolean addToHistory) {
 		if (addToHistory) {
 			parseHistory.addStringToHistory(input);
@@ -92,7 +89,6 @@ public class TreeParser implements ParserAPI {
 		Node root = parseInternal(input);
 		root.evaluate();
 		// controller.print(String.valueOf(evaluation.getDouble()));
-		parseHistory.addCommandToHistory(root);
 		return root;
 	}
 
@@ -127,21 +123,17 @@ public class TreeParser implements ParserAPI {
 				child = new VariableNode(this, node, word.replaceAll(":", ""));
 			} else if (token == Token.COMMAND) {
 				try {
-					if (parseHistory.isNewCommand(word)) {
-						child = parseHistory.getCommand(word);
-					} else {
-						child = commands.get(word);
-						if (child == null) {
-							child = state.getCommand(word);
-							child.setParser(this);
-						}
-						((Command) child).setup(controller, state);
-						for (int i = 0; i < ((Command) child).numParameters(); i++) {
-							input = createTree(new Input(child, input.getIndex(), input.getWords()));
-						}
-						if (child instanceof MakeUserInstructionCommand) {
-							child.evaluate();
-						}
+					child = commands.get(word);
+					if (child == null) {
+						child = state.getCommand(word);
+						child.setParser(this);
+					}
+					((Command) child).setup(controller, state);
+					for (int i = 0; i < ((Command) child).numParameters(); i++) {
+						input = createTree(new Input(child, input.getIndex(), input.getWords()));
+					}
+					if (child instanceof MakeUserInstructionCommand) {
+						child.evaluate();
 					}
 				} catch (Exception e) {
 					child = new ConstantNode(this, node, word);
@@ -156,7 +148,7 @@ public class TreeParser implements ParserAPI {
 			}
 			return new Input(child, input.getIndex(), input.getWords());
 		} catch (Exception e) {
-			// Show exception.
+			controller.getView().showMessage("Invalid input.");
 		}
 		return null;
 	}

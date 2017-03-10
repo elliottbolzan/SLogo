@@ -3,19 +3,16 @@ package model.commands.display;
 import model.commands.turtle.TurtleCommand;
 import model.parser.Argument;
 
-public class GetShapeCommand extends TurtleCommand{
-	public GetShapeCommand(){
-		super();
-	}
+public class GetShapeCommand extends TurtleCommand {
 
 	@Override
-	public int numParameters() {
+	protected int internalNumParameters() {
 		return 0;
 	}
 
 	@Override
-	public Argument execute() {
+	protected Argument execute() {
 		return new Argument(getTurtle().getShapeIndex());
 	}
-	
+
 }

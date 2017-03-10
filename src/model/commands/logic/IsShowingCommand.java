@@ -4,17 +4,13 @@ import model.parser.Argument;
 
 public class IsShowingCommand extends LogicCommand {
 
-	public IsShowingCommand() {
-		super();
-	}
-	
 	@Override
-	public int numParameters() {
+	protected int internalNumParameters() {
 		return 0;
 	}
 
 	@Override
-	public Argument execute() {
+	protected Argument execute() {
 		return new Argument(super.booleanToInt(this.getController().getTurtleManager().getCurrentTurtle().isVisible()));
 	}
 }

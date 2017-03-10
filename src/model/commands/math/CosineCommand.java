@@ -4,18 +4,14 @@ import model.commands.Command;
 import model.parser.Argument;
 
 public class CosineCommand extends Command {
-	
-	public CosineCommand() {
-		super();
-	}
-	
+
 	@Override
-	public int numParameters() {
+	protected int internalNumParameters() {
 		return 1;
 	}
 
 	@Override
-	public Argument execute() {
+	protected Argument execute() {
 		return new Argument(Math.cos(Math.toRadians(this.getParameter(0).getDouble())));
 	}
 }

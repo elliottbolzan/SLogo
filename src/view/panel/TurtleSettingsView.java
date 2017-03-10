@@ -23,7 +23,7 @@ public class TurtleSettingsView {
 	private TurtleInfo myTurtleInfo;
 	private TurtleButtons myTurtleButtons;
 
-	public TurtleSettingsView(Controller control) {
+	protected TurtleSettingsView(Controller control) {
 		myPanel = new BorderPane();
 		ScrollPane scrollPane = new ScrollPane();
 		scrollPane.setHbarPolicy(ScrollBarPolicy.NEVER);
@@ -54,7 +54,7 @@ public class TurtleSettingsView {
 		myPanel.setCenter(scrollPane);
 	}
 
-	public BorderPane getView() {
+	protected BorderPane getView() {
 		return myPanel;
 	}
 

@@ -37,9 +37,9 @@ public class State {
 		return null;
 	}
 
-	public void setCommand(UserCommand command) {
-		userDefinedCommandNames.add(command.getName());
-		commands.put(command.getName(), command);
+	public void setCommand(UserCommand command, String commandName) {
+		userDefinedCommandNames.add(commandName);
+		commands.put(commandName, command);
 	}
 	
 	public void setVariable(Variable var) {

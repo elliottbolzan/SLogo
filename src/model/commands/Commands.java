@@ -41,7 +41,7 @@ public class Commands {
 
 	public Command get(String input) {
 		try {
-			Class<?> c = getClassName(commandNames.get(input) + "Command");
+			Class<?> c = getClassName(commandNames.get(input.toLowerCase()) + "Command");
 			Object object = c.getConstructor().newInstance();
 			return (Command) object;
 		} catch (Exception e) {

@@ -21,19 +21,19 @@ public class UserCommand extends Command {
 	/**
 	 * 
 	 */
-	public UserCommand(String name, List<String> variableNames, String expression) {
+	protected UserCommand(String name, List<String> variableNames, String expression) {
 		this.name = name;
 		this.variableNames = variableNames;
 		this.expression = expression;
 	}
 
 	@Override
-	public int numParameters() {
+	protected int internalNumParameters() {
 		return variableNames.size();
 	}
 
 	@Override
-	public Argument execute() {
+	protected Argument execute() {
 		int i = 0;
 		for (String variableName: variableNames) {
 			double realValue = getParameter(i).getDouble();
@@ -46,7 +46,7 @@ public class UserCommand extends Command {
 		return getParser().parseInternal(expression.trim()).evaluate();
 	}
 	
-	public String getName() {
+	protected String getName() {
 		return name;
 	}
 }

@@ -11,13 +11,13 @@ public class UserCommandNode extends Command{
 	}
 
 	@Override
-	public int numParameters() {
+	protected int internalNumParameters() {
 		// TODO Auto-generated method stub
 		return 2;
 	}
 
 	@Override
-	public Argument execute() {
+	protected Argument execute() {
 		System.out.println("called");
 		Argument result = new Argument();
 	    //getParameter(1);

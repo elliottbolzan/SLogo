@@ -4,11 +4,11 @@ import model.parser.Argument;
 
 public class TurtlesCommand extends Command {
 	@Override
-	public int numParameters() {
+	protected int internalNumParameters() {
 		return 0;
 	}
 	@Override
-	public Argument execute() {
+	protected Argument execute() {
 		return new Argument(getController().getTurtleManager().getAllTurtles().size());
 	}
 }

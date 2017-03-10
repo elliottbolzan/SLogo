@@ -7,12 +7,12 @@ import model.parser.Argument;
 public class RepeatCommand extends Command {
 
 	@Override
-	public int numParameters() {
+	protected int internalNumParameters() {
 		return 2;
 	}
 
 	@Override
-	public Argument execute(){
+	protected Argument execute(){
 		Argument result = new Argument();
 		int repeats = (int) getParameter(0).getDouble();
 		for (int k = 1; k <= repeats; k++) {

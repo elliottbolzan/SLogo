@@ -26,6 +26,6 @@ public abstract class TurtleCommand extends Command {
     	return Math.sqrt(Math.pow(point1.getX() - point2.getX(), 2) + Math.pow(point1.getY() - point2.getY(), 2));
     }
     
-    public abstract Argument execute();
+    protected abstract Argument execute();
     
 }

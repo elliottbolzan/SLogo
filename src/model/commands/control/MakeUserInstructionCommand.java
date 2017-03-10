@@ -6,11 +6,11 @@ import model.parser.nodes.ListNode;
 import model.parser.nodes.Node;
 public class MakeUserInstructionCommand extends Command {
 	@Override
-	public int numParameters() {
+	protected int internalNumParameters() {
 		return 3;
 	}
 	@Override
-	public Argument execute() {
+	protected Argument execute() {
 		String name = getParameter(0).getString();
 		ArrayList<String> variableNames = new ArrayList<String>();
 		for (Node variable : getChildren().get(1).getChildren()) {
@@ -19,9 +19,8 @@ public class MakeUserInstructionCommand extends Command {
 			}
 		}
 		String expression = ((ListNode) getChildren().get(2)).getExpression();
-		
-		UserCommand complete = new UserCommand(name, variableNames, expression);
-		getState().setCommand(complete);
+
+		getState().setCommand(new UserCommand(name, variableNames, expression), name);
 		return new Argument(1);
 	}
 }

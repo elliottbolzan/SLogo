@@ -8,20 +8,15 @@ import model.parser.Argument;
 import model.parser.nodes.Node;
 import view.visualization.Turtle;
 
-
 public class AskCommand extends Command{
-	
-	public AskCommand(){
-		super();
-	}
 
 	@Override
-	public int numParameters() {
+	protected int internalNumParameters() {
 		return 2;
 	}
 
 	@Override
-	public Argument execute() {
+	protected Argument execute() {
 		Argument result = new Argument();
 		List<Integer> ids = new ArrayList<Integer>();
 		for(Turtle t: getController().getTurtleManager().getActiveTurtles()){

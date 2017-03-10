@@ -10,18 +10,14 @@ import view.visualization.Turtle;
 
 
 public class AskWithCommand extends Command{
-	
-	public AskWithCommand(){
-		super();
-	}
 
 	@Override
-	public int numParameters() {
+	protected int internalNumParameters() {
 		return 2;
 	}
 
 	@Override
-	public Argument execute() {
+	protected Argument execute() {
 		Argument result = new Argument();
 				List<Integer> ids = new ArrayList<Integer>();
 		for(Turtle getID: getController().getTurtleManager().getActiveTurtles()){

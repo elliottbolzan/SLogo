@@ -7,7 +7,7 @@ import model.State;
 import model.parser.Argument;
 import model.parser.nodes.Node;
 
-public abstract class Command extends Node implements CommandInterface {
+public abstract class Command extends Node {
 
 	private Controller myController;
 	private State myState;
@@ -32,6 +32,14 @@ public abstract class Command extends Node implements CommandInterface {
 			getController().getView().showMessage("Could not evaluate command.");;
 		}
 		return new Argument();
+	}
+	
+	protected abstract Argument execute();
+	
+	protected abstract int internalNumParameters();
+	
+	public int numParameters() {
+		return internalNumParameters();
 	}
 	
 }
