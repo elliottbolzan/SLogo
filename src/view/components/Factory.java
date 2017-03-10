@@ -8,12 +8,19 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.scene.Node;
 import javafx.scene.control.Accordion;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
 import javafx.scene.control.TextInputDialog;
 import javafx.scene.control.TitledPane;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
@@ -70,6 +77,26 @@ public class Factory {
 		accordion.getPanes().addAll(titledPanes);
 		accordion.setExpandedPane(titledPanes.get(0));
 		return accordion;
+	}
+	
+	public Button makeButton(String property, EventHandler<ActionEvent> handler, boolean fill) {
+		Button button = new Button(resources.getString(property));
+		button.setOnAction(handler);
+		if (fill) {
+			HBox.setHgrow(button, Priority.ALWAYS);
+			button.setMaxWidth(Double.MAX_VALUE);
+		}
+		return button;
+	}
+	
+	public Button makeTabButton(String path, EventHandler<ActionEvent> action, String style) {
+		ImageView imageView = new ImageView(new Image(getClass().getClassLoader().getResourceAsStream(path)));
+		imageView.setFitHeight(20);
+		imageView.setFitWidth(20);
+		Button button = new Button("", imageView);
+		button.setOnAction(action);
+		button.getStyleClass().add(style);
+		return button;
 	}
 
 }

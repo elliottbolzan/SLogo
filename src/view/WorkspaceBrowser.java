@@ -4,7 +4,6 @@ import java.util.ResourceBundle;
 
 import controller.Controller;
 import javafx.application.Platform;
-import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
@@ -12,13 +11,12 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
+import view.components.Factory;
 
 /**
  * @author Elliott Bolzan
@@ -31,6 +29,7 @@ public class WorkspaceBrowser extends BorderPane {
 	private int workspaces = 0;
 	private ResourceBundle resources = ResourceBundle.getBundle("resources/UserInterface");
 	private String stylesheetPath = resources.getString("StylesheetPath");
+	private Factory factory = new Factory(resources);
 
 	/**
 	 * 
@@ -75,8 +74,8 @@ public class WorkspaceBrowser extends BorderPane {
 	}
 	
 	private Node createButtons() {
-		Button newButton = createTabButton(resources.getString("NewButtonImagePath"), e -> newWorkspace());
-		Button helpButton = createTabButton(resources.getString("HelpButtonImagePath"), e -> showHelp());
+		Button newButton = factory.makeTabButton(resources.getString("NewButtonImagePath"), e -> newWorkspace(), "tab-button");
+		Button helpButton = factory.makeTabButton(resources.getString("HelpButtonImagePath"), e -> showHelp(), "tab-button");
 		return new HBox(newButton, helpButton);
 	}
 
@@ -107,16 +106,6 @@ public class WorkspaceBrowser extends BorderPane {
 			controller.showMessage(resources.getString("OneTabRequirement"));
 			e.consume();
 		}
-	}
-
-	private Button createTabButton(String path, EventHandler<ActionEvent> action) {
-		ImageView imageView = new ImageView(new Image(getClass().getClassLoader().getResourceAsStream(path)));
-		imageView.setFitHeight(20);
-		imageView.setFitWidth(20);
-		Button button = new Button("", imageView);
-		button.setOnAction(action);
-		button.getStyleClass().add("tab-button");
-		return button;
 	}
 
 	private void showHelp() {

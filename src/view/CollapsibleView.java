@@ -49,7 +49,6 @@ public abstract class CollapsibleView extends BorderPane {
 		Image minimizeImage = new Image(getClass().getClassLoader().getResourceAsStream(imagePath), 16, 10, true, true);
 		Button minimizeButton = new Button("", new ImageView(minimizeImage));
 		minimizeButton.setOnAction(e -> minimize());
-		minimizeButton.setPrefSize(16, 10);
 		minimizeButton.getStyleClass().add("minimize");
 		return minimizeButton;
 	}

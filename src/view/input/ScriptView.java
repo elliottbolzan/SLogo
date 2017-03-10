@@ -11,14 +11,10 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Optional;
 
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.scene.Node;
-import javafx.scene.control.Button;
 import javafx.scene.control.SplitPane;
 import javafx.scene.control.TextInputDialog;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Priority;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 import utils.Direction;
@@ -55,16 +51,8 @@ public class ScriptView extends InputView {
 	}
 
 	private Node createButtonBar() {
-		return new HBox(makeButton("LoadTitle", e -> load()), makeButton("SaveTitle", e -> save()),
-				makeButton("ClearTitle", e -> clear()), makeButton("RunTitle", e -> run()));
-	}
-
-	private Button makeButton(String property, EventHandler<ActionEvent> handler) {
-		Button button = new Button(workspace.getController().getResources().getString(property));
-		button.setOnAction(handler);
-		HBox.setHgrow(button, Priority.ALWAYS);
-		button.setMaxWidth(Double.MAX_VALUE);
-		return button;
+		return new HBox(factory.makeButton("LoadTitle", e -> load(), true), factory.makeButton("SaveTitle", e -> save(), true),
+				factory.makeButton("ClearTitle", e -> clear(), true), factory.makeButton("RunTitle", e -> run(), true));
 	}
 
 	@Override
