@@ -26,6 +26,12 @@ public class UserCommand extends Command {
 		this.variableNames = variableNames;
 		this.expression = expression;
 	}
+	
+	public UserCommand(UserCommand command) {
+		this.name = command.name;
+		this.variableNames = command.variableNames;
+		this.expression = command.expression;
+	}
 
 	@Override
 	protected int internalNumParameters() {
@@ -35,12 +41,13 @@ public class UserCommand extends Command {
 	@Override
 	protected Argument execute() {
 		int i = 0;
+		String completeExpression = expression;
 		for (String variableName: variableNames) {
 			double realValue = getParameter(i).getDouble();
-			expression = expression.replaceAll(variableName, Double.toString(realValue));
+			completeExpression = completeExpression.replaceAll(variableName, Double.toString(realValue));
 			i++;
 		}
-		return getParser().parseInternal(expression.trim()).evaluate();
+		return getParser().parseInternal(completeExpression.trim()).evaluate();
 	}
 	
 	protected String getName() {
