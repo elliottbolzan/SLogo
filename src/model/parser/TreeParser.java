@@ -75,13 +75,13 @@ public class TreeParser {
 		return parseHistory.getHistoryList().get(0);
 	}
 
-//	 private void printTree(Node node, String spacing) {
-//	 System.out.println(spacing + node);
-//	 spacing += " ";
-//	 final String spaces = spacing;
-//	 node.getChildren().stream().filter(e -> e != null).forEach(e ->
-//	 printTree(e, spaces));
-//	 }
+	 private void printTree(Node node, String spacing) {
+	 System.out.println(spacing + node);
+	 spacing += " ";
+	 final String spaces = spacing;
+	 node.getChildren().stream().filter(e -> e != null).forEach(e ->
+	 printTree(e, spaces));
+	 }
 
 	public Node parse(String input, boolean addToHistory) {
 		if (addToHistory) {
@@ -90,7 +90,7 @@ public class TreeParser {
 		input = handleComment(input);
 		Node root = parseInternal(input);
 		root.evaluate();
-		//printTree(root, " ");
+		printTree(root, " ");
 		//controller.print(String.valueOf(evaluation.getDouble()));
 		return root;
 	}
@@ -149,7 +149,6 @@ public class TreeParser {
 						else prevCmdTo = false;
 					}
 				
-				System.out.println("made prevcmd false");
 			} else if (token == Token.LIST_START) {
 				child = new ListNode(this, node, input);
 			}
