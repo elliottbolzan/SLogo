@@ -1,10 +1,9 @@
 package model.commands.math;
 
 import java.util.Random;
-import model.commands.Command;
 import model.parser.Argument;
 
-public class RandomCommand extends Command {
+public class RandomCommand extends MathCommand {
 	
 	@Override
 	protected int internalNumParameters() {

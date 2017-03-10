@@ -1,9 +1,8 @@
 package model.commands.math;
 
-import model.commands.Command;
 import model.parser.Argument;
 
-public class CosineCommand extends Command {
+public class CosineCommand extends MathCommand {
 
 	@Override
 	protected int internalNumParameters() {

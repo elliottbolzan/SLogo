@@ -1,9 +1,8 @@
 package model.commands.math;
 
-import model.commands.Command;
 import model.parser.Argument;
 
-public class QuotientCommand extends Command {
+public class QuotientCommand extends MathCommand {
 	
 	@Override
 	protected int internalNumParameters() {

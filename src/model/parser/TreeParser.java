@@ -134,6 +134,7 @@ public class TreeParser {
 					}
 					if (child instanceof MakeUserInstructionCommand) {
 						child.evaluate();
+						return new Input(child, input.getIndex(), input.getWords());
 					}
 				} catch (Exception e) {
 					child = new ConstantNode(this, node, word);
