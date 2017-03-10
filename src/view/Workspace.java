@@ -1,5 +1,6 @@
 package view;
 
+import view.components.Factory;
 import view.input.InputContainer;
 import view.input.ShellView;
 import view.panel.Panel;
@@ -22,7 +23,6 @@ import javafx.scene.paint.Color;
  */
 public class Workspace extends BorderPane implements ViewAPI {
 	
-	private WorkspaceBrowser browser;
 	private Controller controller;
 	private Defaults defaults;
 	private InputContainer inputContainer;
@@ -30,40 +30,27 @@ public class Workspace extends BorderPane implements ViewAPI {
 	private Panel panel;
 	private SplitPane pane;
 
-	/**
-	 * Creates a View object.
-	 * 
-	 * @param stage
-	 *            the program's primary window.
-	 * @return a View object.
-	 */
-	public Workspace(WorkspaceBrowser browser, Controller controller) {
-		this.browser = browser;
+	public Workspace(Controller controller) {
 		this.controller = controller;
-		setPadding(new Insets(4));
 		setup();
 	}
 
 	private void setup() {
 		pane = new SplitPane();
-		defaults = new Defaults(this, "resources/WorkspaceSettings");
+		defaults = new Defaults(this, getController().getResources().getString("WorkspaceSettingsPath"));
 		controller.setLanguage(defaults.getLanguage());
 		inputContainer = new InputContainer(this, 0);
 		inputContainer.getScriptView().readFileIn(defaults.getScriptPath());
-		turtleDisplay = new TurtleDisplay(this, defaults.getNumberOfTurtles(), defaults.getTurtleImage());
-		turtleDisplay.setBackgroundColor(defaults.getBackgroundColor());
+		turtleDisplay = new TurtleDisplay(this, defaults.getNumberOfTurtles(), defaults.getTurtleImage(), defaults.getBackgroundColor());
 		panel = new Panel(this, 1);
 		pane.getItems().addAll(inputContainer, turtleDisplay, panel);
 		pane.setDividerPositions(0.3, 0.75);
+		setPadding(new Insets(4));
 		setCenter(pane);
 	}
 	
 	public Defaults getDefaults() {
 		return defaults;
-	}
-
-	public WorkspaceBrowser getBrowser() {
-		return browser;
 	}
 
 	public ShellView getShell() {
@@ -83,7 +70,7 @@ public class Workspace extends BorderPane implements ViewAPI {
 	}
 
 	@Override
-	public void print(String string) {
+	public void printToConsole(String string) {
 		inputContainer.getShellView().print(string);
 	}
 
@@ -101,18 +88,15 @@ public class Workspace extends BorderPane implements ViewAPI {
 	public TurtleManager getTurtleManager() {
 		return turtleDisplay.getTurtleManager();
 	}
-
-	public void showMessage(String message) {
-		Alert alert = new Alert(AlertType.ERROR);
-		alert.setTitle(controller.getResources().getString("ErrorTitle"));
-		alert.setHeaderText(controller.getResources().getString("ErrorHeader"));
-		alert.setContentText(message);
-		alert.showAndWait();
-	}
-
+	
 	@Override
 	public void setBackgroundColor(Color color) {
 		turtleDisplay.setBackgroundColor(color);
+	}
+
+	public void showMessage(String message) {
+		Factory factory = new Factory(controller.getResources());
+		factory.makeAlert(AlertType.ERROR, "ErrorTitle", "ErrorHeader", message).showAndWait();
 	}
 
 }

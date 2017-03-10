@@ -9,44 +9,39 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
+import utils.Direction;
 
 /**
  * @author Elliott Bolzan
  *
  */
-public class View extends BorderPane {
+public abstract class CollapsibleView extends BorderPane {
 
 	private Label title;
 	private SplitPane owner;
 	private int dividerIndex;
-	private boolean collapseRight;
+	private Direction collapseDirection;
 
 	/**
 	 * 
 	 */
-	public View(SplitPane owner, int dividerIndex, boolean collapseRight, boolean showToolbar) {
+	public CollapsibleView(SplitPane owner, int dividerIndex, Direction collapseDirection, boolean hasToolbar) {
 		this.owner = owner;
 		this.dividerIndex = dividerIndex;
-		this.collapseRight = collapseRight;
-		title = new Label("");
+		this.collapseDirection = collapseDirection;
+		title = new Label();
 		setMinSize(0, 280);
-		if (showToolbar) {
+		if (hasToolbar) {
 			createToolbar();
 		}
 	}
 
 	private void createToolbar() {
-		
 		HBox spacing = new HBox();
 		spacing.maxWidth(Double.MAX_VALUE);
 		HBox.setHgrow(spacing, Priority.ALWAYS);
-
-		Button minimizeButton = makeMinimizeButton("resources/images/minimize.png");
-
-		ToolBar toolBar = new ToolBar();
-		toolBar.getItems().addAll(title, spacing, minimizeButton);
+		ToolBar toolBar = new ToolBar(title, spacing, makeMinimizeButton("resources/images/minimize.png"));
 		toolBar.setPrefSize(getWidth(), 18);
-
 		setTop(toolBar);
 	}
 
@@ -59,12 +54,12 @@ public class View extends BorderPane {
 		return minimizeButton;
 	}
 
-	public void setTitle(String string) {
+	protected void setTitle(String string) {
 		title.setText(string);
 	}
 
-	public void minimize() {
-		owner.setDividerPosition(dividerIndex, collapseRight ? 1 : 0);
+	private void minimize() {
+		owner.setDividerPosition(dividerIndex, (collapseDirection == Direction.RIGHT || collapseDirection == Direction.BACK) ? 1 : 0);
 	}
 
 }

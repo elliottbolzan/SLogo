@@ -4,6 +4,7 @@ import controller.Controller;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.layout.HBox;
+import utils.Direction;
 
 /**
  * @author jaydoherty
@@ -13,10 +14,6 @@ public class TurtleButtons {
 
 	private static final int INCREMENT = 10;
 	
-	private enum ButtonType {
-		LEFT, RIGHT, FORWARD, BACK
-	}
-	
 	private HBox myBar;
 	private Controller myController;
 	
@@ -25,13 +22,13 @@ public class TurtleButtons {
 		myController = control;
 		
 		Button leftButton = new Button("Left");
-		leftButton.setOnAction(e -> this.handle(ButtonType.LEFT));
+		leftButton.setOnAction(e -> this.handle(Direction.LEFT));
 		Button rightButton = new Button("Right");
-		rightButton.setOnAction(e -> this.handle(ButtonType.RIGHT));
+		rightButton.setOnAction(e -> this.handle(Direction.RIGHT));
 		Button forwardButton = new Button("Forward");
-		forwardButton.setOnAction(e -> this.handle(ButtonType.FORWARD));
+		forwardButton.setOnAction(e -> this.handle(Direction.FORWARD));
 		Button backButton = new Button("Back");
-		backButton.setOnAction(e -> this.handle(ButtonType.BACK));
+		backButton.setOnAction(e -> this.handle(Direction.BACK));
 		
 		myBar.getChildren().addAll(leftButton, forwardButton, backButton, rightButton);
 		myBar.setPadding(new Insets(0, 0, 10, 0));
@@ -41,20 +38,8 @@ public class TurtleButtons {
 		return myBar;
 	}
 
-	private void handle(ButtonType type) {
-		String result = "";
-		if (type == ButtonType.LEFT) {
-			result += "left";
-		} else if (type == ButtonType.RIGHT) {
-			result += "right";
-		} else if (type == ButtonType.FORWARD) {
-			result += "forward";
-		} else if (type == ButtonType.BACK) {
-			result += "back";
-		}
-		if (!(result.equals(""))) {
-			result += " " + String.valueOf(INCREMENT);
-		}
+	private void handle(Direction direction) {
+		String result = direction.name().toLowerCase() + " " + String.valueOf(INCREMENT);
 		myController.parse(result, false);
 	}
 }

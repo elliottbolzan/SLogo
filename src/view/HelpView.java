@@ -16,15 +16,13 @@ import javafx.stage.Stage;
  */
 public class HelpView extends Stage {
 	
-	private static final String PATH_TO_HELP = "resources/help.html";
-
 	/**
 	 * 
 	 */
 	protected HelpView(ResourceBundle resources) {
 		WebView browser = new WebView();
 		WebEngine webEngine = browser.getEngine();
-		webEngine.load(getClass().getClassLoader().getResource(PATH_TO_HELP).toExternalForm());
+		webEngine.load(getClass().getClassLoader().getResource(resources.getString("HelpPath")).toExternalForm());
 		Scene scene = new Scene(browser, 800, 600);
 		setTitle(resources.getString("HelpTitle"));
 		setScene(scene);

@@ -7,6 +7,7 @@ import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Tab;
@@ -16,7 +17,6 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Region;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
@@ -30,7 +30,7 @@ public class WorkspaceBrowser extends BorderPane {
 	private TabPane tabPane;
 	private int workspaces = 0;
 	private ResourceBundle resources = ResourceBundle.getBundle("resources/UserInterface");
-	private String stylesheetPath = "resources/style.css";
+	private String stylesheetPath = resources.getString("StylesheetPath");
 
 	/**
 	 * 
@@ -48,7 +48,6 @@ public class WorkspaceBrowser extends BorderPane {
 	}
 
 	private void setupStage() {
-		
 		stage.setTitle(resources.getString("SLogoTitle"));
 		stage.setMinWidth(600);
 		stage.setMinHeight(300);
@@ -57,26 +56,28 @@ public class WorkspaceBrowser extends BorderPane {
 				System.exit(0);
 			}
 		});
-
+		setCenter(setupView());
 		stage.setScene(createScene());
 		stage.show();
-
+	}
+	
+	private Node setupView() {
 		tabPane = new TabPane();
-
-		HBox hbox = new HBox();
-		hbox.getChildren().addAll(createTabButton("resources/images/new.png", e -> newWorkspace()),
-				createTabButton("resources/images/help.png", e -> showHelp()));
-
-		AnchorPane anchor = new AnchorPane();
-		anchor.getChildren().addAll(tabPane, hbox);
-		AnchorPane.setTopAnchor(hbox, 3.0);
-		AnchorPane.setRightAnchor(hbox, 5.0);
+		Node buttons = createButtons();
+		AnchorPane anchor = new AnchorPane(tabPane, buttons);
+		AnchorPane.setTopAnchor(buttons, 3.0);
+		AnchorPane.setRightAnchor(buttons, 5.0);
 		AnchorPane.setTopAnchor(tabPane, 1.0);
 		AnchorPane.setRightAnchor(tabPane, 1.0);
 		AnchorPane.setLeftAnchor(tabPane, 1.0);
 		AnchorPane.setBottomAnchor(tabPane, 1.0);
-
-		setCenter(anchor);
+		return anchor;
+	}
+	
+	private Node createButtons() {
+		Button newButton = createTabButton(resources.getString("NewButtonImagePath"), e -> newWorkspace());
+		Button helpButton = createTabButton(resources.getString("HelpButtonImagePath"), e -> showHelp());
+		return new HBox(newButton, helpButton);
 	}
 
 	private Scene createScene() {
@@ -92,8 +93,7 @@ public class WorkspaceBrowser extends BorderPane {
 	private void newWorkspace() {
 		workspaces++;
 		Controller controller = new Controller(this);
-		Tab tab = new Tab();
-		tab.setText("Workspace " + String.valueOf(workspaces));
+		Tab tab = new Tab(resources.getString("WorkspaceTitle") + String.valueOf(workspaces));
 		tab.setContent(controller.getView());
 		tab.setOnCloseRequest(e -> handleClose(e, controller));
 		tabPane.getTabs().add(tab);
@@ -116,13 +116,11 @@ public class WorkspaceBrowser extends BorderPane {
 		Button button = new Button("", imageView);
 		button.setOnAction(action);
 		button.getStyleClass().add("tab-button");
-		button.setMinWidth(Region.USE_PREF_SIZE);
 		return button;
 	}
 
 	private void showHelp() {
-		HelpView helpView = new HelpView(resources);
-		helpView.show();
+		new HelpView(resources).show();
 	}
 
 }

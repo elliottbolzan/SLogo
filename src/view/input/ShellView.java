@@ -3,6 +3,7 @@ package view.input;
 import javafx.scene.control.SplitPane;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import utils.Direction;
 import view.Workspace;
 
 /**
@@ -19,11 +20,15 @@ public class ShellView extends InputView {
 	 * 
 	 */
 	public ShellView(Workspace workspace, SplitPane pane, int index) {
-		super(pane, index, false, true);
+		super(pane, index, Direction.FORWARD, true);
 		this.workspace = workspace;
+		setup();
+	}
+	
+	private void setup() {
 		setTitle(workspace.getController().getResources().getString("ShellTitle"));
-		preamble = workspace.getController().getResources().getString("Preamble");
 		setMinHeight(0);
+		preamble = workspace.getController().getResources().getString("Preamble");
 		createTextArea();
 	}
 
@@ -79,12 +84,12 @@ public class ShellView extends InputView {
 		return getTextArea().getText(index + preamble.length(), getTextArea().getText().length());
 	}
 	
-	private String removeWhitespace(String string) {
+	private String removeExtraWhitespace(String string) {
 		return string.trim().replaceAll(" +", " ");
 	}
 	
 	private void enterPressed() {
-		String input = removeWhitespace(getCurrentCommand());
+		String input = removeExtraWhitespace(getCurrentCommand());
 		commandIndex = 0;
 			if (!(input.equals(""))) {
 				workspace.getController().parse(input, true);

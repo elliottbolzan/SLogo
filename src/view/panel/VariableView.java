@@ -31,42 +31,54 @@ public class VariableView extends BorderPane {
 	}
 
 	private void setup() {
+		TableView<Variable> table = makeTable();
+		TableColumn<Variable, String> nameColumn = makeNameColumn();
+		TableColumn<Variable, String> valueColumn = makeValueColumn();
+		table.setItems(data);
+		table.getColumns().add(nameColumn);
+		table.getColumns().add(valueColumn);
+		setCenter(table);
+	}
 
+	private TableView<Variable> makeTable() {
 		TableView<Variable> table = new TableView<Variable>();
-		table.setPrefHeight(100);
 		table.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 		table.setEditable(true);
 		table.getStyleClass().add("panel-table");
 		table.setPlaceholder(new Label(workspace.getController().getResources().getString("EmptyVariables")));
 		table.prefHeightProperty().bind(heightProperty());
+		return table;
+	}
 
-		TableColumn<Variable, String> nameColumn = new TableColumn<Variable, String>("Name");
-		nameColumn.setCellValueFactory(new PropertyValueFactory<Variable, String>("name"));
-		nameColumn.setEditable(false);
+	private TableColumn<Variable, String> makeNameColumn() {
+		return makeColumn("VariableTableNameString", "name", false);
+	}
 
-		TableColumn<Variable, String> valueColumn = new TableColumn<Variable, String>("Value");
-		valueColumn.setCellValueFactory(new PropertyValueFactory<Variable, String>("value"));
+	private TableColumn<Variable, String> makeValueColumn() {
+		TableColumn<Variable, String> valueColumn = makeColumn("VariableTableValueString", "value", true);
 		valueColumn.setCellFactory(TextFieldTableCell.forTableColumn());
 		valueColumn.setOnEditCommit(new EventHandler<CellEditEvent<Variable, String>>() {
 			@Override
 			public void handle(CellEditEvent<Variable, String> event) {
 				try {
-					((Variable) event.getTableView().getItems().get(event.getTablePosition().getRow())).setValue(event.getNewValue());
-				}
-				catch (Exception e) {
+					((Variable) event.getTableView().getItems().get(event.getTablePosition().getRow()))
+							.setValue(event.getNewValue());
+				} catch (Exception e) {
 					((Variable) event.getTableView().getItems().get(event.getTablePosition().getRow())).setValue("0");
 					event.getTableView().refresh();
 					workspace.showMessage(e.getMessage());
 				}
 			}
 		});
-		valueColumn.setEditable(true);
+		return valueColumn;
+	}
 
-		table.setItems(data);
-		table.getColumns().add(nameColumn);
-		table.getColumns().add(valueColumn);
-		
-		setCenter(table);
+	private TableColumn<Variable, String> makeColumn(String titleProperty, String valueProperty, boolean editable) {
+		TableColumn<Variable, String> nameColumn = new TableColumn<Variable, String>(
+				workspace.getController().getResources().getString(titleProperty));
+		nameColumn.setCellValueFactory(new PropertyValueFactory<Variable, String>(valueProperty));
+		nameColumn.setEditable(editable);
+		return nameColumn;
 	}
 
 }
