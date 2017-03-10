@@ -1,9 +1,8 @@
 package model.commands.math;
 
-import model.commands.Command;
 import model.parser.Argument;
 
-public class TangentCommand extends Command {
+public class TangentCommand extends MathCommand {
 
 	@Override
 	protected int internalNumParameters() {

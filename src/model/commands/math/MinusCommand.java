@@ -1,9 +1,8 @@
 package model.commands.math;
 
-import model.commands.Command;
 import model.parser.Argument;
 
-public class MinusCommand extends Command {
+public class MinusCommand extends MathCommand {
 	
 	@Override
 	protected int internalNumParameters() {

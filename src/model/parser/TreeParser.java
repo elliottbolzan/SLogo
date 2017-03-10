@@ -1,8 +1,6 @@
 package model.parser;
-
 import java.util.ArrayList;
 import java.util.Arrays;
-
 import controller.Controller;
 import javafx.collections.ObservableList;
 import model.IndexedColor;
@@ -22,14 +20,12 @@ import model.parser.tokenize.Token;
 import model.parser.tokenize.Tokenize;
 
 public class TreeParser {
-
 	private String language = "English";
 	private Controller controller;
 	private Commands commands;
 	private ParseHistory parseHistory;
 	private State state;
 	private boolean prevCmdTo;
-
 	public TreeParser(Controller controller) {
 		this.controller = controller;
 		parseHistory = new ParseHistory();
@@ -37,52 +33,41 @@ public class TreeParser {
 		state = new State();
 		prevCmdTo = false;
 	}
-
 	public void setLanguage(String language) {
 		this.language = language;
 		commands.updateLanguage(language);
 	}
-
 	public String getLanguage() {
 		return language;
 	}
-
 	public State getState() {
 		return state;
 	}
-
 	public ObservableList<Variable> getVariables() {
 		return state.getVariables();
 	}
-
 	public ObservableList<String> getUserDefinedCommands() {
 		return state.getUserDefinedCommands();
 	}
-
 	public ObservableList<IndexedColor> getColorPalette() {
 		return state.getColorPalette();
 	}
-
 	public ObservableList<IndexedImage> getImagePalette() {
 		return state.getImagePalette();
 	}
-
 	public ObservableList<String> getHistory() {
 		return parseHistory.getHistoryList();
 	}
-
 	public String getPreviousCommand(int k) {
 		return parseHistory.getHistoryList().get(0);
 	}
-
-	 private void printTree(Node node, String spacing) {
-	 System.out.println(spacing + node);
-	 spacing += " ";
-	 final String spaces = spacing;
-	 node.getChildren().stream().filter(e -> e != null).forEach(e ->
-	 printTree(e, spaces));
-	 }
-
+	private void printTree(Node node, String spacing) {
+		System.out.println(spacing + node);
+		spacing += " ";
+		final String spaces = spacing;
+		node.getChildren().stream().filter(e -> e != null).forEach(e ->
+		printTree(e, spaces));
+	}
 	public Node parse(String input, boolean addToHistory) {
 		if (addToHistory) {
 			parseHistory.addStringToHistory(input);
@@ -90,15 +75,13 @@ public class TreeParser {
 		input = handleComment(input);
 		Node root = parseInternal(input);
 		root.evaluate();
-		printTree(root, " ");
+		//printTree(root, " ");
 		//controller.print(String.valueOf(evaluation.getDouble()));
 		return root;
 	}
-
 	public Node parseInternal(String input) {
 		return startTree(input);
 	}
-
 	private Node startTree(String string) {
 		ArrayList<String> words = new ArrayList<String>();
 		words = new ArrayList<String>(Arrays.asList(string.split("\\s+")));
@@ -110,7 +93,6 @@ public class TreeParser {
 		}
 		return input.getNode();
 	}
-
 	private Input createTree(Input input) {
 		String word = input.getWords().get(input.getIndex());
 		try {
@@ -125,30 +107,30 @@ public class TreeParser {
 			} else if (token == Token.VARIABLE) {
 				child = new VariableNode(this, node, word.replaceAll(":", ""));
 			} else if (token == Token.COMMAND) {
-					try {
-						child = commands.get(word);
-						if (child == null) {
-							child = state.getCommand(word);
-							child.setParser(this);
-						}
-						((Command) child).setup(controller, state);
-						if(child instanceof MakeUserInstructionCommand) {
-							prevCmdTo = true;
-						}
-						for (int i = 0; i < ((Command) child).numParameters(); i++) {
-							input = createTree(new Input(child, input.getIndex(), input.getWords()));
-						}
-						if (child instanceof MakeUserInstructionCommand) {
-							child.evaluate();
-						}
-					} catch (Exception e) {
-						child = new ConstantNode(this, node, word);
-						if(!prevCmdTo){
-							controller.getView().showMessage("No such command:" + " " + word + ".");
-						}
-						else prevCmdTo = false;
+				try {
+					child = commands.get(word);
+					if (child == null) {
+						child = state.getCommand(word);
+						child.setParser(this);
 					}
-				
+					((Command) child).setup(controller, state);
+					if(child instanceof MakeUserInstructionCommand) {
+						prevCmdTo = true;
+					}
+					for (int i = 0; i < ((Command) child).numParameters(); i++) {
+						input = createTree(new Input(child, input.getIndex(), input.getWords()));
+					}
+					if (child instanceof MakeUserInstructionCommand) {
+						child.evaluate();
+					}
+				} catch (Exception e) {
+					child = new ConstantNode(this, node, word);
+					if(!prevCmdTo){
+						controller.getView().showMessage(String.format("No such command: %s.",word));
+					}
+					else prevCmdTo = false;
+				}
+
 			} else if (token == Token.LIST_START) {
 				child = new ListNode(this, node, input);
 			}
@@ -161,7 +143,6 @@ public class TreeParser {
 		}
 		return null;
 	}
-
 	private String handleComment(String s) {
 		ArrayList<String> commentFinder = new ArrayList<>(Arrays.asList(s.split("\\n")));
 		StringBuilder sb = new StringBuilder();
@@ -173,5 +154,4 @@ public class TreeParser {
 		result.replace(",", "");
 		return result;
 	}
-
 }
