@@ -63,7 +63,7 @@ public class TurtleSettingsView {
 			myContent.getChildren().remove(myTurtleInfo.getView());
 		}
 		if(myController.getTurtleManager().getAllTurtles().keySet().contains(id)) {
-			myTurtleInfo = new TurtleInfo(myController.getTurtleManager().getAllTurtles().get(id));
+			myTurtleInfo = new TurtleInfo(myController, myController.getTurtleManager().getAllTurtles().get(id));
 			myContent.getChildren().add(myTurtleInfo.getView());
 		}
 	}

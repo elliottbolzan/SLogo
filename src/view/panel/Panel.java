@@ -19,8 +19,6 @@ public class Panel extends View {
 	private List<Node> subviews;
 	private List<String> subviewTitles;
 	
-	private TurtleImageView turtleImageView;
-
 	/**
 	 * 
 	 */

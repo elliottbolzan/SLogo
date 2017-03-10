@@ -23,7 +23,6 @@ import javafx.util.Duration;
  *
  */
 public class Turtle {
-
 	private ImageView myImageView;
 
 	private TurtleDisplay myDisplay;
