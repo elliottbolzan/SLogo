@@ -56,7 +56,8 @@ public class ColorView extends BorderPane {
 		});
 		
 		table.setItems(data);
-		table.getColumns().addAll(indexColumn, colorColumn);
+		table.getColumns().add(indexColumn);
+		table.getColumns().add(colorColumn);
 
 		setCenter(table);
 	}

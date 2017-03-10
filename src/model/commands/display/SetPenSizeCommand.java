@@ -1,9 +1,9 @@
 package model.commands.display;
 
-import model.commands.turtle.TurtleCommand;
+import model.commands.turtle.RepeatableTurtleCommand;
 import model.parser.Argument;
 
-public class SetPenSizeCommand extends TurtleCommand {
+public class SetPenSizeCommand extends RepeatableTurtleCommand {
 
 	@Override
 	protected int internalNumParameters() {
@@ -11,9 +11,9 @@ public class SetPenSizeCommand extends TurtleCommand {
 	}
 
 	@Override
-	protected Argument execute() {
+	protected Argument innerExecute() {
 		int width = (int) this.getParameter(0).getDouble();
-		getController().getTurtleManager().setTurtlePenSize(width);
+		getTurtle().setPenWidth(width);
 		return new Argument(width);
 	}
 

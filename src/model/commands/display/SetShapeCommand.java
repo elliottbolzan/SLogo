@@ -1,9 +1,9 @@
 package model.commands.display;
 
-import model.commands.turtle.TurtleCommand;
+import model.commands.turtle.RepeatableTurtleCommand;
 import model.parser.Argument;
 
-public class SetShapeCommand extends TurtleCommand {
+public class SetShapeCommand extends RepeatableTurtleCommand {
 
 	@Override
 	protected int internalNumParameters() {
@@ -11,10 +11,11 @@ public class SetShapeCommand extends TurtleCommand {
 	}
 
 	@Override
-	protected Argument execute() {
+	protected Argument innerExecute() {
 		int index = (int) getParameter(0).getDouble();
 		String path = getController().getImagePalette().get(index - 1).pathProperty().get();
-		getController().getTurtleManager().setTurtleImage(index, path);
+		getTurtle().setImage(path);
+		getTurtle().setShapeIndex(index);
 		return new Argument(index);
 	}
 }

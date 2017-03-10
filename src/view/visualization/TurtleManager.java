@@ -7,11 +7,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.image.Image;
-import javafx.scene.paint.Color;
 
 /**
  * @author Elliott Bolzan
@@ -136,21 +134,6 @@ public class TurtleManager {
 		applyToTurtles(turtle -> {
 			turtle.setImage(URL);
 			turtle.setShapeIndex(imageIndex);
-			return 0;
-		});
-	}
-	
-	public void setTurtlePenColor(int colorIndex, Color color) {
-		applyToTurtles(turtle -> {
-			turtle.setPenColor(color);
-			turtle.setColorIndex(colorIndex);
-			return 0;
-		});
-	}
-	
-	public void setTurtlePenSize(double width) {
-		applyToTurtles(turtle -> {
-			turtle.setPenWidth(width);
 			return 0;
 		});
 	}

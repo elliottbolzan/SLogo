@@ -1,10 +1,10 @@
 package model.commands.display;
 
 import javafx.scene.paint.Color;
-import model.commands.turtle.TurtleCommand;
+import model.commands.turtle.RepeatableTurtleCommand;
 import model.parser.Argument;
 
-public class SetPenColorCommand extends TurtleCommand {
+public class SetPenColorCommand extends RepeatableTurtleCommand {
 
 	@Override
 	protected int internalNumParameters() {
@@ -12,10 +12,11 @@ public class SetPenColorCommand extends TurtleCommand {
 	}
 
 	@Override
-	protected Argument execute() {
+	protected Argument innerExecute() {
 		int index = (int) this.getParameter(0).getDouble();
 		Color color = getController().getColorPalette().get(index - 1).colorProperty().get();
-		getController().getTurtleManager().setTurtlePenColor(index, color);
+		getTurtle().setPenColor(color);
+		getTurtle().setColorIndex(index);
 		return new Argument(index);
 	}
 
