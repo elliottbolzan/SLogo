@@ -142,16 +142,16 @@ public class Turtle {
 		return myDisplay;
 	}
 
-	protected void setImage(String url) {
+	public void setImage(String url) {
 		myImageView.setImage(new Image(url));
 		this.centerImage();
 	}
 
-	protected void setShapeIndex(int index) {
+	public void setShapeIndex(int index) {
 		myShapeIndex = index;
 	}
 
-	protected void setColorIndex(int index) {
+	public void setColorIndex(int index) {
 		myColorIndex = index;
 	}
 
