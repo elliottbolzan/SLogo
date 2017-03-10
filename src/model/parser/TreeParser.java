@@ -28,12 +28,14 @@ public class TreeParser {
 	private Commands commands;
 	private ParseHistory parseHistory;
 	private State state;
+	private boolean prevCmdTo;
 
 	public TreeParser(Controller controller) {
 		this.controller = controller;
 		parseHistory = new ParseHistory();
 		commands = new Commands();
 		state = new State();
+		prevCmdTo = false;
 	}
 
 	public void setLanguage(String language) {
@@ -73,13 +75,13 @@ public class TreeParser {
 		return parseHistory.getHistoryList().get(0);
 	}
 
-	// private void printTree(Node node, String spacing) {
-	// System.out.println(spacing + node);
-	// spacing += " ";
-	// final String spaces = spacing;
-	// node.getChildren().stream().filter(e -> e != null).forEach(e ->
-	// printTree(e, spaces));
-	// }
+//	 private void printTree(Node node, String spacing) {
+//	 System.out.println(spacing + node);
+//	 spacing += " ";
+//	 final String spaces = spacing;
+//	 node.getChildren().stream().filter(e -> e != null).forEach(e ->
+//	 printTree(e, spaces));
+//	 }
 
 	public Node parse(String input, boolean addToHistory) {
 		if (addToHistory) {
@@ -88,7 +90,8 @@ public class TreeParser {
 		input = handleComment(input);
 		Node root = parseInternal(input);
 		root.evaluate();
-		// controller.print(String.valueOf(evaluation.getDouble()));
+		//printTree(root, " ");
+		//controller.print(String.valueOf(evaluation.getDouble()));
 		return root;
 	}
 
@@ -122,24 +125,31 @@ public class TreeParser {
 			} else if (token == Token.VARIABLE) {
 				child = new VariableNode(this, node, word.replaceAll(":", ""));
 			} else if (token == Token.COMMAND) {
-				try {
-					child = commands.get(word);
-					if (child == null) {
-						child = state.getCommand(word);
-						child.setParser(this);
+					try {
+						child = commands.get(word);
+						if (child == null) {
+							child = state.getCommand(word);
+							child.setParser(this);
+						}
+						((Command) child).setup(controller, state);
+						if(child instanceof MakeUserInstructionCommand) {
+							prevCmdTo = true;
+						}
+						for (int i = 0; i < ((Command) child).numParameters(); i++) {
+							input = createTree(new Input(child, input.getIndex(), input.getWords()));
+						}
+						if (child instanceof MakeUserInstructionCommand) {
+							child.evaluate();
+						}
+					} catch (Exception e) {
+						child = new ConstantNode(this, node, word);
+						if(!prevCmdTo){
+							controller.getView().showMessage("No such command:" + " " + word + ".");
+						}
+						else prevCmdTo = false;
 					}
-					((Command) child).setup(controller, state);
-					for (int i = 0; i < ((Command) child).numParameters(); i++) {
-						input = createTree(new Input(child, input.getIndex(), input.getWords()));
-					}
-					if (child instanceof MakeUserInstructionCommand) {
-						child.evaluate();
-					}
-				} catch (Exception e) {
-					child = new ConstantNode(this, node, word);
-					// controller.getView().showMessage("No such command:" + " "
-					// + word + ".");
-				}
+				
+				System.out.println("made prevcmd false");
 			} else if (token == Token.LIST_START) {
 				child = new ListNode(this, node, input);
 			}
@@ -157,7 +167,7 @@ public class TreeParser {
 		ArrayList<String> commentFinder = new ArrayList<>(Arrays.asList(s.split("\\n")));
 		StringBuilder sb = new StringBuilder();
 		commentFinder.stream().filter(e -> !e.equals("")).filter(e -> e.trim().charAt(0) != '#')
-				.forEach(e -> sb.append(e + " "));
+		.forEach(e -> sb.append(e + " "));
 		String result = sb.toString();
 		if (result.contains("#"))
 			controller.getView().showMessage("Proper comment must have its own line and begin with #.");

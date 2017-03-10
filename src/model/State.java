@@ -32,7 +32,7 @@ public class State {
 	
 	public Command getCommand(String name) {
 		if (commands.containsKey(name)) {
-			return commands.get(name);
+			return new UserCommand(commands.get(name));
 		}
 		return null;
 	}

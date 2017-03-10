@@ -19,7 +19,6 @@ public class MakeUserInstructionCommand extends Command {
 			}
 		}
 		String expression = ((ListNode) getChildren().get(2)).getExpression();
-
 		getState().setCommand(new UserCommand(name, variableNames, expression), name);
 		return new Argument(1);
 	}
