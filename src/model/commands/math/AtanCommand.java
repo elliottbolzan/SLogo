@@ -1,9 +1,8 @@
 package model.commands.math;
 
-import model.commands.Command;
 import model.parser.Argument;
 
-public class AtanCommand extends Command {
+public class AtanCommand extends MathCommand {
 	
 	@Override
 	protected int internalNumParameters() {

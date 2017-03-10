@@ -1,9 +1,8 @@
 package model.commands.math;
 
-import model.commands.Command;
 import model.parser.Argument;
 
-public class DifferenceCommand extends Command {
+public class DifferenceCommand extends MathCommand {
 	
 	@Override
 	protected int internalNumParameters() {
