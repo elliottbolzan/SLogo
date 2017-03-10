@@ -10,7 +10,7 @@ public class ListNode extends Node {
 	
 	private String newExpression;
 	
-	public ListNode(TreeParser parser, Node parent, Input input) {
+	public ListNode(TreeParser parser, Node parent, Input input) throws IllegalArgumentException{
 		super(parser, parent);
 		int openBrackets = 0;
 		newExpression = "";
