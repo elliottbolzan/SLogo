@@ -1,7 +1,5 @@
 package model.commands;
 
-import java.util.List;
-
 import controller.Controller;
 import model.State;
 import model.parser.Argument;

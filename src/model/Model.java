@@ -1,14 +1,14 @@
 package model;
+
 import controller.Controller;
 import javafx.collections.ObservableList;
 import model.parser.TreeParser;
 import model.parser.nodes.Node;
+
 public class Model implements ModelAPI {
-	private Controller controller;
 	private TreeParser parser;
 	
 	public Model(Controller controller) {
-		this.controller = controller;
 		parser = new TreeParser(controller);
 	}
 	

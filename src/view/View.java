@@ -20,7 +20,6 @@ public class View extends BorderPane {
 	private SplitPane owner;
 	private int dividerIndex;
 	private boolean collapseRight;
-	private boolean showToolbar;
 
 	/**
 	 * 
@@ -29,7 +28,6 @@ public class View extends BorderPane {
 		this.owner = owner;
 		this.dividerIndex = dividerIndex;
 		this.collapseRight = collapseRight;
-		this.showToolbar =  showToolbar;
 		title = new Label("");
 		setMinSize(0, 280);
 		if (showToolbar) {
