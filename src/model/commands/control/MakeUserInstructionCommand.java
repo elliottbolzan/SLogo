@@ -11,7 +11,7 @@ public class MakeUserInstructionCommand extends Command {
 	}
 	@Override
 	protected Argument execute() {
-		String name = getParameter(0).getString();
+		String name = getParameter(0).getString();		
 		ArrayList<String> variableNames = new ArrayList<String>();
 		for (Node variable : getChildren().get(1).getChildren()) {
 			if (variable != null) {
