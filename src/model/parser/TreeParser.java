@@ -160,7 +160,7 @@ public class TreeParser {
 				Node child = commands.get(word);
 				((Command) child).setup(controller, state);
 			}
-			controller.getView().showMessage(controller.getResources().getString("InvalidArguments"));
+			controller.getView().showMessage(String.format(controller.getResources().getString("InvalidArguments"),word));
 		}
 		catch (Exception e){
 			controller.getView().showMessage(String.format(controller.getResources().getString("CommandDoesNotExist"),word));

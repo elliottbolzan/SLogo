@@ -21,9 +21,8 @@ public class AskCommand extends Command{
 		List<Integer> ids = new ArrayList<Integer>();
 		for(Turtle t: getController().getTurtleManager().getActiveTurtles()){
 			ids.add(t.getID());
-			System.out.println(t.getID());
 		}
-		
+
 		List<Integer> turtles = new ArrayList<Integer>();
 		for(Node child : getChildren().get(0).getChildren()){
 			int num = (int) child.evaluate().getDouble();
@@ -32,8 +31,8 @@ public class AskCommand extends Command{
 		getController().getTurtleManager().setActiveTurtles(turtles);
 		result = getParameter(1);
 		getController().getTurtleManager().setActiveTurtles(ids);	
-        
-        return result;
+
+		return result;
 	}
-	
+
 }
