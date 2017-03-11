@@ -1,6 +1,6 @@
 Slogo
 =====
-##### By: Elliott Bolzan (eab91), Jay Doherty, Dennis Ling (dl186), Alex Zapata.
+##### By: Elliott Bolzan (eab91), Jay Doherty (jld60), Dennis Ling (dl186), Alex Zapata (az73).
 
 **Start**: Thursday, February 16.
 
@@ -45,5 +45,5 @@ Slogo
 
 * Jay Doherty: This project was challenging but I think I liked it more than the previous two. It definitely helped me understand the importance of making interfaces when you are going to divide up into teams and try to work simultaneously to produce something functional. I think that in some ways the number of extensions and the complexity of some of them discouraged me from spending much time thinking about refactoring and encouraged me to spend time just getting stuff to work. That being said, I do feel like I learned a lot about bindings, reflection, and lambdas so it was still a useful project.
 
-*Dennis Ling: This project was more fulfilling than the last two. It was awesome creating an IDE and seeing how all the pieces could fit together with both the front-end and back-end. Overall I enjoyed the whole process, but it was a lot of work to say the least. I'm happy with our final product and glad that it's over, but I learned a lot about design and working together as a team!
+* Dennis Ling: This project was more fulfilling than the last two. It was awesome creating an IDE and seeing how all the pieces could fit together with both the front-end and back-end. Overall I enjoyed the whole process, but it was a lot of work to say the least. I'm happy with our final product and glad that it's over, but I learned a lot about design and working together as a team!
 

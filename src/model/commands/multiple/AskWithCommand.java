@@ -8,7 +8,6 @@ import model.commands.Command;
 import model.parser.Argument;
 import view.visualization.Turtle;
 
-
 public class AskWithCommand extends Command{
 
 	@Override
