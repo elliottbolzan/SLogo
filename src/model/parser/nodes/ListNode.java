@@ -6,6 +6,9 @@ import model.parser.TreeParser;
 import model.parser.tokenize.Token;
 import model.parser.tokenize.Tokenize;
 
+/*
+ * Node for handling brackets [ ] where inputs can be listed.
+ */
 public class ListNode extends Node {
 	
 	private String newExpression;

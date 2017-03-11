@@ -5,6 +5,9 @@ import model.State;
 import model.parser.Argument;
 import model.parser.nodes.Node;
 
+/*
+ * Command superclass that evaluates its function, and accesses the controller to send actions to the front end.
+ */
 public abstract class Command extends Node {
 
 	private Controller myController;
@@ -27,7 +30,7 @@ public abstract class Command extends Node {
 		try {
 			return execute();
 		} catch (Exception e) {
-			getController().getView().showMessage("Could not evaluate command.");;
+			getController().getView().showMessage(myController.getResources().getString("CantEvaluate"));;
 		}
 		return new Argument();
 	}

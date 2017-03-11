@@ -6,6 +6,10 @@ import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.ResourceBundle;
 
+
+/*
+ * Uses reflection to build Commands from strings and resource files. Also handles user defined commands.
+ */
 public class Commands {
 
 	private String path = "resources/languages/";

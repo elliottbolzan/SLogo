@@ -3,6 +3,9 @@ package model.parser.nodes;
 import model.parser.Argument;
 import model.parser.TreeParser;
 
+/*
+ * Beginning of a tree. Automatically added as the root on each new line.
+ */
 public class RootNode extends Node {
 
 	public RootNode(TreeParser parser, Node parent) {

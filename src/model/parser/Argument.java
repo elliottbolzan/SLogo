@@ -1,5 +1,8 @@
 package model.parser;
 
+/*
+ * Data structure to manage the potential for string or double parameters in each command.
+ */
 public class Argument {
 
 	private String string;

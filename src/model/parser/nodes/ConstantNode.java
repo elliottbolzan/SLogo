@@ -3,6 +3,9 @@ package model.parser.nodes;
 import model.parser.Argument;
 import model.parser.TreeParser;
 
+/*
+ * Node for all constants.
+ */
 public class ConstantNode extends Node {
 	
 	private double value;

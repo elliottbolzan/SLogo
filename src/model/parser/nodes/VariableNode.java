@@ -3,6 +3,9 @@ package model.parser.nodes;
 import model.parser.Argument;
 import model.parser.TreeParser;
 
+/*
+ * Used for user defined variables.
+ */
 public class VariableNode extends Node {
 	
 	private String name;
