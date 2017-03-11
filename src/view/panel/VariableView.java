@@ -2,15 +2,29 @@ package view.panel;
 
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
+import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableColumn.CellEditEvent;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextInputDialog;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
+import javafx.stage.DirectoryChooser;
+import javafx.stage.FileChooser;
 import model.Variable;
 import view.Workspace;
+import view.components.Factory;
+
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.Optional;
 
 /**
  * @author Elliott Bolzan
@@ -20,6 +34,9 @@ public class VariableView extends BorderPane {
 
 	private Workspace workspace;
 	private ObservableList<Variable> data;
+	private Factory factory;
+	private String defaultPath;
+
 
 	/**
 	 * 
@@ -27,7 +44,10 @@ public class VariableView extends BorderPane {
 	protected VariableView(Workspace workspace, ObservableList<Variable> data) {
 		this.workspace = workspace;
 		this.data = data;
+		factory = new Factory(workspace.getController().getResources());
 		setup();
+		defaultPath = System.getProperty("user.dir")
+				+ workspace.getController().getResources().getString("ExamplesPath");
 	}
 
 	private void setup() {
@@ -38,6 +58,11 @@ public class VariableView extends BorderPane {
 		table.getColumns().add(nameColumn);
 		table.getColumns().add(valueColumn);
 		setCenter(table);
+		setBottom(createButtonBar());
+	}
+	
+	private Node createButtonBar() {
+		return new HBox(factory.makeButton("LoadTitle", e -> load(), true), factory.makeButton("SaveTitle", e -> save(), true));
 	}
 
 	private TableView<Variable> makeTable() {
@@ -79,6 +104,59 @@ public class VariableView extends BorderPane {
 		nameColumn.setCellValueFactory(new PropertyValueFactory<Variable, String>(valueProperty));
 		nameColumn.setEditable(editable);
 		return nameColumn;
+	}
+	
+	private void load() {
+		FileChooser chooser = factory.makeFileChooser(defaultPath, "Logo Files", "*.logo", "*.txt");
+		File dataFile = chooser.showOpenDialog(getScene().getWindow());
+		if (dataFile != null) {
+			readFileIn(dataFile.toPath().toString());
+		}
+	}
+
+	private void readFileIn(String path) {
+		if (!(path.equals(""))) {
+			try {
+				BufferedReader bufferedReader = new BufferedReader(new FileReader(path));
+				String line = "";
+				while ((line = bufferedReader.readLine()) != null) {
+					System.out.println("inside");
+					System.out.println(line);
+					String[] splitLine = line.split(" ");
+					workspace.getController().getVariables().add(new Variable(splitLine[0], Double.parseDouble(splitLine[1])));
+				}
+				bufferedReader.close();
+			} catch (Exception e) {
+				workspace.showMessage(workspace.getController().getResources().getString("FileNotRead"));
+			}
+		}
+	}
+
+	private void save() {
+		DirectoryChooser chooser = factory.makeDirectoryChooser(defaultPath, "OutputFolderTitle");
+		File selectedDirectory = chooser.showDialog(getScene().getWindow());
+		TextInputDialog dialog = factory.makeTextInputDialog("SaveFileTitleString", "SaveFileHeaderString",
+				"SaveFileContentString", "SaveFilePlaceholderString");
+		handleDialogResult(selectedDirectory, dialog.showAndWait());
+	}
+	
+	private void handleDialogResult(File selectedDirectory, Optional<String> result) {
+		if (result.isPresent()) {
+			try {
+				File file = new File(selectedDirectory + "/" + result.get());
+				BufferedWriter out = new BufferedWriter(new FileWriter(file));
+				data.stream().forEach(e -> {
+					try {
+						out.write(e.getName().toString() + " " + e.getValue().toString() + "\n");
+					} catch (IOException e1) {
+						workspace.showMessage("Could not write to file.");
+					}
+				});
+				out.close();
+			} catch (IOException e) {
+				workspace.showMessage(workspace.getController().getResources().getString("FileSaveFail"));
+			}
+		}
 	}
 
 }
