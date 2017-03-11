@@ -24,6 +24,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Optional;
 
 /**
@@ -123,13 +124,24 @@ public class VariableView extends BorderPane {
 					System.out.println("inside");
 					System.out.println(line);
 					String[] splitLine = line.split(" ");
-					workspace.getController().getVariables().add(new Variable(splitLine[0], Double.parseDouble(splitLine[1])));
+					if(!isVariable(splitLine[0])) workspace.getController().getVariables().add(new Variable(splitLine[0], Double.parseDouble(splitLine[1])));
 				}
 				bufferedReader.close();
 			} catch (Exception e) {
 				workspace.showMessage(workspace.getController().getResources().getString("FileNotRead"));
 			}
 		}
+	}
+
+	private boolean isVariable(String s) {
+		boolean isCommand = false;
+		ObservableList<Variable> list = workspace.getController().getVariables();
+		int size = list.size();
+		for(int i = 0; i<size; i++){
+			isCommand = list.get(i).getName().equals(s);
+			if(isCommand == true) break;
+		}
+		return isCommand;
 	}
 
 	private void save() {
