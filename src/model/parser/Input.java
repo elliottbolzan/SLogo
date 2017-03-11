@@ -4,6 +4,9 @@ import java.util.List;
 
 import model.parser.nodes.Node;
 
+/*
+ * Potential input into parsing that contains information to help parse.
+ */
 public class Input {
 
 	private Node node;

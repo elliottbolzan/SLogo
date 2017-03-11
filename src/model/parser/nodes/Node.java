@@ -6,6 +6,9 @@ import java.util.List;
 import model.parser.Argument;
 import model.parser.TreeParser;
 
+/*
+ * Abstract class that every Command extends, used to form the tree.
+ */
 public abstract class Node {
 	
 	private List<Node> children;

@@ -8,6 +8,9 @@ import model.parser.TreeParser;
 import model.parser.tokenize.Token;
 import model.parser.tokenize.Tokenize;
 
+/*
+ * Node for Unlimited Parameters extension using ( ). Uses two separate methods for arithmetic and other commands.
+ */
 public class GroupNode extends Node {
 	private String newExpression = "";
 	private int openParentheses;
