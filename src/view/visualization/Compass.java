@@ -4,6 +4,10 @@ import javafx.beans.property.ReadOnlyDoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import utils.Point;
 
+/**
+ * @author Jay Doherty
+ *
+ */
 public class Compass {
 
 	private SimpleDoubleProperty myXProperty;

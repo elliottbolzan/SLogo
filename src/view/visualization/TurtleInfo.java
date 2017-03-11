@@ -13,6 +13,10 @@ import javafx.scene.layout.VBox;
 import view.components.SimpleBooleanLabel;
 import view.components.SimpleDoubleLabel;
 
+/**
+ * @author Jay Doherty
+ *
+ */
 public class TurtleInfo {
 
 	private VBox turtleInfoGraphic;

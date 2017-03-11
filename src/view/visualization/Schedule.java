@@ -5,6 +5,10 @@ import java.util.Queue;
 
 import utils.Point;
 
+/**
+ * @author Jay Doherty
+ *
+ */
 public class Schedule {
 
 	private Point myDestination;

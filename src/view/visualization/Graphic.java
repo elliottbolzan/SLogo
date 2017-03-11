@@ -9,6 +9,10 @@ import javafx.scene.image.ImageView;
 import javafx.util.Duration;
 import utils.Point;
 
+/**
+ * @author Jay Doherty
+ *
+ */
 public class Graphic {
 	private static final double OPACITY_ACTIVE = 1.0;
 	private static final double OPACITY_INACTIVE = 0.3;

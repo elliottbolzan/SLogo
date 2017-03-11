@@ -6,6 +6,10 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import utils.Point;
 
+/**
+ * @author Jay Doherty
+ *
+ */
 public class Pen {
 
 	private TurtleDisplay display;
