@@ -10,6 +10,7 @@ Slogo
 
 - Elliott Bolzan: 70 hours.
 - Alex Zapata: 45 hours.
+- Jay Doherty: 55 hours.
 
 ### Team Roles
 ##### Front-End
@@ -40,4 +41,6 @@ Slogo
 * Alex Zapata: this project was very interesting, but also very stressing. The interestingness of this project is in the fact that it is our first real chunk of code that really feels like a solidified product. Further, the challenges associated with understanding user-input made us focus on UI. The stressing component of this project was that, because of circumstances outside of this class both academic and personal and the ludicrous amount of time that such a project calls for, I was not able to put in as much time as some of my team-mates which effected my own personal production. Altogether a good experience in which I learned a lot and genuinely enjoyed the final product.
 *
 
+* Jay Doherty: This project was challenging but I think I liked it more than the previous two. It definitely helped me understand the importance of making interfaces when you are going to divide up into teams and try to work simultaneously to produce something functional. I think that in some ways the number of extensions and the complexity of some of them discouraged me from spending much time thinking about refactoring and encouraged me to spend time just getting stuff to work. That being said, I do feel like I learned a lot about bindings, reflection, and lambdas so it was still a useful project.
+*
 
