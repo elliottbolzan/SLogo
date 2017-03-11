@@ -24,7 +24,6 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Optional;
 
 /**
@@ -121,8 +120,6 @@ public class VariableView extends BorderPane {
 				BufferedReader bufferedReader = new BufferedReader(new FileReader(path));
 				String line = "";
 				while ((line = bufferedReader.readLine()) != null) {
-					System.out.println("inside");
-					System.out.println(line);
 					String[] splitLine = line.split(" ");
 					if(!isVariable(splitLine[0])) workspace.getController().getVariables().add(new Variable(splitLine[0], Double.parseDouble(splitLine[1])));
 				}
@@ -161,7 +158,7 @@ public class VariableView extends BorderPane {
 					try {
 						out.write(e.getName().toString() + " " + e.getValue().toString() + "\n");
 					} catch (IOException e1) {
-						workspace.showMessage("Could not write to file.");
+						workspace.showMessage(workspace.getController().getResources().getString("CanWrite"));
 					}
 				});
 				out.close();

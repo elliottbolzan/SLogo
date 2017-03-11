@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javafx.scene.Node;
-import javafx.scene.control.Accordion;
-import javafx.scene.control.TitledPane;
 import utils.Direction;
 import view.CollapsibleView;
 import view.Workspace;

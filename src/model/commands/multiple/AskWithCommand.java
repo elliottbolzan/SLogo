@@ -19,21 +19,17 @@ public class AskWithCommand extends Command{
 	@Override
 	protected Argument execute() {
 		Argument result = new Argument();
-				List<Integer> ids = new ArrayList<Integer>();
+		List<Integer> ids = new ArrayList<Integer>();
 		for(Turtle getID: getController().getTurtleManager().getActiveTurtles()){
 			ids.add(getID.getID());
 		}		
 		
 		HashMap<Integer, Turtle> turtles = new HashMap<Integer, Turtle>(getController().getTurtleManager().getAllTurtles());
 		List<Integer> activate = new ArrayList<Integer>();
-		List<Integer> temp = new ArrayList<Integer>();
 		
 		for(Turtle check : turtles.values()){
-			temp.clear();
-			temp.add(check.getID());
-			getController().getTurtleManager().setActiveTurtles(temp);
+			getController().getTurtleManager().setCurrentTurtle(check);
 			double value = getParameter(0).getDouble();
-			System.out.println(value);
 			if(value > 0){
 				activate.add(check.getID());
 			}
