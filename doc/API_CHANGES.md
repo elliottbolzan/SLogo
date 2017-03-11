@@ -7,7 +7,7 @@ However, we realized that this would require us to keep the entire front-end and
 
 We felt this was a reasonable tradeoff: we increased the number of public methods a bit, but we did so in order to maintain a clear organizational structure at the package level. 
 
-##### Change 1: Point
+##### Change 1: `Point`
 We were originally going to use `java.awt.Point` as a class to encapsulate coordinates in the TurtleDisplay. We have decided to make our own class (`utils/Point.java`) with double precision coordinates to support very fine-tuned movement of the turtle.
 
 ##### Change 2: `isPointInBounds`
@@ -37,8 +37,5 @@ As we transitioned to a multiple turtle environment, we chose to expose a `Turtl
 ##### Change 10: `printToConsole`
 We renamed our `print` method to `printToConsole`, to distinguish between printing to our shell and printing to our script view. We didn't have a script view in our original implementation, so the distinction only became apparent during the second sprint.
 
-##### Change 11: `printToConsole`
-We renamed our `print` method to `printToConsole`, to distinguish between printing to our shell and printing to our script view. We didn't have a script view in our original implementation, so the distinction only became apparent during the second sprint.
-
-##### Change 12: `getLanguage`
+##### Change 11: `getLanguage`
 We realized we needed to add a `getLanguage` method to our API, in addition to a `setLanguage` one. Indeed, the front-end occasionally needs to display the current language, and that data resides in the back-end.
