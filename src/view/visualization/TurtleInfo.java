@@ -15,7 +15,8 @@ import view.components.SimpleDoubleLabel;
 
 /**
  * @author Jay Doherty
- *
+ * This class wraps all of the turtle's info into a UI element. This UI element shows the turtle's
+ * location, heading, and pen and allows the user to modify the pen and/or the turtle's active status.
  */
 public class TurtleInfo {
 

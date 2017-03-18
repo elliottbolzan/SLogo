@@ -8,7 +8,7 @@ import utils.Point;
 
 /**
  * @author Jay Doherty
- *
+ * This class encapsulates the part of the turtle that draws lines on the display.
  */
 public class Pen {
 

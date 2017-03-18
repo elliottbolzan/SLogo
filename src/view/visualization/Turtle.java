@@ -11,7 +11,8 @@ import javafx.scene.paint.Color;
 
 /**
  * @author Jay Doherty
- *
+ * This class encapsulates all of the Turtle's behavior into an interface. Methods called on this
+ * class can move the turtle around the display.
  */
 public class Turtle {
 	private TurtleDisplay myDisplay;

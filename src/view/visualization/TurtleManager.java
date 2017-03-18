@@ -13,7 +13,7 @@ import javafx.scene.image.Image;
 
 /**
  * @author Elliott Bolzan
- *
+ * This class manages multiple turtles and handles simultaneously animating all of the turtles. 
  */
 public class TurtleManager {
 

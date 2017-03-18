@@ -11,7 +11,8 @@ import utils.Point;
 
 /**
  * @author Jay Doherty
- *
+ * This class encapsulates the turtle's image and provides methods to move and rotate it on the 
+ * display. Also provides methods to change the visibility and opacity.
  */
 public class Graphic {
 	private static final double OPACITY_ACTIVE = 1.0;

@@ -6,7 +6,8 @@ import utils.Point;
 
 /**
  * @author Jay Doherty
- *
+ * This class encapsulates the part of the turtle that is responsible for keeping track of the 
+ * turtle's location and heading. 
  */
 public class Compass {
 

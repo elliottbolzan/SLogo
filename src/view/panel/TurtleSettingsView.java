@@ -13,6 +13,11 @@ import javafx.scene.layout.VBox;
 import view.components.TurtleButtons;
 import view.visualization.TurtleInfo;
 
+/**
+ * @author Jay Doherty
+ * This class creates a panel that has buttons for moving all the turtles and also a picker
+ * for displaying information about the various turtles on screen.
+ */
 public class TurtleSettingsView {
 
 	private Controller myController;
