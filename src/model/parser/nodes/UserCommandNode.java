@@ -3,6 +3,9 @@ package model.parser.nodes;
 import model.commands.Command;
 import model.parser.Argument;
 
+/*
+ * Used for user defined commands.
+ */
 public class UserCommandNode extends Command{
 
 	@Override
