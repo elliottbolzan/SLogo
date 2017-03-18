@@ -11,6 +11,10 @@ import javafx.scene.layout.HBox;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
 
+/**
+ * @author Jay Doherty
+ * This class makes a UI element for choosing a file and displays the name of the file afterwards.
+ */
 public class FilePicker extends Group {
 
 	private Controller controller;

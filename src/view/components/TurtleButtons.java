@@ -7,8 +7,8 @@ import javafx.scene.layout.HBox;
 import utils.Direction;
 
 /**
- * @author jaydoherty
- *
+ * @author Jay Doherty
+ * This class makes four buttons for controlling the turtles (forward, back, left, right)
  */
 public class TurtleButtons {
 
