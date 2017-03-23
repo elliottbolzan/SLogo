@@ -21,6 +21,9 @@ public class SimpleDoubleLabel {
 		this.updateLabel();
 	}
 	
+	/**
+	 * @return the JavaFX label
+	 */
 	public Label getView() {
 		return propertyLabel;
 	}

@@ -64,19 +64,31 @@ public class TurtleDisplay extends StackPane {
 		return myWorkspace;
 	}
 
+	/**
+	 * @return the display's turtle manager object
+	 */
 	public TurtleManager getTurtleManager() {
 		return turtleManager;
 	}
 
+	/**
+	 * Clears the display
+	 */
 	public void clear() {
 		myDisplayArea.getChildren().clear();
 		turtleManager.clear();
 	}
 
+	/**
+	 * @return the display's background color
+	 */
 	public Color getBackgroundColor() {
 		return (Color) myDisplayArea.getBackground().getFills().get(0).getFill();
 	}
 
+	/**
+	 * @param color : the display's background color
+	 */
 	public void setBackgroundColor(Color color) {
 		BackgroundFill primaryLayer = new BackgroundFill(color, CornerRadii.EMPTY, Insets.EMPTY);
 		Background background = new Background(primaryLayer);

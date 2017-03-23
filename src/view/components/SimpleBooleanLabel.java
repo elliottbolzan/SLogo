@@ -25,6 +25,9 @@ public class SimpleBooleanLabel {
 		this.updateLabel();
 	}
 	
+	/**
+	 * @return the JavaFX label
+	 */
 	public Label getView() {
 		return propertyLabel;
 	}
