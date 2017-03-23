@@ -269,7 +269,7 @@ public ObservableList<Variable> getVariables();
 public ObservableList<String> getUserDefinedCommands();
 public ObservableList<IndexedColor> getColorPalette();
 public ObservableList<IndexedImage> getImagePalette();
-//Language methods
+// Language methods
 public void setLanguage(String language);
 public String getLanguage();
 // Edited methods or those moved to Front End
@@ -296,7 +296,8 @@ public List<Command> getUserDefinedCommands();
 
 This API will make use of the following back-end resources:
 
-- The **Turtle** object, which maintains the position of the turtle. This allows the back-end to determine if there is a TurtleOutofBounds() exception, and to allow the position to be returned to the front end.
+- The **State** class, which will maintain the necessary Observable Lists for the history, variables, etc.
+- The **Node** superclass, which hosts the methods that all commands will necessarily extend.
 - The **History** data structure, which will maintain a comprehensive history of the commands that have been processed.
 
 **How is this API intended to be used?**
@@ -304,8 +305,7 @@ This API will make use of the following back-end resources:
 This API is intended to be used by the front-end. We expect the front-end to be able to:
 
 - Obtain the history and display commands as needed
-- Know what type of exception to throw and display when an error occurs
-- Update its turtle position as commands continue to be executed
+- Know what type of exception to throw and display when an error occurs by using the showMessage method from the front end
 
 **How can this API be extended?**
 
