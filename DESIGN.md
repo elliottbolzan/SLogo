@@ -259,6 +259,20 @@ This API can be extended to include more UI-specific features, like more sidebar
 The purpose of this API is to supply the front-end with necessary methods that pertain to the parsing, commands, turtle, or exceptions. Here is an initial list of methods made available by the back-end external API:
 
 ```
+// Command methods
+public void setup(Controller controller, State state)
+public Argument evaluate()
+public Node parse(String input, boolean addToHistory);
+// Observable lists for automatic updating
+public ObservableList<String> getHistory();
+public ObservableList<Variable> getVariables();
+public ObservableList<String> getUserDefinedCommands();
+public ObservableList<IndexedColor> getColorPalette();
+public ObservableList<IndexedImage> getImagePalette();
+// Language methods
+public void setLanguage(String language);
+public String getLanguage();
+// Edited methods or those moved to Front End
 public Command parse(String input);
 public List<String> getHistory();
 public String getPreviousCommand(int k);
@@ -274,15 +288,16 @@ public List<Command> getUserDefinedCommands();
 
 **How does this API support features from the assignment specification?**
 
-* *Recognize these basic commands*  -- implemented by `parse(String input);` which parses the string input and returns the correct command to the front-end.
+* *Recognize these basic commands*  -- implemented by `public Node parse(String input, boolean addToHistory);` which parses the string input and returns the correct command to the front-end.
 
-* *Throw errors that result from incorrectly entered commands* -- implemented by `BadInput();` which throws an exception when the input string is incorrectly entered. 
+* *Throw errors that result from incorrectly entered commands* -- implemented within the parser by calling the `public void showMessage(String message);` which shows a message when the command is incorrectly entered.
 
 **What resources does this API use?**
 
 This API will make use of the following back-end resources:
 
-- The **Turtle** object, which maintains the position of the turtle. This allows the back-end to determine if there is a TurtleOutofBounds() exception, and to allow the position to be returned to the front end.
+- The **State** class, which will maintain the necessary Observable Lists for the history, variables, etc.
+- The **Node** superclass, which hosts the methods that all commands will necessarily extend.
 - The **History** data structure, which will maintain a comprehensive history of the commands that have been processed.
 
 **How is this API intended to be used?**
@@ -290,8 +305,7 @@ This API will make use of the following back-end resources:
 This API is intended to be used by the front-end. We expect the front-end to be able to:
 
 - Obtain the history and display commands as needed
-- Know what type of exception to throw and display when an error occurs
-- Update its turtle position as commands continue to be executed
+- Know what type of exception to throw and display when an error occurs by using the showMessage method from the front end
 
 **How can this API be extended?**
 
