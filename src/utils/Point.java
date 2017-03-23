@@ -13,12 +13,17 @@ public class Point {
 		myY = y;
 	}
 	
+	/**
+	 * @return the x coordinate
+	 */
 	public double getX() {
 		return myX;
 	}
 
+	/**
+	 * @return the y coordinate
+	 */
 	public double getY() {
 		return myY;
 	}
-
 }

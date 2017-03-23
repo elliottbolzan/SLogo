@@ -46,73 +46,129 @@ public class Turtle {
 		this.setRotation(90.0);
 	}
 
+	/**
+	 * @return turtle ID
+	 */
 	public int getID() {
 		return myID;
 	}
 
+	/**
+	 * Moves the turtle to a point on the display
+	 * @param point : destination
+	 */
 	public void moveTo(Point point) {
 		myDisplay.moveTurtle(this, point);
 	}
 	
+	/**
+	 * Turns the turtle by an amount in degrees
+	 * @param degrees : amount of rotation in degrees
+	 */
 	public void turn(double degrees) {
 		this.setRotation(myCompass.getHeading() + degrees);
 	}
 
+	/**
+	 * @return the current location that the turtle is traveling towards if moving. Stationary 
+	 * turtles return their current location.
+	 */
 	public Point getDestination() {
 		return mySchedule.getDestination();
 	}
 
+	/**
+	 * @return the turtle's current heading
+	 */
 	public double getRotation() {
 		return myCompass.getHeading();
 	}
 
+	/**
+	 * @return the status of the pen (up or down)
+	 */
 	public boolean isPenDown() {
 		return myPen.isDown();
 	}
 	
+	/**
+	 * Sets the status of the pen (up or down)
+	 * @param down : boolean specifying if the pen is set down or up
+	 */
 	public void setPenDown(boolean down) {
 		myPen.setDown(down);
 	}
 
+	/**
+	 * @return the pen's color
+	 */
 	public Color getPenColor() {
 		return myPen.getColor();
 	}
 	
+	/**
+	 * @param color : color to set the pen
+	 */
 	public void setPenColor(Color color) {
 		myPen.setColor(color);
 	}
 	
+	/**
+	 * @return the index of the color in the color picker table
+	 */
 	public int getPenColorIndex() {
 		return myPen.getColorIndex();
 	}
 	
+	/**
+	 * @param index : the index of the color in the color picker table
+	 */
 	public void setColorIndex(int index) {
 		myPen.setColorIndex(index);
 	}
 
+	/**
+	 * @param width : font size to set the lines
+	 */
 	public void setPenWidth(double width) {
 		myPen.setThickness(width);
 	}
 	
+	/**
+	 * @return the turtle's visibility
+	 */
 	public boolean isVisible() {
 		return myTurtleGraphic.isVisible();
 	}
 	
+	/**
+	 * @param visible : the turtle's visibility
+	 */
 	public void setVisible(boolean visible) {
 		myTurtleGraphic.setVisible(visible);
 	}
 	
+	/**
+	 * Sets the turtle's image given a fully specified image path
+	 * @param url : full image path
+	 */
 	public void setImage(String url) {
 		myTurtleGraphic.setImage(url);
 		myTurtleGraphic.setCenter(myCompass.getLocation());
 	}
 
+	/**
+	 * @return index of turtle's image in the image table
+	 */
 	public int getShapeIndex() {
 		return myTurtleGraphic.getIndex();
 	}
 	
+	/**
+	 * @param index : index of turtle's image in the image table
+	 */
 	public void setShapeIndex(int index) {
-		myTurtleGraphic.setIndex(index);;
+		myTurtleGraphic.setIndex(index);
 	}
 
 	protected ImageView getView() {

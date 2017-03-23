@@ -48,6 +48,9 @@ public class TurtleInfo {
 											   new Separator(), penPickerBox, new Separator(), fontPickerBox);
 	}
 	
+	/**
+	 * @return the JavaFX element containing the TurtleInfo object
+	 */
 	public VBox getView() {
 		return turtleInfoGraphic;
 	}
