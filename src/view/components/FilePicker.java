@@ -42,10 +42,16 @@ public class FilePicker extends Group {
 		this.getChildren().add(container);
 	}
 
+	/**
+	 * @return the full path of the selected file
+	 */
 	public String getURL() {
 		return myURL;
 	}
 	
+	/**
+	 * @return the JavaFX element showing the selected file name
+	 */
 	public TextField getTextField() {
 		return myTextField;
 	}

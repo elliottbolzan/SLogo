@@ -34,6 +34,9 @@ public class TurtleButtons {
 		myBar.setPadding(new Insets(0, 0, 10, 0));
 	}
 	
+	/**
+	 * @return the JavaFX element containing all of the buttons
+	 */
 	public HBox getView() {
 		return myBar;
 	}
