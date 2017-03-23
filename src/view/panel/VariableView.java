@@ -29,6 +29,8 @@ import java.util.Optional;
 /**
  * @author Elliott Bolzan
  *
+ *         A class that serves to display the existing variables; edit them;
+ *         load them from file; and save them to file.
  */
 public class VariableView extends BorderPane {
 
@@ -37,9 +39,10 @@ public class VariableView extends BorderPane {
 	private Factory factory;
 	private String defaultPath;
 
-
 	/**
-	 * 
+	 * Returns a VariableView.
+	 * @param workspace the Workspace that owns this VariableView.
+	 * @param data the variables that this view is loaded with.
 	 */
 	protected VariableView(Workspace workspace, ObservableList<Variable> data) {
 		this.workspace = workspace;
@@ -50,6 +53,9 @@ public class VariableView extends BorderPane {
 				+ workspace.getController().getResources().getString("ExamplesPath");
 	}
 
+	/**
+	 * Create the VariableView's GUI components.
+	 */
 	private void setup() {
 		TableView<Variable> table = makeTable();
 		TableColumn<Variable, String> nameColumn = makeNameColumn();
@@ -60,11 +66,18 @@ public class VariableView extends BorderPane {
 		setCenter(table);
 		setBottom(createButtonBar());
 	}
-	
+
+	/**
+	 * @return a button bar.
+	 */
 	private Node createButtonBar() {
-		return new HBox(factory.makeButton("LoadTitle", e -> load(), true), factory.makeButton("SaveTitle", e -> save(), true));
+		return new HBox(factory.makeButton("LoadTitle", e -> load(), true),
+				factory.makeButton("SaveTitle", e -> save(), true));
 	}
 
+	/**
+	 * @return a TableView.
+	 */
 	private TableView<Variable> makeTable() {
 		TableView<Variable> table = new TableView<Variable>();
 		table.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
@@ -75,10 +88,16 @@ public class VariableView extends BorderPane {
 		return table;
 	}
 
+	/**
+	 * @return a TableColumn with the names of variables.
+	 */
 	private TableColumn<Variable, String> makeNameColumn() {
 		return makeColumn("VariableTableNameString", "name", false);
 	}
 
+	/**
+	 * @return a TableColumn with the values of variables.
+	 */
 	private TableColumn<Variable, String> makeValueColumn() {
 		TableColumn<Variable, String> valueColumn = makeColumn("VariableTableValueString", "value", true);
 		valueColumn.setCellFactory(TextFieldTableCell.forTableColumn());
@@ -105,7 +124,10 @@ public class VariableView extends BorderPane {
 		nameColumn.setEditable(editable);
 		return nameColumn;
 	}
-	
+
+	/**
+	 * Load a variable file.
+	 */
 	private void load() {
 		FileChooser chooser = factory.makeFileChooser(defaultPath, "Logo Files", "*.logo", "*.txt");
 		File dataFile = chooser.showOpenDialog(getScene().getWindow());
@@ -114,6 +136,10 @@ public class VariableView extends BorderPane {
 		}
 	}
 
+	/**
+	 * Read a variable file in.
+	 * @param path the path of the file to be read in.
+	 */
 	private void readFileIn(String path) {
 		if (!(path.equals(""))) {
 			try {
@@ -121,7 +147,9 @@ public class VariableView extends BorderPane {
 				String line = "";
 				while ((line = bufferedReader.readLine()) != null) {
 					String[] splitLine = line.split(" ");
-					if(!isVariable(splitLine[0])) workspace.getController().getVariables().add(new Variable(splitLine[0], Double.parseDouble(splitLine[1])));
+					if (!isVariable(splitLine[0]))
+						workspace.getController().getVariables()
+								.add(new Variable(splitLine[0], Double.parseDouble(splitLine[1])));
 				}
 				bufferedReader.close();
 			} catch (Exception e) {
@@ -134,13 +162,17 @@ public class VariableView extends BorderPane {
 		boolean isCommand = false;
 		ObservableList<Variable> list = workspace.getController().getVariables();
 		int size = list.size();
-		for(int i = 0; i<size; i++){
+		for (int i = 0; i < size; i++) {
 			isCommand = list.get(i).getName().equals(s);
-			if(isCommand == true) break;
+			if (isCommand == true)
+				break;
 		}
 		return isCommand;
 	}
 
+	/**
+	 * Save variables to file.
+	 */
 	private void save() {
 		DirectoryChooser chooser = factory.makeDirectoryChooser(defaultPath, "OutputFolderTitle");
 		File selectedDirectory = chooser.showDialog(getScene().getWindow());
@@ -148,7 +180,12 @@ public class VariableView extends BorderPane {
 				"SaveFileContentString", "SaveFilePlaceholderString");
 		handleDialogResult(selectedDirectory, dialog.showAndWait());
 	}
-	
+
+	/**
+	 * Handle the user's response to the saving dialog.
+	 * @param selectedDirectory the directory the user selected.
+	 * @param result the result of the user's interaction.
+	 */
 	private void handleDialogResult(File selectedDirectory, Optional<String> result) {
 		if (result.isPresent()) {
 			try {

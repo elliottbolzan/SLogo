@@ -12,15 +12,24 @@ import view.components.Factory;
 /**
  * @author Elliott Bolzan
  *
+ *         This class represents the ControlPanel. It contains a number of
+ *         subviews: to add a subview, add the GUI component to the subviews
+ *         List, and all the component's name to the subviewTitles List.
  */
 public class Panel extends CollapsibleView {
 
 	private Workspace workspace;
 	private List<Node> subviews;
 	private List<String> subviewTitles;
-	
+
 	/**
+	 * Returns a Panel.
 	 * 
+	 * @param workspace
+	 *            the Workspace that owns the Panel.
+	 * @param index
+	 *            the index of the divider that the Panel collapses to, in the
+	 *            SplitPane that owns it.
 	 */
 	public Panel(Workspace workspace, int index) {
 		super(workspace.getPane(), index, Direction.RIGHT, true);
@@ -28,7 +37,11 @@ public class Panel extends CollapsibleView {
 		createSubviews();
 		setup();
 	}
-	
+
+	/**
+	 * Populate the subviewTitles and subviews Lists, which dictate which
+	 * subviews appear in the Accordion.
+	 */
 	private void createSubviews() {
 		subviewTitles = new ArrayList<String>() {
 			private static final long serialVersionUID = 1L;
@@ -56,6 +69,9 @@ public class Panel extends CollapsibleView {
 		};
 	}
 
+	/**
+	 * Create the Accordion and add it to the view.
+	 */
 	private void setup() {
 		setTitle(workspace.getController().getResources().getString("PanelTitle"));
 		Factory factory = new Factory(workspace.getController().getResources());

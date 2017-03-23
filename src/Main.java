@@ -5,7 +5,7 @@ import view.WorkspaceBrowser;
 /**
  * @author Elliott Bolzan
  *
- * This class is solely used to launch the application. 
+ * This class is used to launch the program. 
  */
 public class Main extends Application {
 	
