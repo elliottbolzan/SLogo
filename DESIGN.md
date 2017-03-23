@@ -259,6 +259,20 @@ This API can be extended to include more UI-specific features, like more sidebar
 The purpose of this API is to supply the front-end with necessary methods that pertain to the parsing, commands, turtle, or exceptions. Here is an initial list of methods made available by the back-end external API:
 
 ```
+// Command methods
+public void setup(Controller controller, State state)
+public Argument evaluate()
+public Node parse(String input, boolean addToHistory);
+// Observable lists for automatic updating
+public ObservableList<String> getHistory();
+public ObservableList<Variable> getVariables();
+public ObservableList<String> getUserDefinedCommands();
+public ObservableList<IndexedColor> getColorPalette();
+public ObservableList<IndexedImage> getImagePalette();
+//Language methods
+public void setLanguage(String language);
+public String getLanguage();
+// Edited methods or those moved to Front End
 public Command parse(String input);
 public List<String> getHistory();
 public String getPreviousCommand(int k);
@@ -274,9 +288,9 @@ public List<Command> getUserDefinedCommands();
 
 **How does this API support features from the assignment specification?**
 
-* *Recognize these basic commands*  -- implemented by `parse(String input);` which parses the string input and returns the correct command to the front-end.
+* *Recognize these basic commands*  -- implemented by `public Node parse(String input, boolean addToHistory);` which parses the string input and returns the correct command to the front-end.
 
-* *Throw errors that result from incorrectly entered commands* -- implemented by `BadInput();` which throws an exception when the input string is incorrectly entered. 
+* *Throw errors that result from incorrectly entered commands* -- implemented within the parser by calling the `public void showMessage(String message);` which shows a message when the command is incorrectly entered.
 
 **What resources does this API use?**
 
