@@ -13,6 +13,8 @@ import view.Workspace;
 /**
  * @author Elliott Bolzan
  *
+ * A class that serves to display commands to the user.
+ * These commands should be clickable: upon being clicked, they should be placed into the shell.
  */
 public class CommandView extends BorderPane {
 
@@ -20,7 +22,9 @@ public class CommandView extends BorderPane {
 	private ObservableList<String> data;
 
 	/**
-	 * 
+	 * Returns a CommandView object.
+	 * @param workspace the Workspace that owns the CommandView.
+	 * @param data the commands that the CommandView is loaded with.
 	 */
 	protected CommandView(Workspace workspace, ObservableList<String> data) {
 		this.workspace = workspace;
@@ -28,6 +32,9 @@ public class CommandView extends BorderPane {
 		setup();
 	}
 
+	/**
+	 * Setup the graphic components for the CommandView.
+	 */
 	private void setup() {
 		ListProperty<String> listProperty = new SimpleListProperty<>();
 		ListView<String> list = new ListView<String>();
