@@ -1,8 +1,8 @@
 package utils;
 
 /**
- * @author Jay Doherty This class packages together x and y double-precision
- *         coordinates in a convenient object.
+ * @author Jay Doherty 
+ * This class packages together x and y double-precision coordinates in a convenient object.
  */
 public class Point {
 	private double myX;

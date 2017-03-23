@@ -5,7 +5,7 @@ import javafx.scene.control.Label;
 
 /**
  * @author Jay Doherty
- *
+ * This class makes a label that displays a decimal number based on a double property.
  */
 public class SimpleDoubleLabel {
 

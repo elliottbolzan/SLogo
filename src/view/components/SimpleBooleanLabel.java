@@ -5,7 +5,7 @@ import javafx.scene.control.Label;
 
 /**
  * @author Jay Doherty
- *
+ * This class makes a label that displays one of two words based on the value of a boolean property.
  */
 public class SimpleBooleanLabel {
 

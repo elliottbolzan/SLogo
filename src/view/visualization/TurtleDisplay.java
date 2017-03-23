@@ -25,7 +25,7 @@ import javafx.scene.layout.StackPane;
 
 /**
  * @author Jay Doherty
- *
+ * This class handles the part of the UI that displays turtles and animates their movements.
  */
 public class TurtleDisplay extends StackPane {
 	private final static int SIZE = 450;

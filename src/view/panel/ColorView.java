@@ -15,15 +15,12 @@ import model.IndexedColor;
 
 /**
  * @author Jay Doherty
- *
+ * This class creates a table of colors from an observable list of colors.
  */
 public class ColorView extends BorderPane {
 
 	private ObservableList<IndexedColor> data;
 
-	/**
-	 * 
-	 */
 	protected ColorView(ObservableList<IndexedColor> data) {
 		this.data = data;
 		this.setup();
