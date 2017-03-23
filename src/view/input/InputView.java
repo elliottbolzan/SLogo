@@ -7,6 +7,7 @@ import javafx.scene.control.SplitPane;
 import javafx.scene.control.TextArea;
 import utils.Direction;
 import view.CollapsibleView;
+import view.Workspace;
 
 /**
  * @author Elliott Bolzan
@@ -22,6 +23,8 @@ public abstract class InputView extends CollapsibleView {
 	/**
 	 * Returns an InputView.
 	 * 
+	 * @param workspace
+	 *            the Workspace that controls the InputView.
 	 * @param owner
 	 *            the SplitPane that the InputView is located in.
 	 * @param dividerIndex
@@ -31,8 +34,9 @@ public abstract class InputView extends CollapsibleView {
 	 * @param showToolbar
 	 *            whether this view should have a toolbar or not.
 	 */
-	public InputView(SplitPane owner, int dividerIndex, Direction collapseDirection, boolean showToolbar) {
-		super(owner, dividerIndex, collapseDirection, showToolbar);
+	public InputView(Workspace workspace, SplitPane owner, int dividerIndex, Direction collapseDirection,
+			boolean showToolbar) {
+		super(workspace, owner, dividerIndex, collapseDirection, showToolbar);
 		textArea = new TextArea();
 		textArea.setWrapText(true);
 	}

@@ -1,25 +1,35 @@
+// This entire file is part of my masterpiece.
+// Elliott Bolzan
+
 package view;
 
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.control.SplitPane;
 import javafx.scene.control.ToolBar;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import utils.Direction;
+import view.components.Factory;
 
 /**
  * @author Elliott Bolzan This abstract class represents a collapsible view. It
  *         provides a tool bar with a minimize button: when this button is
  *         clicked, the view is collapsed. Any collapsible view should inherit
  *         from this class.
+ * 
+ *         This code's purpose: allowing for View elements to be collapsed.
+ * 
+ *         Why I think this code is well designed: this code makes use of
+ *         practical design patterns, like the Factory design pattern; this code
+ *         is concise, making use of the ternary operator in the minimize()
+ *         method; this code is flexible, allowing for a View to either display
+ *         a toolbar or not do so; this code is closed for modification but open
+ *         for extension; this code extends an abstract class, View; this code
+ *         makes use of a ResourceBundle.
  */
-public abstract class CollapsibleView extends BorderPane {
+public abstract class CollapsibleView extends View {
 
-	private Label title;
+	private Workspace workspace;
 	private SplitPane owner;
 	private int dividerIndex;
 	private Direction collapseDirection;
@@ -27,6 +37,8 @@ public abstract class CollapsibleView extends BorderPane {
 	/**
 	 * Creates a CollapsibleView.
 	 * 
+	 * @param workspace
+	 *            the Workspace that owns the CollapsibleView.
 	 * @param owner
 	 *            the SplitPane the view is placed in.
 	 * @param dividerIndex
@@ -36,11 +48,12 @@ public abstract class CollapsibleView extends BorderPane {
 	 * @param hasToolbar
 	 *            whether a toolbar should be displayed.
 	 */
-	public CollapsibleView(SplitPane owner, int dividerIndex, Direction collapseDirection, boolean hasToolbar) {
+	public CollapsibleView(Workspace workspace, SplitPane owner, int dividerIndex, Direction collapseDirection,
+			boolean hasToolbar) {
+		this.workspace = workspace;
 		this.owner = owner;
 		this.dividerIndex = dividerIndex;
 		this.collapseDirection = collapseDirection;
-		title = new Label();
 		setMinSize(0, 280);
 		if (hasToolbar) {
 			createToolbar();
@@ -54,7 +67,8 @@ public abstract class CollapsibleView extends BorderPane {
 		HBox spacing = new HBox();
 		spacing.maxWidth(Double.MAX_VALUE);
 		HBox.setHgrow(spacing, Priority.ALWAYS);
-		ToolBar toolBar = new ToolBar(title, spacing, makeMinimizeButton("resources/images/minimize.png"));
+		ToolBar toolBar = new ToolBar(getTitle(), spacing,
+				makeMinimizeButton(workspace.getController().getResources().getString("MinimizePath")));
 		toolBar.setPrefSize(getWidth(), 18);
 		setTop(toolBar);
 	}
@@ -67,21 +81,8 @@ public abstract class CollapsibleView extends BorderPane {
 	 * @return a minimize button.
 	 */
 	private Button makeMinimizeButton(String imagePath) {
-		Image minimizeImage = new Image(getClass().getClassLoader().getResourceAsStream(imagePath), 16, 10, true, true);
-		Button minimizeButton = new Button("", new ImageView(minimizeImage));
-		minimizeButton.setOnAction(e -> minimize());
-		minimizeButton.getStyleClass().add("minimize");
-		return minimizeButton;
-	}
-
-	/**
-	 * Set the view's title to a specific string.
-	 * 
-	 * @param string
-	 *            the view's title.
-	 */
-	protected void setTitle(String string) {
-		title.setText(string);
+		Factory factory = new Factory(workspace.getController().getResources());
+		return factory.makeTabButton(imagePath, e -> minimize(), "minimize", 16, 10);
 	}
 
 	/**

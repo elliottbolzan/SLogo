@@ -135,9 +135,12 @@ public class Factory {
 	}
 
 	/**
-	 * @param property the property that provides the title of the Button.
-	 * @param handler the handler executed when the button is clicked.
-	 * @param fill whether the button should fill its available space.
+	 * @param property
+	 *            the property that provides the title of the Button.
+	 * @param handler
+	 *            the handler executed when the button is clicked.
+	 * @param fill
+	 *            whether the button should fill its available space.
 	 * @return a Button.
 	 */
 	public Button makeButton(String property, EventHandler<ActionEvent> handler, boolean fill) {
@@ -151,15 +154,21 @@ public class Factory {
 	}
 
 	/**
-	 * @param path the path to the image for the tab button.
-	 * @param action the action to be executed when the tab button is clicked.
-	 * @param style the class of the tab button in the CSS stylesheet.
+	 * @param path
+	 *            the path to the image for the tab button.
+	 * @param action
+	 *            the action to be executed when the tab button is clicked.
+	 * @param style
+	 *            the class of the tab button in the CSS stylesheet.
+	 * @param width
+	 *            the width of the Button.
+	 * @param height
+	 *            the height of the Button.
 	 * @return the tab button.
 	 */
-	public Button makeTabButton(String path, EventHandler<ActionEvent> action, String style) {
-		ImageView imageView = new ImageView(new Image(getClass().getClassLoader().getResourceAsStream(path)));
-		imageView.setFitHeight(20);
-		imageView.setFitWidth(20);
+	public Button makeTabButton(String path, EventHandler<ActionEvent> action, String style, int width, int height) {
+		ImageView imageView = new ImageView(
+				new Image(getClass().getClassLoader().getResourceAsStream(path), width, height, true, true));
 		Button button = new Button("", imageView);
 		button.setOnAction(action);
 		button.getStyleClass().add(style);

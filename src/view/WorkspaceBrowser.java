@@ -90,9 +90,9 @@ public class WorkspaceBrowser extends BorderPane {
 	 */
 	private Node createButtons() {
 		Button newButton = factory.makeTabButton(resources.getString("NewButtonImagePath"), e -> newWorkspace(),
-				"tab-button");
+				"tab-button", 20, 20);
 		Button helpButton = factory.makeTabButton(resources.getString("HelpButtonImagePath"), e -> showHelp(),
-				"tab-button");
+				"tab-button", 20, 20);
 		return new HBox(newButton, helpButton);
 	}
 
