@@ -27,7 +27,7 @@ import java.io.IOException;
 import java.util.Optional;
 
 /**
- * @author Elliott Bolzan
+ * @authors Elliott Bolzan (main) and Alex Zapata (load, save, and dialogue)
  *
  *         A class that serves to display the existing variables; edit them;
  *         load them from file; and save them to file.
