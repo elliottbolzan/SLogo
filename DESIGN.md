@@ -324,6 +324,7 @@ The primary purpose of these methods is to allow the front-end to function smoot
 The purpose of this API is to provide methods for the back-end that will be used to implement the functionality of our program. These methods will supply the necessary resources for our back-end logic to function smoothly; here is a list of methods that we believe we will need:
 
 ```
+// Absorbed or previous.
 public Command getCommand();
 public Command parse(String input);
 public Variable getVariable();
@@ -337,28 +338,35 @@ public void setPosition();
 public void setPen();
 public void setHidden();
 public void setHeading();
+// Newly implemented.
+public Command get();
+public Token getType();
+public Node parseInternal();
+public Argument evaluate();
 ```
 
 **How does this API support features from the assignment specification?**
 
 * *Recognize these basic commands*  -- implemented by all of our necessary `getX()` and `setX()` methods that will update the required variables and maintain the data/objects as needed.
 
-* *Throw errors that result from incorrectly entered commands* -- implemented by the parse command by recognizing when an incorrectly entered command is given as the input string.
+* *Throw errors that result from incorrectly entered commands* -- every location in the program that would  
+theoretically throw an exception in the case of some difficulty (such as not being able to find a command, not making a comment in the right syntax, etc) will call the controller and display an error message within the bounds of try/catch statements.
 
 **What resources does this API use?**
 
 This API will make use of several classes as resources (super and sub-classes) such as the following:
 
-- The **Command** object, which is a superclass to any potential command. Subclasses will include the LogicCommand, MathCommand, TurtleActionCommand, and TurtleLogicCommand.
+- The **Command** object, which is a subclass of the node and will have its own way of evaluating its children or manipulating its arguments to give the front end the result of said command.
 - The **Turtle** object will maintain all of the necessary information about the turtle, including the position, heading, pen, and hiding data.
-- The **Parser** class, which will host the history and catching of errors.
-- The **Variable** class, which will hold the creation of all variables throughout the running of the program.
+- The **Parser** class, which will be able to determine the identity of each word using tokenize to create different nodes and create the tree whose breadth first evaluation will give the proper implementation of commands and other specified syntaxes.
+- The **State** class, which will hold all of the observable lists (for use in binding) so that the front end and back-end will hold the same variables and history at all times. This class can also check and save user-commands so that they can be called and effectively implemented later in the time-frame of the project.
 
 **How is this API intended to be used?**
 
 This API is intended to be used as a way to supply information throughout the back-end. With these methods, we can:
 
-- Add to our history, 
+- Add to our history
+- Create trees that are syntactically created to correctly evaluate input using breadth-first evaluation.
 - Update our Turtle information 
 - Maintain variables
 
@@ -374,7 +382,7 @@ This API can be extended by:
 
 **Why are we introducing these classes?**
 
-The primary goal of adding all of these classes is to grant a cohesive way to manipulate data throughout the back-end. The Parser class is necessary to return the correct command and to check for errors, as listed in the design write-up. The Turtle class will be used as an efficient way to store all of the information we need that relates to each Turtle object. The Command superclass will be easily extensible with the use of layers of subclasses in order to maintain a clear heirarchy of commands. These classes will maintain the logic and functionality of much of the program.
+The primary goal of adding all of these classes is to grant a cohesive way to manipulate data throughout the back-end. The Parser class is necessary to return the correct tree evaluation and to check for errors, as listed in the design write-up. The TurtleCommand class will be used as an efficient way to pass all of the information we need that relates to each abstract Turtle object. The Command superclass will be easily extensible with the use of layers of subclasses in order to maintain a clear hierarchy of commands. These classes will maintain the logic and functionality of much of the program.
 
 ### API Example Code
 
