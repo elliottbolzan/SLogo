@@ -19,9 +19,11 @@ import javafx.stage.WindowEvent;
 import view.components.Factory;
 
 /**
- * @author Elliott Bolzan
- *
+ * @author Elliott Bolzan This class represents the highest-level GUI component:
+ *         the container for Workspaces. Workspaces can be added to this browser
+ *         by the user; they can also be removed.
  */
+
 public class WorkspaceBrowser extends BorderPane {
 
 	private Stage stage;
@@ -31,8 +33,10 @@ public class WorkspaceBrowser extends BorderPane {
 	private String stylesheetPath = resources.getString("StylesheetPath");
 	private Factory factory = new Factory(resources);
 
+
 	/**
-	 * 
+	 * Returns a WorkspaceBrowser.
+	 * @param stage the Stage that this browser will be placed in.
 	 */
 	public WorkspaceBrowser(Stage stage) {
 		this.stage = stage;
@@ -46,6 +50,9 @@ public class WorkspaceBrowser extends BorderPane {
 		});
 	}
 
+	/**
+	 * Initializes the stage.
+	 */
 	private void setupStage() {
 		stage.setTitle(resources.getString("SLogoTitle"));
 		stage.setMinWidth(600);
@@ -59,7 +66,11 @@ public class WorkspaceBrowser extends BorderPane {
 		stage.setScene(createScene());
 		stage.show();
 	}
-	
+
+	/**
+	 * Create the main GUI component.
+	 * @return an AnchorPane containing the TabPane and its buttons.
+	 */
 	private Node setupView() {
 		tabPane = new TabPane();
 		Node buttons = createButtons();
@@ -72,13 +83,23 @@ public class WorkspaceBrowser extends BorderPane {
 		AnchorPane.setBottomAnchor(tabPane, 1.0);
 		return anchor;
 	}
-	
+
+	/**
+	 * Creates the buttons for this browser.
+	 * @return the buttons for this browser.
+	 */
 	private Node createButtons() {
-		Button newButton = factory.makeTabButton(resources.getString("NewButtonImagePath"), e -> newWorkspace(), "tab-button");
-		Button helpButton = factory.makeTabButton(resources.getString("HelpButtonImagePath"), e -> showHelp(), "tab-button");
+		Button newButton = factory.makeTabButton(resources.getString("NewButtonImagePath"), e -> newWorkspace(),
+				"tab-button", 20, 20);
+		Button helpButton = factory.makeTabButton(resources.getString("HelpButtonImagePath"), e -> showHelp(),
+				"tab-button", 20, 20);
 		return new HBox(newButton, helpButton);
 	}
 
+	/**
+	 * Creates the project's scene.
+	 * @return the main Scene for the project.
+	 */
 	private Scene createScene() {
 		Scene scene = new Scene(this, 1000, 480);
 		scene.getStylesheets().add(stylesheetPath);
@@ -89,6 +110,9 @@ public class WorkspaceBrowser extends BorderPane {
 		return (Workspace) tabPane.getSelectionModel().getSelectedItem().getContent();
 	}
 
+	/**
+	 * Creates a new workspace.
+	 */
 	private void newWorkspace() {
 		workspaces++;
 		Controller controller = new Controller(this);
@@ -99,6 +123,11 @@ public class WorkspaceBrowser extends BorderPane {
 		tabPane.getSelectionModel().select(tab);
 	}
 
+	/**
+	 * Handle the closing event manually.
+	 * @param e the closing event.
+	 * @param controller the current Controller object.
+	 */
 	private void handleClose(Event e, Controller controller) {
 		if (workspaces > 1) {
 			workspaces--;
@@ -108,6 +137,9 @@ public class WorkspaceBrowser extends BorderPane {
 		}
 	}
 
+	/**
+	 * Show the HelpView when requested.
+	 */
 	private void showHelp() {
 		new HelpView(resources).show();
 	}

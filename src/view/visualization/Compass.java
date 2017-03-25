@@ -4,6 +4,11 @@ import javafx.beans.property.ReadOnlyDoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import utils.Point;
 
+/**
+ * @author Jay Doherty
+ * This class encapsulates the part of the turtle that is responsible for keeping track of the 
+ * turtle's location and heading. 
+ */
 public class Compass {
 
 	private SimpleDoubleProperty myXProperty;

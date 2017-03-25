@@ -5,6 +5,12 @@ import java.util.Queue;
 
 import utils.Point;
 
+/**
+ * @author Jay Doherty
+ * This class encapsulates the part of the turtle that keeps track of where the turtle is going
+ * and future destinations that are queued up for the turtle to move to once it arrives at its
+ * current destination.
+ */
 public class Schedule {
 
 	private Point myDestination;

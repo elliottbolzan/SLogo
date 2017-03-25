@@ -17,9 +17,9 @@ The front-end and back-end of our design is divided in the following way:
 
 ![](images/overview.png)
 
-The basic idea of our organization is that the front-end will detect user input, and the back-end will handle it. When the front-end detects a new input, it will pass it to the the back-end as a String to be parsed. Once the back-end has finished parsing, it will pass back a Command object. This Command object has a single public method that can be called to execute it. Under this structure, the API used by the Console and the back-end parser can be incredibly simple because it involves this simple handing back and forth of objects. The front-end provides Strings and the back-end provides ready-made Commands, and the front-end doesn't need to know or care about how these commands get made, it just knows that all commands can be executed.
+The basic idea of our organization is that the front-end will detect user input, and the back-end will handle it. When the front-end detects a new input, it will pass it to the the back-end as a String to be parsed. Once the back-end has finished parsing, it will create a Command object. This Command object has a single public method that can be called to execute it. If a Command gets its arguments from the return value of another Command, then it will first execute that Command. In this way the chain of execution gets pushed out in a tree-like structure. The front-end provides Strings and the back-end provides ready-made Commands, and the front-end doesn't need to know or care about how these commands get made, it just knows that all commands can be executed.
 
-The rest of the front-end external API is provided to make Commands powerful. They should be able to do interesting stuff like printing math results or moving the Turtle around screen, so methods that support this behavior must be provided by the front-end. 
+The rest of the front-end external API is provided to make Commands powerful. They should be able to do interesting stuff like modifying display colors or moving the Turtle around screen, so methods that support this behavior must be provided by the front-end. 
 
 The rest of the back-end external API is provided to make the UI powerful. While `parse(String input)` provides the main functionality in terms of executing commands, other kinds of input might need to be handled differently. The UI should be able to see the history of commands and the current state of variables, so methods that support this behavior must be provided by the back-end.
 
@@ -31,28 +31,62 @@ The back-end internal API is once again focused on providing features and ways o
 
 Our user interface for this project will look as follows:
 
-![](images/ui.jpg)
+![](images/ui.png)
 
 Three major components are visible on this image:
 
-1. **The State**: this section, on the left, contains the user's variables and the commands he has defined. The user is able to edit the variables by clicking on them, or run commands by clicking on them. Both of these displays, the variable-display and the command-display, will be implemented as table views. 
-2. **The Console**: this section, in the center, accepts the user's text input. By default, the cursor is active in the console. When the user types, the output is displayed in the console. When the user presses enter, his text is parsed as a command and the results are displayed in the **TurtleDisplay**. Pressing the `UP` key on the keyboard will let the user view, and optionally run, his past commands.
-3. **The TurtleDisplay**: this section, on the right, contains the turtle and its drawings. The user should be able to view the turtle's movement in this section. In the top right of this section, there is a **Settings** button: clicking this button loads a modal window, from which the user can modify the color of the pen, the turtle's image, and the background of the **TurtleDisplay**.
+1\. **The Input Area**: this section, on the left, accepts the user's text input.
+
+It is divided into two sections:
+
+- The shell, in which the user can type commands and execute them one-by-one by pressing the `Enter` key. Pressing the `UP` key on the keyboard will let the user view, and optionally run, his or her past commands.
+- The script editor, from which the user can load, save, edit, and run scripts.
+
+The results from the executed commands are run in the following section, the `TurtleDisplay`.
+
+2\. **The `TurtleDisplay`**: this section, in the center, contains the turtle and its drawings. The user should be able to view the turtle's movement in this section.
+
+In addition, the user can control the animation using buttons located to the bottom of this display. 
+
+- Pressing the `Play` button will play a paused animation.
+- Pressing the `Stop` will pause an animation.
+- Pressing the `Step` button step through movement commands that are queued up one-by-one.
+
+Finally, the display contains a slider that controls the animation's speed. Additional customization options can be found in the `Control Panel`.
+
+3\. **The `Control Panel`**: this section, on the right, contains the following items:
+
+- The `user's command history`: past commands are made clickable in this section.
+- The `user's variables`: set variables are displayed and can be edited. In addition, the user can either load or save variables using the corresponding buttons.
+- The `user's commands`: displays clickable commands that the user has defined.
+- The `settings`: displays the workspace's settings and makes them editable. Allows for the saving of default settings.
+- The `colors`: associates default colors to indices.
+- The `images`: associates default turtle images to indices.
+- The `turtle settings`: displays each turtle's location and heading. Also allows for the movement of individual turtles and the modification of each turtle's active property.
+
+----
 
 There are several possible errors that the program can encounter when an individual is using it. These errors will all be displayed using a JavaFX Dialog. The following errors will be handled:
 
-- **Bad input**: this type of error occurs when the user incorrectly forms a command and seeks to run it. The program catches this error, and informs the user of it using a Dialog. 
-- **Invalid operation**: this type of error occurs when the user seeks to run a problematic command, like `QUOTIENT 5 0`. Generally speaking, this type of error will be raised when the user seeks to run an expression that is mathematically prohibited. In that scenario, the user will be informed using a Dialog.
-- **Out of bounds**: this type of error occurs when the user seeks to move the turtle out of bounds. If the user calls `FORWARD 3000` and the execution of the command would result in the disappearance of the turtle, the user would be notified using a Dialog.
+- Invalid input.
+- Command does not exist.
+- Faulty comment.
+- Attempt at redefining a command.
+- Invalid arguments.
+- Could not write to file.
+- Could not read from file.
 
-An example of such a Dialog, for a **bad input** error, would be:
+An example of such an error dialog would be:
 
-![](images/error.jpg)
+![](images/error.png)
 
-We chose to group all the customizations options under a **Settings** button in the top right of the **TurtleDisplay**. When the user clicks on this button, a modal view with all possible customization options appears. We had several reasons for designing our program this way:
+We chose to group all the customizations options under a `Control Panel`. We had several reasons for designing our program this way:
 
-- To prevent our **TurtleDisplay** from becoming cluttered, and providing our Turtle with the most possible real estate.
+- To prevent our `TurtleDisplay` from becoming cluttered and to provide our `Turtle` with the most possible real estate.
 - To accomodate further customization options in a more flexible manner. 
+- To let the user selectively show and hide the customization panels.
+
+**Note**: our program allows for multiple `Workspaces`. Each `Workspace` contains all of the previously cited user interface elements.
 
 ### API Details
 
@@ -63,135 +97,182 @@ Here are the details for our four APIs:
 This API's methods are those that the back-end needs to have access to. Here are the methods made available by the front-end external API: 
 
 ```
-public void print(String string);
+// General Methods
 public void clearConsole();
+public void clearDisplay();
+public TurtleManager getTurtleManager();
+public void printToConsole(String string);
+public void showMessage(String message);
+public void setBackgroundColor(Color color);
+// Turtle Methods
+public int getID();
 public void moveTo(Point point);
 public void turn(double degrees);
+public Point getDestination();
+public double getRotation();
+public boolean isPenDown();
+public boolean isPenDown();
 public void setPenDown(boolean down);
-public void setTurtleVisible(boolean visible);
-public void clearDisplay();
-public Dimension getDisplaySize();
-public boolean isPointInBounds(Point point);
+public Color getPenColor();
+public void setPenColor(Color color);
+public int getPenColorIndex();
+public void setColorIndex(int index);
+public void setPenWidth(double width);
+public boolean isVisible();
+public void setVisible(boolean visible);
+public void setImage(String url);
+public int getShapeIndex();
+public void setShapeIndex(int index);
+// TurtleManager Methods
+public ObservableList<Turtle> getActiveTurtles();
+public void setActiveTurtles(List<Integer> indices);
+public Map<Integer, Turtle> getAllTurtles();
+public Turtle getTurtleByID(int ID);
+public Turtle getCurrentTurtle();
+public void setCurrentTurtle(Turtle turtle);
+public void setTurtleImage(int imageIndex, String URL);
 ```
 
 **How does this API support features from the assignment specification?**
 
 This API supports these features:
 
-- *Enter commands to the turtle interactively by entering text commands*: the APIs `print(String string)` helps accomplish this task. Indeed, the user's text must be printed to the screen, and the output of his commands must be displayed as well.
-- *See the results of the turtle executing commands displayed visually*: the APIs `moveTo(Point point)`, `turn(double degrees)`, `setPenDown(boolean down)`, `setTurtleVisible(boolean visible)`, and `clearDisplay()` functions are used to accomplish this task.
+- *See the results of the turtle executing commands displayed visually*: the API's `moveTo(Point point)`, `turn(double degrees)`, `setPenDown(boolean down)`, `setVisible(boolean visible)`, and `clearDisplay()`, for example, are functions used to accomplish this task.
+- *Support multiple turtles*: the API's `int getID()` method, as well as its `ObservableList<Turtle> getActiveTurtles()`,  `setActiveTurtles(List<Integer> indices)`, and `getCurrentTurtle()` methods, for instance, are crucial to accomplishing this task.
+- *See errors that may result from entered commands in a user friendly way*: the API's `showMessage(String message)` method serves this purpose.
+- *Set a background color for the turtle's display area*: the API's `setBackgroundColor(Color color)` serves this purpose.
+- *Set an image to use for the turtle* and *set a color to use for the pen*: the API's `setTurtleImage(int imageIndex, String URL)` and `setPenColor(Color color)` serve this purpose.
+
+This front-end external API supports most of the graphic requirements from the specifications.
 
 Some features, like *clearing the console*, are included here because we think they might be useful down the road – even though they aren't part of our current assignment specifications.
 
-Other features, like *set a background color for the turtle's display area*, are handled by the front-end's internal API. Most customization features, as well as features that are purely related to the GUI, are in the internal API, because the back-end need not know of their functioning or existence. 
-
 **What resources does this API use?**
 
-This API will make use of the following resources:
+This API will make use of the following classes or resources:
 
-- The **Console**: printing to and clearing the console will necessarily require a reference to the Console object.
-- The **TurtleDisplay**: moving or turning the turtle, for instance, will require a reference to the TurtleDisplay object. 
-- The **Turtle**: setting whether the pen is active, or hiding the turtle, will require a reference to the Turtle object.
+- The `Input Area`: printing to and clearing the `ShellView` will necessarily require a reference to the `ShellView` object.
+- The `TurtleDisplay`: moving or turning the turtle, for instance, will require a reference to the `TurtleDisplay` object. 
+- The `Turtle`: setting whether the pen is active, or hiding the turtle, will require a reference to the Turtle object.
+- The `TurtleManager`: obtaining the active turtle, for example, will require a reference to this resource.
 
 **How is this API intended to be used?**
 
-This API is intended to be used from the backend.
+This API is intended to be used from the back-end.
 
 We expect the following, general use-case:
 
-- The front-end receives a **Command** object from the back-end.
-- The front-end calls the `execute()` function on this **Command** object. 
-- The `execute()` function, located in the back-end, makes use of methods from this API. For instance, if the back-end intends to move the turtle forward by 50, it calculates the new position for the turtle, and calls `moveTo(Point point)` on the front-end. 
+- The `execute()` function, located in the `Command` class in the back-end, gets information from this API (`getCurrentTurtle()` could be called, for instance). 
+- The back-end computes a new value using the data obtained from the API.
+- The back-end tells the front-end to update its visualization, using methods from the API like `moveTo(Point point)` or `showMessage(String message)`.
 
-**Note**: this last example makes it clear that this API is not intended to compute new destination points or do math of any sort. It is simply meant to be used to display the results of calculations done in the back-end.
+**Note**: this API is not intended to compute new destination points or do math of any sort. It is simply designed to display the results of calculations computed in the back-end.
 
 **How can this API be extended?**
 
 This API can be extended in the following ways:
 
-- By **making use of** current methods. Consider the following scenario: a coder needs to implement a new feature, in which the **TurtleDisplay** is cleared and the **Turtle** is moved to the bottom left of the screen – not the center. The coder could construct this feature using the `clearDisplay()` and `moveTo(Point point)` methods in conjunction.
+- By **making use of** current methods in conjunction. Consider the following scenario: a coder needs to implement a new feature, in which the `TurtleDisplay` is cleared and the `Turtle` is moved to the bottom left of the screen – not the center. The coder could construct this feature using the `clearDisplay()` and `moveTo(Point point)` methods in conjunction.
 - By **adding** methods. While this method is not ideal because it requires an update to the entire API, it does remain a possibility.
 
-Ideally, we would like this API's methods to be closed for modification: they were designed to fulfill a role, and they fulfill it. New features should be constructed by either combining functionality available in the current methods, or, less ideally, by creating new methods entirely in the API. 
+Ideally, we would like this API's methods to be closed for modification: they were designed to fulfill a role, and they fulfill it. 
+
+New features should be constructed by either combining functionality available in the current methods, or, less ideally, by creating entirely new methods in the API. 
 
 **Why are we introducing these classes?**
 
-In discussing this front-end external API, we mentionned several classes: the **Console**, the **TurtleDisplay** and the **Turtle**. Here, we justify the inclusion and creation of these classes.
+In discussing this front-end external API, we mentionned several classes: the `Input Area`, the `TurtleDisplay` and the `Turtle`. Here, we justify the inclusion and creation of these classes.
 
-- **Console**: intuitively, a program like SLogo that requires a user's input to a shell will need a Console class. This API needs this class to exist, in order to be able to print to the console and clear it, eventually. Additionally, it makes sense for this class to be its own abstraction: the user interface classes will get large and cluttered if they are not split into several functional modules.
-- **TurtleDisplay**: likewise, a program that wants to visualize the movements of a turtle across a screen will need a class to control that space. This API contains `moveTo(Point point)` and `turn(double degrees)` methods, so it makes sense to create a standalone class in which these events can take place. 
-- **Turtle**: finally, it is normal for a program that wishes to control a turtle to have au **Turtle** class. Why is the turtle not simply an image controlled from the **TurtleDisplay**? This API has methods like `setPenDown(boolean down)`; those methods control instance variables that conceptually belong to the turtle. As a consequence, it makes sense to have a **Turtle** class to contain those variables.
-
+- `Input Area`: intuitively, a program like **SLogo** that requires a user's input to a shell will need a `ShellView` class. This API needs this class to exist, in order to be able to print to the shell and clear it, eventually. Additionally, it makes sense for this class to be its own abstraction: the user interface classes will get large and cluttered if they are not split into several functional modules.
+- `TurtleDisplay`: likewise, a program that wants to visualize the movements of a turtle across a screen will need a class to control that space. This API contains `moveTo(Point point)` and `turn(double degrees)` methods, so it makes sense to create a standalone class in which these events can take place. 
+- `Turtle`: finally, it is normal for a program that wishes to control a turtle to have a `Turtle` class. Why, one could ask, is the turtle not simply an image controlled from the `TurtleDisplay`? This API has methods like `setPenDown(boolean down)`; those methods control instance variables that conceptually belong to the `Turtle`. As a consequence, it makes sense to have a `Turtle` class to encapsulate those variables.
 
 #### Front-end Internal:
 
-The purpose of this API is to provide methods that the front-end will use to implement features that are exclusively handled within the front-end. These methods should provide areas for extension, and they should be able to be overrode without impacting the back-end.
+The purpose of this API is to provide methods that the front-end will use to implement features that are exclusively handled within the front-end. These methods should provide areas for extension, and they should be able to be overrode without impacting the back-end. Over the course of the project, this API got significantly smaller as we found ways to take advantage of JavaFX bindings that made it in some cases unnecessary for the front-end objects to communicate with each other (ie, we removed the concept of an `updateVariables` method and had `getVariables` in the back-end API return an ObservableList instead of a plain List). Many of these methods were also moved to the front-end external API if we decided they should be accessible to the back-end as well.
 
 ```
-public void showMessage(String message);
-public void setBackgroundColor(Color color);
-public void setTurtleImage(String path);
-public void setPenColor(Color color);
+// General Access Methods
+public Controller getController();
+public TurtleDisplay getDisplay();
+public ShellView getShell();
+public Defaults getDefaults();
+// Default Initialization Methods
+public Color getBackgroundColor();
+public int getNumberOfTurtles();
+public String getLanguage();
+public Image getTurtleImage();
+public String getScriptPath();
+// Retired Methods (either made external, or moved to the back-end)
 public void setLanguage(String language);
 public void showHelp();
 public void showHistory();
 public void updateVariables();
 public void updateCommands();
-public void runCommand(String command);
 ```
 
 **How does this API support features from the assignment specification?**
 
 The following features are listed with the commands that implement them:
 
-* *See errors that may result from entered commands in a user friendly way* --implemented by: `showMessage(String message)` which will display a JavaFX Alert with the message.
+* *See commands previously run in the environment (even better, make them directly clickable to execute)*: originally implemented by `showHistory()`, but now commands are stored in an ObservableList that is stored and accessed through `getHistory()` in the back-end external API.
 
-* *Set a background color for the turtle's display area* -- implemented by: `setBackgroundColor(Color color)`
+* *See variables currently available in the environment*: originally implemented by `updateVariables()`, but now variables are stored in an ObservableList that is stored and accessed through `getVariables()` in the back-end external API.
 
-* *Set an image to use for the turtle* -- implemented by: `setTurtleImage(String path)` where `path` specifies a new image file.
+* *See user-defined commands currently available in the environment* originally implemented by `updateCommands()`, but now user-defined commands are stored in an ObservableList that is stored and accessed through `getUserDefinedCommands()` in the back-end external API.
 
-* *Set a color to use for the pen* -- implemented by: `setPenColor(Color color)`
+* *Choose the language in which SLogo commands are understood* originally implemented by `setLanguage(String language)`, but we decided it made more sense for the back-end to keep track of the language file it is using, since it needs to use it to interpret commands, so now this feature is implemented by the back-end external API.
 
-* *See commands previously run in the environment (even better, make them directly clickable to execute)* -- implemented by: `showHistory()` (which will be called by the user pressing the up arrow-key to look through a scrollable list of old commands) and `runCommand(String command)` (which will be called on clicking one of those old commands).
-
-* *See variables currently available in the environment* -- implemented by: `updateVariables()` which will be called to refresh the permanent sidebar that shows variables and their values.
-
-* *See user-defined commands currently available in the environment* -- implemented by: `updateCommands()` which similarly refreshes the sidebar that shows user-defined commands.
-
-* *Choose the language in which SLogo commands are understood* -- implemented by: `setLanguage(String language)` which simply changes the properties file used to interpret commands.
-
-* *Access an HTML formatted help page* -- implemented by: `showHelp()`
+* *Access an HTML formatted help page*: originally implemented by `showHelp()`, but is now fully implemented by the constructor of the `HelpView` object.
 
 **What resources does this API use?**
 
-Since this API is contained internally within the front-end, it should only use front-end resources. Methods that modify the Turtle Display should for example not need to know the turtle's coordinates since that is data held by the back-end. `showMessage(String message)` might need a reference to the Console if it is printing a message there, or it may be implemented purely with JavaFX Alerts. `showHistory()`, `updateVariables()`, and `updateCommands()` will need references to their particular GUI elements, and they will make use of the back-end API to refresh the displays with the most up-to-date variables and commands. `runCommand(String command)` will probably invoke `parse(String string)`, which is another back-end method made available by the back-end API.
+- The `Controller`: this API provides `getController()` to aid communication between various components, so it needs a reference to the `Controller`.
+- The `TurtleDisplay`: this API provides `getDisplay()` to aid communication to the display elements, so it needs a reference to the `TurtleDisplay`.
+- The `ShellView`: this API provides `getShell()` to aid communication to the shell to modify text in the shell, so it needs a reference to the `ShellView`.
+- The `Defaults`: this API provides `getDefaults()` to let objects check on the configuration settings for the environment, so it needs a reference to the `Defaults`.
 
 **How is this API intended to be used?**
 
 This API is intended to specify the methods that are internal to the front-end, so it should be used to implement front-end specific features and provide an extendible interface. 
 
 We would expect this API to be used in the following scenarios:
-* The front-end catches an exception and needs to display an error to the user
+* The program is starting up and needs to find the default configuration settings
 * The user wants to change the visuals of the Turtle Display (change colors or images)
 * The user wants to see old commands
 * The user wants to add a variable and see its value on screen
 * The user wants to add a custom command
-* The user wants to change languages
 * The user wants to see help from a web page
 
 **How can this API be extended?**
 
-This API can be extended to include more UI-specific features, like more sidebars to display different kinds of information about the state of the environment. To make this very easy to extend, it may be that certain methods like `updateVariables()` and `updateCommands()` could be combined in a superclass `update()` method, with VariableDisplay and CommandDisplay objects each overriding this method to check the appropriate data structures in the back-end. This is an example of a feature that maybe isn't the best to reason about as a Java interface but rather as an inheritance hierarchy.
+This API can be extended to include more UI-specific features, like more sidebars to display different kinds of information about the state of the environment. New methods could also be added that give more power to the GUI. Right now, Commands are very powerful, and there isn't much that the GUI can do that the user couldn't also do by entering a Command. This is why methods like `setBackgroundColor(Color color)` got moved to the external API, to make things more flexible. But you could just as easily add methods to this API without adding a corresponding command. Something like `setDisplayBounds(int width, int height)`. But to be honest, that feature is pretty much implemented by dragging the display edges, and the display is smart and binds all of its elements to adjust their layout if its size changes. That seems to be a theme with this API: there are lots of features that are solved by JavaFX bindings that remove the need to have clunky methods for passing everything around in the front-end.
 
 **Why are we introducing these classes?**
 
-In this section we have focused on discussing the interface for the API in terms of an actual Java interface which cannot be instantiated like a class. However, we will likely not keep this as an interface in the final implementation since these methods are unlikely to all be implemented by a single object. As mentioned above, one idea would be to have a superclass Display that is extended by VariableDisplay, CommandDisplay, HistoryDisplay (even ConsoleDisplay?). This way the process of updating all of the displays could be streamlined, and the path to add new sidebars or other display elements to the UI would be very obvious.
+- The `Controller`: As mentioned, we have a Controller object that this API references. The purpose of the Controller is to provide a bridge between the front-end and back-end. We then have a `getController()` method so that all front-end objects communicate with the back-end through a single Controller instance.
+- The `ShellView`: As mentioned, we have a ShellView object that this API references. the purpose of the ShellView is to encapsulate the components of the display that deal with handling user input to the shell. We then have a `getShell()` method so all the front-end objects can communicate with that shell and modify its text, for instance if the user clicks on a command in the command history panel.
+- The `Defaults`: As mentioned, we have a Defaults object that this API references. The purpose of the Defaults is to encapsulate the configuration settings for starting the program. Default language, display color, turtle image, number of turtles, and script path are all kept in this object. We then have a `getDefaults` so all the different front-end components can check on the value of these parameters so that everything can be initialized properly.
 
 #### Back-end External:
 
 The purpose of this API is to supply the front-end with necessary methods that pertain to the parsing, commands, turtle, or exceptions. Here is an initial list of methods made available by the back-end external API:
 
 ```
+// Command methods
+public void setup(Controller controller, State state)
+public Argument evaluate()
+public Node parse(String input, boolean addToHistory);
+// Observable lists for automatic updating
+public ObservableList<String> getHistory();
+public ObservableList<Variable> getVariables();
+public ObservableList<String> getUserDefinedCommands();
+public ObservableList<IndexedColor> getColorPalette();
+public ObservableList<IndexedImage> getImagePalette();
+// Language methods
+public void setLanguage(String language);
+public String getLanguage();
+// Edited methods or those moved to Front End
 public Command parse(String input);
 public List<String> getHistory();
 public String getPreviousCommand(int k);
@@ -207,15 +288,16 @@ public List<Command> getUserDefinedCommands();
 
 **How does this API support features from the assignment specification?**
 
-* *Recognize these basic commands*  -- implemented by `parse(String input);` which parses the string input and returns the correct command to the front-end.
+* *Recognize these basic commands*  -- implemented by `public Node parse(String input, boolean addToHistory);` which parses the string input and returns the correct command to the front-end.
 
-* *Throw errors that result from incorrectly entered commands* -- implemented by `BadInput();` which throws an exception when the input string is incorrectly entered. 
+* *Throw errors that result from incorrectly entered commands* -- implemented within the parser by calling the `public void showMessage(String message);` which shows a message when the command is incorrectly entered.
 
 **What resources does this API use?**
 
 This API will make use of the following back-end resources:
 
-- The **Turtle** object, which maintains the position of the turtle. This allows the back-end to determine if there is a TurtleOutofBounds() exception, and to allow the position to be returned to the front end.
+- The **State** class, which will maintain the necessary Observable Lists for the history, variables, etc.
+- The **Node** superclass, which hosts the methods that all commands will necessarily extend.
 - The **History** data structure, which will maintain a comprehensive history of the commands that have been processed.
 
 **How is this API intended to be used?**
@@ -223,8 +305,7 @@ This API will make use of the following back-end resources:
 This API is intended to be used by the front-end. We expect the front-end to be able to:
 
 - Obtain the history and display commands as needed
-- Know what type of exception to throw and display when an error occurs
-- Update its turtle position as commands continue to be executed
+- Know what type of exception to throw and display when an error occurs by using the showMessage method from the front end
 
 **How can this API be extended?**
 
@@ -243,6 +324,7 @@ The primary purpose of these methods is to allow the front-end to function smoot
 The purpose of this API is to provide methods for the back-end that will be used to implement the functionality of our program. These methods will supply the necessary resources for our back-end logic to function smoothly; here is a list of methods that we believe we will need:
 
 ```
+// Absorbed or previous.
 public Command getCommand();
 public Command parse(String input);
 public Variable getVariable();
@@ -256,28 +338,35 @@ public void setPosition();
 public void setPen();
 public void setHidden();
 public void setHeading();
+// Newly implemented.
+public Command get();
+public Token getType();
+public Node parseInternal();
+public Argument evaluate();
 ```
 
 **How does this API support features from the assignment specification?**
 
 * *Recognize these basic commands*  -- implemented by all of our necessary `getX()` and `setX()` methods that will update the required variables and maintain the data/objects as needed.
 
-* *Throw errors that result from incorrectly entered commands* -- implemented by the parse command by recognizing when an incorrectly entered command is given as the input string.
+* *Throw errors that result from incorrectly entered commands* -- every location in the program that would  
+theoretically throw an exception in the case of some difficulty (such as not being able to find a command, not making a comment in the right syntax, etc) will call the controller and display an error message within the bounds of try/catch statements.
 
 **What resources does this API use?**
 
 This API will make use of several classes as resources (super and sub-classes) such as the following:
 
-- The **Command** object, which is a superclass to any potential command. Subclasses will include the LogicCommand, MathCommand, TurtleActionCommand, and TurtleLogicCommand.
+- The **Command** object, which is a subclass of the node and will have its own way of evaluating its children or manipulating its arguments to give the front end the result of said command.
 - The **Turtle** object will maintain all of the necessary information about the turtle, including the position, heading, pen, and hiding data.
-- The **Parser** class, which will host the history and catching of errors.
-- The **Variable** class, which will hold the creation of all variables throughout the running of the program.
+- The **Parser** class, which will be able to determine the identity of each word using tokenize to create different nodes and create the tree whose breadth first evaluation will give the proper implementation of commands and other specified syntaxes.
+- The **State** class, which will hold all of the observable lists (for use in binding) so that the front end and back-end will hold the same variables and history at all times. This class can also check and save user-commands so that they can be called and effectively implemented later in the time-frame of the project.
 
 **How is this API intended to be used?**
 
 This API is intended to be used as a way to supply information throughout the back-end. With these methods, we can:
 
-- Add to our history, 
+- Add to our history
+- Create trees that are syntactically created to correctly evaluate input using breadth-first evaluation.
 - Update our Turtle information 
 - Maintain variables
 
@@ -293,7 +382,7 @@ This API can be extended by:
 
 **Why are we introducing these classes?**
 
-The primary goal of adding all of these classes is to grant a cohesive way to manipulate data throughout the back-end. The Parser class is necessary to return the correct command and to check for errors, as listed in the design write-up. The Turtle class will be used as an efficient way to store all of the information we need that relates to each Turtle object. The Command superclass will be easily extensible with the use of layers of subclasses in order to maintain a clear heirarchy of commands. These classes will maintain the logic and functionality of much of the program.
+The primary goal of adding all of these classes is to grant a cohesive way to manipulate data throughout the back-end. The Parser class is necessary to return the correct tree evaluation and to check for errors, as listed in the design write-up. The TurtleCommand class will be used as an efficient way to pass all of the information we need that relates to each abstract Turtle object. The Command superclass will be easily extensible with the use of layers of subclasses in order to maintain a clear hierarchy of commands. These classes will maintain the logic and functionality of much of the program.
 
 ### API Example Code
 
@@ -303,12 +392,11 @@ We seek to go through the following use-case:
 
 Here are the steps necessary to complete that task:
 
-- When the user presses `Enter`, the **Console** calls `parse(String string)` (in `public class Parser`) using the user's input.
-- The `parse(String string)` method returns a **Command** object to the **Console**. 
-- Simultaneously, the command is added to the environment's history. This is done by the `public void addHistory();` command, which appends the command to the end of the history list of commands.
-- The `execute()` method (in **Command**) is called on the **Command** object from the **Console**.
-- From the `execute()` method, the destination point for the turtle is computed from the current point (obtained using `Point getTurtleLocation()` (in `public class Turtle`) and the 50 pixel advance. The `moveTo(Point point)` method (in **TurtleDisplay**) is called with the new destination. The position of the Turtle is updated in the `public class Turtle` by setting the position `public void setPosition()` of the turtle to the current position plus 50. 
-- The user sees the turtle move to its new point, leaving behind a trail.
+- When the user presses `Enter`, the `ShellView` calls `parse(String string)` (in `public class TreeParser`) using the user's input.
+- The command is added to the environment's history. This is done internally by the back-end, using its `State` class and the user's textual input.
+- The `evaluate()` method is called, from the back-end, on the parsed`Command`.
+- From the `Command`'s `execute()` method, the destination point for the turtle is computed from the current point (obtained using `Point getDestination()` (in `public class Turtle`) and the 50 pixel increase. The `moveTo(Point point)` method (in `Turtle`) is called with the new destination. The position of the Turtle is then updated from the `TurtleDisplay`'s `moveTurtle(Turtle turtle, Point point)` method.
+- The user sees the turtle move to its new point in the `TurtleDisplay`, leaving behind a trail.
 
 More use cases follow, two for each API. 
 
@@ -316,17 +404,17 @@ More use cases follow, two for each API.
 
 1\. *The user runs three commands in succession: he hides the turtle, moves it left by 50, and shows it again. How should this API be used during these commands?*
 
-- After the back-end has parsed the first command into a **Command** object, that object's `execute()` method should call `setTurtleVisible(false)` on its reference to the front-end.
-- After the back-end has parsed the second command into a **Command** object, that object's `execute()` method should call `moveTo(destinationPoint)` on its reference to the front-end, passing the point the **Turtle** should move to as a parameter.
-- After the back-end has parsed the third command into a **Command** object, that object's `execute()` method should call `setTurtleVisible(true)` on its reference to the front-end.
+- After the back-end has parsed the first command into a `Command` object, that object's `execute()` method should call `setTurtleVisible(false)` on its reference to the current turtle (a reference obtained through the `TurtleManager`).
+- After the back-end has parsed the second command into a `Command` object, that object's `execute()` method should call `moveTo(destinationPoint)` on its reference to the current turtle, passing the point the `Turtle` should move to as a parameter.
+- After the back-end has parsed the third command into a `Command`object, that object's `execute()` method should call `setTurtleVisible(true)` on its reference to the current turtle.
 
-2\. *The back-end wishes to determine whether a point is within the bounds of the **TurtleDisplay**. If the point is not in bounds, the back-end wishes to inform the user. How would the back-end use this API to achieve this task?*
+2\. *The back-end wishes to create a new `Command`. Its objective: to temporarily make certain turtle active, move them forward by their ID times 50, and restore the old list of active turtles. How should this API be used to achieve this?*
 
 The back-end should follow this sequence of steps:
 
-- The back-end should call the `boolean isPointInBounds(Point point)` method with the point in question.
-- Based on the result, the back-end can either continue, or raise an `OutOfBounds` exception.
-- In the event an exception is raised, the **Console** will catch it, and the front-end will display a Dialog informing the user of the error.
+- The back-end should obtain and save a `List` of active turtles using the `ObservableList<Turtle> getActiveTurtles()` method.
+- The back-end should call `moveTo(Point point)` on the current turtle. The `point` parameter should be computed by the back-end, using the `Turtle`'s current position and its `getID()` method. **Note**: the `TurtleManager` will automatically apply the necessary changes to all active turtles.
+- The back-end should restore the old list of active turtles using the `setActiveTurtles(List<Integer> indices)` method, passing the `List` obtained in the first bullet point as a parameter.
 
 #### Front-end Internal:
 1\. *The user wants to re-run an old command. How would the front-end use this API to achieve this task?*
@@ -398,7 +486,7 @@ All members of the group are responsible for documenting and refactoring their s
 
 #### Within the front-end group:
 
-- Elliott will take primary responsibility for the **Console** and its components, as well as the **State** display (variables and user-defined commands). He will take secondary responsibility for the **TurtleDisplay** and its components.
+- Elliott had primary responsibility for the **Input Area**, the **Control Panel**, and the layout of the views (`Workspace` and `WorkspaceBrowser`). He had secondary responsibility for the **TurtleDisplay**, its components, and parts of the back end (re-writing the parser during the third sprint). 
 - Jay will take primary responsibility for the **TurtleDisplay**, the **Turtle**, and their components. He will take secondary responsibility for the **Console**.
 
 Both Elliott and Jay will tie in the different front-end elements as part of their primary responsibility.

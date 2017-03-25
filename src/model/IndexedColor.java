@@ -4,6 +4,12 @@ import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.scene.paint.Color;
 
+/**
+ * @author Jay Doherty
+ * This class represents a color in the environment. The color can be referred to by its 
+ * index and should be stored in an observable list that will be monitored by the front end
+ * element that displays all of the colors to the user: view/panel/ColorView.java.
+ */
 public class IndexedColor {
 	private SimpleIntegerProperty index;
 	private SimpleObjectProperty<Color> color;

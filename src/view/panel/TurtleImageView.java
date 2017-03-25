@@ -16,7 +16,7 @@ import model.IndexedImage;
 
 /**
  * @author Jay Doherty
- *
+ * This class creates a table of images from an observable list of image paths.
  */
 public class TurtleImageView extends BorderPane {
 

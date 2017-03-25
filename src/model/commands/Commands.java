@@ -6,9 +6,12 @@ import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.ResourceBundle;
 
-
-/*
- * Uses reflection to build Commands from strings and resource files. Also handles user defined commands.
+/**
+ * @author Elliott Bolzan
+ *
+ *         Uses reflection to build Commands from the keys and values in the
+ *         internationalization resource files. Also handles user defined
+ *         commands.
  */
 public class Commands {
 
@@ -16,7 +19,8 @@ public class Commands {
 	private HashMap<String, String> commandNames = new HashMap<String, String>();
 	private ResourceBundle myResources;
 	private String packageRoot = "model.commands.";
-	private ArrayList<String> packages = new ArrayList<>(Arrays.asList("control", "logic", "math", "turtle", "multiple", "display"));
+	private ArrayList<String> packages = new ArrayList<>(
+			Arrays.asList("control", "logic", "math", "turtle", "multiple", "display"));
 
 	public Commands() {
 		updateLanguage("English");
@@ -26,7 +30,7 @@ public class Commands {
 		myResources = ResourceBundle.getBundle(path + language);
 		setCommandNames();
 	}
-	
+
 	public void setCommandNames() {
 		commandNames = new HashMap<String, String>();
 		Enumeration<String> iter = myResources.getKeys();
@@ -34,7 +38,7 @@ public class Commands {
 			addCommand(iter.nextElement());
 		}
 	}
-	
+
 	private void addCommand(String string) {
 		String[] names = myResources.getString(string).split("[|]");
 		for (String name : names) {
@@ -52,13 +56,14 @@ public class Commands {
 			return null;
 		}
 	}
-	
+
 	private Class<?> getClassName(String input) {
 		for (String pkg : packages) {
-		    String name = packageRoot + pkg + "." + input;
-		    try {
-		        return Class.forName(name);
-		    } catch (ClassNotFoundException e) {}
+			String name = packageRoot + pkg + "." + input;
+			try {
+				return Class.forName(name);
+			} catch (ClassNotFoundException e) {
+			}
 		}
 		return null;
 	}

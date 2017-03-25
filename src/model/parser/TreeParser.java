@@ -19,7 +19,10 @@ import model.parser.nodes.VariableNode;
 import model.parser.tokenize.Token;
 import model.parser.tokenize.Tokenize;
 
-/*
+
+/**
+ * @author Elliott Bolzan
+ *
  * Parses input into a tree, where nodes can be commands, constants, variables, lists, groups, etc.
  */
 public class TreeParser {

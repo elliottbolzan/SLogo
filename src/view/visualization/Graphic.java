@@ -9,6 +9,11 @@ import javafx.scene.image.ImageView;
 import javafx.util.Duration;
 import utils.Point;
 
+/**
+ * @author Jay Doherty
+ * This class encapsulates the turtle's image and provides methods to move and rotate it on the 
+ * display. Also provides methods to change the visibility and opacity.
+ */
 public class Graphic {
 	private static final double OPACITY_ACTIVE = 1.0;
 	private static final double OPACITY_INACTIVE = 0.3;
