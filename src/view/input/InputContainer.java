@@ -33,7 +33,7 @@ public class InputContainer extends CollapsibleView {
 	 *            collapses to.
 	 */
 	public InputContainer(Workspace workspace, int index) {
-		super(workspace.getPane(), index, Direction.BACK, false);
+		super(workspace, workspace.getPane(), index, Direction.BACK, false);
 		this.workspace = workspace;
 		setup();
 	}

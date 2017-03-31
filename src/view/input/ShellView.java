@@ -30,7 +30,7 @@ public class ShellView extends InputView {
 	 *            the index of the divider that this view collapses to.
 	 */
 	public ShellView(Workspace workspace, SplitPane pane, int index) {
-		super(pane, index, Direction.FORWARD, true);
+		super(workspace, pane, index, Direction.FORWARD, true);
 		this.workspace = workspace;
 		setup();
 	}

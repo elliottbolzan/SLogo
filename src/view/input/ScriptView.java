@@ -44,7 +44,7 @@ public class ScriptView extends InputView {
 	 *            the index of the SplitPane that the view will be collapsed to.
 	 */
 	public ScriptView(Workspace workspace, SplitPane pane, int index) {
-		super(pane, index, Direction.BACK, true);
+		super(workspace, pane, index, Direction.BACK, true);
 		this.workspace = workspace;
 		setup();
 	}
