@@ -33,7 +33,6 @@ public class WorkspaceBrowser extends BorderPane {
 	private String stylesheetPath = resources.getString("StylesheetPath");
 	private Factory factory = new Factory(resources);
 
-
 	/**
 	 * Returns a WorkspaceBrowser.
 	 * @param stage the Stage that this browser will be placed in.
