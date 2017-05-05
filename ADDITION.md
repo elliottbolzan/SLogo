@@ -26,7 +26,11 @@ I think I will need to add or edit 3 files:
 
 **How long did it take you to complete this new feature?**
 
+It only took me **1 hour** to implement this feature (1 hour less than I planned).  
+
 **How many files did you need to add or update? Why?**
+
+
 
 **Did you get it completely right on the first try?**
 

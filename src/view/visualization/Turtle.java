@@ -171,7 +171,7 @@ public class Turtle {
 		myTurtleGraphic.setIndex(index);
 	}
 
-	protected ImageView getView() {
+	public ImageView getView() {
 		return myTurtleGraphic.getView();
 	}
 	
