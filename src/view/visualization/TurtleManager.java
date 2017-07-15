@@ -30,6 +30,7 @@ public class TurtleManager {
 	}
 
 	private Map<Integer, Turtle> turtles;
+	private ObservableList<Turtle> observableTurtles;
 	private ObservableList<Turtle> activeTurtles;
 	private TurtleDisplay display;
 	private int initialTurtles;
@@ -50,6 +51,7 @@ public class TurtleManager {
 		this.initialTurtles = initialTurtles;
 		this.display = display;
 		this.turtleImage = turtleImage;
+		this.observableTurtles = FXCollections.observableArrayList(new ArrayList<>());
 		clear();
 	}
 
@@ -59,6 +61,10 @@ public class TurtleManager {
 
 	public Map<Integer, Turtle> getAllTurtles() {
 		return turtles;
+	}
+	
+	public ObservableList<Turtle> getObservableTurtles() {
+		return observableTurtles;
 	}
 
 	public Turtle getTurtleByID(int ID) {
@@ -139,6 +145,7 @@ public class TurtleManager {
 	private void createTurtle(int ID) {
 		Turtle turtle = new Turtle(display, ID, turtleImage);
 		turtles.put(ID, turtle);
+		observableTurtles.add(turtle);
 		activeTurtles.add(turtle);
 		turtle.activeProperty().set(true);
 		turtle.activeProperty().addListener(e -> this.onTurtleActivityModified(turtle));
@@ -161,6 +168,7 @@ public class TurtleManager {
 	 */
 	protected void clear() {
 		turtles = new HashMap<Integer, Turtle>();
+		observableTurtles = FXCollections.observableArrayList(new ArrayList<Turtle>());
 		activeTurtles = FXCollections.observableArrayList(new ArrayList<Turtle>());
 		createInitialTurtles();
 	}

@@ -69,6 +69,7 @@ public class Panel extends CollapsibleView {
 				add(workspace.getController().getResources().getString("ColorsTitle"));
 				add(workspace.getController().getResources().getString("ImagesTitle"));
 				add(workspace.getController().getResources().getString("TurtleSettingsTitle"));
+				add(workspace.getController().getResources().getString("CurrentTurtleImagesTitle"));
 			}
 		};
 		subviews = new ArrayList<Node>() {
@@ -81,6 +82,7 @@ public class Panel extends CollapsibleView {
 				add(new ColorView(workspace.getController().getColorPalette()));
 				add(new TurtleImageView(workspace.getController().getImagePalette()));
 				add(new TurtleSettingsView(workspace.getController()).getView());
+				add(new CurrentTurtleImages(workspace));
 			}
 		};
 	}
